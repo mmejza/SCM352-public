@@ -346,12 +346,109 @@ body{font-family:'Barlow',sans-serif;background:#F0F4F3;min-height:100vh;display
 .student-view .title-read {
   font-size: clamp(13px, 0.9vw, 16px);
 }
-/* Student-facing viewer: full-width slide layout */
-.viewer-layout {
-  display: block;
+
+/* =========================================================
+   SCM352 STUDENT VIEWER OVERRIDES
+   Activate with: <body class="student-view">
+   ========================================================= */
+
+body.student-view {
+  background: #F0F4F3;
 }
 
-.slide-column {
-  width: 100%;
-  max-width: 100%;
+body.student-view .viewer-layout {
+  display: block !important;
+  width: 100% !important;
+  max-width: 1180px !important;
+  margin: 0 auto !important;
+  padding: 12px 16px 6px !important;
+}
+
+body.student-view .sidebar {
+  display: none !important;
+}
+
+body.student-view .slide-column {
+  width: 100% !important;
+  max-width: 100% !important;
+  gap: 8px !important;
+}
+
+body.student-view .slide-frame {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+body.student-view .slide-stage {
+  width: 100% !important;
+  aspect-ratio: 4 / 3;
+  min-height: 0;
+}
+
+body.student-view {
+  --slide-scale: 1.18;
+}
+
+body.student-view .viewer-header {
+  padding: 10px 24px;
+}
+
+body.student-view .viewer-header h1 {
+  font-size: 18px;
+}
+
+body.student-view .viewer-nav {
+  gap: 8px;
+}
+
+body.student-view .keyboard-hint {
+  padding: 2px 0 4px;
+}
+
+/* Readability lift without forcing slides to overflow their 4:3 frame */
+body.student-view .le-title {
+  font-size: calc(27px * var(--slide-scale));
+}
+
+body.student-view .le-sub {
+  font-size: calc(11px * var(--slide-scale));
+}
+
+body.student-view .lo-t,
+body.student-view .callout p,
+body.student-view .callout li,
+body.student-view .mini-card p,
+body.student-view .mini-card li {
+  font-size: calc(10.8px * var(--slide-scale));
+  line-height: 1.45;
+}
+
+body.student-view .slide-copy,
+body.student-view .slide-card-copy,
+body.student-view .slide-table-text {
+  font-size: calc(10.5px * var(--slide-scale));
+  line-height: 1.45;
+}
+
+body.student-view .slide-small,
+body.student-view .slide-label,
+body.student-view .slide-caption,
+body.student-view .slide-meta,
+body.student-view .gate-source {
+  font-size: calc(9px * var(--slide-scale));
+  line-height: 1.35;
+}
+
+body.student-view .lo-card {
+  padding: 8px 10px;
+}
+
+body.student-view .lo-grid {
+  gap: 8px;
+}
+
+@media (min-width: 1100px) {
+  body.student-view .viewer-layout {
+    max-width: 1220px !important;
+  }
 }

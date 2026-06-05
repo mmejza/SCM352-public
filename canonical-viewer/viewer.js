@@ -89,8 +89,8 @@
   }
 
   function bindEvents(){
-    els.prev.addEventListener('click', () => showSlide(current - 1));
-    els.next.addEventListener('click', () => showSlide(current + 1));
+    if (els.prev) els.prev.addEventListener('click', () => showSlide(current - 1));
+    if (els.next) els.next.addEventListener('click', () => showSlide(current + 1));
     document.addEventListener('keydown', e => {
       if(e.key === 'ArrowRight' || e.key === 'PageDown') showSlide(current + 1);
       if(e.key === 'ArrowLeft' || e.key === 'PageUp') showSlide(current - 1);

@@ -1,0 +1,28 @@
+{
+  "title": "Process Analysis",
+  "moduleLabel": "SCM 352 · M03 Lecture Slides",
+  "slides": [
+    "slides/s01-title.html",
+    "slides/s02-learning-objectives.html",
+    "slides/s03-gate-content.html",
+    "slides/s04-from-measuring-to-managing.html",
+    "slides/s05-process-flow-diagram.html",
+    "slides/s06-worker-paced-vs-machine-paced.html",
+    "slides/s07-capacity-formula.html",
+    "slides/s08-four-step-procedure.html",
+    "slides/s09-airport-setup.html",
+    "slides/s10-airport-step1-capacities.html",
+    "slides/s11-airport-step2-bottleneck.html",
+    "slides/s12-airport-step3-flow-rate.html",
+    "slides/s13-airport-step4-utilization.html",
+    "slides/s14-airport-cycle-time-summary.html",
+    "slides/s15-multi-worker-trap.html",
+    "slides/s16-non-bottleneck-speed-trap.html",
+    "slides/s17-q-units-nonempty-setup.html",
+    "slides/s18-q-units-nonempty-solution.html",
+    "slides/s19-q-units-empty-setup.html",
+    "slides/s20-q-units-empty-solution.html",
+    "slides/s21-adding-a-worker.html",
+    "slides/s22-bridge.html"
+  ]
+}

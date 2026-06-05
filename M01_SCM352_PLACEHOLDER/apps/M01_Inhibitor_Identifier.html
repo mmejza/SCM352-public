@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>System Inhibitor Identifier — SCM 352 M01</title>
+<style>
+  :root {
+    --blue-dark:   #1a3a5c;
+    --blue-mid:    #2563a8;
+    --blue-light:  #dbeafe;
+    --gold:        #f59e0b;
+    --green:       #16a34a;
+    --green-light: #dcfce7;
+    --red:         #dc2626;
+    --red-light:   #fee2e2;
+    --amber:       #d97706;
+    --amber-light: #fef3c7;
+    --purple:      #7c3aed;
+    --purple-light:#ede9fe;
+    --teal:        #0891b2;
+    --teal-light:  #cffafe;
+    --gray-50:     #f9fafb;
+    --gray-100:    #f3f4f6;
+    --gray-200:    #e5e7eb;
+    --gray-400:    #9ca3af;
+    --gray-600:    #4b5563;
+    --gray-800:    #1f2937;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    background: var(--gray-50);
+    color: var(--gray-800);
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ─────────────────────────────────────────────────── */
+  header {
+    background: var(--blue-dark);
+    color: white;
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .header-badge {
+    background: var(--gold);
+    color: var(--blue-dark);
+    font-weight: 700;
+    font-size: 11px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  header h1 { font-size: 18px; font-weight: 600; }
+  .header-right {
+    margin-left: auto;
+    font-size: 12px;
+    color: rgba(255,255,255,0.65);
+  }
+
+  /* ── DOT NAV ─────────────────────────────────────────────────── */
+  .dot-track {
+    background: white;
+    border-bottom: 2px solid var(--gray-200);
+    padding: 12px 24px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .dot-track-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--gray-600);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-right: 4px;
+  }
+  .dot-row { display: flex; gap: 6px; flex-wrap: wrap; }
+  .dot {
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    border: 2px solid var(--gray-200);
+    background: white;
+    font-size: 11px; font-weight: 700;
+    color: var(--gray-400);
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s;
+    flex-shrink: 0;
+  }
+  .dot:hover { border-color: var(--blue-mid); color: var(--blue-mid); }
+  .dot.active { border-color: var(--blue-mid); background: var(--blue-mid); color: white; }
+  .dot.d-correct { border-color: var(--green); background: var(--green); color: white; }
+  .dot.d-partial  { border-color: var(--amber); background: var(--amber); color: white; }
+  .dot.d-wrong    { border-color: var(--red);   background: var(--red);   color: white; }
+
+  /* ── LAYOUT ──────────────────────────────────────────────────── */
+  .main {
+    max-width: 1060px;
+    margin: 0 auto;
+    padding: 24px;
+    display: grid;
+    grid-template-columns: 1fr 310px;
+    gap: 24px;
+    align-items: start;
+  }
+  @media (max-width: 820px) { .main { grid-template-columns: 1fr; } }
+
+  /* ── CARD ────────────────────────────────────────────────────── */
+  .card {
+    background: white;
+    border: 1px solid var(--gray-200);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .card-header {
+    background: var(--blue-light);
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--gray-200);
+  }
+  .card-header h2 { font-size: 14px; font-weight: 700; color: var(--blue-dark); }
+  .card-header p  { font-size: 12px; color: var(--gray-600); margin-top: 3px; }
+  .card-body { padding: 20px; }
+
+  /* ── VIGNETTE CARD ───────────────────────────────────────────── */
+  .meta-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+  }
+  .industry-tag {
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.05em; text-transform: uppercase;
+    padding: 3px 10px; border-radius: 100px;
+    background: var(--blue-light); color: var(--blue-dark);
+  }
+  .diff-tag {
+    font-size: 11px; font-weight: 600;
+    letter-spacing: 0.04em; text-transform: uppercase;
+    padding: 3px 9px; border-radius: 100px;
+  }
+  .diff-easy   { background: var(--green-light); color: var(--green); }
+  .diff-medium { background: var(--amber-light); color: var(--amber); }
+  .diff-hard   { background: var(--red-light);   color: var(--red); }
+
+  .vignette-num {
+    margin-left: auto;
+    font-size: 12px; font-weight: 600; color: var(--gray-400);
+  }
+
+  .vignette-text {
+    font-size: 14px; line-height: 1.75;
+    color: var(--gray-800);
+    background: var(--gray-50);
+    border-left: 4px solid var(--blue-mid);
+    padding: 14px 16px;
+    border-radius: 0 8px 8px 0;
+    margin-bottom: 24px;
+  }
+
+  /* ── SELECTION ───────────────────────────────────────────────── */
+  .selection-label {
+    font-size: 13px; font-weight: 700;
+    color: var(--gray-800);
+    margin-bottom: 12px;
+  }
+  .option-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  @media (max-width: 500px) { .option-grid { grid-template-columns: 1fr; } }
+
+  .option-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px 14px;
+    border: 2px solid var(--gray-200);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+    background: white;
+    user-select: none;
+  }
+  .option-card:hover { border-color: var(--blue-mid); background: var(--gray-50); }
+  .option-card.sel-waste   { border-color: var(--red);    background: var(--red-light); }
+  .option-card.sel-var     { border-color: var(--purple);  background: var(--purple-light); }
+  .option-card.sel-inflex  { border-color: var(--teal);   background: var(--teal-light); }
+  .option-card.sel-multi   { border-color: var(--amber);  background: var(--amber-light); }
+
+  .opt-icon { font-size: 18px; line-height: 1; flex-shrink: 0; margin-top: 1px; }
+  .opt-info { flex: 1; }
+  .opt-name { font-size: 13px; font-weight: 700; color: var(--gray-800); margin-bottom: 3px; }
+  .opt-def  { font-size: 11px; color: var(--gray-600); line-height: 1.4; }
+
+  /* ── BUTTONS ─────────────────────────────────────────────────── */
+  .btn {
+    padding: 10px 22px; border: none; border-radius: 8px;
+    font-size: 14px; font-weight: 600; cursor: pointer;
+    transition: all 0.15s;
+  }
+  .btn-primary  { background: var(--blue-mid); color: white; }
+  .btn-primary:hover { background: #1d4ed8; }
+  .btn-primary:disabled { background: var(--gray-400); cursor: not-allowed; }
+  .btn-secondary { background: var(--gray-100); color: var(--gray-800); }
+  .btn-secondary:hover { background: var(--gray-200); }
+  .btn-green { background: var(--green); color: white; }
+  .btn-green:hover { background: #15803d; }
+  .btn-group { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+
+  /* ── FEEDBACK ────────────────────────────────────────────────── */
+  .feedback-panel {
+    display: none;
+    margin-top: 20px;
+    border: 2px solid var(--gray-200);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .feedback-panel.show { display: block; }
+
+  .fb-banner {
+    padding: 12px 16px;
+    font-size: 14px; font-weight: 700;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .fb-correct { background: var(--green-light); color: var(--green); border-bottom: 2px solid var(--green); }
+  .fb-partial { background: var(--amber-light); color: var(--amber); border-bottom: 2px solid var(--amber); }
+  .fb-wrong   { background: var(--red-light);   color: var(--red);   border-bottom: 2px solid var(--red); }
+
+  .fb-body {
+    padding: 16px;
+    font-size: 13px; line-height: 1.65;
+    color: var(--gray-800); background: white;
+  }
+
+  .inhibitor-chips {
+    display: flex; gap: 6px; flex-wrap: wrap;
+    margin-bottom: 12px;
+  }
+  .i-chip {
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.04em; text-transform: uppercase;
+    padding: 3px 10px; border-radius: 100px;
+  }
+  .chip-waste { background: var(--red-light);    color: var(--red); }
+  .chip-var   { background: var(--purple-light); color: var(--purple); }
+  .chip-inflex{ background: var(--teal-light);   color: var(--teal); }
+
+  .think-deeper {
+    background: #fffbeb;
+    border: 1.5px solid var(--gold);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-top: 12px;
+    font-size: 13px; line-height: 1.6;
+  }
+  .think-deeper-label {
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--amber); margin-bottom: 6px;
+  }
+
+  /* ── SIDEBAR ─────────────────────────────────────────────────── */
+  .sidebar { position: sticky; top: 24px; display: flex; flex-direction: column; gap: 16px; }
+
+  .score-row {
+    padding: 16px 20px;
+    display: flex; align-items: center; gap: 12px;
+    border-bottom: 1px solid var(--gray-100);
+  }
+  .score-num { font-size: 28px; font-weight: 700; color: var(--blue-dark); }
+  .score-meta { font-size: 12px; color: var(--gray-600); line-height: 1.4; }
+  .score-meta strong { color: var(--gray-800); display: block; font-size: 13px; }
+
+  .prog-bar-outer {
+    height: 5px; background: var(--gray-200);
+    border-radius: 3px; overflow: hidden; margin: 0 20px 16px;
+  }
+  .prog-bar-inner {
+    height: 100%; background: var(--blue-mid);
+    border-radius: 3px; transition: width 0.4s;
+  }
+
+  .ref-item { padding: 12px 20px; border-bottom: 1px solid var(--gray-100); }
+  .ref-item:last-child { border-bottom: none; }
+  .ref-title {
+    font-size: 12px; font-weight: 700;
+    display: flex; align-items: center; gap: 6px;
+    margin-bottom: 4px;
+  }
+  .ref-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .ref-body { font-size: 11px; color: var(--gray-600); line-height: 1.5; padding-left: 14px; }
+
+  /* ── FINAL SUMMARY ───────────────────────────────────────────── */
+  .final-summary { display: none; }
+  .final-summary.show { display: block; }
+
+  .summary-hero {
+    text-align: center; padding: 24px 20px 16px;
+    border-bottom: 1px solid var(--gray-100);
+  }
+  .summary-hero h3 { font-size: 20px; font-weight: 700; margin-bottom: 6px; }
+  .summary-score { font-size: 36px; font-weight: 700; color: var(--blue-dark); }
+  .summary-sub   { font-size: 13px; color: var(--gray-600); margin-top: 4px; }
+
+  .results-table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 0; }
+  .results-table th {
+    background: var(--blue-dark); color: white;
+    padding: 8px 12px; text-align: left;
+    font-size: 11px; letter-spacing: 0.04em; text-transform: uppercase;
+  }
+  .results-table td { padding: 9px 12px; border-bottom: 1px solid var(--gray-100); }
+  .results-table tr:last-child td { border-bottom: none; }
+  .results-table tr:hover td { background: var(--gray-50); }
+
+  .ri-c { color: var(--green); font-weight: 700; }
+  .ri-p { color: var(--amber); font-weight: 700; }
+  .ri-w { color: var(--red);   font-weight: 700; }
+
+  .tip-box {
+    background: #fffbeb; border: 1px solid var(--gold);
+    border-radius: 8px; padding: 14px 16px;
+    font-size: 13px; line-height: 1.6; color: var(--gray-800);
+    margin: 16px 20px;
+  }
+  .tip-box strong { color: var(--blue-dark); }
+  .tip-box p + p { margin-top: 8px; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="header-badge">SCM 352 · M01</div>
+  <h1>System Inhibitor Identifier</h1>
+  <div class="header-right" id="hdr-progress">Vignette 1 of 12</div>
+</header>
+
+<!-- DOT NAV -->
+<div class="dot-track">
+  <span class="dot-track-label">Vignettes</span>
+  <div class="dot-row" id="dotRow"></div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- LEFT: Vignette + Selection -->
+  <div>
+    <div class="card" id="mainCard">
+      <div class="card-header">
+        <h2 id="cardTitle">Vignette 1</h2>
+        <p id="cardSubtitle">Read the scenario, then identify the system inhibitor(s) at work.</p>
+      </div>
+      <div class="card-body">
+
+        <!-- Meta row -->
+        <div class="meta-row">
+          <div class="industry-tag" id="industryTag">—</div>
+          <div class="diff-tag" id="diffTag">—</div>
+          <div class="vignette-num" id="vigNum">01 / 12</div>
+        </div>
+
+        <!-- Scenario text -->
+        <div class="vignette-text" id="vigText">Loading…</div>
+
+        <!-- Selection -->
+        <div class="selection-label">Which system inhibitor(s) best explain the supply-demand mismatch?</div>
+        <div class="option-grid" id="optionGrid">
+          <div class="option-card" id="opt-Waste" onclick="selectOption('Waste')">
+            <div class="opt-icon">🗑️</div>
+            <div class="opt-info">
+              <div class="opt-name">Waste</div>
+              <div class="opt-def">Resources consumed without producing customer value</div>
+            </div>
+          </div>
+          <div class="option-card" id="opt-Variability" onclick="selectOption('Variability')">
+            <div class="opt-icon">🌊</div>
+            <div class="opt-info">
+              <div class="opt-name">Variability</div>
+              <div class="opt-def">Unpredictable fluctuations in supply or demand</div>
+            </div>
+          </div>
+          <div class="option-card" id="opt-Inflexibility" onclick="selectOption('Inflexibility')">
+            <div class="opt-icon">🔒</div>
+            <div class="opt-info">
+              <div class="opt-name">Inflexibility</div>
+              <div class="opt-def">Inability to adapt quickly or cheaply to change</div>
+            </div>
+          </div>
+          <div class="option-card" id="opt-Multiple" onclick="selectOption('Multiple')">
+            <div class="opt-icon">⚡</div>
+            <div class="opt-info">
+              <div class="opt-name">Multiple inhibitors present</div>
+              <div class="opt-def">More than one inhibitor is contributing to the mismatch</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="btn-group">
+          <button class="btn btn-primary" id="submitBtn" onclick="handleSubmit()" disabled>Check Answer</button>
+          <button class="btn btn-secondary" id="prevBtn" onclick="handlePrev()" style="display:none">← Previous</button>
+          <button class="btn btn-green"    id="nextBtn" onclick="handleNext()" style="display:none">Next Vignette →</button>
+          <button class="btn btn-secondary" id="restartBtn" onclick="handleRestart()" style="display:none">↩ Restart</button>
+        </div>
+
+        <!-- Feedback -->
+        <div class="feedback-panel" id="feedbackPanel">
+          <div class="fb-banner" id="fbBanner"></div>
+          <div class="fb-body">
+            <div class="inhibitor-chips" id="fbChips"></div>
+            <div id="fbReveal"></div>
+            <div class="think-deeper" id="fbThink" style="display:none">
+              <div class="think-deeper-label">Think Deeper</div>
+              <div id="fbThinkText"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Final summary (replaces vignette content) -->
+        <div class="final-summary" id="finalSummary">
+          <div class="summary-hero">
+            <h3 id="sumTitle">—</h3>
+            <div class="summary-score" id="sumScore">—</div>
+            <div class="summary-sub" id="sumSub">—</div>
+          </div>
+          <table class="results-table" id="resultsTable">
+            <thead><tr><th>#</th><th>Industry</th><th>Inhibitor(s)</th><th>Result</th></tr></thead>
+            <tbody id="resultsBody"></tbody>
+          </table>
+          <div class="tip-box">
+            <strong>Key distinctions for Gate 2 and the Case:</strong>
+            <p><strong>Waste vs. Variability:</strong> Waste is about inputs consumed without value — look for idle time, overproduction, or unused capacity. Variability is about unpredictable fluctuations — look for surges, no-shows, or swings in demand or supply.</p>
+            <p><strong>Variability vs. Inflexibility:</strong> Variability causes the mismatch; inflexibility prevents recovery. When a firm can see the problem but cannot change fast enough to respond, that is inflexibility — even if variability started it.</p>
+            <p><strong>Multi-inhibitor cases:</strong> Look for inflexibility that amplifies waste, or variability that is tolerable until inflexibility makes it a crisis. The inhibitors interact — identifying all of them, and how they compound, is the advanced skill.</p>
+          </div>
+          <div style="padding: 16px 20px;">
+            <button class="btn btn-primary" onclick="handleRestart()">↩ Restart from Vignette 1</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT: Sidebar -->
+  <div class="sidebar">
+    <!-- Score -->
+    <div class="card">
+      <div class="card-header">
+        <h2>Your Score</h2>
+        <p>Updates after each answer</p>
+      </div>
+      <div class="score-row">
+        <div class="score-num" id="scoreNum">0</div>
+        <div class="score-meta">
+          <strong id="scoreLabel">correct</strong>
+          <span id="scoreDetail">of 0 answered</span>
+        </div>
+      </div>
+      <div class="prog-bar-outer">
+        <div class="prog-bar-inner" id="progBar" style="width:0%"></div>
+      </div>
+      <div style="padding: 0 20px 14px; font-size: 12px; color: var(--gray-600); display: flex; gap: 12px;">
+        <span>✓ <span id="cntCorrect" style="font-weight:700;color:var(--green)">0</span> correct</span>
+        <span>◑ <span id="cntPartial" style="font-weight:700;color:var(--amber)">0</span> partial</span>
+        <span>✗ <span id="cntWrong"   style="font-weight:700;color:var(--red)">0</span> incorrect</span>
+      </div>
+    </div>
+
+    <!-- Reference -->
+    <div class="card">
+      <div class="card-header">
+        <h2>The Three Inhibitors</h2>
+        <p>Quick reference — Chapter 1</p>
+      </div>
+      <div class="ref-item">
+        <div class="ref-title">
+          <div class="ref-dot" style="background:var(--red)"></div>
+          Waste
+        </div>
+        <div class="ref-body">Resources consumed — time, materials, capacity — without producing value that a customer would pay for. Examples: idle workers, overproduction, unnecessary wait time.</div>
+      </div>
+      <div class="ref-item">
+        <div class="ref-title">
+          <div class="ref-dot" style="background:var(--purple)"></div>
+          Variability
+        </div>
+        <div class="ref-body">Unpredictable fluctuations in supply, demand, or processing time that make it difficult to match supply with demand. Examples: no-show rates, seasonal surges, machine breakdowns.</div>
+      </div>
+      <div class="ref-item">
+        <div class="ref-title">
+          <div class="ref-dot" style="background:var(--teal)"></div>
+          Inflexibility
+        </div>
+        <div class="ref-body">The inability to respond quickly or cheaply to a change in demand or supply conditions. Often amplifies the impact of variability. Examples: rigid contracts, slow systems, fixed shift rules.</div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<script>
+// ─── DATA ─────────────────────────────────────────────────────────────────────
+
+const VIGNETTES = [
+  {
+    id: 1,
+    industry: 'Restaurant',
+    difficulty: 'easy',
+    text: 'A café bakes 200 croissants every morning, based on a daily production target set three years ago. On most weekdays, between 40 and 60 croissants remain unsold at closing and are discarded. The café does not track day-of-week demand patterns and does not bake in smaller replenishable batches throughout the day.',
+    answer: 'Waste',
+    inhibitors: ['Waste'],
+    correctLabel: 'Correct — this is a Waste inhibitor.',
+    reveal: 'The unsold croissants represent wasted inputs — flour, labor, and oven time consumed to produce goods that generate no revenue. The café is consistently over-producing relative to actual demand. Unused capacity (the empty display shelf) and consumed resources (discarded croissants) with no customer value delivered are the signature of a waste inhibitor.',
+    thinkDeeper: null
+  },
+  {
+    id: 2,
+    industry: 'Logistics',
+    difficulty: 'easy',
+    text: 'A regional package delivery company uses the same number of drivers every weekday. Package volume is stable Monday through Thursday but typically surges 60–80% on Fridays, when online orders placed earlier in the week arrive at the distribution center. As a result, Friday deliveries regularly run past 8 PM and some packages are rescheduled to Saturday.',
+    answer: 'Variability',
+    inhibitors: ['Variability'],
+    correctLabel: 'Correct — this is a Variability inhibitor.',
+    reveal: 'Predictable weekly demand spikes create a mismatch between fixed driver supply and fluctuating demand. Because staffing does not scale up on high-volume days, the system is overloaded and service degrades every Friday. Note: the variability here is actually predictable — it recurs every week — which means it could potentially be addressed through better planning rather than by simply adding more drivers.',
+    thinkDeeper: null
+  },
+  {
+    id: 3,
+    industry: 'Education',
+    difficulty: 'easy',
+    text: 'A university financial aid office is staffed at the same level year-round. During a three-week window in January, applications for the upcoming academic year surge to five times the normal volume. During this period, students wait an average of 18 business days for a response — a delay that causes some applicants to enroll at competing schools.',
+    answer: 'Variability',
+    inhibitors: ['Variability'],
+    correctLabel: 'Correct — this is a Variability inhibitor.',
+    reveal: 'Predictable but sharp seasonal demand variability (application season) overwhelms fixed staffing capacity. The supply of advisors does not change even though the surge pattern recurs every January. The 18-day response time is a direct consequence of demand exceeding supply — a supply-demand mismatch driven by variability. The lost applicants represent the real cost of this inhibitor.',
+    thinkDeeper: null
+  },
+  {
+    id: 4,
+    industry: 'Hospitality',
+    difficulty: 'easy',
+    text: 'A hotel housekeeping team cleans 30 rooms between 9 AM and 2 PM. On Tuesdays, checkout volume is low and the team finishes by noon with rooms to spare. On Sundays, late checkouts push the team past 4 PM and some arriving guests must wait for their rooms to be ready.',
+    answer: 'Variability',
+    inhibitors: ['Variability'],
+    correctLabel: 'Correct — this is a Variability inhibitor.',
+    reveal: 'Demand for housekeeping services varies by day of week, driven by checkout patterns. The team size is fixed regardless of checkout volume. On high-demand days, the fixed team cannot keep pace, creating a mismatch between a fixed supply of labor and variable demand for room turnover. Idle capacity on Tuesdays and guest delays on Sundays are both symptoms of the same variability.',
+    thinkDeeper: null
+  },
+  {
+    id: 5,
+    industry: 'Restaurant',
+    difficulty: 'medium',
+    text: 'A popular brunch restaurant accepts reservations and fills its 80 seats to capacity every Saturday. However, the no-show rate varies from 5% to 25% each week with no predictable pattern. On high no-show weekends, tables sit empty while walk-in customers are turned away because the host assumes all seats are reserved. On low no-show weekends, the restaurant is correctly full.',
+    answer: 'Variability',
+    inhibitors: ['Variability'],
+    correctLabel: 'Correct — this is a Variability inhibitor.',
+    reveal: 'Unpredictable no-show rates create demand variability — the restaurant cannot reliably know how many reserved customers will actually arrive. Because the no-show rate is genuinely unpredictable (5% to 25% with no pattern), the fixed reservation policy cannot adapt in advance. The root cause is the uncertainty itself, not the system\'s inability to respond: if no-show data were available, the host could theoretically allow walk-ins. The inhibitor is variability because the problem originates from unpredictable demand behavior.',
+    thinkDeeper: null
+  },
+  {
+    id: 6,
+    industry: 'Healthcare',
+    difficulty: 'medium',
+    text: 'An outpatient clinic schedules all patient appointments in 30-minute blocks regardless of appointment type. A routine blood pressure check takes 7 minutes but occupies a full 30-minute slot. A post-surgical follow-up requiring 40 minutes is split into two back-to-back slots. On most days, physicians spend approximately 35% of their scheduled hours waiting between patients or completing paperwork that could have been done in advance.',
+    answer: 'Waste',
+    inhibitors: ['Waste'],
+    correctLabel: 'Correct — this is a Waste inhibitor.',
+    reveal: 'The fixed 30-minute scheduling block wastes physician time in two ways: (1) idle waiting time between short appointments where no value is produced, and (2) awkward splits of complex visits that add administrative friction. Resources — physician time and exam room capacity — are consumed without producing customer value during idle intervals. The 35% idle rate is the diagnostic signal. There is no surge or unpredictability here — the waste is structural and predictable.',
+    thinkDeeper: null
+  },
+  {
+    id: 7,
+    industry: 'Retail',
+    difficulty: 'medium',
+    text: 'A sporting goods retailer processes all online returns through a centralized warehouse 400 miles from its nearest store. Customers who bought items online cannot return them in-store — they must ship the item, wait 7–10 business days for warehouse processing, and receive a refund only after warehouse confirmation. The store\'s point-of-sale system has no integration with the online order database.',
+    answer: 'Inflexibility',
+    inhibitors: ['Inflexibility'],
+    correctLabel: 'Correct — this is an Inflexibility inhibitor.',
+    reveal: 'The retailer\'s system cannot cheaply or quickly adapt its return process to serve a customer at the store level. The 7–10 day delay is not caused by unpredictable demand — it is the baseline response time of a system not designed for cross-channel returns. Inflexibility is the inability to respond to demand in a timely, low-cost way even when the demand is entirely predictable. The disconnected POS system is the structural constraint preventing adaptation.',
+    thinkDeeper: null
+  },
+  {
+    id: 8,
+    industry: 'Logistics',
+    difficulty: 'hard',
+    text: 'A regional warehouse has a single inbound receiving dock. When a delivery truck arrives while the dock is occupied, the truck must idle in the parking lot — sometimes for up to 3 hours. The warehouse cannot reschedule inbound arrivals because supplier contracts specify fixed delivery windows. On average, 4 trucks per week wait more than 2 hours before unloading.',
+    answer: 'Multiple',
+    inhibitors: ['Waste', 'Inflexibility'],
+    correctLabel: 'Correct — two inhibitors are present: Waste and Inflexibility.',
+    reveal: '<strong>Waste:</strong> Trucks idling in the parking lot represent wasted driver time, fuel, and delivery capacity — resources consumed without producing any customer value. The wait does not move a single package closer to its destination.<br><br><strong>Inflexibility:</strong> The single-dock constraint and fixed supplier contracts prevent the warehouse from adapting its receiving process. Even if the manager can see a backup building in real time, the system cannot cheaply or quickly change to accommodate it. The inflexibility is both physical (one dock) and contractual (fixed delivery windows).',
+    thinkDeeper: 'If the warehouse had two docks, would the idle time (waste) disappear even if supplier contracts still required fixed delivery windows? Use your answer to explain which inhibitor is the more binding constraint here — the physical resource or the contractual inflexibility.'
+  },
+  {
+    id: 9,
+    industry: 'Hospitality',
+    difficulty: 'hard',
+    text: 'A beach resort staffs all housekeeping and maintenance employees on fixed 8-hour morning shifts. During peak summer weeks, late checkouts and early arrivals create a 2-hour overlap where housekeeping must service twice as many rooms simultaneously as during off-peak periods. The resort\'s union contract prohibits shift schedule changes with less than 72 hours\' notice, preventing managers from quickly adding afternoon coverage.',
+    answer: 'Multiple',
+    inhibitors: ['Variability', 'Inflexibility'],
+    correctLabel: 'Correct — two inhibitors are present: Variability and Inflexibility.',
+    reveal: '<strong>Variability:</strong> Peak season creates surges in simultaneous room turnover demand — the housekeeping team faces double the normal workload in a compressed time window, producing a supply-demand mismatch.<br><br><strong>Inflexibility:</strong> The union contract prevents management from responding to variability by adjusting shift times on short notice. Even when managers can see the problem in advance, the system cannot cheaply respond — the constraint is contractual, not just operational. Inflexibility amplifies the damage done by variability.',
+    thinkDeeper: 'If the demand variability were perfectly predictable — every peak-summer week identical in pattern — would the inflexibility still cause a problem? What does your answer reveal about when inflexibility matters most and when it can be planned around?'
+  },
+  {
+    id: 10,
+    industry: 'Education',
+    difficulty: 'hard',
+    text: 'A corporate training department enrolls all new hires in a mandatory 5-day onboarding course, regardless of prior experience. Employees transferred from a sister company who already completed two of the five modules must attend the full program. The learning management system (LMS) cannot selectively assign or skip individual modules — enrollment is all-or-nothing.',
+    answer: 'Multiple',
+    inhibitors: ['Waste', 'Inflexibility'],
+    correctLabel: 'Correct — two inhibitors are present: Waste and Inflexibility.',
+    reveal: '<strong>Waste:</strong> Experienced employees sitting through material they already know represents wasted time — both the employee\'s and the trainer\'s — with no increase in capability or customer value produced.<br><br><strong>Inflexibility:</strong> The LMS cannot adapt the training path to individual competency levels, preventing the organization from eliminating the waste even when it knows exactly which employees are affected. The system can identify the problem but cannot cheaply change to solve it.',
+    thinkDeeper: 'Who bears the cost of each inhibitor in this scenario — the employee, the organization, or both? Does identifying who pays the cost change which inhibitor you would prioritize addressing first?'
+  },
+  {
+    id: 11,
+    industry: 'Healthcare',
+    difficulty: 'hard',
+    text: 'A pharmacy fills prescriptions in batches of 12 to reduce the time pharmacists spend reconfiguring equipment between medications. A patient who needs one urgent prescription may wait 45 minutes while the current batch completes. Once a batch has begun, the dispensing process cannot be interrupted or modified without discarding the entire batch.',
+    answer: 'Multiple',
+    inhibitors: ['Waste', 'Inflexibility'],
+    correctLabel: 'Correct — two inhibitors are present: Waste and Inflexibility.',
+    reveal: '<strong>Waste:</strong> The patient\'s 45-minute wait is idle time — the patient receives no value while waiting for a batch that does not include their prescription. Time consumed by a customer without value delivered is waste, even if the batch process itself is internally efficient.<br><br><strong>Inflexibility:</strong> The pharmacy cannot interrupt a batch once started, meaning it cannot adapt to serve urgent needs outside the batch cycle. The system was designed for internal efficiency, not for responsiveness — and that design choice creates inflexibility for the customer.',
+    thinkDeeper: 'The batching process was introduced to reduce equipment reconfiguration time — a legitimate waste-reduction strategy. But it created a new form of waste for patients. What does this reveal about the trade-off between internal process efficiency and customer-facing responsiveness in operations design?'
+  },
+  {
+    id: 12,
+    industry: 'Retail',
+    difficulty: 'hard',
+    text: 'A clothing retailer orders its entire fall inventory in March, six months before the season. By September, three of its highest-volume styles have sold out while six other styles remain unsold on the racks. The retailer cannot return unsold items to the supplier, and the supplier\'s lead time for reorders is 10 weeks — too long to restock before the season ends.',
+    answer: 'Multiple',
+    inhibitors: ['Variability', 'Inflexibility', 'Waste'],
+    correctLabel: 'Correct — all three inhibitors are present: Variability, Inflexibility, and Waste.',
+    reveal: '<strong>Variability:</strong> Consumer fashion preferences are unpredictable. The retailer cannot know in March which styles September customers will prefer. Demand variability is the root condition that triggers the other two problems.<br><br><strong>Inflexibility:</strong> Two constraints prevent adaptation once the season begins: (1) the no-return supplier policy traps excess inventory; (2) the 10-week reorder lead time makes restocking impossible after demand signals become clear. The retailer can see the mismatch but cannot respond.<br><br><strong>Waste:</strong> Unsold inventory represents wasted capital — purchasing cost, storage space, and floor display consumed for goods that generate no revenue.',
+    thinkDeeper: 'Which inhibitor is the root cause? If you could eliminate just one of the three, which would produce the greatest operational improvement — and does your answer change depending on whether the goal is to reduce losses from unsold inventory or to recover revenue from stockouts?'
+  }
+];
+
+// ─── STATE ─────────────────────────────────────────────────────────────────────
+
+let currentIdx    = 0;
+let selectedOpt   = null;   // 'Waste' | 'Variability' | 'Inflexibility' | 'Multiple'
+let submitted     = false;
+let results       = {};     // id → 'correct' | 'partial' | 'wrong'
+let cntCorrect    = 0;
+let cntPartial    = 0;
+let cntWrong      = 0;
+
+// Option → CSS selection class
+const SEL_CLASS = {
+  Waste:         'sel-waste',
+  Variability:   'sel-var',
+  Inflexibility: 'sel-inflex',
+  Multiple:      'sel-multi'
+};
+
+// ─── DOT NAV ──────────────────────────────────────────────────────────────────
+
+function buildDots() {
+  const row = document.getElementById('dotRow');
+  VIGNETTES.forEach((v, i) => {
+    const dot = document.createElement('button');
+    dot.className = 'dot' + (i === 0 ? ' active' : '');
+    dot.id = 'dot' + i;
+    dot.textContent = String(i + 1).padStart(2, '0');
+    dot.title = `Vignette ${i + 1}: ${v.industry}`;
+    dot.onclick = () => goTo(i);
+    row.appendChild(dot);
+  });
+}
+
+function updateDots() {
+  VIGNETTES.forEach((v, i) => {
+    const dot = document.getElementById('dot' + i);
+    dot.className = 'dot';
+    if (i === currentIdx) dot.classList.add('active');
+    if (results[v.id]) {
+      if (results[v.id] === 'correct') dot.classList.add('d-correct');
+      else if (results[v.id] === 'partial') dot.classList.add('d-partial');
+      else dot.classList.add('d-wrong');
+    }
+  });
+}
+
+// ─── LOAD VIGNETTE ─────────────────────────────────────────────────────────────
+
+function loadVignette(idx) {
+  currentIdx  = idx;
+  selectedOpt = null;
+  submitted   = false;
+
+  const v = VIGNETTES[idx];
+
+  // Header
+  document.getElementById('hdr-progress').textContent = `Vignette ${idx + 1} of ${VIGNETTES.length}`;
+  document.getElementById('cardTitle').textContent = `Vignette ${idx + 1}`;
+
+  // Meta
+  document.getElementById('industryTag').textContent = v.industry;
+  const diffEl = document.getElementById('diffTag');
+  diffEl.textContent = v.difficulty.charAt(0).toUpperCase() + v.difficulty.slice(1);
+  diffEl.className = 'diff-tag diff-' + v.difficulty;
+  document.getElementById('vigNum').textContent = String(idx + 1).padStart(2, '0') + ' / ' + VIGNETTES.length;
+
+  // Vignette text
+  document.getElementById('vigText').textContent = v.text;
+
+  // Reset options
+  ['Waste','Variability','Inflexibility','Multiple'].forEach(k => {
+    document.getElementById('opt-' + k).className = 'option-card';
+  });
+  document.getElementById('optionGrid').style.display = '';
+
+  // Reset feedback
+  document.getElementById('feedbackPanel').classList.remove('show');
+  document.getElementById('finalSummary').classList.remove('show');
+
+  // Buttons
+  document.getElementById('submitBtn').disabled = true;
+  document.getElementById('submitBtn').style.display = 'inline-block';
+  document.getElementById('prevBtn').style.display = idx > 0 ? 'inline-block' : 'none';
+  document.getElementById('nextBtn').style.display = 'none';
+  document.getElementById('restartBtn').style.display = 'none';
+
+  // If already answered, restore result
+  if (results[v.id]) {
+    replayResult(v, results[v.id]);
+  }
+
+  updateDots();
+}
+
+// Replay a previously-answered vignette (navigating back via dot)
+function replayResult(v, status) {
+  submitted = true;
+  document.getElementById('submitBtn').style.display = 'none';
+  showFeedback(v, status);
+  document.getElementById('nextBtn').style.display = currentIdx < VIGNETTES.length - 1 ? 'inline-block' : 'none';
+  document.getElementById('prevBtn').style.display = currentIdx > 0 ? 'inline-block' : 'none';
+}
+
+// ─── SELECTION ─────────────────────────────────────────────────────────────────
+
+function selectOption(key) {
+  if (submitted) return;
+  selectedOpt = key;
+  ['Waste','Variability','Inflexibility','Multiple'].forEach(k => {
+    document.getElementById('opt-' + k).className = 'option-card' + (k === key ? ' ' + SEL_CLASS[k] : '');
+  });
+  document.getElementById('submitBtn').disabled = false;
+}
+
+// ─── GRADE ─────────────────────────────────────────────────────────────────────
+
+function grade(v, selected) {
+  if (v.inhibitors.length === 1) {
+    if (selected === v.inhibitors[0]) return 'correct';
+    return 'wrong';
+  }
+  // Multi-inhibitor vignette
+  if (selected === 'Multiple') return 'correct';
+  if (v.inhibitors.includes(selected)) return 'partial';
+  return 'wrong';
+}
+
+// ─── FEEDBACK ─────────────────────────────────────────────────────────────────
+
+function chipClass(inh) {
+  if (inh === 'Waste') return 'i-chip chip-waste';
+  if (inh === 'Variability') return 'i-chip chip-var';
+  return 'i-chip chip-inflex';
+}
+
+function showFeedback(v, status) {
+  const panel = document.getElementById('feedbackPanel');
+  const banner = document.getElementById('fbBanner');
+  const chips  = document.getElementById('fbChips');
+  const reveal = document.getElementById('fbReveal');
+  const thinkBox  = document.getElementById('fbThink');
+  const thinkText = document.getElementById('fbThinkText');
+
+  // Banner
+  banner.className = 'fb-banner ';
+  if (status === 'correct') {
+    banner.classList.add('fb-correct');
+    banner.innerHTML = '✓ ' + v.correctLabel;
+  } else if (status === 'partial') {
+    banner.classList.add('fb-partial');
+    banner.innerHTML = '◑ Partially correct — you identified one inhibitor present, but there are others. See the full breakdown below.';
+  } else {
+    banner.classList.add('fb-wrong');
+    const correctAns = v.inhibitors.length > 1
+      ? 'Multiple inhibitors present (' + v.inhibitors.join(' + ') + ')'
+      : v.inhibitors[0];
+    banner.innerHTML = '✗ Incorrect. The correct answer is: <strong>' + correctAns + '</strong>';
+  }
+
+  // Chips
+  chips.innerHTML = '';
+  v.inhibitors.forEach(inh => {
+    const c = document.createElement('span');
+    c.className = chipClass(inh);
+    c.textContent = inh;
+    chips.appendChild(c);
+  });
+
+  // Reveal text
+  reveal.innerHTML = v.reveal;
+
+  // Think Deeper
+  if (v.thinkDeeper) {
+    thinkText.textContent = v.thinkDeeper;
+    thinkBox.style.display = 'block';
+  } else {
+    thinkBox.style.display = 'none';
+  }
+
+  panel.classList.add('show');
+}
+
+// ─── SUBMIT ────────────────────────────────────────────────────────────────────
+
+function handleSubmit() {
+  if (!selectedOpt || submitted) return;
+  submitted = true;
+
+  const v = VIGNETTES[currentIdx];
+  const status = grade(v, selectedOpt);
+  results[v.id] = status;
+
+  // Update counts
+  if (status === 'correct')  cntCorrect++;
+  else if (status === 'partial') cntPartial++;
+  else cntWrong++;
+
+  updateScoreDisplay();
+  showFeedback(v, status);
+  updateDots();
+
+  // Buttons
+  document.getElementById('submitBtn').style.display = 'none';
+  if (currentIdx < VIGNETTES.length - 1) {
+    document.getElementById('nextBtn').style.display = 'inline-block';
+  } else {
+    // Last vignette — show final summary
+    document.getElementById('nextBtn').style.display = 'none';
+    setTimeout(showFinalSummary, 1200);
+  }
+  document.getElementById('prevBtn').style.display = currentIdx > 0 ? 'inline-block' : 'none';
+}
+
+// ─── NAVIGATION ───────────────────────────────────────────────────────────────
+
+function handleNext() {
+  if (currentIdx < VIGNETTES.length - 1) {
+    goTo(currentIdx + 1);
+  } else {
+    showFinalSummary();
+  }
+}
+
+function handlePrev() {
+  if (currentIdx > 0) goTo(currentIdx - 1);
+}
+
+function goTo(idx) {
+  loadVignette(idx);
+}
+
+// ─── SCORE DISPLAY ─────────────────────────────────────────────────────────────
+
+function updateScoreDisplay() {
+  const answered = cntCorrect + cntPartial + cntWrong;
+  const total = VIGNETTES.length;
+  const pct = answered > 0 ? Math.round((cntCorrect / answered) * 100) : 0;
+
+  document.getElementById('scoreNum').textContent = cntCorrect;
+  document.getElementById('scoreLabel').textContent = cntCorrect === 1 ? 'correct' : 'correct';
+  document.getElementById('scoreDetail').textContent = `of ${answered} answered`;
+  document.getElementById('progBar').style.width = ((answered / total) * 100) + '%';
+  document.getElementById('cntCorrect').textContent = cntCorrect;
+  document.getElementById('cntPartial').textContent = cntPartial;
+  document.getElementById('cntWrong').textContent = cntWrong;
+}
+
+// ─── FINAL SUMMARY ─────────────────────────────────────────────────────────────
+
+function showFinalSummary() {
+  // Hide vignette content
+  document.getElementById('vigText').style.display = 'none';
+  document.querySelector('.meta-row').style.display = 'none';
+  document.querySelector('.selection-label').style.display = 'none';
+  document.getElementById('optionGrid').style.display = 'none';
+  document.querySelector('.btn-group').style.display = 'none';
+  document.getElementById('feedbackPanel').classList.remove('show');
+
+  const sumEl = document.getElementById('finalSummary');
+  sumEl.classList.add('show');
+
+  const answered = cntCorrect + cntPartial + cntWrong;
+  const pct = answered > 0 ? Math.round((cntCorrect / answered) * 100) : 0;
+
+  let title = 'All 12 complete!';
+  if (pct >= 83) title = 'Strong work — all 12 vignettes done.';
+  else if (pct >= 60) title = 'Good progress — all 12 done.';
+  else title = 'All 12 complete — review the explanations above.';
+
+  document.getElementById('sumTitle').textContent = title;
+  document.getElementById('sumScore').textContent = cntCorrect + ' / 12';
+  document.getElementById('sumSub').textContent =
+    pct + '% correct' + (cntPartial > 0 ? ` · ${cntPartial} partial` : '');
+
+  const tbody = document.getElementById('resultsBody');
+  tbody.innerHTML = '';
+  VIGNETTES.forEach(v => {
+    const status = results[v.id] || 'unanswered';
+    const icon = status === 'correct' ? '✓' : status === 'partial' ? '◑' : '✗';
+    const cls  = status === 'correct' ? 'ri-c' : status === 'partial' ? 'ri-p' : 'ri-w';
+    const inhStr = v.inhibitors.join(', ');
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${v.id}</td><td>${v.industry}</td><td>${inhStr}</td>
+      <td class="${cls}">${icon}</td>`;
+    tbody.appendChild(tr);
+  });
+
+  document.getElementById('cardTitle').textContent = 'Results Summary';
+  document.getElementById('hdr-progress').textContent = 'Complete';
+}
+
+// ─── RESTART ──────────────────────────────────────────────────────────────────
+
+function handleRestart() {
+  results   = {};
+  cntCorrect = cntPartial = cntWrong = 0;
+  selectedOpt = null;
+
+  // Restore hidden elements
+  document.getElementById('vigText').style.display = '';
+  document.querySelector('.meta-row').style.display = '';
+  document.querySelector('.selection-label').style.display = '';
+  document.getElementById('optionGrid').style.display = '';
+  document.querySelector('.btn-group').style.display = '';
+
+  updateScoreDisplay();
+  loadVignette(0);
+}
+
+// ─── INIT ──────────────────────────────────────────────────────────────────────
+
+buildDots();
+loadVignette(0);
+</script>
+</body>
+</html>

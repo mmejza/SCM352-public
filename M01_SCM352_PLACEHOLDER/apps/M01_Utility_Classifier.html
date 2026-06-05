@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Consumer Utility Classifier — SCM 352 M01</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:        #0d1117;
+  --navy:       #1a3a5c;
+  --blue:       #2563eb;
+  --gold:       #d4a017;
+  --gold-lt:    #f5e9c0;
+  --surface:    #f8f7f4;
+  --border:     #e2ddd6;
+  --muted:      #6b7280;
+  --white:      #ffffff;
+
+  /* Category palette */
+  --c-perf:   #2563eb; --c-perf-lt: #dbeafe;
+  --c-fit:    #7c3aed; --c-fit-lt:  #ede9fe;
+  --c-price:  #16a34a; --c-price-lt:#dcfce7;
+  --c-loc:    #d97706; --c-loc-lt:  #fef3c7;
+  --c-time:   #0891b2; --c-time-lt: #cffafe;
+
+  /* State */
+  --correct:   #16a34a;
+  --wrong:     #dc2626;
+  --defend:    #7c3aed;
+  --correct-lt:#f0fdf4;
+  --wrong-lt:  #fef2f2;
+  --defend-lt: #faf5ff;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--surface);
+  color: var(--ink);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ─── HEADER ───────────────────────────────────────────────────── */
+.app-header {
+  background: var(--navy);
+  color: var(--white);
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.app-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.05rem;
+  letter-spacing: -0.02em;
+  flex: 1;
+}
+.app-title span { color: var(--gold); }
+.progress-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.75);
+}
+.progress-bar {
+  width: 120px;
+  height: 4px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: var(--gold);
+  transition: width 0.4s ease;
+}
+.scenario-pill {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.72rem;
+  background: rgba(255,255,255,0.12);
+  padding: 3px 10px;
+  border-radius: 100px;
+  white-space: nowrap;
+}
+
+/* ─── SCENARIO BANNER ──────────────────────────────────────────── */
+.scenario-banner {
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  padding: 16px 24px;
+}
+.scenario-industry {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.35rem;
+  color: var(--navy);
+  letter-spacing: -0.03em;
+  margin-bottom: 4px;
+}
+.scenario-desc {
+  font-size: 0.875rem;
+  color: var(--muted);
+  line-height: 1.5;
+  max-width: 720px;
+}
+.framework-ref {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 10px;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--navy);
+  background: var(--gold-lt);
+  border: 1px solid var(--gold);
+  padding: 3px 10px;
+  border-radius: 4px;
+}
+
+/* ─── LEGEND ───────────────────────────────────────────────────── */
+.legend {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  padding: 10px 24px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+.legend-pill {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 100px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+  user-select: none;
+  transition: opacity 0.15s;
+}
+.legend-pill:hover { opacity: 0.8; }
+.legend-pill[data-cat="Performance"] { background: var(--c-perf-lt); color: var(--c-perf); }
+.legend-pill[data-cat="Fit"]         { background: var(--c-fit-lt);  color: var(--c-fit); }
+.legend-pill[data-cat="Price"]       { background: var(--c-price-lt); color: var(--c-price); }
+.legend-pill[data-cat="Location"]    { background: var(--c-loc-lt);  color: var(--c-loc); }
+.legend-pill[data-cat="Timing"]      { background: var(--c-time-lt); color: var(--c-time); }
+.legend-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+}
+.legend-hint {
+  font-size: 0.72rem;
+  color: var(--muted);
+  align-self: center;
+  margin-left: auto;
+}
+
+/* ─── WORKSPACE ────────────────────────────────────────────────── */
+.workspace {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 220px;
+  gap: 0;
+  overflow: hidden;
+}
+
+/* ─── ATTRIBUTE POOL ────────────────────────────────────────────── */
+.attrs-panel {
+  border-right: 1px solid var(--border);
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.panel-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.68rem;
+  font-weight: 500;
+  color: var(--muted);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 2px 0 6px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 4px;
+}
+
+/* ─── ATTRIBUTE CARD ─────────────────────────────────────────────── */
+.attr-card {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  cursor: grab;
+  user-select: none;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  transition: border-color 0.15s, box-shadow 0.15s, transform 0.12s;
+  position: relative;
+}
+.attr-card:hover { border-color: var(--navy); box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+.attr-card.selected { border-color: var(--navy); box-shadow: 0 0 0 3px rgba(26,58,92,0.15); }
+.attr-card.dragging { opacity: 0.4; transform: scale(0.97); }
+.attr-card.assigned { border-style: solid; }
+
+.card-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.68rem;
+  color: var(--muted);
+  min-width: 16px;
+  padding-top: 1px;
+}
+.card-body { flex: 1; }
+.card-text {
+  font-size: 0.83rem;
+  line-height: 1.45;
+  color: var(--ink);
+}
+.card-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.67rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  border-radius: 100px;
+  margin-top: 5px;
+}
+.card-unassign {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--muted);
+  font-size: 0.8rem;
+  padding: 2px 4px;
+  border-radius: 4px;
+  line-height: 1;
+  opacity: 0;
+  transition: opacity 0.15s;
+  flex-shrink: 0;
+}
+.attr-card:hover .card-unassign { opacity: 1; }
+.attr-card.unassigned .card-unassign { display: none; }
+
+/* Feedback states */
+.attr-card.state-correct  { border-color: var(--correct); background: var(--correct-lt); }
+.attr-card.state-wrong    { border-color: var(--wrong);   background: var(--wrong-lt); }
+.attr-card.state-defend   { border-color: var(--defend);  background: var(--defend-lt); }
+
+.card-result {
+  display: none;
+  font-size: 0.72rem;
+  margin-top: 6px;
+  line-height: 1.45;
+  padding-top: 6px;
+  border-top: 1px solid rgba(0,0,0,0.06);
+}
+.attr-card.submitted .card-result { display: block; }
+.result-line {
+  font-weight: 700;
+  margin-bottom: 3px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.result-icon { font-size: 0.85rem; }
+.explanation-text { color: var(--ink); opacity: 0.8; font-weight: 400; }
+
+/* ─── ZONES PANEL ──────────────────────────────────────────────── */
+.zones-panel {
+  overflow-y: auto;
+  padding: 12px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background: var(--white);
+}
+
+.zone {
+  border-radius: 8px;
+  border: 2px dashed transparent;
+  transition: border-color 0.15s, background 0.15s;
+  cursor: pointer;
+  min-height: 56px;
+}
+.zone.drag-over {
+  border-style: solid;
+}
+.zone[data-zone="Performance"] { border-color: var(--c-perf);   }
+.zone[data-zone="Fit"]         { border-color: var(--c-fit);    }
+.zone[data-zone="Price"]       { border-color: var(--c-price);  }
+.zone[data-zone="Location"]    { border-color: var(--c-loc);    }
+.zone[data-zone="Timing"]      { border-color: var(--c-time);   }
+
+.zone[data-zone="Performance"].drag-over { background: var(--c-perf-lt); }
+.zone[data-zone="Fit"].drag-over         { background: var(--c-fit-lt);  }
+.zone[data-zone="Price"].drag-over       { background: var(--c-price-lt);}
+.zone[data-zone="Location"].drag-over    { background: var(--c-loc-lt);  }
+.zone[data-zone="Timing"].drag-over      { background: var(--c-time-lt); }
+
+.zone-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px 5px;
+  font-size: 0.67rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+.zone-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.zone[data-zone="Performance"] .zone-dot { background: var(--c-perf); }
+.zone[data-zone="Fit"]         .zone-dot { background: var(--c-fit); }
+.zone[data-zone="Price"]       .zone-dot { background: var(--c-price); }
+.zone[data-zone="Location"]    .zone-dot { background: var(--c-loc); }
+.zone[data-zone="Timing"]      .zone-dot { background: var(--c-time); }
+
+.zone[data-zone="Performance"] .zone-header { color: var(--c-perf); }
+.zone[data-zone="Fit"]         .zone-header { color: var(--c-fit); }
+.zone[data-zone="Price"]       .zone-header { color: var(--c-price); }
+.zone[data-zone="Location"]    .zone-header { color: var(--c-loc); }
+.zone[data-zone="Timing"]      .zone-header { color: var(--c-time); }
+
+.zone-count {
+  margin-left: auto;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.68rem;
+  font-weight: 400;
+  opacity: 0.7;
+}
+.zone-body {
+  padding: 4px 6px 6px;
+  min-height: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* Zone chips (compact cards in zones) */
+.zone-chip {
+  font-size: 0.72rem;
+  line-height: 1.3;
+  padding: 4px 8px;
+  border-radius: 5px;
+  background: rgba(0,0,0,0.04);
+  color: var(--ink);
+  cursor: grab;
+  display: flex;
+  align-items: flex-start;
+  gap: 5px;
+  transition: background 0.1s;
+}
+.zone-chip:hover { background: rgba(0,0,0,0.08); }
+.zone-chip .chip-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--muted);
+  flex-shrink: 0;
+  padding-top: 1px;
+}
+.zone-chip .chip-text { flex: 1; }
+.zone-chip .chip-remove {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--muted);
+  font-size: 0.75rem;
+  padding: 0 2px;
+  line-height: 1;
+  opacity: 0;
+  transition: opacity 0.1s;
+  flex-shrink: 0;
+}
+.zone-chip:hover .chip-remove { opacity: 1; }
+
+/* ─── FOOTER ───────────────────────────────────────────────────── */
+.app-footer {
+  border-top: 1px solid var(--border);
+  background: var(--white);
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.counter-text {
+  font-size: 0.8rem;
+  color: var(--muted);
+  flex: 1;
+}
+.counter-text strong { color: var(--navy); }
+.btn {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 9px 22px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.btn-primary {
+  background: var(--navy);
+  color: var(--white);
+}
+.btn-primary:hover:not(:disabled) { background: var(--blue); }
+.btn-primary:disabled { background: var(--border); color: var(--muted); cursor: not-allowed; }
+.btn-ghost {
+  background: transparent;
+  color: var(--navy);
+  border: 1.5px solid var(--border);
+}
+.btn-ghost:hover { border-color: var(--navy); }
+.btn-gold {
+  background: var(--gold);
+  color: var(--ink);
+}
+.btn-gold:hover { background: #c49010; }
+
+.score-badge {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.8rem;
+  padding: 6px 14px;
+  border-radius: 6px;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+}
+
+/* ─── SUMMARY SCREEN ─────────────────────────────────────────────── */
+.summary-screen {
+  display: none;
+  flex: 1;
+  padding: 40px 24px;
+  overflow-y: auto;
+  max-width: 680px;
+  margin: 0 auto;
+  width: 100%;
+}
+.summary-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 2rem;
+  color: var(--navy);
+  letter-spacing: -0.04em;
+  margin-bottom: 6px;
+}
+.summary-subtitle {
+  color: var(--muted);
+  font-size: 0.9rem;
+  margin-bottom: 28px;
+}
+.summary-score-big {
+  font-family: 'DM Serif Display', serif;
+  font-size: 3.5rem;
+  color: var(--navy);
+  letter-spacing: -0.06em;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.summary-score-sub {
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin-bottom: 28px;
+  font-family: 'DM Mono', monospace;
+}
+.summary-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+.summary-card {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+}
+.summary-card h3 {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.summary-card .sc-score {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.5rem;
+  color: var(--navy);
+  letter-spacing: -0.04em;
+}
+.summary-card .sc-industry {
+  font-size: 0.78rem;
+  color: var(--muted);
+  margin-top: 2px;
+}
+.takeaway {
+  background: var(--gold-lt);
+  border: 1.5px solid var(--gold);
+  border-radius: 10px;
+  padding: 16px 18px;
+  margin-bottom: 20px;
+}
+.takeaway h3 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1rem;
+  color: var(--navy);
+  margin-bottom: 8px;
+}
+.takeaway ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.takeaway li {
+  font-size: 0.82rem;
+  line-height: 1.45;
+  padding-left: 14px;
+  position: relative;
+  color: var(--ink);
+}
+.takeaway li::before { content: '→'; position: absolute; left: 0; color: var(--gold); font-weight: 700; }
+
+/* ─── INSTRUCTION CARD ───────────────────────────────────────────── */
+.instruction-bar {
+  background: var(--navy);
+  color: rgba(255,255,255,0.85);
+  font-size: 0.75rem;
+  text-align: center;
+  padding: 6px 16px;
+  letter-spacing: 0.01em;
+}
+.instruction-bar strong { color: var(--gold); }
+
+/* ─── RESPONSIVE ─────────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .workspace { grid-template-columns: 1fr; grid-template-rows: auto auto; }
+  .zones-panel { flex-direction: row; flex-wrap: wrap; overflow-x: auto; border-top: 1px solid var(--border); }
+  .zone { min-width: 130px; flex: 1; }
+  .attrs-panel { border-right: none; }
+  .summary-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="app-header">
+  <div class="app-title">Consumer Utility <span>Classifier</span></div>
+  <div class="progress-wrap">
+    <div class="progress-bar"><div class="progress-fill" id="prog-fill" style="width:20%"></div></div>
+    <span class="scenario-pill" id="prog-label">Scenario 1 of 5</span>
+  </div>
+</header>
+
+<!-- INSTRUCTION BAR -->
+<div class="instruction-bar">
+  <strong>Drag</strong> each attribute card into a category zone — or <strong>click a card</strong>, then <strong>click a zone</strong> to assign it. Classify all 8 before submitting.
+</div>
+
+<!-- SCENARIO BANNER -->
+<div class="scenario-banner">
+  <div class="scenario-industry" id="sc-industry">—</div>
+  <div class="scenario-desc" id="sc-desc">—</div>
+  <div class="framework-ref">Utility = Consumption Utility − Price − Inconvenience &nbsp;|&nbsp; Inconvenience = Location + Timing</div>
+</div>
+
+<!-- LEGEND -->
+<div class="legend">
+  <div class="legend-pill" data-cat="Performance"><div class="legend-dot"></div> Performance</div>
+  <div class="legend-pill" data-cat="Fit"><div class="legend-dot"></div> Fit</div>
+  <div class="legend-pill" data-cat="Price"><div class="legend-dot"></div> Price</div>
+  <div class="legend-pill" data-cat="Location"><div class="legend-dot"></div> Location</div>
+  <div class="legend-pill" data-cat="Timing"><div class="legend-dot"></div> Timing</div>
+  <div class="legend-hint">Click zone header to assign selected card</div>
+</div>
+
+<!-- WORKSPACE -->
+<div class="workspace" id="workspace">
+  <!-- Left: unassigned attribute cards -->
+  <div class="attrs-panel" id="attr-pool">
+    <div class="panel-label">Attributes to Classify</div>
+    <!-- Cards injected here -->
+  </div>
+
+  <!-- Right: category zones -->
+  <div class="zones-panel" id="zones-panel">
+    <div class="panel-label" style="padding:2px 4px 6px">Categories</div>
+    <div class="zone" data-zone="Performance">
+      <div class="zone-header"><div class="zone-dot"></div> Performance <span class="zone-count" id="zc-Performance">0/8</span></div>
+      <div class="zone-body" id="zb-Performance"></div>
+    </div>
+    <div class="zone" data-zone="Fit">
+      <div class="zone-header"><div class="zone-dot"></div> Fit <span class="zone-count" id="zc-Fit">0/8</span></div>
+      <div class="zone-body" id="zb-Fit"></div>
+    </div>
+    <div class="zone" data-zone="Price">
+      <div class="zone-header"><div class="zone-dot"></div> Price <span class="zone-count" id="zc-Price">0/8</span></div>
+      <div class="zone-body" id="zb-Price"></div>
+    </div>
+    <div class="zone" data-zone="Location">
+      <div class="zone-header"><div class="zone-dot"></div> Location <span class="zone-count" id="zc-Location">0/8</span></div>
+      <div class="zone-body" id="zb-Location"></div>
+    </div>
+    <div class="zone" data-zone="Timing">
+      <div class="zone-header"><div class="zone-dot"></div> Timing <span class="zone-count" id="zc-Timing">0/8</span></div>
+      <div class="zone-body" id="zb-Timing"></div>
+    </div>
+  </div>
+</div>
+
+<!-- SUMMARY SCREEN (hidden until done) -->
+<div class="summary-screen" id="summary-screen">
+  <div class="summary-title" id="sum-title">—</div>
+  <div class="summary-subtitle">SCM 352 M01 — Consumer Utility Framework</div>
+  <div class="summary-score-big" id="sum-score">—</div>
+  <div class="summary-score-sub" id="sum-sub">—</div>
+  <div class="summary-grid" id="sum-grid"></div>
+  <div class="takeaway">
+    <h3>Key Takeaways for Gate 2</h3>
+    <ul>
+      <li><strong>Performance vs. Fit:</strong> Performance attributes are directional — everyone agrees "more" is better (higher accuracy, longer range). Fit attributes are segment-specific — the preferred direction differs by customer.</li>
+      <li><strong>Location vs. Timing:</strong> Both are sub-components of inconvenience (transaction costs). Location = where; timing = when. An 8AM-only service window is timing. A 3-block walk to the kiosk is location.</li>
+      <li><strong>Defensible ambiguity is real:</strong> Chapter 1 acknowledges that some attributes can be legitimately classified multiple ways. On Gate 2, your justification matters as much as the label.</li>
+      <li><strong>Price includes all cost components</strong> — subscription fees, per-visit costs, and hidden fees are all Price. If it costs money to obtain the service, it's price.</li>
+    </ul>
+  </div>
+  <button class="btn btn-ghost" id="restart-btn" style="margin-top:4px">↩ Restart from Scenario 1</button>
+</div>
+
+<!-- FOOTER -->
+<footer class="app-footer" id="app-footer">
+  <div class="counter-text" id="counter-text"><strong>0 of 8</strong> classified</div>
+  <div id="score-display" style="display:none">
+    <span class="score-badge" id="score-badge">—</span>
+  </div>
+  <button class="btn btn-ghost" id="prev-btn" disabled>← Back</button>
+  <button class="btn btn-primary" id="submit-btn" disabled>Submit Answers</button>
+  <button class="btn btn-gold" id="next-btn" style="display:none">Next Scenario →</button>
+</footer>
+
+<script>
+// ─── DATA ─────────────────────────────────────────────────────────────────────
+
+const CAT_COLORS = {
+  Performance: { bg: 'var(--c-perf-lt)', fg: 'var(--c-perf)' },
+  Fit:         { bg: 'var(--c-fit-lt)',  fg: 'var(--c-fit)'  },
+  Price:       { bg: 'var(--c-price-lt)',fg: 'var(--c-price)'},
+  Location:    { bg: 'var(--c-loc-lt)',  fg: 'var(--c-loc)'  },
+  Timing:      { bg: 'var(--c-time-lt)', fg: 'var(--c-time)' },
+};
+
+const SCENARIOS = [
+  {
+    industry: 'Telehealth App',
+    desc: 'MedConnect links patients to licensed physicians for virtual urgent care visits — no appointment required. The following features appear in the app\'s marketing materials.',
+    attrs: [
+      { num: 1, id: 's1a1', text: 'Average time from request to physician connection: 8 minutes', answer: 'Timing',
+        explanation: 'Wait time measures the timing sub-component of transaction costs (inconvenience). Eight minutes is how long the customer must wait before receiving service — a direct time-based burden.' },
+      { num: 2, id: 's1a2', text: 'Consultations offered in English and Spanish', answer: 'Fit', alt: 'Performance',
+        explanation: '<strong>Also accepted: Performance.</strong> Fit is stronger here — bilingual service only adds utility for patients who need it (heterogeneous need). However, you could argue it signals universal quality. On Gate 2, defend your choice.' },
+      { num: 3, id: 's1a3', text: 'Cost: $25 with insurance / $65 without insurance', answer: 'Price',
+        explanation: 'Out-of-pocket cost is the price component — it directly reduces consumer utility as money paid to obtain the service, regardless of insurance status.' },
+      { num: 4, id: 's1a4', text: 'Physician-confirmed diagnosis accuracy rate: 94%', answer: 'Performance',
+        explanation: 'Diagnostic accuracy is universally preferred — every patient wants a more accurate diagnosis, none prefer less. No heterogeneity in the direction of preference. Classic performance attribute.' },
+      { num: 5, id: 's1a5', text: 'Service available in 38 of 50 U.S. states only', answer: 'Location',
+        explanation: 'Geographic availability is the location sub-component of inconvenience. If you\'re in one of the 12 unavailable states, you cannot access the service regardless of its quality.' },
+      { num: 6, id: 's1a6', text: 'Appointments available 24 hours a day, 7 days a week', answer: 'Timing',
+        explanation: '24/7 availability eliminates the timing sub-component of transaction costs — access is not restricted to business hours, removing the time-based barrier between need and service.' },
+      { num: 7, id: 's1a7', text: 'Filter by specialty: general, dermatology, pediatrics, or mental health', answer: 'Fit',
+        explanation: 'Specialty is heterogeneous — a parent with a sick child needs pediatrics; someone with a rash needs dermatology. Not all patients want the same specialty, making this a fit attribute.' },
+      { num: 8, id: 's1a8', text: 'Prescription sent automatically to your nearest pharmacy after the visit', answer: 'Location', alt: 'Timing',
+        explanation: '<strong>Also accepted: Timing.</strong> Primarily Location — auto-routing reduces geographic inconvenience of finding a pharmacy. Also defensible as Timing: the automatic send reduces the delay between visit and treatment.' },
+    ]
+  },
+  {
+    industry: 'Specialty Food Truck',
+    desc: 'GrillCraft serves build-your-own grain bowls with premium proteins from a gourmet food truck that rotates through downtown locations on a weekly schedule.',
+    attrs: [
+      { num: 1, id: 's2a1', text: 'Truck parks outside your office building on Tuesdays and Thursdays', answer: 'Location',
+        explanation: 'Physical proximity is the location sub-component of inconvenience — the closer the truck, the lower the effort required to reach it. The Tuesday/Thursday constraint is also a timing element, but the primary driver here is where.' },
+      { num: 2, id: 's2a2', text: 'Service window open 11:30 AM – 2:00 PM only', answer: 'Timing',
+        explanation: 'Restricted hours directly affect the timing sub-component of inconvenience. Customers unavailable during this window cannot access the service regardless of proximity or quality.' },
+      { num: 3, id: 's2a3', text: 'Average bowl price: $14', answer: 'Price',
+        explanation: 'The price per bowl directly reduces consumer utility. It is unambiguously the price component of the utility function — money paid to obtain the service.' },
+      { num: 4, id: 's2a4', text: 'All proteins from local farms; all grains certified organic', answer: 'Fit', alt: 'Performance',
+        explanation: '<strong>Also accepted: Performance.</strong> Fit is stronger — sustainably minded customers derive high utility from sourcing transparency; others do not care or prefer lower prices. The marginal utility of "local/organic" varies significantly by customer.' },
+      { num: 5, id: 's2a5', text: 'Vegan, gluten-free, and dairy-free base options available', answer: 'Fit',
+        explanation: 'Dietary restrictions are heterogeneous — a customer with a gluten intolerance gains substantially higher utility from this attribute than a customer without dietary restrictions. Classic fit attribute.' },
+      { num: 6, id: 's2a6', text: 'Average wait time in line: 4 minutes', answer: 'Timing',
+        explanation: 'Wait time is the timing sub-component of transaction costs. Four minutes in line is a time-based inconvenience the customer bears before receiving the product.' },
+      { num: 7, id: 's2a7', text: 'Yelp rating: 4.9 / 5.0 stars (400+ reviews)', answer: 'Performance',
+        explanation: 'Star ratings are universally preferred to be higher — every customer prefers a 4.9 to a 3.0. No customer prefers a lower-rated truck. Performance attributes have a universally agreed-upon "better" direction.' },
+      { num: 8, id: 's2a8', text: 'Mobile app pre-order: skip the line, pick up in 90 seconds', answer: 'Timing',
+        explanation: 'Pre-ordering reduces the timing sub-component of inconvenience from 4 minutes to 90 seconds. The feature\'s entire value proposition is eliminating wait time — a direct timing improvement.' },
+    ]
+  },
+  {
+    industry: 'Coworking Space',
+    desc: 'DeskHub operates shared workspaces in urban neighborhoods, offering flexible membership plans to freelancers, remote workers, and small teams of up to 10.',
+    attrs: [
+      { num: 1, id: 's3a1', text: '24/7 keycard access — no restricted hours', answer: 'Timing', alt: 'Performance',
+        explanation: '<strong>Also accepted: Performance.</strong> Primarily Timing — 24/7 access eliminates timing-based inconvenience; members can work whenever they choose. Also defensible as Performance: reliability of access is universally valued. Timing is stronger because the explicit value is eliminating the time restriction.' },
+      { num: 2, id: 's3a2', text: 'Located in the Financial District, two blocks from a subway entrance', answer: 'Location',
+        explanation: 'Physical proximity to transit is the location sub-component of inconvenience — the closer to transit, the lower the effort required to reach the workspace.' },
+      { num: 3, id: 's3a3', text: 'Month-to-month membership: $349/month (no annual contract required)', answer: 'Price',
+        explanation: 'The monthly fee is the price component. Both the dollar amount and the no-commitment structure affect the total cost of obtaining and maintaining access to the service.' },
+      { num: 4, id: 's3a4', text: 'Guaranteed 1 Gbps fiber internet with 99.9% uptime SLA', answer: 'Performance',
+        explanation: 'Internet speed and reliability are universally preferred — every remote worker wants faster, more reliable internet. All members agree higher uptime is better. No customer prefers slower or less reliable internet.' },
+      { num: 5, id: 's3a5', text: 'Choose from open-plan desks, private offices, or phone-booth pods', answer: 'Fit',
+        explanation: 'Workspace format preference is heterogeneous — an introvert needing deep focus prefers a private office; an extrovert benefits from the open plan. Different members have genuinely different utility functions for workspace type.' },
+      { num: 6, id: 's3a6', text: 'Conference rooms bookable via app in 15-minute increments, no extra fee', answer: 'Price',
+        explanation: 'Room inclusion in the base fee alters the effective price — no extra conference room charges changes what the member actually pays for the full service package. The granular booking is a timing benefit, but the no-extra-fee clause is Price.' },
+      { num: 7, id: 's3a7', text: 'Standing desk available at any workstation upon request', answer: 'Fit',
+        explanation: 'Ergonomic preference is heterogeneous — some workers require or strongly prefer standing desks while others never use them. The option adds utility for a specific segment, not all members equally.' },
+      { num: 8, id: 's3a8', text: 'On-site café with barista — no need to leave the building for coffee', answer: 'Location',
+        explanation: 'The on-site café reduces the location sub-component of inconvenience — members do not need to travel to obtain coffee, reducing the transaction cost of leaving the workspace.' },
+    ]
+  },
+  {
+    industry: 'Pet Boarding Facility',
+    desc: 'PawHaven is a premium dog and cat boarding facility offering overnight and extended stays with licensed veterinary staff on site around the clock.',
+    attrs: [
+      { num: 1, id: 's4a1', text: 'Facility is 1.4 miles from owner\'s home or workplace', answer: 'Location',
+        explanation: 'Geographic proximity is the location sub-component of inconvenience — the closer the facility, the lower the effort of drop-off and pick-up. Distance is the textbook definition of the location component.' },
+      { num: 2, id: 's4a2', text: 'Live webcam: owners watch their pet any time via mobile app', answer: 'Fit', alt: 'Performance',
+        explanation: '<strong>Also accepted: Performance.</strong> Fit is stronger — anxious pet owners or those with separation anxiety derive high utility from the camera; other owners never use it. The marginal utility of live video varies substantially by owner personality and attachment style.' },
+      { num: 3, id: 's4a3', text: 'Drop-off and pick-up available 7 days/week, 6 AM – 10 PM', answer: 'Timing',
+        explanation: 'Extended hours reduce the timing sub-component of inconvenience — owners can drop off before work and pick up after dinner, rather than coordinating around a restricted schedule.' },
+      { num: 4, id: 's4a4', text: 'Nightly rate: $52 per dog, $38 per cat', answer: 'Price',
+        explanation: 'The nightly boarding rate is the price component — money paid to obtain the service. It directly reduces consumer utility by the dollar amount.' },
+      { num: 5, id: 's4a5', text: 'Licensed veterinary technician on-site 24 hours a day', answer: 'Performance',
+        explanation: '24/7 veterinary coverage is universally preferred — every pet owner wants medical access if needed. All owners prefer more veterinary coverage to less, making this a performance attribute with a universally agreed direction.' },
+      { num: 6, id: 's4a6', text: 'Dogs and cats housed in entirely separate wings of the facility', answer: 'Fit',
+        explanation: 'Separation preference is heterogeneous — cat owners worried about stress from dogs derive high utility from this attribute; owners who are not concerned derive less. It serves a specific customer concern, not a universally ranked preference.' },
+      { num: 7, id: 's4a7', text: 'Outdoor play sessions: 3 per day, 30 minutes each', answer: 'Performance',
+        explanation: 'Frequency and duration of outdoor activity is a quality attribute all owners prefer to be higher. No pet owner prefers fewer or shorter play sessions. Universally agreed direction = performance.' },
+      { num: 8, id: 's4a8', text: 'Diet-specific feeding: raw, prescription, grain-free, or standard', answer: 'Fit',
+        explanation: 'Dietary protocols are heterogeneous — a pet on a prescription diet requires a specific feeding plan that adds no utility to an owner whose pet has no restrictions. Classic fit: the attribute\'s value depends entirely on the individual.' },
+    ]
+  },
+  {
+    industry: 'Electric Vehicle Rental',
+    desc: 'VoltGo offers short-term electric vehicle rentals by the hour or month in urban markets, with pickup stations distributed throughout downtown and near transit hubs.',
+    attrs: [
+      { num: 1, id: 's5a1', text: 'Monthly plan: $299 unlimited trips vs. $18/trip pay-as-you-go', answer: 'Price', alt: 'Fit',
+        explanation: '<strong>Also accepted: Fit.</strong> Primarily Price — both structures represent total cost to the customer. Also defensible as Fit: high-frequency users need the monthly plan; occasional users need pay-as-you-go. The pricing structure itself serves different usage patterns heterogeneously.' },
+      { num: 2, id: 's5a2', text: 'Pickup stations within 3 blocks of every major downtown hotel', answer: 'Location',
+        explanation: 'Station proximity is the location sub-component of inconvenience — the closer the pickup point, the lower the effort required to access a vehicle. Three blocks is a specific geographic convenience metric.' },
+      { num: 3, id: 's5a3', text: 'Every vehicle is fully charged (95–100%) at the start of each rental', answer: 'Performance',
+        explanation: 'Full charge at pickup is universally preferred — all renters want maximum range available. No renter prefers to start a trip with a partially charged vehicle. Universally agreed direction = performance.' },
+      { num: 4, id: 's5a4', text: 'Booking, unlocking, and payment entirely through a mobile app', answer: 'Timing',
+        explanation: 'App-based access reduces the timing sub-component of transaction costs — no key exchange, no counter visit, no waiting for staff. The time to obtain the vehicle shrinks to the time it takes to open the app.' },
+      { num: 5, id: 's5a5', text: 'Vehicle range: 240 miles per full charge', answer: 'Performance',
+        explanation: 'Range is universally preferred to be higher — every renter prefers more range to less because range determines what destinations are accessible. All customers agree on the better direction: more miles = better.' },
+      { num: 6, id: 's5a6', text: 'Fleet options: compact hatchback, sedan, SUV, or cargo van', answer: 'Fit',
+        explanation: 'Vehicle type preference is heterogeneous — a solo commuter needs a compact; a family moving furniture needs a cargo van. These represent genuinely different utility functions, making variety a fit attribute.' },
+      { num: 7, id: 's5a7', text: 'Reservation confirmed within 10 seconds of booking request', answer: 'Timing',
+        explanation: 'Fast booking confirmation reduces the timing sub-component of transaction costs — the 10-second response removes the inconvenience of waiting for confirmation, giving the customer immediate certainty.' },
+      { num: 8, id: 's5a8', text: 'Carbon offset certificate included with every rental at no charge', answer: 'Fit',
+        explanation: 'Carbon offset certificates add utility specifically to environmentally conscious customers — not all renters value sustainability equally. A customer indifferent to carbon impact receives zero utility from the certificate. This is a fit attribute serving a specific segment.' },
+    ]
+  },
+];
+
+// ─── STATE ─────────────────────────────────────────────────────────────────────
+
+let currentIdx = 0;
+let submitted = false;
+let selectedCard = null;   // card DOM element currently "selected" by click
+let assignments = {};      // attrId → zone name
+let scenarioScores = [];   // per-scenario {correct, total}
+
+// ─── HELPERS ───────────────────────────────────────────────────────────────────
+
+function getZoneEl(zoneName) { return document.getElementById('zb-' + zoneName); }
+function getCountEl(zoneName) { return document.getElementById('zc-' + zoneName); }
+
+function updateZoneCounts() {
+  ['Performance','Fit','Price','Location','Timing'].forEach(z => {
+    const count = Object.values(assignments).filter(v => v === z).length;
+    getCountEl(z).textContent = count + '/8';
+  });
+}
+
+function updateCounter() {
+  const assigned = Object.keys(assignments).length;
+  document.getElementById('counter-text').innerHTML =
+    `<strong>${assigned} of 8</strong> classified`;
+  document.getElementById('submit-btn').disabled = (assigned < 8) || submitted;
+}
+
+function clearSelected() {
+  if (selectedCard) {
+    selectedCard.classList.remove('selected');
+    selectedCard = null;
+  }
+}
+
+// ─── CHIP (compact card in zone) ──────────────────────────────────────────────
+
+function makeChip(attr) {
+  const div = document.createElement('div');
+  div.className = 'zone-chip';
+  div.draggable = true;
+  div.dataset.id = attr.id;
+  div.innerHTML = `<span class="chip-num">${attr.num}</span>
+    <span class="chip-text">${attr.text}</span>
+    <button class="chip-remove" title="Return to pool">✕</button>`;
+
+  div.querySelector('.chip-remove').addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (!submitted) unassignAttr(attr.id);
+  });
+
+  div.addEventListener('dragstart', (e) => {
+    e.dataTransfer.setData('attrId', attr.id);
+    e.dataTransfer.setData('fromZone', assignments[attr.id] || '');
+  });
+
+  div.addEventListener('click', () => {
+    if (!submitted) unassignAttr(attr.id);
+  });
+
+  return div;
+}
+
+// ─── ATTRIBUTE CARD (in pool) ─────────────────────────────────────────────────
+
+function makeCard(attr) {
+  const div = document.createElement('div');
+  div.className = 'attr-card unassigned';
+  div.id = 'card-' + attr.id;
+  div.draggable = true;
+  div.dataset.id = attr.id;
+
+  div.innerHTML = `
+    <div class="card-num">${attr.num}</div>
+    <div class="card-body">
+      <div class="card-text">${attr.text}</div>
+      <div class="card-result">
+        <div class="result-line"><span class="result-icon"></span><span class="result-label"></span></div>
+        <div class="explanation-text"></div>
+      </div>
+    </div>`;
+
+  div.addEventListener('dragstart', (e) => {
+    e.dataTransfer.setData('attrId', attr.id);
+    e.dataTransfer.setData('fromZone', '');
+    div.classList.add('dragging');
+  });
+  div.addEventListener('dragend', () => div.classList.remove('dragging'));
+
+  div.addEventListener('click', () => {
+    if (submitted) return;
+    if (selectedCard === div) {
+      clearSelected();
+    } else {
+      clearSelected();
+      selectedCard = div;
+      div.classList.add('selected');
+    }
+  });
+
+  return div;
+}
+
+// ─── ASSIGN / UNASSIGN ──────────────────────────────────────────────────────────
+
+function assignAttr(attrId, zoneName) {
+  const sc = SCENARIOS[currentIdx];
+  const attr = sc.attrs.find(a => a.id === attrId);
+  if (!attr) return;
+
+  // Remove from old zone if needed
+  const oldZone = assignments[attrId];
+  if (oldZone) {
+    const oldBody = getZoneEl(oldZone);
+    const existingChip = oldBody.querySelector(`[data-id="${attrId}"]`);
+    if (existingChip) oldBody.removeChild(existingChip);
+  }
+
+  assignments[attrId] = zoneName;
+
+  // Hide the pool card
+  const card = document.getElementById('card-' + attrId);
+  if (card) card.style.display = 'none';
+
+  // Add chip to zone
+  const chip = makeChip(attr);
+  getZoneEl(zoneName).appendChild(chip);
+
+  updateZoneCounts();
+  updateCounter();
+  clearSelected();
+}
+
+function unassignAttr(attrId) {
+  const oldZone = assignments[attrId];
+  if (!oldZone) return;
+
+  // Remove chip
+  const oldBody = getZoneEl(oldZone);
+  const chip = oldBody.querySelector(`[data-id="${attrId}"]`);
+  if (chip) oldBody.removeChild(chip);
+
+  delete assignments[attrId];
+
+  // Show pool card
+  const card = document.getElementById('card-' + attrId);
+  if (card) card.style.display = '';
+
+  updateZoneCounts();
+  updateCounter();
+}
+
+// ─── ZONE DRAG/CLICK ──────────────────────────────────────────────────────────
+
+document.querySelectorAll('.zone').forEach(zone => {
+  const zoneName = zone.dataset.zone;
+
+  zone.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    zone.classList.add('drag-over');
+  });
+  zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
+  zone.addEventListener('drop', (e) => {
+    e.preventDefault();
+    zone.classList.remove('drag-over');
+    if (submitted) return;
+    const attrId = e.dataTransfer.getData('attrId');
+    if (attrId) assignAttr(attrId, zoneName);
+  });
+
+  // Click zone header to assign selected card
+  zone.querySelector('.zone-header').addEventListener('click', () => {
+    if (submitted || !selectedCard) return;
+    const attrId = selectedCard.dataset.id;
+    assignAttr(attrId, zoneName);
+  });
+});
+
+// ─── SUBMIT ────────────────────────────────────────────────────────────────────
+
+document.getElementById('submit-btn').addEventListener('click', () => {
+  if (submitted) return;
+  submitted = true;
+
+  const sc = SCENARIOS[currentIdx];
+  let correct = 0;
+
+  sc.attrs.forEach(attr => {
+    const chosen = assignments[attr.id];
+    const card = document.getElementById('card-' + attr.id);
+    const isCorrect = (chosen === attr.answer);
+    const isDefend  = !isCorrect && attr.alt && (chosen === attr.alt);
+
+    card.style.display = '';
+    card.classList.add('submitted');
+
+    const resultLine = card.querySelector('.result-line');
+    const icon = card.querySelector('.result-icon');
+    const label = card.querySelector('.result-label');
+    const expText = card.querySelector('.explanation-text');
+
+    // Show assigned zone as badge
+    const existingBadge = card.querySelector('.card-badge');
+    if (existingBadge) existingBadge.remove();
+    const badge = document.createElement('div');
+    badge.className = 'card-badge';
+    badge.style.background = CAT_COLORS[chosen].bg;
+    badge.style.color = CAT_COLORS[chosen].fg;
+    badge.textContent = 'You chose: ' + chosen;
+    card.querySelector('.card-body').insertBefore(badge, card.querySelector('.card-result'));
+
+    if (isCorrect) {
+      card.classList.add('state-correct');
+      icon.textContent = '✓';
+      label.textContent = 'Correct — ' + attr.answer;
+      label.style.color = 'var(--correct)';
+      correct++;
+    } else if (isDefend) {
+      card.classList.add('state-defend');
+      icon.textContent = '✓';
+      label.textContent = 'Also accepted — ' + attr.alt;
+      label.style.color = 'var(--defend)';
+      correct++;
+    } else {
+      card.classList.add('state-wrong');
+      icon.textContent = '✗';
+      label.innerHTML = `Incorrect — answer is <strong>${attr.answer}</strong>` +
+        (attr.alt ? ` (or ${attr.alt})` : '');
+      label.style.color = 'var(--wrong)';
+    }
+    expText.innerHTML = attr.explanation;
+
+    // Remove chips from zones (pool cards are back)
+    const chip = document.querySelector(`#zb-${chosen} [data-id="${attr.id}"]`);
+    if (chip) chip.remove();
+  });
+
+  // Clear zone chips and hide zone panel
+  document.getElementById('zones-panel').style.display = 'none';
+
+  // Update footer
+  scenarioScores.push({ correct, total: sc.attrs.length, industry: sc.industry });
+  document.getElementById('score-display').style.display = '';
+  document.getElementById('score-badge').textContent = `${correct} / ${sc.attrs.length} correct`;
+  document.getElementById('submit-btn').style.display = 'none';
+  document.getElementById('next-btn').style.display = '';
+  document.getElementById('next-btn').textContent =
+    currentIdx < SCENARIOS.length - 1 ? 'Next Scenario →' : 'See Results →';
+  document.getElementById('prev-btn').disabled = currentIdx === 0;
+});
+
+// ─── NAVIGATION ────────────────────────────────────────────────────────────────
+
+function loadScenario(idx) {
+  currentIdx = idx;
+  submitted = false;
+  assignments = {};
+  selectedCard = null;
+
+  const sc = SCENARIOS[idx];
+
+  // Header
+  document.getElementById('sc-industry').textContent = sc.industry;
+  document.getElementById('sc-desc').textContent = sc.desc;
+  document.getElementById('prog-label').textContent = `Scenario ${idx + 1} of ${SCENARIOS.length}`;
+  document.getElementById('prog-fill').style.width = `${((idx + 1) / SCENARIOS.length) * 100}%`;
+
+  // Reset attr pool
+  const pool = document.getElementById('attr-pool');
+  pool.innerHTML = '<div class="panel-label">Attributes to Classify</div>';
+  sc.attrs.forEach(attr => pool.appendChild(makeCard(attr)));
+
+  // Reset zones
+  ['Performance','Fit','Price','Location','Timing'].forEach(z => {
+    getZoneEl(z).innerHTML = '';
+    getCountEl(z).textContent = '0/8';
+  });
+  document.getElementById('zones-panel').style.display = '';
+
+  // Footer
+  document.getElementById('score-display').style.display = 'none';
+  document.getElementById('submit-btn').style.display = '';
+  document.getElementById('submit-btn').disabled = true;
+  document.getElementById('next-btn').style.display = 'none';
+  document.getElementById('prev-btn').disabled = idx === 0;
+  document.getElementById('counter-text').innerHTML = '<strong>0 of 8</strong> classified';
+}
+
+document.getElementById('next-btn').addEventListener('click', () => {
+  if (currentIdx < SCENARIOS.length - 1) {
+    loadScenario(currentIdx + 1);
+  } else {
+    showSummary();
+  }
+});
+
+document.getElementById('prev-btn').addEventListener('click', () => {
+  if (currentIdx > 0) loadScenario(currentIdx - 1);
+});
+
+// ─── SUMMARY ───────────────────────────────────────────────────────────────────
+
+function showSummary() {
+  document.getElementById('workspace').style.display = 'none';
+  document.getElementById('scenario-banner') && null;
+  document.querySelector('.scenario-banner').style.display = 'none';
+  document.querySelector('.legend').style.display = 'none';
+  document.querySelector('.instruction-bar').style.display = 'none';
+  document.getElementById('app-footer').style.display = 'none';
+  document.getElementById('summary-screen').style.display = 'block';
+
+  const total = scenarioScores.reduce((s, r) => s + r.total, 0);
+  const correct = scenarioScores.reduce((s, r) => s + r.correct, 0);
+  const pct = Math.round((correct / total) * 100);
+
+  const title = pct >= 85 ? 'Strong work.' : pct >= 65 ? 'Good progress.' : 'Keep reviewing.';
+  document.getElementById('sum-title').textContent = title;
+  document.getElementById('sum-score').textContent = `${correct}/${total}`;
+  document.getElementById('sum-sub').textContent = `${pct}% correct across all 5 scenarios`;
+
+  const grid = document.getElementById('sum-grid');
+  grid.innerHTML = '';
+  scenarioScores.forEach((r, i) => {
+    const pctS = Math.round((r.correct / r.total) * 100);
+    const card = document.createElement('div');
+    card.className = 'summary-card';
+    card.innerHTML = `<h3>Scenario ${i + 1}</h3>
+      <div class="sc-score">${r.correct}/${r.total} <small style="font-size:0.9rem;color:var(--muted)">(${pctS}%)</small></div>
+      <div class="sc-industry">${r.industry}</div>`;
+    grid.appendChild(card);
+  });
+}
+
+document.getElementById('restart-btn').addEventListener('click', () => {
+  scenarioScores = [];
+  document.getElementById('summary-screen').style.display = 'none';
+  document.getElementById('workspace').style.display = '';
+  document.querySelector('.scenario-banner').style.display = '';
+  document.querySelector('.legend').style.display = '';
+  document.querySelector('.instruction-bar').style.display = '';
+  document.getElementById('app-footer').style.display = '';
+  loadScenario(0);
+});
+
+// ─── INIT ──────────────────────────────────────────────────────────────────────
+loadScenario(0);
+</script>
+</body>
+</html>

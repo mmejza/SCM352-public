@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flow Unit Identifier — SCM 352 M02</title>
+<style>
+:root {
+  --navy:        #1a3a5c;
+  --blue:        #2563a8;
+  --blue-lt:     #dbeafe;
+  --blue-xlt:    #eff6ff;
+  --gold:        #f59e0b;
+  --gold-lt:     #fffbeb;
+  --gold-bdr:    #fde68a;
+  --green:       #16a34a;
+  --green-lt:    #f0fdf4;
+  --green-bdr:   #bbf7d0;
+  --red:         #dc2626;
+  --red-lt:      #fef2f2;
+  --red-bdr:     #fecaca;
+  --amber:       #d97706;
+  --amber-lt:    #fffbeb;
+  --amber-bdr:   #fde68a;
+  --orange:      #ea580c;
+  --orange-lt:   #fff7ed;
+  --orange-bdr:  #fed7aa;
+  --purple:      #7c3aed;
+  --purple-lt:   #faf5ff;
+  --purple-bdr:  #ddd6fe;
+  --teal:        #0891b2;
+  --teal-lt:     #f0fdfe;
+  --teal-bdr:    #a5f3fc;
+  --gray-50:     #f9fafb;
+  --gray-100:    #f3f4f6;
+  --gray-200:    #e5e7eb;
+  --gray-300:    #d1d5db;
+  --gray-400:    #9ca3af;
+  --gray-600:    #4b5563;
+  --gray-700:    #374151;
+  --gray-800:    #1f2937;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; background: var(--gray-50); color: var(--gray-800); min-height: 100vh; }
+
+header { background: var(--navy); color: white; padding: 16px 24px; display: flex; align-items: center; gap: 16px; }
+.header-badge { background: var(--gold); color: var(--navy); font-weight: 700; font-size: 11px; padding: 3px 8px; border-radius: 4px; letter-spacing: 0.05em; text-transform: uppercase; }
+header h1 { font-size: 18px; font-weight: 600; }
+
+.dot-track { background: white; border-bottom: 2px solid var(--gray-200); padding: 12px 24px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.dot-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--gray-600); }
+.dot-row { display: flex; gap: 6px; flex-wrap: wrap; }
+.dot { width: 30px; height: 30px; border-radius: 50%; border: 2px solid var(--gray-200); background: white; font-size: 11px; font-weight: 700; color: var(--gray-400); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s; }
+.dot:hover   { border-color: var(--blue); color: var(--blue); }
+.dot.active  { border-color: var(--blue);  background: var(--blue);  color: white; }
+.dot.d-correct { border-color: var(--green);  background: var(--green);  color: white; }
+.dot.d-wrong   { border-color: var(--red);    background: var(--red);    color: white; }
+
+.main { max-width: 1100px; margin: 0 auto; padding: 24px; display: grid; grid-template-columns: 1fr 320px; gap: 24px; align-items: start; }
+@media (max-width: 820px) { .main { grid-template-columns: 1fr; } }
+
+.card { background: white; border: 1px solid var(--gray-200); border-radius: 12px; overflow: hidden; }
+.card-header { background: var(--blue-lt); padding: 14px 20px; border-bottom: 1px solid var(--gray-200); }
+.card-header h2 { font-size: 15px; font-weight: 700; color: var(--navy); }
+.card-header p  { font-size: 13px; color: var(--gray-600); margin-top: 4px; }
+.card-body { padding: 20px; }
+
+.scenario-desc { font-size: 14px; line-height: 1.7; color: var(--gray-800); background: var(--gray-50); border-left: 4px solid var(--blue); padding: 14px 16px; border-radius: 0 8px 8px 0; margin-bottom: 20px; }
+
+.diff-tag { font-size: 11px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; padding: 3px 9px; border-radius: 100px; }
+.diff-easy   { background: var(--green-lt); color: var(--green); }
+.diff-medium { background: var(--amber-lt); color: var(--amber); }
+.diff-hard   { background: var(--red-lt);   color: var(--red); }
+
+.option-grid { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
+.option-card { display: flex; align-items: flex-start; gap: 12px; padding: 13px 16px; border: 2px solid var(--gray-200); border-radius: 10px; cursor: pointer; transition: border-color 0.15s, background 0.15s; background: white; user-select: none; }
+.option-card:hover { border-color: var(--blue); background: var(--blue-xlt); }
+.option-card.selected { border-color: var(--blue); background: var(--blue-xlt); }
+.option-card.correct-reveal  { border-color: var(--green); background: var(--green-lt); }
+.option-card.wrong-reveal    { border-color: var(--red);   background: var(--red-lt); }
+.option-letter { width: 28px; height: 28px; border-radius: 50%; background: var(--gray-100); border: 2px solid var(--gray-200); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: var(--gray-600); flex-shrink: 0; }
+.option-card.selected .option-letter { background: var(--blue); border-color: var(--blue); color: white; }
+.option-card.correct-reveal .option-letter { background: var(--green); border-color: var(--green); color: white; }
+.option-card.wrong-reveal   .option-letter { background: var(--red);   border-color: var(--red);   color: white; }
+.option-text { font-size: 13.5px; line-height: 1.5; color: var(--gray-800); padding-top: 3px; }
+
+.explain-section { margin-bottom: 16px; }
+.explain-label { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--navy); margin-bottom: 6px; }
+.explain-field { width: 100%; border: 2px solid var(--gray-300); border-radius: 8px; padding: 10px 12px; font-size: 13.5px; font-family: inherit; line-height: 1.5; resize: vertical; min-height: 72px; transition: border-color 0.15s; }
+.explain-field:focus { outline: none; border-color: var(--blue); }
+.explain-hint { font-size: 12px; color: var(--gray-400); margin-top: 4px; }
+
+.btn { padding: 10px 22px; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.15s; }
+.btn-primary   { background: var(--blue);     color: white; }
+.btn-secondary { background: var(--gray-100); color: var(--gray-800); }
+.btn-green     { background: var(--green);    color: white; }
+.btn-primary:hover    { background: #1d4ed8; }
+.btn-primary:disabled { background: var(--gray-400); cursor: not-allowed; }
+.btn-secondary:hover  { background: var(--gray-200); }
+.btn-green:hover      { background: #15803d; }
+.btn-group { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+
+.feedback-panel { display: none; margin-top: 20px; border: 2px solid var(--gray-200); border-radius: 10px; overflow: hidden; }
+.feedback-panel.show { display: block; }
+.fb-banner { padding: 12px 16px; font-size: 14px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+.fb-correct { background: var(--green-lt); color: var(--green); border-bottom: 2px solid var(--green); }
+.fb-wrong   { background: var(--red-lt);   color: var(--red);   border-bottom: 2px solid var(--red); }
+.fb-body { padding: 16px; font-size: 13px; line-height: 1.65; background: white; }
+.think-deeper { background: var(--gold-lt); border: 1.5px solid var(--gold-bdr); border-radius: 8px; padding: 12px 16px; margin-top: 12px; font-size: 13px; line-height: 1.6; }
+.think-deeper-label { font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--amber); margin-bottom: 6px; }
+
+.all-options-reveal { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
+.reveal-row { display: flex; gap: 10px; align-items: flex-start; padding: 8px 0; border-bottom: 1px solid var(--gray-100); font-size: 13px; line-height: 1.5; }
+.reveal-row:last-child { border-bottom: none; }
+.reveal-icon { font-size: 15px; flex-shrink: 0; }
+.reveal-label { font-weight: 700; min-width: 32px; color: var(--navy); }
+
+.score-row { padding: 16px 20px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--gray-100); }
+.score-num { font-size: 28px; font-weight: 700; color: var(--navy); }
+.score-meta { font-size: 12px; color: var(--gray-600); line-height: 1.4; }
+.score-meta strong { color: var(--gray-800); display: block; font-size: 13px; }
+.prog-bar-outer { height: 5px; background: var(--gray-200); border-radius: 3px; overflow: hidden; margin: 0 20px 16px; }
+.prog-bar-inner { height: 100%; background: var(--blue); border-radius: 3px; transition: width 0.4s; }
+.tip-box { background: var(--gold-lt); border: 1px solid var(--gold-bdr); border-radius: 8px; padding: 12px 16px; font-size: 13px; line-height: 1.6; color: var(--gray-800); }
+.tip-box strong { color: var(--navy); }
+
+.final-summary { display: none; text-align: center; padding: 24px 20px; }
+.final-summary.show { display: block; }
+.final-summary h3 { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-badge">SCM 352 · M02</div>
+  <h1>Flow Unit Identifier</h1>
+</header>
+
+<div class="dot-track">
+  <span class="dot-label">Scenarios</span>
+  <div class="dot-row" id="dotRow"></div>
+</div>
+
+<div class="main">
+  <div>
+    <div class="card">
+      <div class="card-header">
+        <h2 id="cardTitle">Loading…</h2>
+        <p id="cardSubtitle">Select the most appropriate flow unit for this process</p>
+      </div>
+      <div class="card-body">
+
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap;">
+          <div class="diff-tag" id="diffTag"></div>
+          <div style="margin-left:auto;font-size:12px;font-weight:600;color:var(--gray-400);" id="vigNum"></div>
+        </div>
+
+        <div class="scenario-desc" id="scenarioDesc"></div>
+
+        <div class="option-grid" id="optionGrid"></div>
+
+        <div class="explain-section" id="explainSection">
+          <div class="explain-label">Explain your reasoning (1–2 sentences)</div>
+          <textarea class="explain-field" id="explainField" placeholder="Why is your selected option the most appropriate flow unit? Use course terminology (flow unit, resource, process characteristic, etc.)…" oninput="checkSubmitReady()"></textarea>
+          <div class="explain-hint">Minimum 15 characters before Check Answer activates</div>
+        </div>
+
+        <div class="btn-group">
+          <button class="btn btn-primary" id="submitBtn" onclick="handleSubmit()" disabled>Check Answer</button>
+          <button class="btn btn-secondary" id="prevBtn"    onclick="handlePrev()"    style="display:none">← Previous</button>
+          <button class="btn btn-green"    id="nextBtn"    onclick="handleNext()"    style="display:none">Next Scenario →</button>
+          <button class="btn btn-secondary" id="restartBtn" onclick="handleRestart()" style="display:none">↩ Restart</button>
+        </div>
+
+        <div class="feedback-panel" id="feedbackPanel">
+          <div class="fb-banner" id="fbBanner"></div>
+          <div class="fb-body">
+            <div id="fbReveal"></div>
+            <div class="think-deeper" id="fbThink" style="display:none">
+              <div class="think-deeper-label">Think Deeper</div>
+              <div id="fbThinkText"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="final-summary" id="finalSummary"></div>
+
+      </div>
+    </div>
+  </div>
+
+  <div style="position:sticky;top:24px;display:flex;flex-direction:column;gap:16px;">
+    <div class="card">
+      <div class="card-header">
+        <h2>Your Score</h2>
+        <p>Updates after each answer</p>
+      </div>
+      <div class="score-row">
+        <div class="score-num" id="scoreNum">0</div>
+        <div class="score-meta">
+          <strong id="scoreLabel">correct</strong>
+          <span id="scoreDetail">of 0 answered</span>
+        </div>
+      </div>
+      <div class="prog-bar-outer">
+        <div class="prog-bar-inner" id="progBar" style="width:0%"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <h2>Flow Unit Criteria</h2>
+        <p>Chapter 2 · Narration reference</p>
+      </div>
+      <div class="card-body">
+        <div class="tip-box">
+          A valid flow unit must be:<br>
+          <strong>Relevant</strong> — tracks process output<br>
+          <strong>Measurable</strong> — countable at every stage<br>
+          <strong>Trackable</strong> — followable entry to exit<br>
+          <strong>Consistent</strong> — same unit throughout<br><br>
+          <strong>Reject if:</strong> it stays in the process (resource) or describes how the process runs (process characteristic).
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const SCENARIOS = [
+  {
+    id: 1,
+    difficulty: 'easy',
+    title: 'University Admissions Office',
+    desc: 'A university\'s admissions office receives, reviews, and decides on applications from prospective students. Staff include admissions counselors and a director. Applications move through an online portal from submission through initial review, committee evaluation, and final decision.',
+    options: [
+      { letter: 'A', text: 'Admitted student application', correct: true,  type: 'correct',     feedback: '✓ Correct. An application moves through the entire process from submission to decision — it is relevant (represents what the process produces), measurable at every stage, trackable by application ID, and consistent throughout all activities.' },
+      { letter: 'B', text: 'Admissions counselor on duty',  correct: false, type: 'resource',    feedback: '✗ Resource trap. Counselors transform applications into decisions — they enable the process but do not flow through it. They stay in the process; they do not exit as output.' },
+      { letter: 'C', text: 'Applications received per day', correct: false, type: 'rate',        feedback: '✗ Process characteristic trap. "Applications per day" is a flow rate, not a flow unit. A flow rate describes how fast the process runs; it is not the entity that moves through the process.' },
+      { letter: 'D', text: 'Enrolled student',              correct: false, type: 'next-process', feedback: '✗ Wrong scope. An enrolled student is the output of the registration process that follows admissions — not of the admissions process itself. Tracking enrolled students would miss all applicants who were rejected or deferred.' }
+    ],
+    reveal: 'The correct flow unit is an <strong>admitted student application</strong>. Each application enters at submission and exits at a final decision (admit, deny, or waitlist). It satisfies all four criteria: relevant, measurable by application ID, trackable through each review stage, and consistent across all activities.',
+    thinkDeeper: 'Why not "enrolled student"? Enrollment is output of the next downstream process. If the admissions office\'s scope ends at the decision letter, then enrolled students never exit the admissions process — they haven\'t even decided to attend yet.'
+  },
+  {
+    id: 2,
+    difficulty: 'medium',
+    title: 'Airport Security Checkpoint',
+    desc: 'Passengers at an airport pass through a TSA security checkpoint. They place items in bins, walk through a body scanner, retrieve their belongings from the conveyor belt, and exit the checkpoint area. TSA agents staff the lanes. The checkpoint processes hundreds of passengers per hour during peak travel times.',
+    options: [
+      { letter: 'A', text: 'TSA agent assigned to the lane',          correct: false, type: 'resource',    feedback: '✗ Resource trap. TSA agents screen passengers — they are the resource that transforms passengers from unscreened to screened. Agents stay in the checkpoint; they do not exit as output.' },
+      { letter: 'B', text: 'Screened passenger',                       correct: true,  type: 'correct',     feedback: '✓ Correct. Each passenger enters the checkpoint unscreened and exits screened. The unit is relevant (the purpose of the checkpoint), measurable at entry and exit, trackable (one person = one unit), and consistent across all screening stages.' },
+      { letter: 'C', text: 'Passengers per hour (the throughput rate)', correct: false, type: 'rate',        feedback: '✗ Process characteristic trap. "Passengers per hour" is the flow rate R — not the flow unit. Flow rate describes how fast the process runs; it is not the entity being screened.' },
+      { letter: 'D', text: 'Carry-on bag screened by the X-ray machine', correct: false, type: 'parallel',   feedback: '✗ Wrong unit. Carry-on bags pass through X-ray screening in parallel with passengers but are not the primary output of the checkpoint. A passenger with no carry-on still goes through the process; the bag alone does not represent the process\'s purpose.' }
+    ],
+    reveal: 'The correct flow unit is a <strong>screened passenger</strong>. The checkpoint\'s purpose is to screen people. Each passenger enters unscreened and exits screened — a clear entry and exit event. All four criteria are satisfied.',
+    thinkDeeper: 'The "passengers per hour" trap is particularly common because it appears on signs above the checkpoint lanes. But that number is the flow rate R — it measures how fast the process runs, not the unit that runs through it.'
+  },
+  {
+    id: 3,
+    difficulty: 'medium',
+    title: 'Hospital Pharmacy',
+    desc: 'A hospital pharmacy fills prescriptions for inpatients and outpatients. A pharmacist reviews each prescription for accuracy and drug interactions, a technician prepares the medication, a pharmacist verifies the preparation, and the order is dispensed. The pharmacy employs pharmacists and pharmacy technicians. Prescriptions arrive electronically from physicians.',
+    options: [
+      { letter: 'A', text: 'Filled prescription',          correct: true,  type: 'correct',     feedback: '✓ Correct. Each prescription enters as an electronic order and exits as a dispensed medication. It is relevant (the purpose of the pharmacy), measurable at every stage by order ID, trackable through review, preparation, verification, and dispensing, and consistent throughout.' },
+      { letter: 'B', text: 'Pharmacist on duty',           correct: false, type: 'resource',     feedback: '✗ Resource trap. Pharmacists verify and authorize prescriptions — they are the skilled resource that transforms incoming orders into dispensed medications. A pharmacist does not flow through the pharmacy process as output.' },
+      { letter: 'C', text: 'Prescriptions per shift',      correct: false, type: 'rate',         feedback: '✗ Process characteristic trap. "Prescriptions per shift" is a throughput rate, not a unit. It describes how many flow units pass through per unit of time — that is R, not the flow unit itself.' },
+      { letter: 'D', text: 'Medication dose (the drug itself)', correct: false, type: 'input',    feedback: '✗ Input trap. The medication dose is an input ingredient that becomes part of the filled prescription — it is a raw material, not the entity being tracked. Tracking the drug molecule would lose information about patient identity, dosage instructions, and verification status.' }
+    ],
+    reveal: 'The correct flow unit is a <strong>filled prescription</strong>. Each prescription is a discrete unit with a clear entry (electronic receipt) and exit (dispensing). It satisfies all four criteria and represents the process\'s primary output.',
+    thinkDeeper: null
+  },
+  {
+    id: 4,
+    difficulty: 'medium',
+    title: 'E-Commerce Fulfillment Center',
+    desc: 'An online retailer\'s fulfillment center receives customer orders, picks items from warehouse shelves, packs them into shipping boxes, applies labels, and hands them off to carrier pickup. Hundreds of workers operate across picking, packing, and staging areas. The center ships thousands of orders per day.',
+    options: [
+      { letter: 'A', text: 'Fulfillment worker on shift',         correct: false, type: 'resource',    feedback: '✗ Resource trap. Fulfillment workers pick, pack, and stage orders — they are the resource that transforms unpacked goods into shipped orders. Workers stay in the center; orders exit.' },
+      { letter: 'B', text: 'Shipped customer order',              correct: true,  type: 'correct',     feedback: '✓ Correct. Each order enters the process (received) and exits (shipped to carrier). It is relevant — the process exists to fulfill orders — measurable by order ID, trackable through picking, packing, and staging, and consistent across all activities.' },
+      { letter: 'C', text: 'Orders per hour (the dispatch rate)',  correct: false, type: 'rate',        feedback: '✗ Process characteristic trap. "Orders per hour" is the flow rate R. The flow rate tells you how fast flow units move through the process — it is not the unit itself.' },
+      { letter: 'D', text: 'SKU (product type in the warehouse)', correct: false, type: 'aggregate',   feedback: '✗ Wrong level of aggregation. An SKU is a product category, not an individual order. One order may include multiple SKUs; one SKU may appear in thousands of orders. Tracking SKUs would not allow you to follow a single customer order from receipt to shipment.' }
+    ],
+    reveal: 'The correct flow unit is a <strong>shipped customer order</strong>. Every order has a clear entry (placed by customer, received in the system) and a clear exit (picked up by carrier). Each order ID tracks a discrete unit through all stages of the fulfillment process.',
+    thinkDeeper: 'Why not the SKU? Imagine two customers each order a red t-shirt (same SKU). These are two distinct flow units — two separate orders with separate picking routes, packing events, and carrier labels. The SKU describes the product type, not the order being fulfilled.'
+  },
+  {
+    id: 5,
+    difficulty: 'hard',
+    title: 'Municipal Water Treatment Plant',
+    desc: 'A city\'s water treatment plant processes raw water drawn from a reservoir. The water moves through intake screens, sedimentation tanks, flocculation chambers, filtration beds, disinfection (chlorination), and final storage before being pumped into the distribution network. Engineers and operators staff the plant 24 hours per day.',
+    options: [
+      { letter: 'A', text: 'Water treatment engineer on duty',      correct: false, type: 'resource',    feedback: '✗ Resource trap. Engineers monitor and control the treatment process — they are the resource. They do not flow through the stages as output; the water does.' },
+      { letter: 'B', text: 'Gallon of treated water (output)',      correct: true,  type: 'correct',     feedback: '✓ Correct. A gallon of water enters the process as raw (untreated) and exits as treated, safe drinking water. It is relevant (the plant\'s purpose), measurable by volume at every stage, trackable through each treatment stage, and consistent throughout.' },
+      { letter: 'C', text: 'Gallons per day (treatment rate)',      correct: false, type: 'rate',        feedback: '✗ Process characteristic trap. "Gallons per day" is the flow rate R, not the flow unit. The flow rate describes throughput; the flow unit is the gallon of water being processed.' },
+      { letter: 'D', text: 'Gallon of untreated intake water',      correct: false, type: 'input-close', feedback: '✗ Close — but this is the input state, not the output state. The process transforms raw water into treated water. If you define the flow unit as "untreated intake water," it technically exits the process the moment treatment begins — which makes flow time zero. Define the unit as what the process is designed to produce: <strong>treated water</strong>.' }
+    ],
+    reveal: 'The correct flow unit is a <strong>gallon of treated water</strong>. It enters raw and exits treated — a clear transformation with a measurable entry and exit. The "untreated intake" option is a close trap: it is the same physical substance, but defining the unit as the input rather than the output misaligns the measurement with the process\'s purpose.',
+    thinkDeeper: 'This scenario tests the "relevant" criterion carefully. Tracking gallons of untreated intake tells you how much water enters but nothing about whether the treatment is working — you\'d measure I and R for the wrong thing. The managerial question is about treatment capacity, not intake capacity.'
+  }
+];
+
+let currentIdx = 0;
+let submitted  = false;
+let selected   = null;
+let results    = {};
+let cntCorrect = 0, cntWrong = 0;
+
+function init() { buildNav(); loadItem(0); }
+
+function buildNav() {
+  const row = document.getElementById('dotRow');
+  SCENARIOS.forEach((s, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'dot' + (i === 0 ? ' active' : '');
+    btn.id = 'dot' + i;
+    btn.textContent = String(i + 1).padStart(2, '0');
+    btn.title = s.title;
+    btn.onclick = () => goTo(i);
+    row.appendChild(btn);
+  });
+}
+
+function updateNav() {
+  SCENARIOS.forEach((s, i) => {
+    const d = document.getElementById('dot' + i);
+    if (!d) return;
+    d.className = 'dot';
+    if (i === currentIdx) d.classList.add('active');
+    const r = results[s.id];
+    if (r === 'correct') d.classList.add('d-correct');
+    else if (r === 'wrong') d.classList.add('d-wrong');
+  });
+}
+
+function loadItem(idx) {
+  currentIdx = idx;
+  submitted  = false;
+  selected   = null;
+  const sc = SCENARIOS[idx];
+
+  document.getElementById('cardTitle').textContent       = sc.title;
+  document.getElementById('scenarioDesc').textContent    = sc.desc;
+  document.getElementById('vigNum').textContent          = String(idx+1).padStart(2,'0') + ' / ' + SCENARIOS.length;
+  document.getElementById('explainField').value          = '';
+  document.getElementById('explainField').disabled       = false;
+
+  const dt = document.getElementById('diffTag');
+  dt.textContent = sc.difficulty.charAt(0).toUpperCase() + sc.difficulty.slice(1);
+  dt.className   = 'diff-tag diff-' + sc.difficulty;
+
+  // Build options
+  const grid = document.getElementById('optionGrid');
+  grid.innerHTML = '';
+  sc.options.forEach((opt, i) => {
+    const card = document.createElement('div');
+    card.className = 'option-card';
+    card.id = 'opt' + i;
+    card.dataset.idx = i;
+    card.innerHTML = `<div class="option-letter">${opt.letter}</div><div class="option-text">${opt.text}</div>`;
+    card.onclick = () => selectOption(i);
+    grid.appendChild(card);
+  });
+
+  document.getElementById('feedbackPanel').classList.remove('show');
+  document.getElementById('fbThink').style.display = 'none';
+  document.getElementById('finalSummary').classList.remove('show');
+
+  document.getElementById('submitBtn').disabled       = true;
+  document.getElementById('submitBtn').style.display  = 'inline-block';
+  document.getElementById('nextBtn').style.display    = 'none';
+  document.getElementById('prevBtn').style.display    = idx > 0 ? 'inline-block' : 'none';
+  document.getElementById('restartBtn').style.display = 'none';
+
+  if (results[sc.id]) replayResult(sc, results[sc.id]);
+  updateNav();
+}
+
+function replayResult(sc, status) {
+  submitted = true;
+  document.getElementById('submitBtn').style.display = 'none';
+  showFeedback(sc, status);
+  document.getElementById('nextBtn').style.display  = currentIdx < SCENARIOS.length - 1 ? 'inline-block' : 'none';
+  document.getElementById('prevBtn').style.display  = currentIdx > 0 ? 'inline-block' : 'none';
+}
+
+function selectOption(i) {
+  if (submitted) return;
+  selected = i;
+  document.querySelectorAll('.option-card').forEach((c, j) => {
+    c.classList.toggle('selected', j === i);
+  });
+  checkSubmitReady();
+}
+
+function checkSubmitReady() {
+  const explain = document.getElementById('explainField').value.trim();
+  document.getElementById('submitBtn').disabled = (selected === null || explain.length < 15);
+}
+
+function grade(sc) {
+  return sc.options[selected].correct ? 'correct' : 'wrong';
+}
+
+function handleSubmit() {
+  if (selected === null || submitted) return;
+  submitted = true;
+  const sc = SCENARIOS[currentIdx];
+  const status = grade(sc);
+  results[sc.id] = status;
+  if (status === 'correct') cntCorrect++;
+  else cntWrong++;
+
+  // Reveal option colors
+  sc.options.forEach((opt, i) => {
+    const card = document.getElementById('opt' + i);
+    if (opt.correct) card.classList.add('correct-reveal');
+    else if (i === selected && !opt.correct) card.classList.add('wrong-reveal');
+  });
+
+  document.getElementById('explainField').disabled = true;
+  updateScoreDisplay();
+  showFeedback(sc, status);
+  updateNav();
+
+  document.getElementById('submitBtn').style.display = 'none';
+  if (currentIdx < SCENARIOS.length - 1) {
+    document.getElementById('nextBtn').style.display = 'inline-block';
+  } else {
+    setTimeout(showFinalSummary, 1400);
+  }
+  document.getElementById('prevBtn').style.display = currentIdx > 0 ? 'inline-block' : 'none';
+}
+
+function showFeedback(sc, status) {
+  const panel     = document.getElementById('feedbackPanel');
+  const banner    = document.getElementById('fbBanner');
+  const reveal    = document.getElementById('fbReveal');
+  const thinkBox  = document.getElementById('fbThink');
+  const thinkText = document.getElementById('fbThinkText');
+
+  banner.className = 'fb-banner ' + (status === 'correct' ? 'fb-correct' : 'fb-wrong');
+  banner.innerHTML = status === 'correct'
+    ? '✓ Correct — you identified the right flow unit.'
+    : '✗ Incorrect — review each option below.';
+
+  let html = '<div class="all-options-reveal">';
+  sc.options.forEach(opt => {
+    const icon = opt.correct ? '✅' : '❌';
+    html += `<div class="reveal-row">
+      <div class="reveal-icon">${icon}</div>
+      <div><span class="reveal-label">${opt.letter}.</span> ${opt.feedback}</div>
+    </div>`;
+  });
+  html += '</div>';
+  html += '<div style="padding-top:8px;border-top:1px solid var(--gray-100);">' + sc.reveal + '</div>';
+  reveal.innerHTML = html;
+
+  if (sc.thinkDeeper) {
+    thinkText.innerHTML = sc.thinkDeeper;
+    thinkBox.style.display = 'block';
+  } else {
+    thinkBox.style.display = 'none';
+  }
+  panel.classList.add('show');
+}
+
+function handleNext()    { if (currentIdx < SCENARIOS.length - 1) goTo(currentIdx + 1); else showFinalSummary(); }
+function handlePrev()    { if (currentIdx > 0) goTo(currentIdx - 1); }
+function handleRestart() {
+  results = {}; cntCorrect = cntWrong = 0;
+  document.getElementById('finalSummary').classList.remove('show');
+  updateScoreDisplay(); loadItem(0);
+}
+function goTo(idx) { loadItem(idx); }
+
+function updateScoreDisplay() {
+  const answered = cntCorrect + cntWrong;
+  document.getElementById('scoreNum').textContent    = cntCorrect;
+  document.getElementById('scoreDetail').textContent = `of ${answered} answered`;
+  document.getElementById('progBar').style.width     = ((answered / SCENARIOS.length) * 100) + '%';
+}
+
+function showFinalSummary() {
+  const sum = document.getElementById('finalSummary');
+  sum.classList.add('show');
+  const pct = SCENARIOS.length > 0 ? Math.round((cntCorrect / SCENARIOS.length) * 100) : 0;
+  sum.innerHTML = `
+    <h3 style="color:var(--green)">All ${SCENARIOS.length} scenarios complete</h3>
+    <p style="font-size:22px;font-weight:700;color:var(--navy);margin:10px 0">${cntCorrect} / ${SCENARIOS.length} correct</p>
+    <p style="color:var(--gray-600);font-size:13px;margin-bottom:16px;">${pct}% correct</p>
+    <div class="tip-box" style="text-align:left;margin-bottom:16px;">
+      <strong>Ready for Gate 2 Q4 and the Case?</strong><br>
+      Gate 2 Q4 gives you four car wash flow unit candidates and asks you to classify each using course terminology — the same skill this app trained. Case Part 1a asks you to identify the flow unit for Riverside Prescription Fulfillment Center and justify it using at least two of the four criteria. The pattern: if it stays in the process (resource) or describes how fast the process runs (process characteristic) — it fails.
+    </div>
+    <button class="btn btn-secondary" onclick="handleRestart()">↩ Restart</button>
+  `;
+}
+
+init();
+</script>
+</body>
+</html>

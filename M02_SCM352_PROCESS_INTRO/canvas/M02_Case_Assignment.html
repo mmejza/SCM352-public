@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Case Analysis M02 — Riverside Prescription Fulfillment Center — SCM 352</title>
+<style>
+:root{--navy:#1a3a5c;--blue:#2563a8;--blue-lt:#dbeafe;--blue-xlt:#eff6ff;--gold:#f59e0b;--gold-lt:#fffbeb;--gold-bdr:#fde68a;--green:#16a34a;--green-lt:#f0fdf4;--green-bdr:#bbf7d0;--red:#dc2626;--red-lt:#fef2f2;--red-bdr:#fecaca;--amber:#d97706;--amber-lt:#fffbeb;--amber-bdr:#fde68a;--orange:#ea580c;--orange-lt:#fff7ed;--orange-bdr:#fed7aa;--purple:#7c3aed;--purple-lt:#faf5ff;--purple-bdr:#ddd6fe;--teal:#0891b2;--teal-lt:#f0fdfe;--teal-bdr:#a5f3fc;--gray-50:#f9fafb;--gray-100:#f3f4f6;--gray-200:#e5e7eb;--gray-300:#d1d5db;--gray-400:#9ca3af;--gray-600:#4b5563;--gray-700:#374151;--gray-800:#1f2937;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--gray-50);color:var(--gray-800);line-height:1.65;font-size:14px;}
+.pg-header{background:var(--navy);color:white;padding:24px 28px;}
+.pg-header-eyebrow{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
+.pg-header h1{font-size:22px;font-weight:700;letter-spacing:-.01em;margin-bottom:6px;}
+.pg-header p{font-size:13px;color:rgba(255,255,255,.68);}
+.meta-strip{background:white;border-bottom:2px solid var(--gray-200);display:flex;gap:0;overflow-x:auto;}
+.meta-cell{padding:11px 20px;border-right:1px solid var(--gray-200);flex-shrink:0;}
+.meta-cell:last-child{border-right:none;}
+.meta-lbl{font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--gray-400);margin-bottom:2px;}
+.meta-val{font-size:13px;font-weight:700;color:var(--navy);}
+.pg-body{max-width:860px;margin:0 auto;padding:28px 22px 60px;display:flex;flex-direction:column;gap:28px;}
+.version-banner{background:var(--navy);border-radius:12px;overflow:hidden;border:2px solid var(--navy);}
+.version-banner-hd{padding:13px 20px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,255,255,.15);}
+.version-banner-hd h2{font-size:14px;font-weight:700;color:white;}
+.version-banner-hd p{font-size:12px;color:rgba(255,255,255,.6);margin-top:2px;}
+.version-table{width:100%;border-collapse:collapse;font-size:13px;}
+.version-table th{padding:9px 16px;text-align:left;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:rgba(255,255,255,.55);border-bottom:1px solid rgba(255,255,255,.1);}
+.version-table td{padding:10px 16px;border-bottom:1px solid rgba(255,255,255,.07);color:rgba(255,255,255,.85);}
+.version-table tr:last-child td{border-bottom:none;}
+.ver-badge{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:6px;font-size:13px;font-weight:800;}
+.ver-a{background:#dcfce7;color:#166534;} .ver-b{background:#dbeafe;color:#1e40af;} .ver-c{background:#faf5ff;color:#6b21a8;} .ver-d{background:#fef9c3;color:#854d0e;}
+.alert{border-radius:10px;padding:13px 16px;font-size:13.5px;line-height:1.6;display:flex;gap:11px;align-items:flex-start;}
+.alert-icon{font-size:17px;flex-shrink:0;margin-top:1px;}
+.alert-body{flex:1;}
+.alert-body strong{display:block;margin-bottom:3px;}
+.alert-red{background:var(--red-lt);border:1.5px solid var(--red-bdr);}
+.alert-gold{background:var(--gold-lt);border:1.5px solid var(--gold-bdr);}
+.alert-blue{background:var(--blue-xlt);border:1.5px solid #bfdbfe;}
+.sec-div{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--gray-400);padding-bottom:10px;border-bottom:1px solid var(--gray-200);margin-bottom:-4px;}
+.section-card{background:white;border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;}
+.section-hd{padding:14px 20px;border-bottom:1px solid var(--gray-200);display:flex;align-items:center;gap:12px;}
+.part-badge{display:flex;align-items:center;justify-content:center;min-width:36px;height:36px;border-radius:8px;font-size:12px;font-weight:800;flex-shrink:0;}
+.section-hd-text h2{font-size:15px;font-weight:700;color:var(--navy);}
+.section-hd-text p{font-size:12px;color:var(--gray-600);margin-top:2px;}
+.pts-badge{margin-left:auto;flex-shrink:0;font-size:13px;font-weight:700;padding:4px 12px;border-radius:100px;}
+.section-bd{padding:20px;}
+.part1 .section-hd{background:var(--blue-xlt);} .part1 .part-badge{background:var(--blue);color:white;} .part1 .pts-badge{background:var(--blue-lt);color:var(--navy);}
+.part2 .section-hd{background:var(--green-lt);} .part2 .part-badge{background:var(--green);color:white;} .part2 .pts-badge{background:var(--green-bdr);color:var(--green);}
+.part3 .section-hd{background:var(--purple-lt);} .part3 .part-badge{background:var(--purple);color:white;} .part3 .pts-badge{background:var(--purple-bdr);color:var(--purple);}
+.part4 .section-hd{background:var(--teal-lt);} .part4 .part-badge{background:var(--teal);color:white;} .part4 .pts-badge{background:var(--teal-bdr);color:var(--teal);}
+.ver-tabs{border:1.5px solid var(--gray-200);border-radius:10px;overflow:hidden;margin:16px 0;}
+.ver-tab-hd{display:flex;border-bottom:1.5px solid var(--gray-200);background:var(--gray-50);}
+.ver-tab-btn{flex:1;padding:10px 0;border:none;background:none;cursor:pointer;font-size:13px;font-weight:700;color:var(--gray-400);border-right:1px solid var(--gray-200);transition:all 0.15s;display:flex;align-items:center;justify-content:center;gap:6px;}
+.ver-tab-btn:last-child{border-right:none;}
+.ver-tab-btn:hover{color:var(--navy);background:white;}
+.ver-tab-btn.active{color:var(--navy);background:white;box-shadow:inset 0 -2px 0 var(--blue);}
+.ver-tab-btn .vb{width:20px;height:20px;border-radius:4px;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;}
+.ver-tab-panel{display:none;padding:16px;}
+.ver-tab-panel.active{display:block;}
+.data-table{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px;}
+.data-table th{background:var(--navy);color:white;padding:9px 13px;text-align:left;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;}
+.data-table td{padding:9px 13px;border-bottom:1px solid var(--gray-100);}
+.data-table tr:last-child td{border-bottom:none;}
+.data-table td:first-child{font-weight:700;}
+.q-block{margin-bottom:16px;padding:14px 16px;border:1.5px solid var(--gray-200);border-radius:8px;background:var(--gray-50);}
+.q-block:last-child{margin-bottom:0;}
+.q-num{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--gray-400);margin-bottom:5px;}
+.q-text{font-size:13.5px;line-height:1.65;color:var(--gray-700);}
+.q-pts{display:inline-block;margin-top:7px;font-size:11px;font-weight:700;padding:2px 9px;border-radius:100px;background:var(--blue-lt);color:var(--navy);}
+.scenario-box{background:var(--gray-50);border:1.5px solid var(--gray-200);border-left:4px solid var(--teal);border-radius:0 8px 8px 0;padding:16px 18px;font-size:13.5px;line-height:1.75;color:var(--gray-700);margin:12px 0;}
+.submit-list{display:flex;flex-direction:column;gap:6px;}
+.submit-item{display:flex;gap:10px;align-items:flex-start;padding:9px 13px;background:var(--gray-50);border:1px solid var(--gray-200);border-radius:7px;font-size:13px;line-height:1.5;color:var(--gray-700);}
+.submit-item::before{content:'☐';font-size:16px;flex-shrink:0;color:var(--gray-400);margin-top:-1px;}
+.grade-table{width:100%;border-collapse:collapse;font-size:13px;}
+.grade-table th{background:var(--navy);color:white;padding:9px 13px;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;text-align:left;}
+.grade-table td{padding:9px 13px;border-bottom:1px solid var(--gray-100);}
+.grade-table tr:last-child td{border-bottom:none;}
+.grade-table tr.total td{font-weight:700;background:var(--blue-xlt);color:var(--navy);font-size:14px;}
+.pts-right{text-align:right;font-weight:700;font-size:15px;color:var(--navy);}
+.intro-p{font-size:13.5px;line-height:1.7;color:var(--gray-700);margin-bottom:16px;}
+</style>
+</head>
+<body>
+
+<div class="pg-header">
+  <div class="pg-header-eyebrow">SCM 352 · M02 · Case Analysis</div>
+  <h1>Riverside Prescription Fulfillment Center</h1>
+  <p>Parameterized case — 4 versions · 100 points · Due Day 7 at 11:59 PM</p>
+</div>
+
+<div class="meta-strip">
+  <div class="meta-cell"><div class="meta-lbl">Points</div><div class="meta-val">100</div></div>
+  <div class="meta-cell"><div class="meta-lbl">Due</div><div class="meta-val">Day 7 · 11:59 PM</div></div>
+  <div class="meta-cell"><div class="meta-lbl">Format</div><div class="meta-val">PDF or Word</div></div>
+  <div class="meta-cell"><div class="meta-lbl">Attempts</div><div class="meta-val">1</div></div>
+  <div class="meta-cell"><div class="meta-lbl">Allowed resources</div><div class="meta-val">Ch. 2 · Lectures · Apps · Slides</div></div>
+</div>
+
+<div class="pg-body">
+
+  <!-- VERSION ASSIGNMENT -->
+  <div class="version-banner">
+    <div class="version-banner-hd">
+      <div><h2>Find Your Assigned Version</h2><p>Use the last digit of your student ID. Submit only your assigned version.</p></div>
+    </div>
+    <table class="version-table">
+      <thead><tr><th>Last digit of student ID</th><th>Your version</th><th>Operating parameters</th></tr></thead>
+      <tbody>
+        <tr><td>0 or 1</td><td><span class="ver-badge ver-a">A</span></td><td>10 hrs/day · 5 days/wk · 3,500 Rx/week · I = 70 prescriptions</td></tr>
+        <tr><td>2 or 3</td><td><span class="ver-badge ver-b">B</span></td><td>8 hrs/day · 6 days/wk · 4,200 Rx/week · I = 105 prescriptions</td></tr>
+        <tr><td>4 or 5</td><td><span class="ver-badge ver-c">C</span></td><td>12 hrs/day · 5 days/wk · 5,000 Rx/week · I = 100 prescriptions</td></tr>
+        <tr><td>6, 7, 8, or 9</td><td><span class="ver-badge ver-d">D</span></td><td>9 hrs/day · 5 days/wk · 2,800 Rx/week · I = 56 prescriptions</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- RULES -->
+  <div style="display:flex;flex-direction:column;gap:10px;">
+    <div class="alert alert-red">
+      <div class="alert-icon">🚫</div>
+      <div class="alert-body"><strong>Do not collaborate on version-specific calculations.</strong> Parts 1 and 2 use data unique to your version. Submitting another version's numbers constitutes academic dishonesty.</div>
+    </div>
+    <div class="alert alert-gold">
+      <div class="alert-icon">📋</div>
+      <div class="alert-body"><strong>Show all calculation steps with labeled intermediate values.</strong> Answers without supporting work will not receive full credit, even if numerically correct.</div>
+    </div>
+    <div class="alert alert-blue">
+      <div class="alert-icon">ℹ️</div>
+      <div class="alert-body">Parts 3 and 4 are the same for all versions. You may discuss concepts but your written responses must be your own.</div>
+    </div>
+  </div>
+
+  <!-- BACKGROUND -->
+  <div>
+    <div class="sec-div">Background — All Versions</div>
+    <div class="section-card" style="margin-top:14px;">
+      <div class="section-bd">
+        <p style="font-size:13.5px;line-height:1.75;color:var(--gray-700);">Riverside Health System operates a centralized prescription fulfillment center that fills prescriptions for 14 outpatient clinics across the region. Prescriptions arrive electronically from clinic pharmacists and move through a multi-step workflow: verification, compounding or dispensing, quality check, and packaging for courier delivery. The fulfillment director is evaluating whether the center can meet projected demand growth. She has asked you to analyze the current process metrics, identify a scope-related issue, and make a data-driven recommendation.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- OPERATING PARAMETERS TABLE -->
+  <div>
+    <div class="sec-div">Your Version — Operating Parameters</div>
+    <div class="section-card" style="margin-top:14px;">
+      <div class="section-bd">
+        <p class="intro-p">Locate your assigned version column and use those numbers throughout the case. The same parameters appear again in Part 3 — you do not need to re-copy them there.</p>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Parameter</th>
+              <th>Version A</th>
+              <th>Version B</th>
+              <th>Version C</th>
+              <th>Version D</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Operating hours per day</td><td>10 hrs</td><td>8 hrs</td><td>12 hrs</td><td>9 hrs</td></tr>
+            <tr><td>Operating days per week</td><td>5 days</td><td>6 days</td><td>5 days</td><td>5 days</td></tr>
+            <tr><td>Prescriptions filled per week</td><td>3,500</td><td>4,200</td><td>5,000</td><td>2,800</td></tr>
+            <tr><td>API required per prescription</td><td>250 g</td><td>400 g</td><td>500 g</td><td>300 g</td></tr>
+            <tr><td>API received per week</td><td>875 kg</td><td>1,680 kg</td><td>2,500 kg</td><td>840 kg</td></tr>
+            <tr><td>Average prescriptions in process (I)</td><td>70</td><td>105</td><td>100</td><td>56</td></tr>
+          </tbody>
+        </table>
+        <p style="font-size:11.5px;color:var(--gray-400);margin-top:8px;">Note: API = active pharmaceutical ingredient.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- PART 1 -->
+  <div>
+    <div class="sec-div">Part 1 — Flow Unit and Scope · Same questions for all versions</div>
+    <div class="section-card part1" style="margin-top:14px;">
+      <div class="section-hd">
+        <div class="part-badge">1</div>
+        <div class="section-hd-text">
+          <h2>Flow Unit and Scope</h2>
+          <p>Reference your version's operating parameters from the table above</p>
+        </div>
+        <div class="pts-badge">20 pts</div>
+      </div>
+      <div class="section-bd">
+        <div class="q-block">
+          <div class="q-num">Question 1a</div>
+          <div class="q-text">Identify the flow unit for the Riverside Prescription Fulfillment Center's process and explain why it is appropriate. Use at least two of the four flow unit criteria from the lecture narration in your explanation. Name both the flow unit and the criteria you are applying.</div>
+          <span class="q-pts">10 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Question 1b</div>
+          <div class="q-text">The fulfillment director's scope covers the entire center. Describe what a narrower scope might look like — choose a specific stage or sub-process within the center and name it. Then identify one metric (inventory, flow rate, or flow time) that would change if the analysis were limited to that narrower scope, and explain why.</div>
+          <span class="q-pts">10 pts</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PART 2 -->
+  <div>
+    <div class="sec-div">Part 2 — Flow Rate from Raw Data · Version-specific data</div>
+    <div class="section-card part2" style="margin-top:14px;">
+      <div class="section-hd">
+        <div class="part-badge">2</div>
+        <div class="section-hd-text">
+          <h2>Flow Rate from Raw Data</h2>
+          <p>Find your version's table below and show all calculation steps</p>
+        </div>
+        <div class="pts-badge">25 pts</div>
+      </div>
+      <div class="section-bd">
+        <p class="intro-p">The tables below show arrival and departure records for a sample of 10 prescriptions drawn from the center's electronic workflow log during normal operations. Find your version's table and use it to answer Parts 2a–2c.</p>
+
+        <div class="ver-tabs">
+          <div class="ver-tab-hd">
+            <button class="ver-tab-btn active" onclick="switchTab('p2','a')" id="p2-tab-a"><span class="vb ver-a">A</span> Version A</button>
+            <button class="ver-tab-btn" onclick="switchTab('p2','b')" id="p2-tab-b"><span class="vb ver-b">B</span> Version B</button>
+            <button class="ver-tab-btn" onclick="switchTab('p2','c')" id="p2-tab-c"><span class="vb ver-c">C</span> Version C</button>
+            <button class="ver-tab-btn" onclick="switchTab('p2','d')" id="p2-tab-d"><span class="vb ver-d">D</span> Version D</button>
+          </div>
+          <div class="ver-tab-panel active" id="p2-panel-a">
+            <table class="data-table">
+              <thead><tr><th>Rx #</th><th>Arrival</th><th>Departure</th><th>Time in Center (min)</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>10:00</td><td>11:02</td><td>62</td></tr>
+                <tr><td>2</td><td>10:01</td><td>11:01</td><td>60</td></tr>
+                <tr><td>3</td><td>10:02</td><td>11:07</td><td>65</td></tr>
+                <tr><td>4</td><td>10:03</td><td>11:00</td><td>57</td></tr>
+                <tr><td>5</td><td>10:04</td><td>11:08</td><td>64</td></tr>
+                <tr><td>6</td><td>10:05</td><td>11:03</td><td>58</td></tr>
+                <tr><td>7</td><td>10:06</td><td>11:05</td><td>59</td></tr>
+                <tr><td>8</td><td>10:07</td><td>11:10</td><td>63</td></tr>
+                <tr><td>9</td><td>10:08</td><td>11:02</td><td>54</td></tr>
+                <tr><td>10</td><td>10:09</td><td>11:06</td><td>57</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="ver-tab-panel" id="p2-panel-b">
+            <table class="data-table">
+              <thead><tr><th>Rx #</th><th>Arrival</th><th>Departure</th><th>Time in Center (min)</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>10:00</td><td>11:14</td><td>74</td></tr>
+                <tr><td>2</td><td>10:01</td><td>11:12</td><td>71</td></tr>
+                <tr><td>3</td><td>10:02</td><td>11:17</td><td>75</td></tr>
+                <tr><td>4</td><td>10:03</td><td>11:14</td><td>71</td></tr>
+                <tr><td>5</td><td>10:04</td><td>11:16</td><td>72</td></tr>
+                <tr><td>6</td><td>10:05</td><td>11:14</td><td>69</td></tr>
+                <tr><td>7</td><td>10:06</td><td>11:20</td><td>74</td></tr>
+                <tr><td>8</td><td>10:07</td><td>11:16</td><td>69</td></tr>
+                <tr><td>9</td><td>10:08</td><td>11:18</td><td>70</td></tr>
+                <tr><td>10</td><td>10:09</td><td>11:14</td><td>65</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="ver-tab-panel" id="p2-panel-c">
+            <table class="data-table">
+              <thead><tr><th>Rx #</th><th>Arrival</th><th>Departure</th><th>Time in Center (min)</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>10:00</td><td>11:13</td><td>73</td></tr>
+                <tr><td>2</td><td>10:01</td><td>11:11</td><td>70</td></tr>
+                <tr><td>3</td><td>10:02</td><td>11:16</td><td>74</td></tr>
+                <tr><td>4</td><td>10:03</td><td>11:15</td><td>72</td></tr>
+                <tr><td>5</td><td>10:04</td><td>11:15</td><td>71</td></tr>
+                <tr><td>6</td><td>10:05</td><td>11:13</td><td>68</td></tr>
+                <tr><td>7</td><td>10:06</td><td>11:19</td><td>73</td></tr>
+                <tr><td>8</td><td>10:07</td><td>11:16</td><td>69</td></tr>
+                <tr><td>9</td><td>10:08</td><td>11:22</td><td>74</td></tr>
+                <tr><td>10</td><td>10:09</td><td>11:14</td><td>65</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="ver-tab-panel" id="p2-panel-d">
+            <table class="data-table">
+              <thead><tr><th>Rx #</th><th>Arrival</th><th>Departure</th><th>Time in Center (min)</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>10:00</td><td>10:53</td><td>53</td></tr>
+                <tr><td>2</td><td>10:01</td><td>10:55</td><td>54</td></tr>
+                <tr><td>3</td><td>10:02</td><td>10:59</td><td>57</td></tr>
+                <tr><td>4</td><td>10:03</td><td>10:54</td><td>51</td></tr>
+                <tr><td>5</td><td>10:04</td><td>10:58</td><td>54</td></tr>
+                <tr><td>6</td><td>10:05</td><td>10:58</td><td>53</td></tr>
+                <tr><td>7</td><td>10:06</td><td>11:01</td><td>55</td></tr>
+                <tr><td>8</td><td>10:07</td><td>10:59</td><td>52</td></tr>
+                <tr><td>9</td><td>10:08</td><td>11:03</td><td>55</td></tr>
+                <tr><td>10</td><td>10:09</td><td>10:59</td><td>50</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="q-block">
+          <div class="q-num">Question 2a</div>
+          <div class="q-text">What is the average flow time (in minutes) for a prescription in your sample? Show your work — sum all 10 times, then divide by 10.</div>
+          <span class="q-pts">10 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Question 2b</div>
+          <div class="q-text">What is the average flow rate (in prescriptions per hour) based on your sample? Use the first arrival time and the last departure time from your version's table to establish your time window. Show your work, including the unit conversion from minutes to hours.</div>
+          <span class="q-pts">10 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Question 2c</div>
+          <div class="q-text">Are your results in 2a and 2b consistent with the operating data in your version's row of the parameter table above? Identify and explain any discrepancy in 2–3 sentences.</div>
+          <span class="q-pts">5 pts</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PART 3 -->
+  <div>
+    <div class="sec-div">Part 3 — Little's Law Application · Same for all versions</div>
+    <div class="section-card part3" style="margin-top:14px;">
+      <div class="section-hd">
+        <div class="part-badge">3</div>
+        <div class="section-hd-text">
+          <h2>Little's Law Application</h2>
+          <p>Use your version's operating parameters from the table at the start of the case</p>
+        </div>
+        <div class="pts-badge">35 pts</div>
+      </div>
+      <div class="section-bd">
+        <div class="q-block">
+          <div class="q-num">Question 3a</div>
+          <div class="q-text">Calculate the flow rate of prescriptions per hour using only the API data (API received per week ÷ API required per prescription). Show the complete unit conversion from kilograms to grams to prescriptions per week, then convert to prescriptions per hour using your version's operating schedule.</div>
+          <span class="q-pts">10 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Question 3b</div>
+          <div class="q-text">Using your version's inventory (I) and the flow rate you calculated in 3a, calculate the average flow time in hours using Little's Law (I = R × T). Show your work and label each variable.</div>
+          <span class="q-pts">10 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Question 3c</div>
+          <div class="q-text">Convert your flow time from Part 3b to minutes. Compare this result to the average flow time you calculated in Part 2a. Are they consistent? Explain any difference in 2–3 sentences — include both values explicitly in your comparison sentence.</div>
+          <span class="q-pts">10 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Question 3d</div>
+          <div class="q-text">If weekly demand increases by 20% (flow rate increases by 20%) and inventory stays constant, what is the new average flow time in hours? Calculate and interpret the result in one sentence.</div>
+          <span class="q-pts">5 pts</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PART 4 -->
+  <div>
+    <div class="sec-div">Part 4 — Managerial Recommendation · Same for all versions</div>
+    <div class="section-card part4" style="margin-top:14px;">
+      <div class="section-hd">
+        <div class="part-badge">4</div>
+        <div class="section-hd-text">
+          <h2>Managerial Recommendation</h2>
+          <p>Apply Little's Law to evaluate a process improvement scenario</p>
+        </div>
+        <div class="pts-badge">20 pts</div>
+      </div>
+      <div class="section-bd">
+        <p style="font-size:13px;font-weight:600;color:var(--gray-700);margin-bottom:10px;">Read the following scenario carefully before answering.</p>
+        <div class="scenario-box">
+          The fulfillment director's target is to reduce average flow time by 15% without adding inventory (I stays constant). Using Little's Law:<br><br>
+          <strong>(a)</strong> Calculate the new flow rate required to achieve this 15% reduction. Show your setup. <em>(8 pts)</em><br><br>
+          <strong>(b)</strong> Write a 3–5 sentence recommendation that: proposes one operational change that could achieve the required flow rate increase, and evaluates whether that change is feasible given the resource constraints implied by the scenario. <em>(12 pts)</em>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUBMISSION CHECKLIST -->
+  <div>
+    <div class="sec-div">Submission Requirements</div>
+    <div class="section-card" style="margin-top:14px;">
+      <div class="section-hd" style="background:var(--gray-50);padding:13px 20px;border-bottom:1px solid var(--gray-200);">
+        <h2 style="font-size:14px;font-weight:700;color:var(--navy);">Before you submit, verify the following</h2>
+      </div>
+      <div class="section-bd">
+        <div class="submit-list">
+          <div class="submit-item">Your file is saved as <strong>PDF or Word (.docx)</strong>.</div>
+          <div class="submit-item">Your <strong>assigned version (A, B, C, or D)</strong> is written at the top of your document.</div>
+          <div class="submit-item">Part 2 shows all <strong>10 arrival/departure times summed and averaged</strong>.</div>
+          <div class="submit-item">Part 3a shows the <strong>unit conversion from kg to g to prescriptions per week</strong> before converting to per hour.</div>
+          <div class="submit-item">Part 3c includes <strong>both your converted flow time (minutes) and an explicit comparison sentence</strong> to Part 2a.</div>
+          <div class="submit-item">Part 4 shows the <strong>Little's Law calculation for the required new rate</strong> before the recommendation paragraph.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GRADING SUMMARY -->
+  <div class="section-card">
+    <div style="background:var(--blue-xlt);padding:13px 20px;border-bottom:1px solid var(--gray-200);">
+      <h2 style="font-size:14px;font-weight:700;color:var(--navy);">Grading Summary · 100 points total</h2>
+    </div>
+    <table class="grade-table">
+      <thead><tr><th>Part</th><th>Content</th><th style="text-align:right;">Points</th><th>Primary LO</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Part 1a</strong></td><td>Flow unit + criteria justification</td><td class="pts-right">10</td><td>LO2-1 / LO2-5 / LO2-6</td></tr>
+        <tr><td><strong>Part 1b</strong></td><td>Narrower scope + metric change</td><td class="pts-right">10</td><td>LO2-1 / LO2-5 / LO2-6</td></tr>
+        <tr><td><strong>Part 2a</strong></td><td>Avg flow time from sample</td><td class="pts-right">10</td><td>LO2-2</td></tr>
+        <tr><td><strong>Part 2b</strong></td><td>Avg flow rate from sample window</td><td class="pts-right">10</td><td>LO2-2</td></tr>
+        <tr><td><strong>Part 2c</strong></td><td>Consistency check + explanation</td><td class="pts-right">5</td><td>LO2-2</td></tr>
+        <tr><td><strong>Part 3a</strong></td><td>Flow rate from API data + unit conversion</td><td class="pts-right">10</td><td>LO2-3</td></tr>
+        <tr><td><strong>Part 3b</strong></td><td>Flow time from Little's Law</td><td class="pts-right">10</td><td>LO2-3</td></tr>
+        <tr><td><strong>Part 3c</strong></td><td>Flow time comparison + explanation</td><td class="pts-right">10</td><td>LO2-3</td></tr>
+        <tr><td><strong>Part 3d</strong></td><td>Demand growth scenario</td><td class="pts-right">5</td><td>LO2-3</td></tr>
+        <tr><td><strong>Part 4</strong></td><td>Rate calculation + recommendation</td><td class="pts-right">20</td><td>LO2-3 / LO2-5</td></tr>
+        <tr class="total"><td colspan="2"><strong>Total</strong></td><td class="pts-right">100</td><td></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<script>
+function switchTab(part, ver) {
+  ['a','b','c','d'].forEach(v => {
+    const btn   = document.getElementById(part + '-tab-' + v);
+    const panel = document.getElementById(part + '-panel-' + v);
+    if (btn)   btn.classList.toggle('active', v === ver);
+    if (panel) panel.classList.toggle('active', v === ver);
+  });
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<section class="slide-page" data-title="The Non-Bottleneck Speed Trap" data-lo="LO3-6" data-notes="Gate 2 Q8 (newspaper press) and Case Part 6c both test this directly. The Cougar Mountain case in Chapter 3 is the canonical source — Gate 1 Q1 and Q2 test it. This slide presents the general principle; the lecture goes deeper with the hospital triage decision-tree.">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">LO3-6</span>
+      <span class="le-course">SCM 352 · Module 03</span>
+    </div>
+    <span class="le-pagenum">16 / 22</span>
+  </div>
+  <div class="le-titleblock">
+    <div class="le-title">The Non-Bottleneck <span>Speed Trap</span></div>
+    <div class="le-sub">Making a non-bottleneck faster never increases process capacity</div>
+  </div>
+  <div class="le-body">
+    <div class="callout red" style="margin-bottom:7px;">
+      <div class="callout-label">Common But Wrong</div>
+      <p class="slide-copy">"If we upgrade Station 1 to run twice as fast, we'll double our output." Only if Station 1 is the bottleneck. If it isn't, upgrading it does nothing.</p>
+    </div>
+    <table class="clean-table" style="margin-bottom:8px;">
+      <thead><tr><th>Scenario</th><th>Before Upgrade</th><th>After Upgrade</th><th>Change in Capacity</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="slide-table-text">Station 1 upgraded (non-bottleneck)</td>
+          <td class="slide-table-text">min{120, 80, <strong>40</strong>} = 40/hr</td>
+          <td class="slide-table-text">min{<strong>240</strong>, 80, 40} = 40/hr</td>
+          <td class="slide-table-text"><span class="neg">None</span></td>
+        </tr>
+        <tr>
+          <td class="slide-table-text">Station 3 upgraded (bottleneck)</td>
+          <td class="slide-table-text">min{120, 80, <strong>40</strong>} = 40/hr</td>
+          <td class="slide-table-text">min{120, 80, <strong>80</strong>} = 80/hr</td>
+          <td class="slide-table-text"><span class="pos">+40/hr</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="callout teal">
+      <div class="callout-label">Decision Rule</div>
+      <p class="slide-copy">Before recommending any speed improvement or investment, ask: <strong>Is this the bottleneck?</strong> If no — the recommendation does nothing for throughput. If yes — calculate the new process capacity after the improvement and identify the new bottleneck.</p>
+    </div>
+  </div>
+  <div class="le-footer">
+    <div class="le-lo-pills"><span class="le-lo-pill">LO3-6</span></div>
+    <div><span class="le-gate-note">Gate 2 Q8 · Case Part 6c</span></div>
+  </div>
+</section>

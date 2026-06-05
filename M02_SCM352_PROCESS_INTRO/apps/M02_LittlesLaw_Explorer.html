@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Little's Law Unit Converter — SCM 352 M02</title>
+<style>
+:root {
+  --navy:        #1a3a5c;
+  --blue:        #2563a8;
+  --blue-lt:     #dbeafe;
+  --blue-xlt:    #eff6ff;
+  --gold:        #f59e0b;
+  --gold-lt:     #fffbeb;
+  --gold-bdr:    #fde68a;
+  --green:       #16a34a;
+  --green-lt:    #f0fdf4;
+  --green-bdr:   #bbf7d0;
+  --red:         #dc2626;
+  --red-lt:      #fef2f2;
+  --red-bdr:     #fecaca;
+  --amber:       #d97706;
+  --amber-lt:    #fffbeb;
+  --amber-bdr:   #fde68a;
+  --orange:      #ea580c;
+  --orange-lt:   #fff7ed;
+  --orange-bdr:  #fed7aa;
+  --purple:      #7c3aed;
+  --purple-lt:   #faf5ff;
+  --purple-bdr:  #ddd6fe;
+  --teal:        #0891b2;
+  --teal-lt:     #f0fdfe;
+  --teal-bdr:    #a5f3fc;
+  --gray-50:     #f9fafb;
+  --gray-100:    #f3f4f6;
+  --gray-200:    #e5e7eb;
+  --gray-300:    #d1d5db;
+  --gray-400:    #9ca3af;
+  --gray-600:    #4b5563;
+  --gray-700:    #374151;
+  --gray-800:    #1f2937;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; background: var(--gray-50); color: var(--gray-800); min-height: 100vh; }
+
+header { background: var(--navy); color: white; padding: 16px 24px; display: flex; align-items: center; gap: 16px; }
+.header-badge { background: var(--gold); color: var(--navy); font-weight: 700; font-size: 11px; padding: 3px 8px; border-radius: 4px; letter-spacing: 0.05em; text-transform: uppercase; }
+header h1 { font-size: 18px; font-weight: 600; }
+
+.dot-track { background: white; border-bottom: 2px solid var(--gray-200); padding: 12px 24px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.dot-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--gray-600); }
+.dot-row { display: flex; gap: 6px; flex-wrap: wrap; }
+.dot { width: 30px; height: 30px; border-radius: 50%; border: 2px solid var(--gray-200); background: white; font-size: 11px; font-weight: 700; color: var(--gray-400); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s; }
+.dot:hover   { border-color: var(--blue); color: var(--blue); }
+.dot.active  { border-color: var(--blue);  background: var(--blue);  color: white; }
+.dot.d-correct { border-color: var(--green);  background: var(--green);  color: white; }
+.dot.d-partial { border-color: var(--amber);  background: var(--amber);  color: white; }
+.dot.d-wrong   { border-color: var(--red);    background: var(--red);    color: white; }
+
+.main { max-width: 1100px; margin: 0 auto; padding: 24px; display: grid; grid-template-columns: 1fr 320px; gap: 24px; align-items: start; }
+@media (max-width: 820px) { .main { grid-template-columns: 1fr; } }
+
+.card { background: white; border: 1px solid var(--gray-200); border-radius: 12px; overflow: hidden; margin-bottom: 0; }
+.card-header { background: var(--blue-lt); padding: 14px 20px; border-bottom: 1px solid var(--gray-200); }
+.card-header h2 { font-size: 15px; font-weight: 700; color: var(--navy); }
+.card-header p  { font-size: 13px; color: var(--gray-600); margin-top: 4px; }
+.card-body { padding: 20px; }
+
+.given-block { background: var(--gray-50); border-left: 4px solid var(--blue); padding: 12px 16px; border-radius: 0 8px 8px 0; margin-bottom: 20px; font-size: 14px; line-height: 1.6; color: var(--gray-800); }
+.given-block .given-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--blue); margin-bottom: 4px; }
+
+.step-section { border: 1px solid var(--gray-200); border-radius: 10px; padding: 14px 16px; margin-bottom: 12px; background: white; transition: opacity 0.2s; }
+.step-section.locked { opacity: 0.35; pointer-events: none; }
+.step-section.done-correct { border-color: var(--green-bdr); background: var(--green-lt); }
+.step-section.done-wrong   { border-color: var(--red-bdr);   background: var(--red-lt); }
+.step-num { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--blue); margin-bottom: 6px; }
+.step-question { font-size: 14px; font-weight: 600; color: var(--gray-800); margin-bottom: 10px; }
+
+.radio-group { display: flex; flex-wrap: wrap; gap: 8px; }
+.radio-label { display: flex; align-items: center; gap: 7px; padding: 8px 14px; border: 2px solid var(--gray-200); border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 500; color: var(--gray-700); transition: border-color 0.15s, background 0.15s; user-select: none; }
+.radio-label:hover { border-color: var(--blue); background: var(--blue-xlt); }
+.radio-label input[type="radio"] { accent-color: var(--blue); width: 15px; height: 15px; cursor: pointer; }
+.radio-label.selected { border-color: var(--blue); background: var(--blue-xlt); color: var(--navy); font-weight: 600; }
+
+.option-btn { padding: 8px 16px; border: 2px solid var(--gray-200); border-radius: 8px; background: white; cursor: pointer; font-size: 13px; font-weight: 500; color: var(--gray-700); transition: all 0.15s; text-align: left; width: 100%; margin-bottom: 6px; }
+.option-btn:hover { border-color: var(--blue); background: var(--blue-xlt); }
+.option-btn.selected { border-color: var(--blue); background: var(--blue-xlt); font-weight: 600; color: var(--navy); }
+
+.diff-tag { font-size: 11px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; padding: 3px 9px; border-radius: 100px; }
+.diff-easy   { background: var(--green-lt); color: var(--green); }
+.diff-medium { background: var(--amber-lt); color: var(--amber); }
+.diff-hard   { background: var(--red-lt);   color: var(--red); }
+
+.btn { padding: 10px 22px; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.15s; }
+.btn-primary   { background: var(--blue);     color: white; }
+.btn-secondary { background: var(--gray-100); color: var(--gray-800); }
+.btn-green     { background: var(--green);    color: white; }
+.btn-primary:hover   { background: #1d4ed8; }
+.btn-primary:disabled { background: var(--gray-400); cursor: not-allowed; }
+.btn-secondary:hover { background: var(--gray-200); }
+.btn-green:hover { background: #15803d; }
+.btn-group { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-top: 16px; }
+
+.feedback-panel { display: none; margin-top: 20px; border: 2px solid var(--gray-200); border-radius: 10px; overflow: hidden; }
+.feedback-panel.show { display: block; }
+.fb-banner { padding: 12px 16px; font-size: 14px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+.fb-correct { background: var(--green-lt); color: var(--green); border-bottom: 2px solid var(--green); }
+.fb-partial { background: var(--amber-lt); color: var(--amber); border-bottom: 2px solid var(--amber); }
+.fb-wrong   { background: var(--red-lt);   color: var(--red);   border-bottom: 2px solid var(--red); }
+.fb-body { padding: 16px; font-size: 13px; line-height: 1.65; background: white; }
+.think-deeper { background: var(--gold-lt); border: 1.5px solid var(--gold-bdr); border-radius: 8px; padding: 12px 16px; margin-top: 12px; font-size: 13px; line-height: 1.6; }
+.think-deeper-label { font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--amber); margin-bottom: 6px; }
+
+.step-result-row { display: flex; align-items: flex-start; gap: 8px; padding: 6px 0; border-bottom: 1px solid var(--gray-100); font-size: 13px; line-height: 1.5; }
+.step-result-row:last-child { border-bottom: none; }
+.step-icon { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+
+.score-row { padding: 16px 20px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--gray-100); }
+.score-num { font-size: 28px; font-weight: 700; color: var(--navy); }
+.score-meta { font-size: 12px; color: var(--gray-600); line-height: 1.4; }
+.score-meta strong { color: var(--gray-800); display: block; font-size: 13px; }
+.prog-bar-outer { height: 5px; background: var(--gray-200); border-radius: 3px; overflow: hidden; margin: 0 20px 16px; }
+.prog-bar-inner { height: 100%; background: var(--blue); border-radius: 3px; transition: width 0.4s; }
+.tip-box { background: var(--gold-lt); border: 1px solid var(--gold-bdr); border-radius: 8px; padding: 12px 16px; font-size: 13px; line-height: 1.6; color: var(--gray-800); }
+.tip-box strong { color: var(--navy); }
+.formula-display { text-align: center; font-size: 20px; font-weight: 700; color: var(--navy); background: var(--blue-xlt); border: 1px solid var(--blue-lt); border-radius: 8px; padding: 10px; margin-bottom: 10px; }
+
+.final-summary { display: none; text-align: center; padding: 24px 20px; }
+.final-summary.show { display: block; }
+.final-summary h3 { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-badge">SCM 352 · M02</div>
+  <h1>Little's Law Unit Converter</h1>
+</header>
+
+<div class="dot-track">
+  <span class="dot-label">Scenarios</span>
+  <div class="dot-row" id="dotRow"></div>
+</div>
+
+<div class="main">
+  <div>
+    <div class="card" id="mainCard">
+      <div class="card-header">
+        <h2 id="cardTitle">Loading…</h2>
+        <p id="cardSubtitle"></p>
+      </div>
+      <div class="card-body">
+
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap;">
+          <div class="diff-tag" id="diffTag"></div>
+          <div style="margin-left:auto;font-size:12px;font-weight:600;color:var(--gray-400);" id="vigNum"></div>
+        </div>
+
+        <div class="given-block" id="givenBlock">
+          <div class="given-label">Given</div>
+          <div id="givenText"></div>
+        </div>
+
+        <!-- Step 1 -->
+        <div class="step-section" id="step1Section">
+          <div class="step-num">Step 1 of 4</div>
+          <div class="step-question">What are you solving for?</div>
+          <div class="radio-group" id="step1Radios">
+            <label class="radio-label" id="lbl1I"><input type="radio" name="step1" value="I" onchange="onStep1Change('I')"> Inventory (I)</label>
+            <label class="radio-label" id="lbl1R"><input type="radio" name="step1" value="R" onchange="onStep1Change('R')"> Flow Rate (R)</label>
+            <label class="radio-label" id="lbl1T"><input type="radio" name="step1" value="T" onchange="onStep1Change('T')"> Flow Time (T)</label>
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="step-section locked" id="step2Section">
+          <div class="step-num">Step 2 of 4</div>
+          <div class="step-question">Do the <strong>time units</strong> match across R and T?</div>
+          <div class="radio-group" id="step2Radios">
+            <label class="radio-label" id="lbl2Y"><input type="radio" name="step2" value="yes" onchange="onStep2Change('yes')"> Yes — units match, no conversion needed</label>
+            <label class="radio-label" id="lbl2N"><input type="radio" name="step2" value="no"  onchange="onStep2Change('no')">  No — conversion required before calculating</label>
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="step-section locked" id="step3Section">
+          <div class="step-num">Step 3 of 4</div>
+          <div class="step-question">Do the <strong>flow units</strong> match across I and R?</div>
+          <div class="radio-group" id="step3Radios">
+            <label class="radio-label" id="lbl3Y"><input type="radio" name="step3" value="yes" onchange="onStep3Change('yes')"> Yes — same flow unit, no conversion needed</label>
+            <label class="radio-label" id="lbl3N"><input type="radio" name="step3" value="no"  onchange="onStep3Change('no')">  No — flow unit conversion required</label>
+          </div>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="step-section locked" id="step4Section">
+          <div class="step-num">Step 4 of 4</div>
+          <div class="step-question">Select the correct answer:</div>
+          <div id="step4Options"></div>
+        </div>
+
+        <div class="btn-group">
+          <button class="btn btn-primary" id="submitBtn" onclick="handleSubmit()" disabled>Check Answer</button>
+          <button class="btn btn-secondary" id="prevBtn"    onclick="handlePrev()"    style="display:none">← Previous</button>
+          <button class="btn btn-green"    id="nextBtn"    onclick="handleNext()"    style="display:none">Next Scenario →</button>
+          <button class="btn btn-secondary" id="restartBtn" onclick="handleRestart()" style="display:none">↩ Restart</button>
+        </div>
+
+        <div class="feedback-panel" id="feedbackPanel">
+          <div class="fb-banner" id="fbBanner"></div>
+          <div class="fb-body">
+            <div id="fbReveal"></div>
+            <div class="think-deeper" id="fbThink" style="display:none">
+              <div class="think-deeper-label">Think Deeper</div>
+              <div id="fbThinkText"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="final-summary" id="finalSummary"></div>
+
+      </div>
+    </div>
+  </div>
+
+  <div style="position:sticky;top:24px;display:flex;flex-direction:column;gap:16px;">
+    <div class="card">
+      <div class="card-header">
+        <h2>Your Score</h2>
+        <p>Updates after each answer</p>
+      </div>
+      <div class="score-row">
+        <div class="score-num" id="scoreNum">0</div>
+        <div class="score-meta">
+          <strong id="scoreLabel">correct</strong>
+          <span id="scoreDetail">of 0 answered</span>
+        </div>
+      </div>
+      <div class="prog-bar-outer">
+        <div class="prog-bar-inner" id="progBar" style="width:0%"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <h2>Little's Law</h2>
+        <p>Chapter 2 reference</p>
+      </div>
+      <div class="card-body">
+        <div class="formula-display" id="formulaDisplay">I = R × T</div>
+        <div class="tip-box" id="conceptBox">
+          <strong>Three pre-calculation checks:</strong><br>
+          1. What am I solving for — I, R, or T?<br>
+          2. Do time units match across R and T?<br>
+          3. Do flow units match across I and R?
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const SCENARIOS = [
+  {
+    id: 1,
+    difficulty: 'easy',
+    title: 'Hotel Occupancy',
+    desc: 'A hotel records 240 guest check-ins per day. Each guest stays an average of 2 days before checking out.',
+    given: 'R = 240 guests/day · T = 2 days/guest · Solve for I',
+    step1Answer: 'I',
+    step2Match: true,
+    step2Note: 'R is in guests/day and T is in days/guest — same time unit (days). No conversion needed.',
+    step3Match: true,
+    step3Note: 'Both I and R are in guests. Flow units match.',
+    options: [
+      { label: '480 guests', correct: true },
+      { label: '120 guests', correct: false },
+      { label: '242 guests', correct: false },
+      { label: '960 guests', correct: false }
+    ],
+    reveal: '<strong>Step-by-step:</strong><br>R = 240 guests/day · T = 2 days/guest · Units match.<br>I = R × T = 240 × 2 = <strong>480 guests</strong>.',
+    thinkDeeper: 'Even though 240 guests check in each day, 480 guests are on property at any given moment — because each guest stays 2 days. Little\'s Law captures this "overlap" precisely.'
+  },
+  {
+    id: 2,
+    difficulty: 'medium',
+    title: 'Airport Lounge',
+    desc: 'An airport lounge admits 60 passengers per hour. Each passenger spends an average of 45 minutes in the lounge.',
+    given: 'R = 60 passengers/hr · T = 45 min/passenger · Solve for I',
+    step1Answer: 'I',
+    step2Match: false,
+    step2Note: 'R is in passengers/hr but T is in minutes/passenger — time units don\'t match. Convert T: 45 min ÷ 60 min/hr = 0.75 hr/passenger.',
+    step3Match: true,
+    step3Note: 'Both I and R are in passengers. Flow units match.',
+    options: [
+      { label: '45 passengers', correct: true },
+      { label: '2,700 passengers', correct: false },
+      { label: '15 passengers', correct: false },
+      { label: '80 passengers', correct: false }
+    ],
+    reveal: '<strong>Step-by-step:</strong><br>R = 60 passengers/hr · T = 45 min/passenger.<br>Time units don\'t match → convert T: 45 ÷ 60 = <strong>0.75 hr/passenger</strong>.<br>I = R × T = 60 × 0.75 = <strong>45 passengers</strong>.<br><em>Common error: I = 60 × 45 = 2,700 — off by 60× (skipped conversion).</em>',
+    thinkDeeper: null
+  },
+  {
+    id: 3,
+    difficulty: 'medium',
+    title: 'E-Commerce Warehouse',
+    desc: 'An e-commerce fulfillment center keeps 1,500 orders in process at any given time. The center ships 300 orders per hour.',
+    given: 'I = 1,500 orders · R = 300 orders/hr · Solve for T',
+    step1Answer: 'T',
+    step2Match: true,
+    step2Note: 'T will be in hours (I in orders, R in orders/hr). Units are consistent — no conversion needed.',
+    step3Match: true,
+    step3Note: 'Both I and R are in orders. Flow units match.',
+    options: [
+      { label: '5 hours/order', correct: true },
+      { label: '0.2 hours/order', correct: false },
+      { label: '450,000 hours/order', correct: false },
+      { label: '1,800 hours/order', correct: false }
+    ],
+    reveal: '<strong>Step-by-step:</strong><br>Know I = 1,500 orders · R = 300 orders/hr · Solve for T.<br>T = I ÷ R = 1,500 ÷ 300 = <strong>5 hours per order</strong>.<br><em>Common error: T = 300/1,500 = 0.2 — inverted the formula.</em>',
+    thinkDeeper: 'The manager can calculate that each order spends 5 hours in the system without tagging a single order — just from the count of in-process orders and the shipping rate. This is the inference use case.'
+  },
+  {
+    id: 4,
+    difficulty: 'medium',
+    title: 'Automated Car Wash',
+    desc: 'An automated car wash keeps 8 cars in various stages of washing at any given time. Each car takes 144 seconds to complete the full wash cycle.',
+    given: 'I = 8 cars · T = 144 sec/car · Solve for R (in cars/hr)',
+    step1Answer: 'R',
+    step2Match: false,
+    step2Note: 'T is in seconds/car but the target output is R in cars/hr — time units don\'t match. Convert T: 144 sec ÷ 3,600 sec/hr = 0.04 hr/car.',
+    step3Match: true,
+    step3Note: 'Both I and R are in cars. Flow units match.',
+    options: [
+      { label: '200 cars/hr', correct: true },
+      { label: '0.056 cars/sec', correct: false },
+      { label: '1,152 cars/hr', correct: false },
+      { label: '20 cars/hr', correct: false }
+    ],
+    reveal: '<strong>Step-by-step:</strong><br>I = 8 cars · T = 144 sec/car · Solve for R in cars/hr.<br>Convert T: 144 ÷ 3,600 = <strong>0.04 hr/car</strong>.<br>R = I ÷ T = 8 ÷ 0.04 = <strong>200 cars/hr</strong>.<br><em>Common errors: R = 8 ÷ 144 = 0.056 (no conversion), or R = 8 × 144 = 1,152 (wrong formula).</em>',
+    thinkDeeper: null
+  },
+  {
+    id: 5,
+    difficulty: 'hard',
+    title: 'Glass Bottle Factory',
+    desc: 'A glass bottle factory receives 600 kg of silica sand per day. Each bottle requires 2 kg of silica. At any given time, 45 bottles are at various stages of production.',
+    given: 'Input rate = 600 kg silica/day · 2 kg/bottle · I = 45 bottles · Solve for T',
+    step1Answer: 'T',
+    step2Match: true,
+    step2Note: 'After converting R to bottles/day, T will be in days/bottle. Time units are consistent.',
+    step3Match: false,
+    step3Note: 'I is in bottles but R is given in kg/day — flow units don\'t match. Convert R: 600 kg/day ÷ 2 kg/bottle = 300 bottles/day.',
+    options: [
+      { label: '0.15 days/bottle', correct: true },
+      { label: '0.075 days/bottle', correct: false },
+      { label: '90 days/bottle', correct: false },
+      { label: '7.5 days/bottle', correct: false }
+    ],
+    reveal: '<strong>Step-by-step:</strong><br>I = 45 bottles · R = 600 kg/day · Conversion factor: 2 kg/bottle.<br>Flow units don\'t match → convert R: 600 ÷ 2 = <strong>300 bottles/day</strong>.<br>T = I ÷ R = 45 ÷ 300 = <strong>0.15 days/bottle</strong> (≈ 3.6 hours).<br><em>Common error: T = 45 ÷ 600 = 0.075 — skipped the flow unit conversion.</em>',
+    thinkDeeper: 'Gate 2 Q2 uses this exact structure: an input material (kg/wk) must be converted to output units (products/wk) before Little\'s Law can be applied. The conversion factor is always stated explicitly in the problem.'
+  },
+  {
+    id: 6,
+    difficulty: 'hard',
+    title: 'Textile Plant',
+    desc: 'A textile plant receives 480 meters of raw fabric per hour. Each finished jacket requires 2.5 meters of fabric. Each jacket spends 90 minutes in production from cutting to packaging.',
+    given: 'Input rate = 480 m fabric/hr · 2.5 m/jacket · T = 90 min/jacket · Solve for I',
+    step1Answer: 'I',
+    step2Match: false,
+    step2Note: 'T is in minutes/jacket but R (after conversion) will be in jackets/hr — time units don\'t match. Convert T: 90 min ÷ 60 min/hr = 1.5 hr/jacket.',
+    step3Match: false,
+    step3Note: 'I is in jackets but R is given in m/hr — flow units don\'t match. Convert R: 480 m/hr ÷ 2.5 m/jacket = 192 jackets/hr.',
+    options: [
+      { label: '288 jackets', correct: true },
+      { label: '192 jackets', correct: false },
+      { label: '17,280 jackets', correct: false },
+      { label: '72 jackets', correct: false }
+    ],
+    reveal: '<strong>Step-by-step:</strong><br>Both conversions required:<br>• Time: T = 90 min ÷ 60 = <strong>1.5 hr/jacket</strong><br>• Flow unit: R = 480 m/hr ÷ 2.5 m/jacket = <strong>192 jackets/hr</strong><br>I = R × T = 192 × 1.5 = <strong>288 jackets</strong>.<br><em>Partial errors: I=192 (forgot T conversion), I=17,280 (no conversions), I=72 (only time conversion).</em>',
+    thinkDeeper: 'When both conversions are required simultaneously, the order doesn\'t matter — convert time first or flow unit first, then apply I = R × T. The trap is noticing only one mismatch and missing the other.'
+  }
+];
+
+let currentIdx = 0;
+let submitted  = false;
+let step1Val   = null;
+let step2Val   = null;
+let step3Val   = null;
+let step4Val   = null;
+let results    = {};
+let cntCorrect = 0, cntPartial = 0, cntWrong = 0;
+
+function init() {
+  buildNav();
+  loadItem(0);
+}
+
+function buildNav() {
+  const row = document.getElementById('dotRow');
+  SCENARIOS.forEach((s, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'dot' + (i === 0 ? ' active' : '');
+    btn.id = 'dot' + i;
+    btn.textContent = String(i + 1).padStart(2, '0');
+    btn.title = s.title;
+    btn.onclick = () => goTo(i);
+    row.appendChild(btn);
+  });
+}
+
+function updateNav() {
+  SCENARIOS.forEach((s, i) => {
+    const d = document.getElementById('dot' + i);
+    if (!d) return;
+    d.className = 'dot';
+    if (i === currentIdx) d.classList.add('active');
+    const r = results[s.id];
+    if (r === 'correct') d.classList.add('d-correct');
+    else if (r === 'partial') d.classList.add('d-partial');
+    else if (r === 'wrong')   d.classList.add('d-wrong');
+  });
+}
+
+function loadItem(idx) {
+  currentIdx = idx;
+  submitted  = false;
+  step1Val = step2Val = step3Val = step4Val = null;
+  const sc = SCENARIOS[idx];
+
+  document.getElementById('cardTitle').textContent    = sc.title;
+  document.getElementById('cardSubtitle').textContent = 'Little\'s Law — ' + (sc.step1Answer === 'I' ? 'Solve for Inventory' : sc.step1Answer === 'R' ? 'Solve for Flow Rate' : 'Solve for Flow Time');
+  document.getElementById('givenText').innerHTML      = sc.given;
+  document.getElementById('vigNum').textContent       = String(idx+1).padStart(2,'0') + ' / ' + SCENARIOS.length;
+
+  const dt = document.getElementById('diffTag');
+  dt.textContent = sc.difficulty.charAt(0).toUpperCase() + sc.difficulty.slice(1);
+  dt.className   = 'diff-tag diff-' + sc.difficulty;
+
+  // Reset steps
+  document.querySelectorAll('.step-section').forEach(s => {
+    s.classList.remove('done-correct','done-wrong');
+  });
+  document.getElementById('step1Section').classList.remove('locked');
+  document.getElementById('step2Section').classList.add('locked');
+  document.getElementById('step3Section').classList.add('locked');
+  document.getElementById('step4Section').classList.add('locked');
+
+  // Clear radio selections
+  document.querySelectorAll('input[name="step1"], input[name="step2"], input[name="step3"]').forEach(r => r.checked = false);
+  document.querySelectorAll('.radio-label').forEach(l => l.classList.remove('selected'));
+
+  // Build step 4 options (shuffled)
+  const optContainer = document.getElementById('step4Options');
+  optContainer.innerHTML = '';
+  const opts = [...sc.options].sort(() => Math.random() - 0.5);
+  opts.forEach((o, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.textContent = o.label;
+    btn.dataset.correct = o.correct;
+    btn.onclick = () => onStep4Select(btn, o.label);
+    optContainer.appendChild(btn);
+  });
+
+  // Reset feedback
+  document.getElementById('feedbackPanel').classList.remove('show');
+  document.getElementById('fbThink').style.display = 'none';
+  document.getElementById('finalSummary').classList.remove('show');
+
+  // Buttons
+  document.getElementById('submitBtn').disabled      = true;
+  document.getElementById('submitBtn').style.display = 'inline-block';
+  document.getElementById('nextBtn').style.display   = 'none';
+  document.getElementById('prevBtn').style.display   = idx > 0 ? 'inline-block' : 'none';
+  document.getElementById('restartBtn').style.display = 'none';
+
+  // Formula hint
+  const formulaMap = { I: 'I = R × T', R: 'R = I ÷ T', T: 'T = I ÷ R' };
+  document.getElementById('formulaDisplay').textContent = formulaMap[sc.step1Answer] || 'I = R × T';
+
+  if (results[sc.id]) replayResult(sc, results[sc.id]);
+  updateNav();
+}
+
+function replayResult(sc, status) {
+  submitted = true;
+  document.getElementById('submitBtn').style.display = 'none';
+  showFeedback(sc, status);
+  document.getElementById('nextBtn').style.display  = currentIdx < SCENARIOS.length - 1 ? 'inline-block' : 'none';
+  document.getElementById('prevBtn').style.display  = currentIdx > 0 ? 'inline-block' : 'none';
+}
+
+function onStep1Change(val) {
+  step1Val = val;
+  document.querySelectorAll('input[name="step1"]').forEach(r => {
+    document.getElementById('lbl1' + r.value).classList.toggle('selected', r.checked);
+  });
+  document.getElementById('step2Section').classList.remove('locked');
+  checkAllAnswered();
+}
+
+function onStep2Change(val) {
+  step2Val = val;
+  document.querySelectorAll('input[name="step2"]').forEach(r => {
+    document.getElementById('lbl2' + (r.value === 'yes' ? 'Y' : 'N')).classList.toggle('selected', r.checked);
+  });
+  document.getElementById('step3Section').classList.remove('locked');
+  checkAllAnswered();
+}
+
+function onStep3Change(val) {
+  step3Val = val;
+  document.querySelectorAll('input[name="step3"]').forEach(r => {
+    document.getElementById('lbl3' + (r.value === 'yes' ? 'Y' : 'N')).classList.toggle('selected', r.checked);
+  });
+  document.getElementById('step4Section').classList.remove('locked');
+  checkAllAnswered();
+}
+
+function onStep4Select(btn, label) {
+  document.querySelectorAll('#step4Options .option-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  step4Val = label;
+  checkAllAnswered();
+}
+
+function checkAllAnswered() {
+  document.getElementById('submitBtn').disabled = !(step1Val && step2Val && step3Val && step4Val);
+}
+
+function grade(sc) {
+  const s1ok = step1Val === sc.step1Answer;
+  const s2ok = (step2Val === 'yes') === sc.step2Match;
+  const s3ok = (step3Val === 'yes') === sc.step3Match;
+  const s4ok = (document.querySelector('#step4Options .option-btn.selected')?.dataset.correct === 'true');
+
+  if (s1ok && s2ok && s3ok && s4ok) return 'correct';
+  if (s4ok && (!s1ok || !s2ok || !s3ok)) return 'partial';
+  return 'wrong';
+}
+
+function handleSubmit() {
+  if (!step1Val || !step2Val || !step3Val || !step4Val || submitted) return;
+  submitted = true;
+  const sc = SCENARIOS[currentIdx];
+
+  const s1ok = step1Val === sc.step1Answer;
+  const s2ok = (step2Val === 'yes') === sc.step2Match;
+  const s3ok = (step3Val === 'yes') === sc.step3Match;
+  const s4ok = (document.querySelector('#step4Options .option-btn.selected')?.dataset.correct === 'true');
+
+  const status = grade(sc);
+  results[sc.id] = status;
+  if (status === 'correct')  cntCorrect++;
+  else if (status === 'partial') cntPartial++;
+  else cntWrong++;
+
+  // Color the step sections
+  document.getElementById('step1Section').classList.add(s1ok ? 'done-correct' : 'done-wrong');
+  document.getElementById('step2Section').classList.add(s2ok ? 'done-correct' : 'done-wrong');
+  document.getElementById('step3Section').classList.add(s3ok ? 'done-correct' : 'done-wrong');
+  document.getElementById('step4Section').classList.add(s4ok ? 'done-correct' : 'done-wrong');
+
+  updateScoreDisplay();
+  showFeedback(sc, status, s1ok, s2ok, s3ok, s4ok);
+  updateNav();
+
+  document.getElementById('submitBtn').style.display = 'none';
+  if (currentIdx < SCENARIOS.length - 1) {
+    document.getElementById('nextBtn').style.display = 'inline-block';
+  } else {
+    setTimeout(showFinalSummary, 1400);
+  }
+  document.getElementById('prevBtn').style.display = currentIdx > 0 ? 'inline-block' : 'none';
+}
+
+function showFeedback(sc, status, s1ok, s2ok, s3ok, s4ok) {
+  const panel  = document.getElementById('feedbackPanel');
+  const banner = document.getElementById('fbBanner');
+  const reveal = document.getElementById('fbReveal');
+  const thinkBox  = document.getElementById('fbThink');
+  const thinkText = document.getElementById('fbThinkText');
+
+  banner.className = 'fb-banner ';
+  if (status === 'correct') { banner.classList.add('fb-correct'); banner.innerHTML = '✓ All four steps correct.'; }
+  else if (status === 'partial') { banner.classList.add('fb-partial'); banner.innerHTML = '◑ Right answer, but a setup step was incorrect — see below.'; }
+  else { banner.classList.add('fb-wrong'); banner.innerHTML = '✗ Incorrect — review the step analysis below.'; }
+
+  const stepNames = ['What to solve for', 'Time units', 'Flow units', 'Final answer'];
+  const stepOk    = [s1ok ?? true, s2ok ?? true, s3ok ?? true, s4ok ?? true];
+  const stepHints = [
+    s1ok === false ? `You selected "${step1Val}" but the problem requires solving for <strong>${sc.step1Answer}</strong>.` : 'Correctly identified the target variable.',
+    s2ok === false ? sc.step2Note : 'Correct — ' + (sc.step2Match ? 'time units matched.' : 'time conversion was needed.') + ' ' + sc.step2Note,
+    s3ok === false ? sc.step3Note : 'Correct — ' + (sc.step3Match ? 'flow units matched.' : 'flow unit conversion was needed.') + ' ' + sc.step3Note,
+    ''
+  ];
+
+  let html = '<div style="margin-bottom:12px;">';
+  stepNames.forEach((name, i) => {
+    html += `<div class="step-result-row">
+      <div class="step-icon">${stepOk[i] !== false ? '✅' : '❌'}</div>
+      <div><strong>${name}:</strong> ${stepHints[i]}</div>
+    </div>`;
+  });
+  html += '</div>';
+  html += sc.reveal;
+  reveal.innerHTML = html;
+
+  if (sc.thinkDeeper) {
+    thinkText.innerHTML = sc.thinkDeeper;
+    thinkBox.style.display = 'block';
+  } else {
+    thinkBox.style.display = 'none';
+  }
+  panel.classList.add('show');
+}
+
+function handleNext()    { if (currentIdx < SCENARIOS.length - 1) goTo(currentIdx + 1); else showFinalSummary(); }
+function handlePrev()    { if (currentIdx > 0) goTo(currentIdx - 1); }
+function handleRestart() {
+  results = {}; cntCorrect = cntPartial = cntWrong = 0;
+  document.getElementById('finalSummary').classList.remove('show');
+  updateScoreDisplay(); loadItem(0);
+}
+function goTo(idx) { loadItem(idx); }
+
+function updateScoreDisplay() {
+  const answered = cntCorrect + cntPartial + cntWrong;
+  document.getElementById('scoreNum').textContent    = cntCorrect;
+  document.getElementById('scoreDetail').textContent = `of ${answered} answered`;
+  document.getElementById('progBar').style.width     = ((answered / SCENARIOS.length) * 100) + '%';
+}
+
+function showFinalSummary() {
+  const sum = document.getElementById('finalSummary');
+  sum.classList.add('show');
+  document.getElementById('mainCard').querySelector('.card-body').scrollTop = 0;
+  const pct = SCENARIOS.length > 0 ? Math.round((cntCorrect / SCENARIOS.length) * 100) : 0;
+  sum.innerHTML = `
+    <h3 style="color:var(--green)">All ${SCENARIOS.length} scenarios complete</h3>
+    <p style="font-size:22px;font-weight:700;color:var(--navy);margin:10px 0">${cntCorrect} / ${SCENARIOS.length} fully correct</p>
+    <p style="color:var(--gray-600);font-size:13px;margin-bottom:16px;">${pct}% fully correct · ${cntPartial} with process errors · ${cntWrong} incorrect</p>
+    <div class="tip-box" style="text-align:left;margin-bottom:16px;">
+      <strong>Ready for Gate 2?</strong><br>
+      Gate 2 Q1, Q2, and Q5 all require the three-step setup this app trained. Q1 tests time conversion (Scenario 2 type). Q2 tests flow unit conversion (Scenario 5–6 type). Q5 tests solve-for-R with time conversion (Scenario 4 type). The Case Analysis Part 3a is a flow unit conversion identical to Scenario 5.
+    </div>
+    <button class="btn btn-secondary" onclick="handleRestart()">↩ Restart</button>
+  `;
+}
+
+init();
+</script>
+</body>
+</html>

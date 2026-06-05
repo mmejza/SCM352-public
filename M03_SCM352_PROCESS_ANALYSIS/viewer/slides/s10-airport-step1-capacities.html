@@ -1,0 +1,51 @@
+<section class="slide-page" data-title="Airport Security — Step 1: Station Capacities" data-lo="LO3-2" data-notes="Unit conversion chain shown explicitly: min → hr by ×60. All three stations have m=1 here, so capacity = 1/PT × 60. The multi-worker case comes in s15.">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">LO3-2</span>
+      <span class="le-course">SCM 352 · Module 03</span>
+    </div>
+    <span class="le-pagenum">10 / 22</span>
+  </div>
+  <div class="le-titleblock">
+    <div class="le-title">Airport Security — <span>Step 1: Capacities</span></div>
+    <div class="le-sub">Capacity = m ÷ PT, converted to travelers per hour</div>
+  </div>
+  <div class="le-body">
+    <table class="clean-table" style="margin-bottom:8px;">
+      <thead><tr><th>Station</th><th>PT (min/traveler)</th><th>m</th><th>C (travelers/min)</th><th>C (travelers/hr)</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="slide-table-text"><strong>1 — ID Check</strong></td>
+          <td class="slide-table-text">0.5</td>
+          <td class="slide-table-text">1</td>
+          <td class="slide-table-text">1/0.5 = <strong>2.0/min</strong></td>
+          <td class="slide-table-text">2.0 × 60 = <strong>120/hr</strong></td>
+        </tr>
+        <tr>
+          <td class="slide-table-text"><strong>2 — Body Scanner</strong></td>
+          <td class="slide-table-text">0.75</td>
+          <td class="slide-table-text">1</td>
+          <td class="slide-table-text">1/0.75 = <strong>1.33/min</strong></td>
+          <td class="slide-table-text">1.33 × 60 = <strong>80/hr</strong></td>
+        </tr>
+        <tr>
+          <td class="slide-table-text"><strong>3 — Baggage Scanner</strong></td>
+          <td class="slide-table-text">1.5</td>
+          <td class="slide-table-text">1</td>
+          <td class="slide-table-text">1/1.5 = <strong>0.67/min</strong></td>
+          <td class="slide-table-text">0.67 × 60 = <strong>40/hr</strong></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="callout teal">
+      <div class="callout-label">Reading the Pattern</div>
+      <p class="slide-copy">Longer processing time → lower capacity. Station 3 (1.5 min) is three times slower than Station 1 (0.5 min) — capacity is exactly one-third as large (40/hr vs. 120/hr). This relationship is direct: double the PT → halve the capacity.</p>
+    </div>
+  </div>
+  <div class="le-footer">
+    <div class="le-lo-pills"><span class="le-lo-pill">LO3-2</span></div>
+    <div><span class="le-gate-note">Gate 2 Q2 Step 1</span></div>
+  </div>
+</section>

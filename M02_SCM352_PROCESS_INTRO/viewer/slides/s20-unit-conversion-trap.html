@@ -1,0 +1,40 @@
+<section class="slide-page" data-title="The Unit Conversion Trap" data-lo="LO2-3" data-notes="Misconception slide. The two traps (time unit and flow unit) produce characteristically large wrong answers — which is a good teaching point. Wrong answer = off by the conversion factor, not just slightly off.">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">LO2-3</span>
+      <span class="le-course">SCM 352 · Module 02</span>
+    </div>
+    <span class="le-pagenum">20 / 22</span>
+  </div>
+  <div class="le-titleblock">
+    <div class="le-title">The Unit <span>Conversion Trap</span></div>
+    <div class="le-sub">Two types — both produce wrong answers that are off by a large factor</div>
+  </div>
+  <div class="le-body">
+    <div class="two-col" style="margin-bottom:8px;">
+      <div class="mini-card" style="border-left-color:var(--red);">
+        <h4 class="slide-label" style="color:var(--red);">Trap 1: Time Unit Mismatch</h4>
+        <p class="slide-copy">R in per-hour · T in minutes<br>Wrong: I = R × T_min (off by 60×)<br>Right: convert T → hours first</p>
+        <p class="slide-meta">Donut shop wrong answer: 900 instead of 15</p>
+      </div>
+      <div class="mini-card" style="border-left-color:var(--red);">
+        <h4 class="slide-label" style="color:var(--red);">Trap 2: Flow Unit Mismatch</h4>
+        <p class="slide-copy">I in output units · R in input units<br>Wrong: T = I ÷ R_raw (nonsense units)<br>Right: convert R → output units first</p>
+        <p class="slide-meta">Furniture maker wrong answer: 45 chairs ÷ 600 kg = 0.075 (wrong units)</p>
+      </div>
+    </div>
+    <div class="callout teal">
+      <div class="callout-label">Correct Rule — Always Check Before Calculating</div>
+      <p class="slide-copy"><strong>Step 1:</strong> What am I solving for — I, R, or T?<br>
+      <strong>Step 2:</strong> Are time units the same across R and T?<br>
+      <strong>Step 3:</strong> Are flow units the same across I and R?<br>
+      If any answer is no → convert before applying the formula.</p>
+    </div>
+  </div>
+  <div class="le-footer">
+    <div class="le-lo-pills"><span class="le-lo-pill">LO2-3</span></div>
+    <div><span class="le-gate-note">Gate 2 Q1 Q2 Q5</span></div>
+  </div>
+</section>

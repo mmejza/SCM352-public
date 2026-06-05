@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 02 Overview — SCM 352</title>
+<style>
+:root {
+  --navy:#1a3a5c;--blue:#2563a8;--blue-lt:#dbeafe;--blue-xlt:#eff6ff;
+  --gold:#f59e0b;--gold-lt:#fffbeb;--gold-bdr:#fde68a;
+  --green:#16a34a;--green-lt:#f0fdf4;--green-bdr:#bbf7d0;
+  --gray-50:#f9fafb;--gray-100:#f3f4f6;--gray-200:#e5e7eb;
+  --gray-400:#9ca3af;--gray-600:#4b5563;--gray-700:#374151;--gray-800:#1f2937;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:white;color:var(--gray-800);line-height:1.7;font-size:14.5px;}
+.hero{background:linear-gradient(135deg,var(--navy) 0%,#2a5280 100%);color:white;padding:36px 32px 32px;}
+.hero-eyebrow{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;}
+.hero h1{font-size:26px;font-weight:700;letter-spacing:-.02em;line-height:1.2;margin-bottom:10px;}
+.hero-sub{font-size:14px;color:rgba(255,255,255,.72);line-height:1.55;max-width:620px;}
+.meta-strip{display:flex;gap:0;border-bottom:2px solid var(--gray-200);overflow-x:auto;background:white;}
+.meta-item{padding:12px 20px;border-right:1px solid var(--gray-200);min-width:0;flex-shrink:0;}
+.meta-item:last-child{border-right:none;}
+.meta-label{font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--gray-400);margin-bottom:3px;}
+.meta-value{font-size:13px;font-weight:700;color:var(--navy);}
+.pg-body{max-width:780px;margin:0 auto;padding:36px 28px 60px;display:flex;flex-direction:column;gap:32px;}
+.section-h{font-size:18px;font-weight:700;color:var(--navy);letter-spacing:-.01em;margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid var(--blue-lt);}
+.gate-callout{background:var(--blue-xlt);border:1.5px solid var(--blue-lt);border-left:4px solid var(--blue);border-radius:0 10px 10px 0;padding:14px 18px;font-size:13.5px;color:var(--gray-700);line-height:1.6;}
+.gate-callout strong{color:var(--navy);}
+.agenda{display:flex;flex-direction:column;gap:0;border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;}
+.agenda-item{display:flex;align-items:flex-start;gap:14px;padding:13px 18px;border-bottom:1px solid var(--gray-100);font-size:13.5px;color:var(--gray-700);line-height:1.5;}
+.agenda-item:last-child{border-bottom:none;}
+.agenda-item:hover{background:var(--gray-50);}
+.agenda-icon{font-size:16px;flex-shrink:0;margin-top:1px;}
+.agenda-time{font-size:11px;font-weight:600;color:var(--gray-400);white-space:nowrap;align-self:center;}
+.lo-table{width:100%;border-collapse:collapse;font-size:13px;}
+.lo-table th{background:var(--navy);color:white;padding:9px 13px;text-align:left;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;}
+.lo-table td{padding:9px 13px;border-bottom:1px solid var(--gray-100);vertical-align:top;line-height:1.5;color:var(--gray-700);}
+.lo-table tr:last-child td{border-bottom:none;}
+.lo-table tr:hover td{background:var(--blue-xlt);}
+.lo-num{font-weight:800;color:var(--navy);white-space:nowrap;}
+.bloom-pill{font-size:10px;font-weight:700;padding:2px 7px;border-radius:100px;white-space:nowrap;display:inline-block;}
+.bl-apply{background:var(--blue-lt);color:var(--navy);}
+.bl-analyze{background:var(--gold-lt);color:#92400e;}
+.bl-evaluate{background:var(--green-lt);color:var(--green);}
+.bl-understand{background:var(--gray-100);color:var(--gray-600);}
+.workload-box{background:var(--gold-lt);border:1.5px solid var(--gold-bdr);border-radius:12px;padding:18px 22px;display:flex;align-items:center;gap:16px;}
+.workload-icon{font-size:28px;flex-shrink:0;}
+.workload-text h3{font-size:15px;font-weight:700;color:var(--navy);margin-bottom:4px;}
+.workload-text p{font-size:13px;color:var(--gray-700);line-height:1.5;}
+.grade-table{width:100%;border-collapse:collapse;font-size:13px;}
+.grade-table th{background:var(--navy);color:white;padding:9px 13px;text-align:left;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;}
+.grade-table td{padding:9px 13px;border-bottom:1px solid var(--gray-100);}
+.grade-table tr.total-row td{font-weight:700;background:var(--blue-xlt);color:var(--navy);font-size:14px;}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-eyebrow">SCM 352 · Module 02 · Summer 2026</div>
+  <h1>Introduction to Processes</h1>
+  <p class="hero-sub">Every time a customer waits too long, a shipment arrives late, or a clinic runs out of exam rooms — a process is underperforming. Operations managers fix that. But before you can fix anything, you have to measure it.</p>
+</div>
+
+<div class="meta-strip">
+  <div class="meta-item"><div class="meta-label">Workload</div><div class="meta-value">4.5–6 hours</div></div>
+  <div class="meta-item"><div class="meta-label">Gate 1 due</div><div class="meta-value">Day 2</div></div>
+  <div class="meta-item"><div class="meta-label">Gate 2 due</div><div class="meta-value">Day 7 · 11:59 PM</div></div>
+  <div class="meta-item"><div class="meta-label">Case due</div><div class="meta-value">Day 7 · 11:59 PM</div></div>
+  <div class="meta-item"><div class="meta-label">Module points</div><div class="meta-value">250 pts</div></div>
+</div>
+
+<div class="pg-body">
+
+  <div style="font-size:14px;line-height:1.75;color:var(--gray-700);">
+    <p>This module gives you the three measurements that define any process and the single formula that ties them together. These tools are deceptively simple. They apply to a hospital radiology unit, a subway escalator, a champagne factory, and the U.S. House of Representatives — with equal precision.</p>
+  </div>
+
+  <div class="gate-callout">
+    <strong>Important — module is gated.</strong> All lecture videos, apps, the discussion, Gate 2, and the Case are locked until you pass Gate 1 with an 80% or higher score. Gate 1 draws exclusively on <strong>Chapter 2</strong> of the textbook — material that is not covered in the slides or narration. Gate 1 is due Day 2.
+  </div>
+
+  <div>
+    <div class="section-h">What You Will Do This Module</div>
+    <div class="agenda">
+      <div class="agenda-item"><div class="agenda-icon">📖</div><div style="flex:1"><strong>Read Chapter 2</strong> of the Cachon textbook — processes, Little's Law, flow units, and scope.</div><div class="agenda-time">60–90 min</div></div>
+      <div class="agenda-item"><div class="agenda-icon">🔓</div><div style="flex:1"><strong>Complete Gate 1</strong> — reading check. Score 80% or above to unlock all remaining content.</div><div class="agenda-time">10–15 min</div></div>
+      <div class="agenda-item"><div class="agenda-icon">🎬</div><div style="flex:1"><strong>Watch two lecture video segments</strong> — "Defining the Process" and "Little's Law as an Inference Tool."</div><div class="agenda-time">~36 min</div></div>
+      <div class="agenda-item"><div class="agenda-icon">📊</div><div style="flex:1"><strong>Work through the slide deck.</strong> 22 slides covering flow units, process scope, Little's Law, five worked examples, and common traps.</div><div class="agenda-time">30–40 min</div></div>
+      <div class="agenda-item"><div class="agenda-icon">⚡</div><div style="flex:1"><strong>Complete two interactive apps</strong> — <em>Little's Law Unit Converter</em> (6 scenarios, unit conversion practice) and <em>Flow Unit Identifier</em> (5 industry scenarios, MCQ).</div><div class="agenda-time">20–25 min</div></div>
+      <div class="agenda-item"><div class="agenda-icon">💬</div><div style="flex:1"><strong>Participate in the Discussion: Processes in the Wild.</strong> Find a real process from your week, apply the three metrics, run a Little's Law check. Initial post due Day 4; reply due Day 6.</div><div class="agenda-time">30–45 min</div></div>
+      <div class="agenda-item"><div class="agenda-icon">📝</div><div style="flex:1"><strong>Complete Gate 2</strong> — 8 questions, 100 points, 90-minute timer, one attempt. Due Day 7 at 11:59 PM.</div><div class="agenda-time">60–90 min</div></div>
+      <div class="agenda-item"><div class="agenda-icon">📋</div><div style="flex:1"><strong>Submit the Case Analysis: Riverside Prescription Fulfillment Center.</strong> Apply Little's Law to a healthcare supply chain scenario. Your version is determined by the last digit of your student ID. Due Day 7 at 11:59 PM.</div><div class="agenda-time">45–75 min</div></div>
+    </div>
+  </div>
+
+  <div class="workload-box">
+    <div class="workload-icon">⏱️</div>
+    <div class="workload-text">
+      <h3>Estimated total workload: 4.5–6 hours</h3>
+      <p>Plan two sessions: one before Day 2 (reading + Gate 1) and one before Day 7 (Gate 2 + Case). The apps and lecture videos are best watched between those sessions, after Gate 1 passes.</p>
+    </div>
+  </div>
+
+  <div>
+    <div class="section-h">Learning Objectives</div>
+    <div style="border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;">
+      <table class="lo-table">
+        <thead><tr><th style="width:7%">LO</th><th style="width:60%">You will be able to…</th><th style="width:13%">Bloom's Level</th><th style="width:20%">Assessed in</th></tr></thead>
+        <tbody>
+          <tr><td class="lo-num">LO2-1</td><td>Identify an appropriate flow unit for a given process and explain why incorrect alternatives fail using the four flow unit criteria</td><td><span class="bloom-pill bl-apply">Apply</span></td><td>Gate 1 Q4, Gate 2 Q4, Case Part 1</td></tr>
+          <tr><td class="lo-num">LO2-2</td><td>Distinguish among inventory, flow rate, and flow time and calculate each from raw arrival and departure data</td><td><span class="bloom-pill bl-analyze">Analyze</span></td><td>Gate 1 Q5, Gate 2 Q3, Case Part 2</td></tr>
+          <tr><td class="lo-num">LO2-3</td><td>Apply all three forms of Little's Law with correct unit conversion across time units and flow units</td><td><span class="bloom-pill bl-apply">Apply</span></td><td>Gate 2 Q1 Q2 Q5, Case Parts 2–3</td></tr>
+          <tr><td class="lo-num">LO2-4</td><td>Interpret Little's Law outputs as averages and explain the managerial implication of that constraint</td><td><span class="bloom-pill bl-evaluate">Evaluate</span></td><td>Gate 1 Q3, Gate 2 Q6</td></tr>
+          <tr><td class="lo-num">LO2-5</td><td>Identify the process scope appropriate to a given managerial role and explain how scope changes affect the three metrics</td><td><span class="bloom-pill bl-analyze">Analyze</span></td><td>Gate 2 Q8, Case Part 1b</td></tr>
+          <tr><td class="lo-num">LO2-6</td><td>Distinguish flow units from resources and process characteristics in novel scenarios</td><td><span class="bloom-pill bl-apply">Apply</span></td><td>Gate 1 Q4, Gate 2 Q4</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div>
+    <div class="section-h">Module 02 Grading</div>
+    <div style="border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;">
+      <table class="grade-table">
+        <thead><tr><th>Component</th><th style="text-align:right;">Points</th><th style="text-align:right;">% of Module</th><th>Due</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Gate 1 Quiz</strong> — reading verification (access control only)</td><td style="text-align:right;">0</td><td style="text-align:right;color:var(--gray-400);">—</td><td>Day 2</td></tr>
+          <tr><td><strong>Gate 2 Quiz</strong> — chapter + lecture + app synthesis</td><td style="text-align:right;font-weight:700;">100</td><td style="text-align:right;">40%</td><td>Day 7</td></tr>
+          <tr><td><strong>Discussion: Processes in the Wild</strong></td><td style="text-align:right;font-weight:700;">50</td><td style="text-align:right;">20%</td><td>Post Day 4 / Reply Day 6</td></tr>
+          <tr><td><strong>Case Analysis M02</strong> — Riverside Prescription Fulfillment Center</td><td style="text-align:right;font-weight:700;">100</td><td style="text-align:right;">40%</td><td>Day 7</td></tr>
+          <tr class="total-row"><td><strong>Module Total</strong></td><td style="text-align:right;font-weight:800;font-size:15px;">250</td><td style="text-align:right;font-weight:700;">100%</td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pareto Frontier Explorer — SCM 352 M01</title>
+<style>
+  :root {
+    --blue-dark: #1a3a5c;
+    --blue-mid: #2563a8;
+    --blue-light: #dbeafe;
+    --gold: #f59e0b;
+    --green: #16a34a;
+    --green-light: #dcfce7;
+    --red: #dc2626;
+    --red-light: #fee2e2;
+    --gray-50: #f9fafb;
+    --gray-100: #f3f4f6;
+    --gray-200: #e5e7eb;
+    --gray-400: #9ca3af;
+    --gray-600: #4b5563;
+    --gray-800: #1f2937;
+    --orange: #ea580c;
+    --frontier-color: #2563a8;
+    --dominated-color: #dc2626;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    background: var(--gray-50);
+    color: var(--gray-800);
+    min-height: 100vh;
+  }
+
+  header {
+    background: var(--blue-dark);
+    color: white;
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .header-badge {
+    background: var(--gold);
+    color: var(--blue-dark);
+    font-weight: 700;
+    font-size: 11px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  header h1 {
+    font-size: 18px;
+    font-weight: 600;
+  }
+
+  .scenario-nav {
+    background: white;
+    border-bottom: 2px solid var(--gray-200);
+    padding: 0 24px;
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+  }
+
+  .scenario-btn {
+    padding: 12px 18px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--gray-600);
+    border-bottom: 3px solid transparent;
+    white-space: nowrap;
+    transition: all 0.15s;
+  }
+
+  .scenario-btn:hover { color: var(--blue-mid); }
+
+  .scenario-btn.active {
+    color: var(--blue-mid);
+    border-bottom-color: var(--blue-mid);
+    font-weight: 600;
+  }
+
+  .scenario-btn.completed {
+    color: var(--green);
+  }
+
+  .scenario-btn.completed::after {
+    content: ' ✓';
+  }
+
+  .main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 24px;
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 24px;
+  }
+
+  @media (max-width: 800px) {
+    .main { grid-template-columns: 1fr; }
+  }
+
+  .card {
+    background: white;
+    border: 1px solid var(--gray-200);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .card-header {
+    background: var(--blue-light);
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--gray-200);
+  }
+
+  .card-header h2 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--blue-dark);
+  }
+
+  .card-header p {
+    font-size: 13px;
+    color: var(--gray-600);
+    margin-top: 4px;
+  }
+
+  .card-body { padding: 20px; }
+
+  /* Scenario description */
+  .scenario-desc {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--gray-800);
+    background: var(--gray-50);
+    border-left: 4px solid var(--blue-mid);
+    padding: 12px 16px;
+    border-radius: 0 8px 8px 0;
+    margin-bottom: 20px;
+  }
+
+  /* Firm table */
+  .firm-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    font-size: 14px;
+  }
+
+  .firm-table th {
+    background: var(--blue-dark);
+    color: white;
+    padding: 10px 12px;
+    text-align: left;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .firm-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--gray-100);
+  }
+
+  .firm-table tr:last-child td { border-bottom: none; }
+  .firm-table tr:hover td { background: var(--gray-50); }
+
+  .better-tag {
+    font-size: 10px;
+    color: var(--green);
+    font-weight: 600;
+    display: block;
+    margin-top: 2px;
+  }
+
+  /* Classification */
+  .classify-group {
+    margin-bottom: 16px;
+    padding: 14px 16px;
+    border: 2px solid var(--gray-200);
+    border-radius: 10px;
+    transition: border-color 0.2s;
+  }
+
+  .classify-group:focus-within {
+    border-color: var(--blue-mid);
+  }
+
+  .classify-group.correct { border-color: var(--green); background: var(--green-light); }
+  .classify-group.incorrect { border-color: var(--red); background: var(--red-light); }
+
+  .firm-name {
+    font-weight: 700;
+    font-size: 14px;
+    margin-bottom: 10px;
+    color: var(--gray-800);
+  }
+
+  .radio-group {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .radio-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    cursor: pointer;
+    padding: 6px 12px;
+    border: 1.5px solid var(--gray-300, #d1d5db);
+    border-radius: 6px;
+    transition: all 0.15s;
+    background: white;
+  }
+
+  .radio-label:hover { border-color: var(--blue-mid); }
+  .radio-label input { accent-color: var(--blue-mid); }
+
+  .feedback-text {
+    font-size: 12px;
+    margin-top: 8px;
+    padding: 6px 10px;
+    border-radius: 6px;
+    display: none;
+  }
+
+  .feedback-text.show { display: block; }
+  .feedback-text.correct { background: var(--green-light); color: var(--green); }
+  .feedback-text.incorrect { background: var(--red-light); color: var(--red); }
+
+  /* Buttons */
+  .btn {
+    display: inline-block;
+    padding: 10px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .btn-primary {
+    background: var(--blue-mid);
+    color: white;
+  }
+
+  .btn-primary:hover { background: #1d4ed8; }
+  .btn-primary:disabled { background: var(--gray-400); cursor: not-allowed; }
+
+  .btn-secondary {
+    background: var(--gray-100);
+    color: var(--gray-800);
+  }
+
+  .btn-secondary:hover { background: var(--gray-200); }
+
+  .btn-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 16px;
+  }
+
+  /* Score display */
+  .score-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    background: var(--gray-50);
+    border-radius: 8px;
+    margin-bottom: 16px;
+    font-size: 14px;
+  }
+
+  .score-num {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--blue-dark);
+  }
+
+  /* Plot */
+  .plot-container {
+    position: relative;
+    background: white;
+    border-radius: 8px;
+  }
+
+  #scatterPlot {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .legend {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-top: 12px;
+    font-size: 12px;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .legend-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+  }
+
+  /* Progress bar */
+  .progress-bar-outer {
+    height: 6px;
+    background: var(--gray-200);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+
+  .progress-bar-inner {
+    height: 100%;
+    background: var(--blue-mid);
+    border-radius: 3px;
+    transition: width 0.4s;
+  }
+
+  /* Final summary */
+  .final-msg {
+    text-align: center;
+    padding: 20px;
+    display: none;
+  }
+
+  .final-msg.show { display: block; }
+
+  .final-msg h3 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .tip-box {
+    background: #fffbeb;
+    border: 1px solid var(--gold);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-top: 16px;
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--gray-800);
+  }
+
+  .tip-box strong { color: var(--blue-dark); }
+
+  /* Scenario 6 special */
+  .entrant-note {
+    background: #fff7ed;
+    border: 2px dashed var(--orange);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-bottom: 16px;
+    font-size: 13px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-badge">SCM 352 · M01</div>
+  <h1>Pareto Frontier Explorer</h1>
+</header>
+
+<div class="scenario-nav" id="scenarioNav"></div>
+
+<div class="main">
+  <div>
+    <div class="card" id="mainCard">
+      <div class="card-header">
+        <h2 id="scenarioTitle">Loading...</h2>
+        <p id="scenarioSubtitle"></p>
+      </div>
+      <div class="card-body">
+        <div class="scenario-desc" id="scenarioDesc"></div>
+        <div id="entrantNote" class="entrant-note" style="display:none"></div>
+        <div id="scoreBar" class="score-bar" style="display:none">
+          <div>
+            <div class="score-num" id="scoreNum">—</div>
+            <div style="font-size:11px;color:var(--gray-600)">correct</div>
+          </div>
+          <div style="color:var(--gray-400)">|</div>
+          <div id="scoreMsg" style="font-size:13px;color:var(--gray-600)"></div>
+        </div>
+        <table class="firm-table" id="firmTable"></table>
+        <div id="classifySection"></div>
+        <div class="btn-group">
+          <button class="btn btn-primary" id="submitBtn" onclick="handleSubmit()">Check My Answers</button>
+          <button class="btn btn-secondary" id="nextBtn" onclick="handleNext()" style="display:none">Next Scenario →</button>
+          <button class="btn btn-secondary" id="resetBtn" onclick="handleReset()" style="display:none">Try Again</button>
+        </div>
+        <div class="final-msg" id="finalMsg"></div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card">
+      <div class="card-header">
+        <h2>Scatter Plot</h2>
+        <p id="plotSubtitle">Plot updates after you submit.</p>
+      </div>
+      <div class="card-body plot-container">
+        <svg id="scatterPlot" viewBox="0 0 340 300"></svg>
+        <div class="legend" id="plotLegend">
+          <div class="legend-item"><div class="legend-dot" style="background:var(--gray-400)"></div> Not yet classified</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:16px">
+      <div class="card-header">
+        <h2>Key Concept</h2>
+      </div>
+      <div class="card-body">
+        <div class="tip-box" id="conceptBox">
+          <strong>Pareto Domination Test:</strong> Firm X is Pareto-dominated if there exists at least one other firm that is simultaneously better than X on <em>every</em> dimension being compared. If no such firm exists, X is on the efficient frontier — even if X is worst on one dimension.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─── DATA ─────────────────────────────────────────────────────────────────
+
+const scenarios = [
+  {
+    id: 1,
+    title: "Scenario 1 — Two Food Trucks",
+    subtitle: "Tutorial: Is either truck Pareto-dominated?",
+    desc: "Two food trucks compete downtown. They differ on average cost per meal (lower is better for customers) and average wait time in minutes (lower is better). Assuming everything else is identical, which trucks are on the efficient frontier?",
+    dim1: { label: "Cost per Meal ($)", better: "lower" },
+    dim2: { label: "Wait Time (min)", better: "lower" },
+    firms: [
+      { name: "Truck Alpha", d1: 5.00, d2: 8 },
+      { name: "Truck Beta",  d1: 8.00, d2: 5 },
+    ],
+    dominated: [],
+    concept: "<strong>With only two firms:</strong> Truck Alpha is cheaper ($5 vs $8), while Truck Beta is faster (5 min vs 8 min). Since each firm is better on one dimension, neither can be dominated. Both are on the efficient frontier — they serve different customer preferences."
+  },
+  {
+    id: 2,
+    title: "Scenario 2 — Three Coffee Shops",
+    subtitle: "Who dominates whom?",
+    desc: "Three coffee shops compete on cost per drink (lower is better) and customer satisfaction score on a 1–10 scale (higher is better). Classify each shop.",
+    dim1: { label: "Cost per Drink ($)", better: "lower" },
+    dim2: { label: "Satisfaction Score", better: "higher" },
+    firms: [
+      { name: "Shop Arvo",   d1: 4.00, d2: 7.5 },
+      { name: "Shop Brew",   d1: 3.00, d2: 9.0 },
+      { name: "Shop Common", d1: 5.00, d2: 6.0 },
+    ],
+    dominated: ["Shop Arvo", "Shop Common"],
+    concept: "<strong>When one firm beats all others on EVERY dimension,</strong> it puts all others on the dominated side. Brew ($3.00, 9.0) is cheaper than both Arvo and Common AND scores higher than both. So Brew dominates both. Only Brew sits on the frontier — a rare but possible outcome."
+  },
+  {
+    id: 3,
+    title: "Scenario 3 — Four Gym Memberships",
+    subtitle: "Classic 4-firm frontier problem",
+    desc: "Four gym chains compete on monthly membership fee (lower is better) and equipment quality score on a 1–10 scale (higher is better). One firm is Pareto-dominated. Which one?",
+    dim1: { label: "Monthly Fee ($)", better: "lower" },
+    dim2: { label: "Equipment Score", better: "higher" },
+    firms: [
+      { name: "GoldFit",   d1: 25, d2: 6.5 },
+      { name: "IronBox",   d1: 45, d2: 8.8 },
+      { name: "PeakZone",  d1: 70, d2: 9.5 },
+      { name: "SweatBase", d1: 55, d2: 7.0 },
+    ],
+    dominated: ["SweatBase"],
+    concept: "<strong>SweatBase ($55, 7.0)</strong> is dominated by IronBox ($45, 8.8) because IronBox charges LESS ($45 < $55) AND scores HIGHER (8.8 > 7.0). IronBox beats SweatBase on both dimensions simultaneously. GoldFit, IronBox, and PeakZone each excel on a different dimension — none of them is dominated."
+  },
+  {
+    id: 4,
+    title: "Scenario 4 — Five Tutoring Platforms",
+    subtitle: "Mirrors Gate 2 Question 1 structure",
+    desc: "Five online tutoring platforms compete on monthly subscription fee (lower is better) and average student improvement score on a 1–10 scale (higher is better). Identify all Pareto-dominated firms.",
+    dim1: { label: "Monthly Fee ($)", better: "lower" },
+    dim2: { label: "Student Improvement Score", better: "higher" },
+    firms: [
+      { name: "AcePro",   d1: 80, d2: 9.2 },
+      { name: "BrightPath", d1: 55, d2: 7.4 },
+      { name: "ClearLearn", d1: 30, d2: 4.8 },
+      { name: "DailyTutor", d1: 65, d2: 6.1 },
+      { name: "EasyGrade",  d1: 75, d2: 5.5 },
+    ],
+    dominated: ["DailyTutor", "EasyGrade"],
+    concept: "<strong>DailyTutor ($65, 6.1)</strong> is dominated by BrightPath ($55 < $65 AND 7.4 > 6.1). <strong>EasyGrade ($75, 5.5)</strong> is dominated by BrightPath ($55 < $75 AND 7.4 > 5.5). AcePro, BrightPath, and ClearLearn each hold a unique position that no other firm dominates on all dimensions simultaneously."
+  },
+  {
+    id: 5,
+    title: "Scenario 5 — Airline Cabin Classes",
+    subtitle: "Connecting to the Chapter 1 Airlines sidebar",
+    desc: "Five airline products (think of each as a distinct offering) compete on cost per passenger mile in cents (lower is better for the customer) and legroom in inches (higher is better). Identify firms on the efficient frontier.",
+    dim1: { label: "Cost per Mile (¢)", better: "lower" },
+    dim2: { label: "Legroom (inches)", better: "higher" },
+    firms: [
+      { name: "Budget Basic",    d1: 8,  d2: 28 },
+      { name: "Standard Economy",d1: 12, d2: 31 },
+      { name: "Premium Economy", d1: 22, d2: 38 },
+      { name: "Business Class",  d1: 45, d2: 52 },
+      { name: "Value Flex",      d1: 15, d2: 30 },
+    ],
+    dominated: ["Value Flex"],
+    concept: "<strong>Value Flex (¢15, 30\")</strong> is dominated by Standard Economy (¢12 < ¢15 AND 31\" > 30\"). Standard Economy is cheaper AND has more legroom. The other four products each represent distinct positions — cheap-basic, mid-economy, premium, and business — with no single firm beating another on both dimensions."
+  },
+  {
+    id: 6,
+    title: "Scenario 6 — Frontier Shift",
+    subtitle: "What happens when a disruptor enters?",
+    desc: "Step 1: Four bike-share companies compete before a new entrant arrives. Classify all four. Then a new company (RocketBike) enters — Step 2 appears after you submit Step 1.",
+    dim1: { label: "Cost per Ride ($)", better: "lower" },
+    dim2: { label: "Availability Score (0–100)", better: "higher" },
+    firms: [
+      { name: "PedalCo",   d1: 3.20, d2: 78 },
+      { name: "SpinCity",  d1: 4.50, d2: 91 },
+      { name: "GreenGlide",d1: 2.80, d2: 65 },
+      { name: "UrbanCycle",d1: 3.80, d2: 74 },
+    ],
+    dominated: ["UrbanCycle"],
+    concept: "<strong>Before RocketBike:</strong> UrbanCycle ($3.80, 74) is dominated by PedalCo ($3.20, 78) — cheaper AND better availability. The frontier = PedalCo, SpinCity, GreenGlide. <strong>After RocketBike ($2.50, 95) enters:</strong> RocketBike dominates all four original firms on BOTH dimensions — cheaper than everyone AND highest availability. This shifts the frontier; all four original firms become Pareto-dominated.",
+    isShift: true
+  }
+];
+
+// ─── STATE ────────────────────────────────────────────────────────────────
+
+let currentIdx = 0;
+let submitted = false;
+let phase = 1; // for scenario 6
+let completedScenarios = new Set();
+let totalCorrect = 0;
+let totalFirms = 0;
+
+// ─── INIT ─────────────────────────────────────────────────────────────────
+
+function init() {
+  buildNav();
+  loadScenario(0);
+}
+
+function buildNav() {
+  const nav = document.getElementById('scenarioNav');
+  scenarios.forEach((s, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'scenario-btn' + (i === 0 ? ' active' : '');
+    btn.id = `navBtn${i}`;
+    btn.textContent = `Scenario ${s.id}`;
+    btn.onclick = () => {
+      currentIdx = i;
+      submitted = false;
+      phase = 1;
+      loadScenario(i);
+      document.querySelectorAll('.scenario-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    };
+    nav.appendChild(btn);
+  });
+}
+
+function loadScenario(idx) {
+  const s = scenarios[idx];
+  submitted = false;
+
+  document.getElementById('scenarioTitle').textContent = s.title;
+  document.getElementById('scenarioSubtitle').textContent = s.subtitle;
+  document.getElementById('scenarioDesc').textContent = s.desc;
+  document.getElementById('entrantNote').style.display = 'none';
+  document.getElementById('scoreBar').style.display = 'none';
+  document.getElementById('finalMsg').classList.remove('show');
+  document.getElementById('submitBtn').style.display = 'inline-block';
+  document.getElementById('submitBtn').disabled = false;
+  document.getElementById('submitBtn').textContent = 'Check My Answers';
+  document.getElementById('nextBtn').style.display = 'none';
+  document.getElementById('resetBtn').style.display = 'none';
+  document.getElementById('conceptBox').innerHTML = s.concept;
+  document.getElementById('plotSubtitle').textContent = 'Plot updates after you submit.';
+
+  buildTable(s);
+  buildClassify(s);
+  drawPlot(s, false);
+}
+
+function buildTable(s) {
+  const table = document.getElementById('firmTable');
+  table.innerHTML = `
+    <thead>
+      <tr>
+        <th>Company</th>
+        <th>${s.dim1.label}<br><span class="better-tag">↓ lower is better</span></th>
+        <th>${s.dim2.label}<br><span class="better-tag">${s.dim2.better === 'lower' ? '↓ lower is better' : '↑ higher is better'}</span></th>
+      </tr>
+    </thead>
+    <tbody id="firmTableBody"></tbody>
+  `;
+  const tbody = document.getElementById('firmTableBody');
+  s.firms.forEach(f => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td><strong>${f.name}</strong></td><td>${f.d1}</td><td>${f.d2}</td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+function buildClassify(s) {
+  const section = document.getElementById('classifySection');
+  section.innerHTML = '<h3 style="font-size:14px;font-weight:700;color:var(--gray-800);margin-bottom:12px;">Classify each company:</h3>';
+
+  s.firms.forEach((f, fi) => {
+    const div = document.createElement('div');
+    div.className = 'classify-group';
+    div.id = `group${fi}`;
+    div.innerHTML = `
+      <div class="firm-name">${f.name}</div>
+      <div class="radio-group">
+        <label class="radio-label">
+          <input type="radio" name="firm${fi}" value="frontier"> On the Efficient Frontier
+        </label>
+        <label class="radio-label">
+          <input type="radio" name="firm${fi}" value="dominated"> Pareto-Dominated
+        </label>
+        <label class="radio-label">
+          <input type="radio" name="firm${fi}" value="unsure"> Not Sure
+        </label>
+      </div>
+      <div class="feedback-text" id="fb${fi}"></div>
+    `;
+    section.appendChild(div);
+  });
+}
+
+function handleSubmit() {
+  const s = scenarios[currentIdx];
+  let correct = 0;
+  let answered = 0;
+
+  s.firms.forEach((f, fi) => {
+    const selected = document.querySelector(`input[name="firm${fi}"]:checked`);
+    if (!selected || selected.value === 'unsure') return;
+    answered++;
+
+    const isDominated = s.dominated.includes(f.name);
+    const studentSaysDominated = selected.value === 'dominated';
+    const isCorrect = isDominated === studentSaysDominated;
+
+    const group = document.getElementById(`group${fi}`);
+    const fb = document.getElementById(`fb${fi}`);
+    group.className = 'classify-group ' + (isCorrect ? 'correct' : 'incorrect');
+    fb.classList.add('show');
+
+    if (isCorrect) {
+      correct++;
+      if (isDominated) {
+        // Find dominator
+        const dominator = findDominator(s, f);
+        fb.innerHTML = `✓ Correct. <strong>${f.name} is Pareto-dominated</strong> by ${dominator}.`;
+        fb.className = 'feedback-text show correct';
+      } else {
+        fb.innerHTML = `✓ Correct. <strong>${f.name} is on the efficient frontier</strong> — no other firm simultaneously beats it on both dimensions.`;
+        fb.className = 'feedback-text show correct';
+      }
+    } else {
+      if (isDominated) {
+        const dominator = findDominator(s, f);
+        fb.innerHTML = `✗ <strong>${f.name} is actually Pareto-dominated</strong> by ${dominator}, which is both ${s.dim1.better === 'lower' ? 'cheaper' : 'better'} AND ${s.dim2.better === 'lower' ? 'faster' : 'scores higher'}.`;
+        fb.className = 'feedback-text show incorrect';
+      } else {
+        fb.innerHTML = `✗ <strong>${f.name} is actually on the efficient frontier</strong> — check every other firm: none of them beats ${f.name} on BOTH dimensions simultaneously.`;
+        fb.className = 'feedback-text show incorrect';
+      }
+    }
+  });
+
+  submitted = true;
+  totalCorrect += correct;
+  totalFirms += s.firms.length;
+
+  const scoreBar = document.getElementById('scoreBar');
+  scoreBar.style.display = 'flex';
+  document.getElementById('scoreNum').textContent = `${correct}/${s.firms.length}`;
+  document.getElementById('scoreMsg').textContent = correct === s.firms.length
+    ? '🎯 All correct! Great work.'
+    : correct === 0
+    ? 'Review the scatter plot and try again.'
+    : 'Partially correct — review the feedback above.';
+
+  drawPlot(s, true);
+  document.getElementById('plotSubtitle').textContent = 'Frontier firms are highlighted in blue. Dominated firms in red.';
+  document.getElementById('submitBtn').style.display = 'none';
+
+  if (s.isShift && phase === 1) {
+    // Show frontier shift phase
+    showShiftPhase(s);
+  } else {
+    completedScenarios.add(currentIdx);
+    document.getElementById(`navBtn${currentIdx}`).classList.add('completed');
+    document.getElementById('nextBtn').style.display = currentIdx < scenarios.length - 1 ? 'inline-block' : 'none';
+    document.getElementById('resetBtn').style.display = 'inline-block';
+  }
+}
+
+function showShiftPhase(s) {
+  phase = 2;
+  const note = document.getElementById('entrantNote');
+  note.style.display = 'block';
+  note.innerHTML = `<strong>⚡ RocketBike Enters the Market!</strong><br>A new company, <strong>RocketBike</strong>, just launched with a cost of <strong>$2.50 per ride</strong> and an availability score of <strong>95</strong>. Now re-classify all four original companies — plus RocketBike — given this new competitive reality.`;
+
+  // Add RocketBike to firms
+  const newFirms = [...s.firms, { name: 'RocketBike', d1: 2.50, d2: 95 }];
+  const newDominated = ['PedalCo', 'SpinCity', 'GreenGlide', 'UrbanCycle'];
+
+  const extScenario = { ...s, firms: newFirms, dominated: newDominated };
+
+  buildTable(extScenario);
+  buildClassify(extScenario);
+  drawPlot(extScenario, false);
+
+  const submitBtn = document.getElementById('submitBtn');
+  submitBtn.style.display = 'inline-block';
+  submitBtn.textContent = 'Check Phase 2 Answers';
+  submitBtn.onclick = () => handleShiftSubmit(extScenario);
+}
+
+function handleShiftSubmit(extScenario) {
+  const s = extScenario;
+  let correct = 0;
+
+  s.firms.forEach((f, fi) => {
+    const selected = document.querySelector(`input[name="firm${fi}"]:checked`);
+    if (!selected || selected.value === 'unsure') return;
+
+    const isDominated = s.dominated.includes(f.name);
+    const studentSaysDominated = selected.value === 'dominated';
+    const isCorrect = isDominated === studentSaysDominated;
+    if (isCorrect) correct++;
+
+    const group = document.getElementById(`group${fi}`);
+    const fb = document.getElementById(`fb${fi}`);
+    group.className = 'classify-group ' + (isCorrect ? 'correct' : 'incorrect');
+    fb.classList.add('show');
+
+    if (isCorrect) {
+      fb.innerHTML = isDominated
+        ? `✓ Correct. RocketBike ($2.50, 95) beats <strong>${f.name}</strong> on both cost and availability.`
+        : `✓ Correct. <strong>${f.name}</strong> is the only firm on the new frontier.`;
+      fb.className = 'feedback-text show correct';
+    } else {
+      fb.innerHTML = isDominated
+        ? `✗ ${f.name} IS now Pareto-dominated. RocketBike charges $2.50 (less than ${f.d1}) AND scores 95 (higher than ${f.d2}).`
+        : `✗ Only RocketBike is on the new frontier — it dominates all previous firms on both dimensions simultaneously, which is a frontier SHIFT.`;
+      fb.className = 'feedback-text show incorrect';
+    }
+  });
+
+  drawPlot(s, true);
+  completedScenarios.add(currentIdx);
+  document.getElementById(`navBtn${currentIdx}`).classList.add('completed');
+  document.getElementById('submitBtn').style.display = 'none';
+  document.getElementById('nextBtn').style.display = 'none'; // last scenario
+  document.getElementById('resetBtn').style.display = 'inline-block';
+
+  const scoreBar = document.getElementById('scoreBar');
+  scoreBar.style.display = 'flex';
+  document.getElementById('scoreNum').textContent = `${correct}/${s.firms.length}`;
+  document.getElementById('scoreMsg').textContent = correct === s.firms.length
+    ? '🎯 You understand frontier shifts! RocketBike redefined the game.'
+    : 'Review: a frontier shift means the new entrant dominates ALL existing firms on every dimension.';
+
+  if (completedScenarios.size === scenarios.length) showFinalSummary();
+}
+
+function findDominator(s, firm) {
+  const otherFirms = s.firms.filter(f => f.name !== firm.name);
+  const dominators = otherFirms.filter(other => {
+    const beats1 = s.dim1.better === 'lower' ? other.d1 < firm.d1 : other.d1 > firm.d1;
+    const beats2 = s.dim2.better === 'lower' ? other.d2 < firm.d2 : other.d2 > firm.d2;
+    return beats1 && beats2;
+  });
+  return dominators.map(d => d.name).join(' and ');
+}
+
+function handleNext() {
+  if (currentIdx < scenarios.length - 1) {
+    currentIdx++;
+    submitted = false;
+    phase = 1;
+    document.querySelectorAll('.scenario-btn').forEach((b, i) => {
+      b.classList.toggle('active', i === currentIdx);
+    });
+    loadScenario(currentIdx);
+  }
+}
+
+function handleReset() {
+  phase = 1;
+  submitted = false;
+  loadScenario(currentIdx);
+}
+
+function showFinalSummary() {
+  const msg = document.getElementById('finalMsg');
+  msg.classList.add('show');
+  msg.innerHTML = `
+    <h3 style="color:var(--green)">🏆 All Scenarios Complete!</h3>
+    <p style="color:var(--gray-600);margin-top:8px">You've worked through all six frontier scenarios — from simple 2-firm cases to frontier shifts.</p>
+    <div class="tip-box" style="margin-top:16px;text-align:left">
+      <strong>Remember for Gate 2 and the Case:</strong><br>
+      The Pareto dominance test always asks: <em>Is there any firm that beats mine on ALL dimensions simultaneously?</em> If yes, you're dominated. If no, you're on the frontier — even if you're the worst on one dimension. And when a new entrant dominates ALL existing firms, that's a frontier shift, not just a new competitor joining the frontier.
+    </div>
+  `;
+}
+
+// ─── SCATTER PLOT ─────────────────────────────────────────────────────────
+
+function drawPlot(s, showResult) {
+  const svg = document.getElementById('scatterPlot');
+  svg.innerHTML = '';
+
+  const W = 340, H = 300;
+  const pad = { top: 20, right: 20, bottom: 50, left: 55 };
+  const pw = W - pad.left - pad.right;
+  const ph = H - pad.top - pad.bottom;
+
+  // Scale: for "lower is better" dims, we invert so lower value = further right/up
+  const d1vals = s.firms.map(f => f.d1);
+  const d2vals = s.firms.map(f => f.d2);
+  const d1min = Math.min(...d1vals), d1max = Math.max(...d1vals);
+  const d2min = Math.min(...d2vals), d2max = Math.max(...d2vals);
+  const d1range = d1max - d1min || 1;
+  const d2range = d2max - d2min || 1;
+
+  function xScale(v) {
+    const norm = (v - d1min) / d1range;
+    // lower is better → higher x = better
+    return pad.left + (s.dim1.better === 'lower' ? (1 - norm) : norm) * pw;
+  }
+  function yScale(v) {
+    const norm = (v - d2min) / d2range;
+    // higher y = better (SVG y is inverted)
+    return pad.top + ph - (s.dim2.better === 'lower' ? (1 - norm) : norm) * ph;
+  }
+
+  // Axis lines
+  const line = (x1,y1,x2,y2,stroke='#9ca3af',w=1) => {
+    const el = document.createElementNS('http://www.w3.org/2000/svg','line');
+    el.setAttribute('x1',x1); el.setAttribute('y1',y1);
+    el.setAttribute('x2',x2); el.setAttribute('y2',y2);
+    el.setAttribute('stroke',stroke); el.setAttribute('stroke-width',w);
+    svg.appendChild(el); return el;
+  };
+  const text = (x,y,txt,opts={}) => {
+    const el = document.createElementNS('http://www.w3.org/2000/svg','text');
+    el.setAttribute('x',x); el.setAttribute('y',y);
+    el.setAttribute('font-size', opts.size || '10');
+    el.setAttribute('fill', opts.fill || '#4b5563');
+    el.setAttribute('text-anchor', opts.anchor || 'middle');
+    el.setAttribute('dominant-baseline', opts.baseline || 'auto');
+    if (opts.transform) el.setAttribute('transform', opts.transform);
+    el.textContent = txt;
+    svg.appendChild(el); return el;
+  };
+
+  // Grid
+  for (let i = 0; i <= 4; i++) {
+    const x = pad.left + (i/4)*pw;
+    const y = pad.top + (i/4)*ph;
+    line(x, pad.top, x, pad.top+ph, '#e5e7eb');
+    line(pad.left, y, pad.left+pw, y, '#e5e7eb');
+  }
+
+  line(pad.left, pad.top+ph, pad.left+pw, pad.top+ph, '#6b7280', 1.5); // x-axis
+  line(pad.left, pad.top, pad.left, pad.top+ph, '#6b7280', 1.5); // y-axis
+
+  // Axis labels
+  const xLabel = s.dim1.better === 'lower'
+    ? `← ${s.dim1.label} (better →)`
+    : `← worse | ${s.dim1.label} | better →`;
+  text(pad.left + pw/2, H - 8, xLabel, {size:'9'});
+
+  const yLabel = s.dim2.label;
+  text(12, pad.top + ph/2, yLabel, {
+    size:'9', anchor:'middle',
+    transform:`rotate(-90,12,${pad.top+ph/2})`
+  });
+  text(14, pad.top+4, s.dim2.better==='lower'?'better →':'↑ better', {size:'8',fill:'#16a34a'});
+
+  // Draw frontier line if showing results
+  if (showResult) {
+    const frontierFirms = s.firms.filter(f => !s.dominated.includes(f.name));
+    if (frontierFirms.length >= 2) {
+      // Sort by x position
+      const sorted = [...frontierFirms].sort((a,b) => xScale(a.d1) - xScale(b.d1));
+      for (let i = 0; i < sorted.length - 1; i++) {
+        line(xScale(sorted[i].d1), yScale(sorted[i].d2),
+             xScale(sorted[i+1].d1), yScale(sorted[i+1].d2),
+             '#2563a8', 1.5);
+      }
+    }
+  }
+
+  // Draw firms
+  s.firms.forEach(f => {
+    const cx = xScale(f.d1);
+    const cy = yScale(f.d2);
+    let fill = '#9ca3af';
+    if (showResult) {
+      fill = s.dominated.includes(f.name) ? '#dc2626' : '#2563a8';
+    }
+    const circle = document.createElementNS('http://www.w3.org/2000/svg','circle');
+    circle.setAttribute('cx', cx); circle.setAttribute('cy', cy);
+    circle.setAttribute('r', '8');
+    circle.setAttribute('fill', fill);
+    circle.setAttribute('stroke', 'white');
+    circle.setAttribute('stroke-width', '2');
+    svg.appendChild(circle);
+
+    // Label
+    const lbl = document.createElementNS('http://www.w3.org/2000/svg','text');
+    lbl.setAttribute('x', cx); lbl.setAttribute('y', cy - 12);
+    lbl.setAttribute('font-size', '9');
+    lbl.setAttribute('fill', '#1f2937');
+    lbl.setAttribute('text-anchor', 'middle');
+    lbl.setAttribute('font-weight', '600');
+    lbl.textContent = f.name.split(' ')[0];
+    svg.appendChild(lbl);
+  });
+
+  // Legend
+  const legend = document.getElementById('plotLegend');
+  if (showResult) {
+    legend.innerHTML = `
+      <div class="legend-item"><div class="legend-dot" style="background:var(--frontier-color)"></div> On Frontier</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--dominated-color)"></div> Pareto-Dominated</div>
+    `;
+  } else {
+    legend.innerHTML = `<div class="legend-item"><div class="legend-dot" style="background:var(--gray-400)"></div> Classify each firm below</div>`;
+  }
+}
+
+// ─── START ────────────────────────────────────────────────────────────────
+init();
+</script>
+</body>
+</html>

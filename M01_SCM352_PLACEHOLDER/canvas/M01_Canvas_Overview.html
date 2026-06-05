@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 1 Overview — SCM 352</title>
+<style>
+  :root {
+    --navy:     #1a3a5c;
+    --blue:     #2563a8;
+    --blue-lt:  #dbeafe;
+    --blue-xlt: #eff6ff;
+    --gold:     #f59e0b;
+    --gold-lt:  #fffbeb;
+    --gold-bdr: #fde68a;
+    --green:    #16a34a;
+    --green-lt: #f0fdf4;
+    --green-bdr:#bbf7d0;
+    --gray-50:  #f9fafb;
+    --gray-100: #f3f4f6;
+    --gray-200: #e5e7eb;
+    --gray-400: #9ca3af;
+    --gray-600: #4b5563;
+    --gray-700: #374151;
+    --gray-800: #1f2937;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    background: white;
+    color: var(--gray-800);
+    line-height: 1.7;
+    font-size: 14.5px;
+  }
+
+  /* ── HERO ─────────────────────────────────────────── */
+  .hero {
+    background: linear-gradient(135deg, var(--navy) 0%, #2a5280 100%);
+    color: white;
+    padding: 36px 32px 32px;
+  }
+  .hero-eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 10px;
+  }
+  .hero h1 {
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    margin-bottom: 10px;
+  }
+  .hero-sub {
+    font-size: 14px;
+    color: rgba(255,255,255,0.72);
+    line-height: 1.55;
+    max-width: 620px;
+  }
+
+  /* ── META STRIP ─────────────────────────────────── */
+  .meta-strip {
+    display: flex;
+    gap: 0;
+    border-bottom: 2px solid var(--gray-200);
+    overflow-x: auto;
+    background: white;
+  }
+  .meta-item {
+    padding: 12px 20px;
+    border-right: 1px solid var(--gray-200);
+    min-width: 0;
+    flex-shrink: 0;
+  }
+  .meta-item:last-child { border-right: none; }
+  .meta-label { font-size: 10px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: var(--gray-400); margin-bottom: 3px; }
+  .meta-value { font-size: 13px; font-weight: 700; color: var(--navy); }
+
+  /* ── BODY ────────────────────────────────────────── */
+  .page-body {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 36px 28px 60px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  /* ── PROSE ───────────────────────────────────────── */
+  .prose p {
+    margin-bottom: 16px;
+    color: var(--gray-700);
+    line-height: 1.75;
+  }
+  .prose p:last-child { margin-bottom: 0; }
+  .prose strong { color: var(--gray-800); }
+
+  /* ── SECTION HEADING ─────────────────────────────── */
+  .section-h {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--navy);
+    letter-spacing: -0.01em;
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--blue-lt);
+  }
+
+  /* ── AGENDA LIST ─────────────────────────────────── */
+  .agenda {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    border: 1px solid var(--gray-200);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .agenda-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 13px 18px;
+    border-bottom: 1px solid var(--gray-100);
+    font-size: 13.5px;
+    color: var(--gray-700);
+    line-height: 1.5;
+  }
+  .agenda-item:last-child { border-bottom: none; }
+  .agenda-item:hover { background: var(--gray-50); }
+  .agenda-icon {
+    font-size: 16px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .agenda-text { flex: 1; }
+  .agenda-text strong { color: var(--gray-800); }
+  .agenda-time {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--gray-400);
+    white-space: nowrap;
+    align-self: center;
+  }
+
+  /* ── LO TABLE ────────────────────────────────────── */
+  .lo-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  .lo-table th {
+    background: var(--navy);
+    color: white;
+    padding: 9px 13px;
+    text-align: left;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .lo-table td {
+    padding: 9px 13px;
+    border-bottom: 1px solid var(--gray-100);
+    vertical-align: top;
+    line-height: 1.5;
+    color: var(--gray-700);
+  }
+  .lo-table tr:last-child td { border-bottom: none; }
+  .lo-table tr:hover td { background: var(--blue-xlt); }
+  .lo-num {
+    font-weight: 800;
+    color: var(--navy);
+    white-space: nowrap;
+  }
+  .bloom-pill {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 100px;
+    white-space: nowrap;
+    display: inline-block;
+  }
+  .bl-apply    { background: var(--blue-lt);  color: var(--navy); }
+  .bl-analyze  { background: var(--gold-lt);  color: #92400e; }
+  .bl-evaluate { background: var(--green-lt); color: var(--green); }
+  .bl-understand { background: var(--gray-100); color: var(--gray-600); }
+
+  /* ── WORKLOAD BOX ────────────────────────────────── */
+  .workload-box {
+    background: var(--gold-lt);
+    border: 1.5px solid var(--gold-bdr);
+    border-radius: 12px;
+    padding: 18px 22px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .workload-icon { font-size: 28px; flex-shrink: 0; }
+  .workload-text h3 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 4px;
+  }
+  .workload-text p {
+    font-size: 13px;
+    color: var(--gray-700);
+    line-height: 1.5;
+  }
+
+  /* ── GATE CALLOUT ────────────────────────────────── */
+  .gate-callout {
+    background: var(--blue-xlt);
+    border: 1.5px solid var(--blue-lt);
+    border-left: 4px solid var(--blue);
+    border-radius: 0 10px 10px 0;
+    padding: 14px 18px;
+    font-size: 13.5px;
+    color: var(--gray-700);
+    line-height: 1.6;
+  }
+  .gate-callout strong { color: var(--navy); }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">SCM 352 · Module 1 · Summer 2026</div>
+  <h1>Introduction to Operations Management</h1>
+  <p class="hero-sub">Every time you order food, rent a car, visit a doctor, or buy clothes online, you are on the demand side of an operations system. This module introduces the framework you will use to analyze those systems throughout the course.</p>
+</div>
+
+<!-- META STRIP -->
+<div class="meta-strip">
+  <div class="meta-item">
+    <div class="meta-label">Workload</div>
+    <div class="meta-value">4.5–6 hours</div>
+  </div>
+  <div class="meta-item">
+    <div class="meta-label">Gate 1 due</div>
+    <div class="meta-value">Day 2</div>
+  </div>
+  <div class="meta-item">
+    <div class="meta-label">Gate 2 due</div>
+    <div class="meta-value">Day 7 · 11:59 PM</div>
+  </div>
+  <div class="meta-item">
+    <div class="meta-label">Case due</div>
+    <div class="meta-value">Day 7 · 11:59 PM</div>
+  </div>
+  <div class="meta-item">
+    <div class="meta-label">Module points</div>
+    <div class="meta-value">250 pts</div>
+  </div>
+</div>
+
+<div class="page-body">
+
+  <!-- CONTEXT -->
+  <div class="prose">
+    <p>Someone on the supply side of every transaction you make had to decide what to stock, how many employees to schedule, where to locate a facility, and how fast to deliver — to get you what you wanted. Or to fail at it.</p>
+    <p>Operations management is the discipline that governs those decisions. Its central goal is deceptively simple: <strong>match supply with demand while making a profit.</strong></p>
+    <p>This module introduces the foundational framework you will use throughout the course. You will learn how to analyze what customers actually want (the utility function), how firms position themselves relative to competitors (the efficient frontier), and why even well-intentioned operations so often fall short (the three system inhibitors).</p>
+  </div>
+
+  <!-- GATE CALLOUT -->
+  <div class="gate-callout">
+    <strong>Important — module is gated.</strong> All lecture videos, apps, the discussion, Gate 2, and the Case are locked until you pass Gate 1 (the reading check) with an 80% or higher score. Gate 1 draws exclusively on Chapter 1 of the textbook — complete your reading before attempting it. Gate 1 is due Day 2.
+  </div>
+
+  <!-- WHAT YOU WILL DO -->
+  <div>
+    <div class="section-h">What You Will Do This Module</div>
+    <div class="agenda">
+      <div class="agenda-item">
+        <div class="agenda-icon">📖</div>
+        <div class="agenda-text"><strong>Read Chapter 1</strong> of the Cachon textbook. All Gate 1 questions draw exclusively on content in this chapter.</div>
+        <div class="agenda-time">90–120 min</div>
+      </div>
+      <div class="agenda-item">
+        <div class="agenda-icon">🔓</div>
+        <div class="agenda-text"><strong>Complete Gate 1</strong> — a short reading check. Score 80% or above to unlock all remaining module content. One retake allowed.</div>
+        <div class="agenda-time">10–15 min</div>
+      </div>
+      <div class="agenda-item">
+        <div class="agenda-icon">🎬</div>
+        <div class="agenda-text"><strong>Watch two lecture video segments</strong> — "Seeing Like a Customer" and "Drawing the Frontier." These model how to apply the framework to new industries; they do not re-teach the definitions.</div>
+        <div class="agenda-time">~36 min</div>
+      </div>
+      <div class="agenda-item">
+        <div class="agenda-icon">📊</div>
+        <div class="agenda-text"><strong>Work through the slide deck.</strong> 19 slides covering the utility function, efficient frontier, and system inhibitors. Include the narration transcripts.</div>
+        <div class="agenda-time">30–40 min</div>
+      </div>
+      <div class="agenda-item">
+        <div class="agenda-icon">⚡</div>
+        <div class="agenda-text"><strong>Complete three interactive apps</strong> — Pareto Frontier Explorer, Consumer Utility Classifier, and System Inhibitor Identifier. Each provides immediate feedback and directly prepares you for Gate 2 and the Case.</div>
+        <div class="agenda-time">26–32 min</div>
+      </div>
+      <div class="agenda-item">
+        <div class="agenda-icon">💬</div>
+        <div class="agenda-text"><strong>Participate in the Discussion: Customer Utility in the Wild.</strong> Initial post due Day 4; reply due Day 6. Use a business you visited this week — not McDonald's, Starbucks, or Subway.</div>
+        <div class="agenda-time">30–45 min</div>
+      </div>
+      <div class="agenda-item">
+        <div class="agenda-icon">📝</div>
+        <div class="agenda-text"><strong>Complete Gate 2</strong> — 8 questions, 100 points, 90-minute timer, one attempt. Opens after Gate 1. Due Day 7 at 11:59 PM. Covers Chapter 1 + lecture + apps.</div>
+        <div class="agenda-time">60–90 min</div>
+      </div>
+      <div class="agenda-item">
+        <div class="agenda-icon">📋</div>
+        <div class="agenda-text"><strong>Submit the Case Analysis.</strong> A parameterized written analysis applying all Module 1 concepts to an electric bike-sharing company. Your assigned version is listed in the Case assignment instructions. Due Day 7 at 11:59 PM.</div>
+        <div class="agenda-time">45–75 min</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WORKLOAD -->
+  <div class="workload-box">
+    <div class="workload-icon">⏱️</div>
+    <div class="workload-text">
+      <h3>Estimated total workload: 4.5–6 hours</h3>
+      <p>Plan at least two dedicated sessions — one for the reading and Gate 1 (before Day 2), and one for the lectures, apps, Gate 2, and Case (Days 3–7). Do not attempt Gate 2 without completing the lecture videos and apps first.</p>
+    </div>
+  </div>
+
+  <!-- LEARNING OBJECTIVES -->
+  <div>
+    <div class="section-h">Learning Objectives</div>
+    <div style="border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;">
+      <table class="lo-table">
+        <thead>
+          <tr>
+            <th style="width:7%">LO</th>
+            <th style="width:60%">You will be able to…</th>
+            <th style="width:13%">Bloom's Level</th>
+            <th style="width:20%">Assessed in</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="lo-num">LO1-1</td>
+            <td>Identify the drivers of customer utility and classify product/service attributes into the correct utility components</td>
+            <td><span class="bloom-pill bl-apply">Apply</span></td>
+            <td>Gate 1 Q2, Gate 2 Q2, Case Part 3</td>
+          </tr>
+          <tr>
+            <td class="lo-num">LO1-2</td>
+            <td>Determine whether a firm is on the efficient frontier or Pareto-dominated, given numeric performance data on multiple dimensions</td>
+            <td><span class="bloom-pill bl-analyze">Analyze</span></td>
+            <td>Gate 1 Q3–Q4, Gate 2 Q1, Case Part 1</td>
+          </tr>
+          <tr>
+            <td class="lo-num">LO1-3</td>
+            <td>Identify the three system inhibitors and explain how each creates a mismatch between supply and demand in a specific operational context</td>
+            <td><span class="bloom-pill bl-analyze">Analyze</span></td>
+            <td>Gate 2 Q6, Case Part 4</td>
+          </tr>
+          <tr>
+            <td class="lo-num">LO1-4</td>
+            <td>Explain how sustainability and ethical considerations extend the efficient frontier framework beyond the two-dimensional model</td>
+            <td><span class="bloom-pill bl-evaluate">Evaluate</span></td>
+            <td>Gate 2 Q8</td>
+          </tr>
+          <tr>
+            <td class="lo-num">LO1-5</td>
+            <td>Describe what operations management careers look like and what skills they require</td>
+            <td><span class="bloom-pill bl-understand">Understand</span></td>
+            <td>Gate 1 Q5</td>
+          </tr>
+          <tr>
+            <td class="lo-num">LO1-6</td>
+            <td>Apply the six key OM decision questions to a specific industry to demonstrate how supply is structured to match demand</td>
+            <td><span class="bloom-pill bl-apply">Apply</span></td>
+            <td>Gate 2 Q4, Case Part 3</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- GRADING BREAKDOWN -->
+  <div>
+    <div class="section-h">Module 1 Grading</div>
+    <div style="border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;">
+      <table class="lo-table">
+        <thead>
+          <tr>
+            <th>Component</th>
+            <th style="text-align:right;">Points</th>
+            <th style="text-align:right;">% of Module</th>
+            <th>Due</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Gate 1 Quiz</strong> — reading verification (access control only)</td>
+            <td style="text-align:right;">0</td>
+            <td style="text-align:right;color:var(--gray-400);">—</td>
+            <td>Day 2</td>
+          </tr>
+          <tr>
+            <td><strong>Gate 2 Quiz</strong> — chapter + lecture + app synthesis</td>
+            <td style="text-align:right;font-weight:700;">100</td>
+            <td style="text-align:right;">40%</td>
+            <td>Day 7</td>
+          </tr>
+          <tr>
+            <td><strong>Discussion</strong> — Customer Utility in the Wild</td>
+            <td style="text-align:right;font-weight:700;">50</td>
+            <td style="text-align:right;">20%</td>
+            <td>Post Day 4 / Reply Day 6</td>
+          </tr>
+          <tr>
+            <td><strong>Case Analysis M01</strong> — written applied analysis</td>
+            <td style="text-align:right;font-weight:700;">100</td>
+            <td style="text-align:right;">40%</td>
+            <td>Day 7</td>
+          </tr>
+          <tr style="background:var(--blue-xlt);">
+            <td style="font-weight:700;color:var(--navy);">Module Total</td>
+            <td style="text-align:right;font-weight:800;color:var(--navy);font-size:15px;">250</td>
+            <td style="text-align:right;font-weight:700;">100%</td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:12px;color:var(--gray-400);margin-top:8px;padding-left:4px;">Apps and lecture videos are completion-tracked but not graded. Canvas logs your progress for engagement monitoring.</p>
+  </div>
+
+</div><!-- /page-body -->
+</body>
+</html>

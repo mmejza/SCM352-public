@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Discussion: Customer Utility in the Wild — SCM 352 M01</title>
+<style>
+  :root {
+    --navy:        #1a3a5c;
+    --blue:        #2563a8;
+    --blue-light:  #dbeafe;
+    --blue-xlight: #eff6ff;
+    --gold:        #f59e0b;
+    --gold-light:  #fffbeb;
+    --gold-border: #fde68a;
+    --green:       #16a34a;
+    --green-light: #f0fdf4;
+    --green-border:#bbf7d0;
+    --red:         #dc2626;
+    --red-light:   #fef2f2;
+    --red-border:  #fecaca;
+    --purple:      #7c3aed;
+    --purple-light:#faf5ff;
+    --purple-border:#ddd6fe;
+    --teal:        #0891b2;
+    --teal-light:  #f0fdfe;
+    --teal-border: #a5f3fc;
+    --gray-50:     #f9fafb;
+    --gray-100:    #f3f4f6;
+    --gray-200:    #e5e7eb;
+    --gray-400:    #9ca3af;
+    --gray-600:    #4b5563;
+    --gray-700:    #374151;
+    --gray-800:    #1f2937;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    background: var(--gray-50);
+    color: var(--gray-800);
+    line-height: 1.6;
+  }
+
+  /* ── HEADER ─────────────────────────────────────────── */
+  .page-header {
+    background: var(--navy);
+    color: white;
+    padding: 20px 28px;
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  .header-badge {
+    background: var(--gold);
+    color: var(--navy);
+    font-weight: 700;
+    font-size: 11px;
+    padding: 3px 9px;
+    border-radius: 4px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    margin-top: 3px;
+    flex-shrink: 0;
+  }
+  .header-text h1 {
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin-bottom: 4px;
+  }
+  .header-text p {
+    font-size: 13px;
+    color: rgba(255,255,255,0.7);
+  }
+
+  /* ── LAYOUT ──────────────────────────────────────────── */
+  .page-body {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 28px 24px 48px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  /* ── META STRIP ──────────────────────────────────────── */
+  .meta-strip {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .meta-pill {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 5px 12px;
+    border-radius: 100px;
+    border: 1.5px solid var(--gray-200);
+    background: white;
+    color: var(--gray-700);
+  }
+  .meta-pill .pip {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* ── CARDS ───────────────────────────────────────────── */
+  .card {
+    background: white;
+    border: 1px solid var(--gray-200);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .card-header {
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--gray-200);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .card-header h2 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--navy);
+  }
+  .card-header p {
+    font-size: 12px;
+    color: var(--gray-600);
+    margin-top: 2px;
+  }
+  .card-body { padding: 20px; }
+
+  /* ── ALERT BOXES ─────────────────────────────────────── */
+  .alert {
+    border-radius: 10px;
+    padding: 14px 18px;
+    font-size: 13.5px;
+    line-height: 1.6;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .alert-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+  .alert-body { flex: 1; }
+  .alert-body strong { display: block; margin-bottom: 4px; font-size: 13px; }
+
+  .alert-gold   { background: var(--gold-light);   border: 1.5px solid var(--gold-border); }
+  .alert-red    { background: var(--red-light);    border: 1.5px solid var(--red-border); }
+  .alert-blue   { background: var(--blue-xlight);  border: 1.5px solid #bfdbfe; }
+
+  /* ── PART SECTIONS ───────────────────────────────────── */
+  .part {
+    border: 1.5px solid var(--gray-200);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 14px;
+  }
+  .part:last-child { margin-bottom: 0; }
+
+  .part-header {
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1.5px solid var(--gray-200);
+  }
+  .part-num {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 800;
+    flex-shrink: 0;
+    color: white;
+  }
+  .part-title {
+    flex: 1;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--gray-800);
+  }
+  .part-pts {
+    font-size: 12px; font-weight: 700;
+    padding: 3px 9px;
+    border-radius: 100px;
+    white-space: nowrap;
+  }
+  .part-body {
+    padding: 14px 16px;
+    font-size: 13.5px;
+    line-height: 1.65;
+    color: var(--gray-700);
+  }
+  .part-body p + p { margin-top: 8px; }
+  .part-body .requirement {
+    font-weight: 600;
+    color: var(--gray-800);
+  }
+  .part-body .example-note {
+    font-size: 12px;
+    color: var(--gray-600);
+    margin-top: 8px;
+    padding: 8px 12px;
+    background: var(--gray-50);
+    border-radius: 6px;
+    border-left: 3px solid var(--gray-300, #d1d5db);
+  }
+
+  /* Part color themes */
+  .part-perf .part-header { background: var(--blue-xlight); border-color: #bfdbfe; }
+  .part-perf .part-num    { background: var(--blue); }
+  .part-perf .part-pts    { background: var(--blue-light); color: var(--navy); }
+
+  .part-fit .part-header  { background: var(--purple-light); border-color: var(--purple-border); }
+  .part-fit .part-num     { background: var(--purple); }
+  .part-fit .part-pts     { background: var(--purple-border); color: var(--purple); }
+
+  .part-inh .part-header  { background: var(--teal-light); border-color: var(--teal-border); }
+  .part-inh .part-num     { background: var(--teal); }
+  .part-inh .part-pts     { background: var(--teal-border); color: var(--teal); }
+
+  .part-front .part-header { background: var(--green-light); border-color: var(--green-border); }
+  .part-front .part-num    { background: var(--green); }
+  .part-front .part-pts    { background: var(--green-border); color: var(--green); }
+
+  /* ── REPLY PARTS ─────────────────────────────────────── */
+  .reply-part {
+    display: flex;
+    gap: 14px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--gray-100);
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: var(--gray-700);
+  }
+  .reply-part:last-child { border-bottom: none; padding-bottom: 0; }
+  .reply-letter {
+    width: 28px; height: 28px;
+    border-radius: 6px;
+    background: var(--navy);
+    color: white;
+    font-size: 13px; font-weight: 800;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .reply-content { flex: 1; }
+  .reply-content strong {
+    display: block;
+    font-size: 13px;
+    color: var(--gray-800);
+    margin-bottom: 4px;
+  }
+  .reply-pts-tag {
+    font-size: 11px; font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 100px;
+    background: var(--gray-100);
+    color: var(--gray-600);
+    margin-top: 6px;
+    display: inline-block;
+  }
+
+  /* ── POINTS SUMMARY ──────────────────────────────────── */
+  .pts-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+  }
+  .pts-table th {
+    background: var(--navy);
+    color: white;
+    padding: 9px 14px;
+    text-align: left;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .pts-table td {
+    padding: 9px 14px;
+    border-bottom: 1px solid var(--gray-100);
+    vertical-align: top;
+  }
+  .pts-table tr:last-child td { border-bottom: none; }
+  .pts-table tr.total-row td {
+    font-weight: 700;
+    background: var(--gray-50);
+    font-size: 14px;
+    border-top: 2px solid var(--gray-200);
+  }
+  .pts-num {
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--navy);
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  /* ── TIPS ────────────────────────────────────────────── */
+  .tip-list { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+  .tip-list li {
+    display: flex;
+    gap: 10px;
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: var(--gray-700);
+  }
+  .tip-list li::before {
+    content: '→';
+    color: var(--gold);
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  /* ── DIVIDER ─────────────────────────────────────────── */
+  .section-label {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gray-400);
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--gray-200);
+    margin-bottom: -8px;
+  }
+
+  /* ── PROHIBITED LIST ─────────────────────────────────── */
+  .prohibited-list {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 6px;
+  }
+  .prohibited-tag {
+    font-size: 12px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 100px;
+    background: var(--red-light);
+    color: var(--red);
+    border: 1px solid var(--red-border);
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="page-header">
+  <div class="header-badge">SCM 352 · M01</div>
+  <div class="header-text">
+    <h1>Discussion: Customer Utility in the Wild</h1>
+    <p>Module 1 Discussion · 50 points · Item 10 of 12</p>
+  </div>
+</div>
+
+<div class="page-body">
+
+  <!-- META STRIP -->
+  <div class="meta-strip">
+    <div class="meta-pill"><div class="pip" style="background:#2563a8"></div> Initial post due Day 4</div>
+    <div class="meta-pill"><div class="pip" style="background:#7c3aed"></div> Reply due Day 6</div>
+    <div class="meta-pill"><div class="pip" style="background:#16a34a"></div> 50 points total</div>
+    <div class="meta-pill"><div class="pip" style="background:#f59e0b"></div> 30–45 minutes</div>
+    <div class="meta-pill"><div class="pip" style="background:#0891b2"></div> LO1-1 · LO1-2 · LO1-3</div>
+  </div>
+
+  <!-- OVERVIEW -->
+  <div class="card">
+    <div class="card-header" style="background:var(--blue-xlight);">
+      <div>
+        <h2>What You Are Doing</h2>
+        <p>Apply the Module 1 framework to a business you visited this week</p>
+      </div>
+    </div>
+    <div class="card-body">
+      <p style="font-size:14px;line-height:1.7;color:var(--gray-700);">
+        Select a business you personally interacted with as a customer sometime this week — a restaurant, a store, a service provider, an app, a clinic, anything. You will analyze it using the consumer utility framework and the efficient frontier concepts from Chapter 1 and the lecture videos.
+      </p>
+      <p style="font-size:14px;line-height:1.7;color:var(--gray-700);margin-top:10px;">
+        Your initial post has four required parts. Your reply to a classmate has three required parts. Each part is graded on specificity and correct use of course concepts — generic answers will not earn full credit.
+      </p>
+    </div>
+  </div>
+
+  <!-- RULES -->
+  <div style="display:flex;flex-direction:column;gap:12px;">
+
+    <div class="alert alert-red">
+      <div class="alert-icon">🚫</div>
+      <div class="alert-body">
+        <strong>Do not name your business in your initial post.</strong>
+        Your classmates will try to identify it from your description alone — that identification is worth 10 points of their reply grade. If you name the business, those 10 points cannot be earned. Write specifically enough to make identification possible, but do not reveal the name until after the reply deadline passes.
+      </div>
+    </div>
+
+    <div class="alert alert-red">
+      <div class="alert-icon">🚫</div>
+      <div class="alert-body">
+        <strong>Do not use businesses from Chapter 1 or the following prohibited list:</strong>
+        <div class="prohibited-list" style="margin-top:8px;">
+          <span class="prohibited-tag">McDonald's</span>
+          <span class="prohibited-tag">Starbucks</span>
+          <span class="prohibited-tag">Subway</span>
+          <span class="prohibited-tag">Wendy's</span>
+          <span class="prohibited-tag">Any business named in Chapter 1</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="alert alert-gold">
+      <div class="alert-icon">📅</div>
+      <div class="alert-body">
+        <strong>The business must be one you interacted with this week.</strong>
+        This discussion requires direct personal observation — of a wait time, a staffing pattern, an operational failure, a pricing structure. If you did not observe it yourself this week, it does not qualify.
+      </div>
+    </div>
+
+  </div>
+
+  <!-- INITIAL POST -->
+  <div>
+    <div class="section-label">Part 1 — Initial Post &nbsp;·&nbsp; Due Day 4 &nbsp;·&nbsp; 20 points</div>
+
+    <div class="card" style="margin-top:16px;">
+      <div class="card-body" style="padding:16px;">
+
+        <div class="part part-perf">
+          <div class="part-header">
+            <div class="part-num">1</div>
+            <div class="part-title">Performance Attribute</div>
+            <div class="part-pts">4 pts</div>
+          </div>
+          <div class="part-body">
+            <p class="requirement">Identify one specific attribute of this business that qualifies as a <em>performance</em> attribute.</p>
+            <p>A performance attribute is one where most customers would agree on the preferred direction — more is universally better, or less is universally better. It is not specific to one customer segment.</p>
+            <p>Describe the attribute specifically enough that a classmate could recognize the type of business from your description. Explain in one sentence why this attribute is Performance and not Fit.</p>
+            <div class="example-note">
+              <strong>Example of specific:</strong> "The wait time from order to pickup was consistently under 4 minutes across 3 visits, even during a lunch rush."<br>
+              <strong>Example of too vague:</strong> "The service was fast." (Which service? How fast? Compared to what?)
+            </div>
+          </div>
+        </div>
+
+        <div class="part part-fit">
+          <div class="part-header">
+            <div class="part-num">2</div>
+            <div class="part-title">Fit Attribute</div>
+            <div class="part-pts">4 pts</div>
+          </div>
+          <div class="part-body">
+            <p class="requirement">Identify one specific attribute of this business that qualifies as a <em>fit</em> attribute.</p>
+            <p>A fit attribute appeals to some customers but not others because of individual differences in preference, need, or identity. Unlike performance, different customers would prefer different levels or versions of this attribute.</p>
+            <p>Name the specific customer segment this attribute targets and explain why a different segment might not value it — or might even be indifferent to it.</p>
+            <div class="example-note">
+              <strong>Example of specific:</strong> "The menu has a dedicated section of keto-compliant options — no bread, no starches, all tracked macros listed. This serves health-tracking customers who need precise nutritional data; a customer without dietary restrictions gains nothing from the macro listing."<br>
+              <strong>Example of too vague:</strong> "They have healthy options." (Who values that? Why is that Fit and not Performance?)
+            </div>
+          </div>
+        </div>
+
+        <div class="part part-inh">
+          <div class="part-header">
+            <div class="part-num">3</div>
+            <div class="part-title">System Inhibitor Observation</div>
+            <div class="part-pts">6 pts</div>
+          </div>
+          <div class="part-body">
+            <p class="requirement">Identify at least one sign of a system inhibitor you personally observed or experienced during this visit.</p>
+            <p>A system inhibitor is Waste, Variability, or Inflexibility. Name which inhibitor you observed, describe the specific evidence you saw (what did you actually witness — a wait, a staffing gap, an unused resource, an unexplained delay?), and explain how it created a mismatch between what the business was supplying and what you or another customer was demanding.</p>
+            <p style="margin-top:8px;"><strong>You must do three things for full credit:</strong> (1) Name the inhibitor. (2) Describe the specific evidence. (3) Explain the supply-demand mismatch it created.</p>
+            <div class="example-note">
+              <strong>Example of full credit:</strong> "Variability: On a Tuesday at noon, only one cashier was staffed at a pharmacy with 8 checkout lines. Six customers were waiting while a pharmacist was visible but not assisting — staffing supply did not match the demand surge at midday. The mismatch: customers demanded checkout service that required 6 staff-minutes; only 1 was available."<br>
+              <strong>Example of insufficient:</strong> "There was a long wait. This is waste." (Which type of waste? What caused it? What was the mismatch?)
+            </div>
+          </div>
+        </div>
+
+        <div class="part part-front">
+          <div class="part-header">
+            <div class="part-num">4</div>
+            <div class="part-title">Efficient Frontier Speculation</div>
+            <div class="part-pts">6 pts</div>
+          </div>
+          <div class="part-body">
+            <p class="requirement">Based on your experience, is this business likely on the efficient frontier in its industry?</p>
+            <p>Do not just say "yes" or "no." State your position clearly, then support it with at least two specific observations from your visit. Use the terms <em>efficient frontier</em>, <em>Pareto-dominated</em>, and/or <em>trade-off</em> correctly in your reasoning.</p>
+            <p style="margin-top:8px;">Consider: Are there competitors that appear to outperform this business on every dimension? Is this business making deliberate trade-offs that position it uniquely, or does it appear to be lagging on multiple dimensions simultaneously?</p>
+            <div class="example-note">
+              <strong>Example of full credit:</strong> "I believe this business is likely on the efficient frontier for its segment. It charges above-market prices but provides a level of staff attentiveness and physical space quality that budget competitors cannot match — the trade-off is intentional and consistent. No competitor I am aware of in this category offers the same quality at a lower price, which would make this business Pareto-dominated."<br>
+              <strong>Example of insufficient:</strong> "Yes, I think they're on the frontier because they do a good job."
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- REPLY -->
+  <div>
+    <div class="section-label">Part 2 — Reply to One Classmate &nbsp;·&nbsp; Due Day 6 &nbsp;·&nbsp; 30 points</div>
+
+    <div class="card" style="margin-top:16px;">
+      <div class="card-header" style="background:var(--gray-50);">
+        <div>
+          <h2>Reply Requirements</h2>
+          <p>Your reply must include all three components below — each is independently graded</p>
+        </div>
+      </div>
+      <div class="card-body">
+
+        <div class="reply-part">
+          <div class="reply-letter">a</div>
+          <div class="reply-content">
+            <strong>Identify the business &nbsp;·&nbsp; 10 points</strong>
+            Name the specific business your classmate described. Do not just name the industry — name the actual company, chain, or location. Support your identification with specific details from their post that led you to your conclusion.
+            <br><br>
+            <em style="color:var(--gray-600);font-size:12.5px;">Note: Your classmate cannot confirm or deny your guess until after the reply deadline passes on Day 6. This is intentional — the identification challenge only works if the original poster stays silent.</em>
+            <div class="reply-pts-tag">10 pts</div>
+          </div>
+        </div>
+
+        <div class="reply-part">
+          <div class="reply-letter">b</div>
+          <div class="reply-content">
+            <strong>Add a second system inhibitor &nbsp;·&nbsp; 10 points</strong>
+            Identify a system inhibitor that your classmate did not mention. It must be grounded in evidence from their post — use what they described to infer the second inhibitor. Explain the mechanism: how does this inhibitor create a supply-demand mismatch in the scenario they described?
+            <br><br>
+            <em style="color:var(--gray-600);font-size:12.5px;">If your classmate's scenario involves only one inhibitor and you cannot identify a second from their description, explain why — but note that most real operational scenarios involve at least two.</em>
+            <div class="reply-pts-tag">10 pts</div>
+          </div>
+        </div>
+
+        <div class="reply-part">
+          <div class="reply-letter">c</div>
+          <div class="reply-content">
+            <strong>Challenge or support their frontier assessment &nbsp;·&nbsp; 10 points</strong>
+            Take a position on whether you agree with your classmate's efficient frontier speculation. Provide at least one piece of reasoning or evidence that they did not include in their post — something that either strengthens or undermines their conclusion. Do not simply restate what they said and add "I agree."
+            <div class="reply-pts-tag">10 pts</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- POINTS TABLE -->
+  <div class="card">
+    <div class="card-header" style="background:var(--blue-xlight);">
+      <div>
+        <h2>Points Summary</h2>
+        <p>50 points total · counts as 20% of Module 1 grade</p>
+      </div>
+    </div>
+    <table class="pts-table">
+      <thead>
+        <tr>
+          <th>Component</th>
+          <th>Criteria</th>
+          <th style="text-align:right;">Points</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td rowspan="4" style="font-weight:600;color:var(--navy);vertical-align:top;padding-top:12px;">Initial Post<br><span style="font-weight:400;font-size:12px;color:var(--gray-600);">Due Day 4</span></td>
+          <td>1 — Performance attribute (specific + correct classification)</td>
+          <td class="pts-num">4</td>
+        </tr>
+        <tr>
+          <td>2 — Fit attribute (specific + segment named)</td>
+          <td class="pts-num">4</td>
+        </tr>
+        <tr>
+          <td>3 — System inhibitor (name + evidence + mismatch)</td>
+          <td class="pts-num">6</td>
+        </tr>
+        <tr>
+          <td>4 — Efficient frontier speculation (position + reasoning)</td>
+          <td class="pts-num">6</td>
+        </tr>
+        <tr>
+          <td rowspan="3" style="font-weight:600;color:var(--navy);vertical-align:top;padding-top:12px;">Reply<br><span style="font-weight:400;font-size:12px;color:var(--gray-600);">Due Day 6</span></td>
+          <td>a — Identify the business (specific + supporting evidence)</td>
+          <td class="pts-num">10</td>
+        </tr>
+        <tr>
+          <td>b — Second system inhibitor (name + evidence + mismatch)</td>
+          <td class="pts-num">10</td>
+        </tr>
+        <tr>
+          <td>c — Challenge or support frontier assessment (new reasoning)</td>
+          <td class="pts-num">10</td>
+        </tr>
+        <tr class="total-row">
+          <td colspan="2">Total</td>
+          <td class="pts-num">50</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- TIPS -->
+  <div class="card">
+    <div class="card-header" style="background:var(--gold-light);border-color:var(--gold-border);">
+      <div>
+        <h2 style="color:#92400e;">Tips for Full Credit</h2>
+        <p style="color:#a16207;">Common reasons students lose points — and how to avoid them</p>
+      </div>
+    </div>
+    <div class="card-body">
+      <ul class="tip-list">
+        <li>The most common error on Part 1 is misclassifying a Fit attribute as Performance. Ask yourself: would every customer in this business prefer "more" of this attribute? If some customers don't care or would prefer otherwise, it's Fit.</li>
+        <li>For Part 3, naming the inhibitor alone earns minimal credit. You need the mechanism: what specifically did you observe, and how did it create a mismatch between supply and demand? Name → Evidence → Mismatch.</li>
+        <li>For Part 4, "yes" or "no" with no reasoning earns 0–2 points. Describe which dimensions you are comparing (cost, quality, speed — pick two), then position your business on those dimensions relative to competitors you know about.</li>
+        <li>For the reply, identifying the business as a broad category ("probably a coffee shop") earns partial credit only. You need the specific company. Use clues from their Performance attribute, their location references, their price points, and the inhibitor they described.</li>
+        <li>For the reply Part b, the second inhibitor must come from evidence in their post — not from general knowledge about the industry. Root your identification in what they actually wrote.</li>
+        <li>This discussion feeds directly into the Case Analysis — the operational observation skills you practice here are the same skills Part 3 and Part 4 of the Case require.</li>
+      </ul>
+    </div>
+  </div>
+
+</div><!-- /page-body -->
+</body>
+</html>

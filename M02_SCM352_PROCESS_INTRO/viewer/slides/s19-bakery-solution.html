@@ -1,0 +1,39 @@
+<section class="slide-page" data-title="Bakery — Solution" data-lo="LO2-3" data-notes="Two valid conversion paths shown — both reach I=30. This reinforces that conversion direction does not matter as long as the units match before multiplying.">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">LO2-3</span>
+      <span class="le-course">SCM 352 · Module 02</span>
+    </div>
+    <span class="le-pagenum">19 / 22</span>
+  </div>
+  <div class="le-titleblock">
+    <div class="le-title">Bakery — <span>Solution</span></div>
+    <div class="le-sub">Two valid conversion paths — same answer</div>
+  </div>
+  <div class="le-body">
+    <div class="two-col" style="margin-bottom:8px;">
+      <div class="mini-card">
+        <h4 class="slide-label">Path A: Convert R to per-hour</h4>
+        <p class="slide-copy">R = 480 loaves/day ÷ 24 hr/day = <strong>20 loaves/hr</strong><br>T = 90 min ÷ 60 min/hr = <strong>1.5 hr/loaf</strong><br>I = 20 × 1.5 = <strong>30 loaves</strong></p>
+      </div>
+      <div class="mini-card">
+        <h4 class="slide-label">Path B: Convert T to days</h4>
+        <p class="slide-copy">T = 90 min ÷ (60 × 24) min/day = <strong>0.0625 days/loaf</strong><br>R = 480 loaves/day<br>I = 480 × 0.0625 = <strong>30 loaves</strong></p>
+      </div>
+    </div>
+    <div class="callout red" style="margin-bottom:6px;">
+      <div class="callout-label">Wrong Answer Diagnostic</div>
+      <p class="slide-copy">I = 480 × 90 = <strong>43,200</strong> — this is what happens when you skip the conversion. The answer is off by a factor of 1,440 (the number of minutes in a day).</p>
+    </div>
+    <div class="callout teal">
+      <div class="callout-label">Takeaway</div>
+      <p class="slide-copy">At any given moment, <strong>30 loaves</strong> are in production — whether you convert R or T, the result is the same.</p>
+    </div>
+  </div>
+  <div class="le-footer">
+    <div class="le-lo-pills"><span class="le-lo-pill">LO2-3</span></div>
+    <div><span class="le-gate-note">Gate 2 Q1 type</span></div>
+  </div>
+</section>

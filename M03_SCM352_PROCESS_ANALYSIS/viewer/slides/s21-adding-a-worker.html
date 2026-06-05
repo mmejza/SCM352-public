@@ -1,0 +1,48 @@
+<section class="slide-page" data-title="Adding a Worker: The Right Step" data-lo="LO3-2 | LO3-4" data-notes="Gate 2 Q7 asks students to add a worker to the Q2 bottleneck and identify the new bottleneck. The key insight: relieving one bottleneck creates a new one. The strategic implication is that the process always has a bottleneck — the question is which step and what the cost is there.">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">LO3-4</span>
+      <span class="le-course">SCM 352 · Module 03</span>
+    </div>
+    <span class="le-pagenum">21 / 22</span>
+  </div>
+  <div class="le-titleblock">
+    <div class="le-title">Adding a Worker: <span>The Right Step</span></div>
+    <div class="le-sub">Always add to the bottleneck — and identify the new one</div>
+  </div>
+  <div class="le-body">
+    <div class="callout teal" style="margin-bottom:7px;">
+      <div class="callout-label">Using the Airport Security Example</div>
+      <p class="slide-copy">Bottleneck = Station 3 (Baggage Scanner, 1 machine, 1.5 min, 40/hr). Process capacity = 40/hr. Two options for adding a resource:</p>
+    </div>
+    <table class="clean-table" style="margin-bottom:8px;">
+      <thead><tr><th>Option</th><th>Station Targeted</th><th>New Station Capacity</th><th>New Process Capacity</th><th>Change?</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="slide-table-text">Add officer to Station 1</td>
+          <td class="slide-table-text">Non-bottleneck (120→240/hr)</td>
+          <td class="slide-table-text">240/hr</td>
+          <td class="slide-table-text">min{240, 80, 40} = <strong>40/hr</strong></td>
+          <td class="slide-table-text"><span class="neg">None</span></td>
+        </tr>
+        <tr>
+          <td class="slide-table-text">Add machine to Station 3</td>
+          <td class="slide-table-text">Bottleneck (40→80/hr)</td>
+          <td class="slide-table-text">80/hr</td>
+          <td class="slide-table-text">min{120, 80, 80} = <strong>80/hr</strong></td>
+          <td class="slide-table-text"><span class="pos">+40/hr</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="callout amber">
+      <div class="callout-label">New Bottleneck After Adding to Station 3</div>
+      <p class="slide-copy">Station 3 (80/hr) now ties with Station 2 (80/hr) — both are bottlenecks. Station 1 (120/hr) still has slack. Every time you relieve a bottleneck, the next-tightest step becomes the new constraint.</p>
+    </div>
+  </div>
+  <div class="le-footer">
+    <div class="le-lo-pills"><span class="le-lo-pill">LO3-2</span><span class="le-lo-pill">LO3-4</span></div>
+    <div><span class="le-gate-note">Gate 2 Q7 · Case Part 6b</span></div>
+  </div>
+</section>

@@ -346,3 +346,12 @@ body{font-family:'Barlow',sans-serif;background:#F0F4F3;min-height:100vh;display
 .student-view .title-read {
   font-size: clamp(13px, 0.9vw, 16px);
 }
+/* Student-facing viewer: full-width slide layout */
+.viewer-layout {
+  display: block;
+}
+
+.slide-column {
+  width: 100%;
+  max-width: 100%;
+}

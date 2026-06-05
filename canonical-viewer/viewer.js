@@ -114,17 +114,19 @@
     els.progress.style.width = `${((current + 1) / slides.length) * 100}%`;
     els.prev.disabled = current === 0;
     els.next.disabled = current === slides.length - 1;
-    els.sideTitle.textContent = title;
-    els.sidePage.textContent = `${String(current + 1).padStart(2,'0')} / ${String(slides.length).padStart(2,'0')}`;
-    els.sideNotes.textContent = notes;
+if (els.sideTitle) els.sideTitle.textContent = title;
+if (els.sidePage) els.sidePage.textContent = `${String(current + 1).padStart(2,'0')} / ${String(slides.length).padStart(2,'0')}`;
+if (els.sideNotes) els.sideNotes.textContent = notes;
 
-    els.sideLos.innerHTML = '';
-    lo.split(/[ ,|]+/).filter(Boolean).forEach(item => {
-      const span = document.createElement('span');
-      span.className = 'lo-badge';
-      span.textContent = item;
-      els.sideLos.appendChild(span);
-    });
+if (els.sideLos) {
+  els.sideLos.innerHTML = '';
+  lo.split(/[ ,|]+/).filter(Boolean).forEach(item => {
+    const span = document.createElement('span');
+    span.className = 'lo-badge';
+    span.textContent = item;
+    els.sideLos.appendChild(span);
+  });
+}
 
     if(window.renderMathInElement){
       renderMathInElement(slide, {delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});

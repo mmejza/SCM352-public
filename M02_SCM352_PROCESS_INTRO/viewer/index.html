@@ -1,67 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>SCM 352 · M02 — Introduction to Processes</title>
-<link rel="stylesheet" href="../../canonical-viewer/styles.css">
-<link rel="stylesheet" href="slide-base.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SCM 352 · M02 — Introduction to Processes</title>
+  <link rel="stylesheet" href="../../canonical-viewer/styles.css">
+  <link rel="stylesheet" href="slide-base.css">
+  
 </head>
-<body>
+<body class="student-view">
 
-<header class="viewer-header">
-  <div>
-    <div class="viewer-kicker">SCM 352 · Module 02</div>
-    <h1 id="viewer-title">Introduction to Processes</h1>
-  </div>
-  <div style="display:flex;align-items:center;gap:16px;">
-    <span id="viewer-module-label" style="font-size:12px;color:#6EA09D;font-family:'Barlow Condensed',sans-serif;letter-spacing:.06em;">SCM 352 · Lecture Slides</span>
-    <span id="viewer-counter" class="viewer-counter">Slide 1 of 22</span>
-  </div>
-</header>
-
-<div class="progress-track">
-  <div id="progress-fill" class="progress-fill"></div>
-</div>
-
-<div class="viewer-layout">
-  <div class="slide-column">
-    <div class="slide-frame">
-      <div id="slide-container" class="slide-stage">
-        <div class="loading-message">Loading slides…</div>
-      </div>
+  <div class="viewer-header">
+    <div>
+      <div class="viewer-kicker">SCM 352 · M02</div>
+      <h1 id="viewer-title">Introduction to Processes</h1>
     </div>
-    <div class="viewer-nav">
-      <button id="prev-btn" class="nav-btn" type="button">← Prev</button>
-      <div id="slide-dots" class="slide-dots"></div>
-      <button id="next-btn" class="nav-btn" type="button">Next →</button>
-    </div>
-    <div class="keyboard-hint">← → Arrow keys · Home / End</div>
+    <span class="viewer-counter" id="viewer-counter">Slide — of —</span>
   </div>
 
-  <div class="sidebar">
-    <div class="side-card">
-      <div class="side-card-header navy">Current Slide</div>
-      <div class="side-card-body">
-        <div id="side-title" class="side-title">—</div>
-        <div id="side-page" class="side-page">01 / 22</div>
-      </div>
-    </div>
-    <div class="side-card">
-      <div class="side-card-header teal">Learning Objectives</div>
-      <div class="side-card-body">
-        <div id="side-los" class="lo-badges"></div>
-      </div>
-    </div>
-    <div class="side-card">
-      <div class="side-card-header amber">Slide Notes</div>
-      <div class="side-card-body">
-        <div id="side-notes" class="muted">No notes for this slide.</div>
-      </div>
-    </div>
+  <div class="progress-track">
+    <div class="progress-fill" id="progress-fill" style="width:0%"></div>
   </div>
-</div>
 
-<script src="viewer.js"></script>
+  <div class="viewer-layout">
+
+    <div class="slide-column">
+      <div class="slide-frame">
+        <div class="slide-stage" id="slide-container">
+          <div class="loading-message">Loading slides…</div>
+        </div>
+      </div>
+      <div class="viewer-nav">
+        <button class="nav-btn" id="prev-btn" disabled>&#8592; Prev</button>
+        <div class="slide-dots" id="slide-dots"></div>
+        <button class="nav-btn" id="next-btn">Next &#8594;</button>
+      </div>
+      <div class="keyboard-hint">&#8592; &#8594; navigate &nbsp;·&nbsp; Home / End jump to start / end</div>
+    </div>
+
+  </div>
+
+  <span id="viewer-module-label" style="display:none">SCM 352 · M02</span>
+  <script src="../../canonical-viewer/viewer.js"></script>
 </body>
 </html>

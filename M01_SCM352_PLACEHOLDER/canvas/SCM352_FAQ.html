@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FAQ — SCM 352</title>
+<style>
+:root {
+  --navy:      #1a3a5c;
+  --blue:      #2563a8;
+  --blue-lt:   #dbeafe;
+  --blue-xlt:  #eff6ff;
+  --gold:      #f59e0b;
+  --gold-lt:   #fffbeb;
+  --gold-bdr:  #fde68a;
+  --green:     #16a34a;
+  --green-lt:  #f0fdf4;
+  --green-bdr: #bbf7d0;
+  --red:       #dc2626;
+  --red-lt:    #fef2f2;
+  --red-bdr:   #fecaca;
+  --amber:     #d97706;
+  --amber-lt:  #fffbeb;
+  --amber-bdr: #fde68a;
+  --gray-50:   #f9fafb;
+  --gray-100:  #f3f4f6;
+  --gray-200:  #e5e7eb;
+  --gray-400:  #9ca3af;
+  --gray-600:  #4b5563;
+  --gray-700:  #374151;
+  --gray-800:  #1f2937;
+}
+
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--gray-50);color:var(--gray-800);line-height:1.65;font-size:14px;}
+
+/* ── HERO ──────────────────────────────────────── */
+.hero{background:var(--navy);color:white;padding:40px 32px 36px;}
+.hero-eyebrow{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;}
+.hero h1{font-size:28px;font-weight:700;letter-spacing:-.02em;line-height:1.2;margin-bottom:12px;}
+.hero-sub{font-size:14px;color:rgba(255,255,255,.72);line-height:1.6;max-width:680px;}
+
+/* ── META STRIP ─────────────────────────────────── */
+.meta-strip{display:flex;gap:0;border-bottom:2px solid var(--gray-200);overflow-x:auto;background:white;flex-wrap:wrap;}
+.meta-item{padding:12px 22px;border-right:1px solid var(--gray-200);flex-shrink:0;}
+.meta-item:last-child{border-right:none;}
+.meta-label{font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--gray-400);margin-bottom:3px;}
+.meta-value{font-size:13px;font-weight:700;color:var(--navy);}
+
+/* ── BODY ───────────────────────────────────────── */
+.pg-body{max-width:860px;margin:0 auto;padding:36px 24px 72px;display:flex;flex-direction:column;gap:36px;}
+
+/* ── CATEGORY BLOCKS ────────────────────────────── */
+.faq-block{background:white;border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;}
+.faq-block-hd{padding:12px 20px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--gray-200);}
+.faq-cat-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.faq-cat-label{font-size:12px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--navy);}
+.faq-cat-count{font-size:11px;color:var(--gray-400);margin-left:auto;}
+
+/* category colors */
+.faq-block.cat-gate1  .faq-block-hd{background:var(--gold-lt);}
+.faq-block.cat-gate1  .faq-cat-dot{background:var(--gold);}
+.faq-block.cat-gate2  .faq-block-hd{background:var(--blue-xlt);}
+.faq-block.cat-gate2  .faq-cat-dot{background:var(--blue);}
+.faq-block.cat-disc   .faq-block-hd{background:var(--green-lt);}
+.faq-block.cat-disc   .faq-cat-dot{background:var(--green);}
+.faq-block.cat-case   .faq-block-hd{background:var(--red-lt);}
+.faq-block.cat-case   .faq-cat-dot{background:var(--red);}
+.faq-block.cat-grade  .faq-block-hd{background:var(--gray-100);}
+.faq-block.cat-grade  .faq-cat-dot{background:var(--navy);}
+.faq-block.cat-canvas .faq-block-hd{background:var(--amber-lt);}
+.faq-block.cat-canvas .faq-cat-dot{background:var(--amber);}
+
+/* ── Q&A PAIRS ──────────────────────────────────── */
+.qa-pair{padding:16px 20px;border-bottom:1px solid var(--gray-100);}
+.qa-pair:last-child{border-bottom:none;}
+.qa-q{font-size:13.5px;font-weight:700;color:var(--navy);margin-bottom:8px;line-height:1.4;}
+.qa-a{font-size:13px;color:var(--gray-700);line-height:1.7;}
+.qa-a strong{color:var(--gray-800);}
+.qa-a .inline-pill{display:inline-block;font-size:11px;font-weight:700;padding:1px 7px;border-radius:100px;white-space:nowrap;}
+.pill-red{background:var(--red-lt);color:var(--red);border:1px solid var(--red-bdr);}
+.pill-green{background:var(--green-lt);color:var(--green);border:1px solid var(--green-bdr);}
+.pill-gold{background:var(--gold-lt);color:var(--amber);border:1px solid var(--gold-bdr);}
+.pill-blue{background:var(--blue-xlt);color:var(--blue);border:1px solid var(--blue-lt);}
+
+/* ── CALLOUTS ───────────────────────────────────── */
+.callout-blue{background:var(--blue-xlt);border:1.5px solid var(--blue-lt);border-left:4px solid var(--blue);border-radius:0 10px 10px 0;padding:14px 18px;font-size:13.5px;color:var(--gray-700);line-height:1.65;}
+.callout-blue strong{color:var(--navy);}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">SCM 352 · Summer 2026 · Student Guide</div>
+  <h1>Frequently Asked Questions</h1>
+  <p class="hero-sub">Answers to the most common questions about gate quizzes, discussions, case assignments, and grading. If your question is not covered here, email your instructor with your student ID and module number in the subject line.</p>
+</div>
+
+<!-- META STRIP -->
+<div class="meta-strip">
+  <div class="meta-item"><div class="meta-label">Categories</div><div class="meta-value">6</div></div>
+  <div class="meta-item"><div class="meta-label">Questions</div><div class="meta-value">22</div></div>
+  <div class="meta-item"><div class="meta-label">Still need help?</div><div class="meta-value">Email instructor — include module # and student ID</div></div>
+</div>
+
+<div class="pg-body">
+
+  <!-- GATE 1 -->
+  <div class="faq-block cat-gate1">
+    <div class="faq-block-hd">
+      <div class="faq-cat-dot"></div>
+      <span class="faq-cat-label">Gate 1 Quiz</span>
+      <span class="faq-cat-count">5 questions</span>
+    </div>
+
+    <div class="qa-pair">
+      <div class="qa-q">Does Gate 1 affect my grade?</div>
+      <div class="qa-a">No. Gate 1 is recorded as <span class="inline-pill pill-green">Complete</span> or <span class="inline-pill pill-red">Incomplete</span> and does not contribute to your module point total. It is access control only — 0 points. Passing it unlocks the rest of the module; not passing it locks everything else until you do.</div>
+    </div>
+
+    <div class="qa-pair">
+      <div class="qa-q">I scored below 80% on Attempt 1. When can I retake it?</div>
+      <div class="qa-a">A second attempt unlocks <strong>24 hours after you submitted Attempt 1</strong>. The clock starts from your submission time, not from midnight. If you submitted at 3:00 PM on Day 1, your second attempt is available at 3:00 PM on Day 2. Gate 1 is due by <strong>11:59 PM on Day 2</strong> — plan accordingly. If your Attempt 2 window opens after the Day 2 deadline, you have missed the gate deadline but can still attempt it to unlock content for any remaining time in the module window.</div>
+    </div>
+
+    <div class="qa-pair">
+      <div class="qa-q">What if I fail both attempts?</div>
+      <div class="qa-a">All gated content — lecture video, interactive apps, discussion, Gate 2, and Case Analysis — remains locked. <strong>Email your instructor immediately, before the module closes.</strong> Do not wait for the deadline. An instructor override can unlock content manually, but this requires advance notice and is not guaranteed. Waiting until Day 5 to report a Gate 1 failure will almost certainly result in a zero on all gated assessments.</div>
+    </div>
+
+    <div class="qa-pair">
+      <div class="qa-q">What does Gate 1 actually test?</div>
+      <div class="qa-a">Gate 1 draws five questions from a larger bank covering <strong>only the assigned chapter</strong>. Questions test specific numbers, definitions, examples, and framework concepts that appear in the chapter text — not in lecture slides or videos. Slides are a summary; Gate 1 tests the full chapter. The question pool and correct letter choices vary between attempts, so memorizing answer positions does not help on a retake.</div>
+    </div>
+
+    <div class="qa-pair">
+      <div class="qa-q">Can I use the textbook during Gate 1?</div>
+      <div class="qa-a">Yes. Gate 1 is open-book — you may refer to your physical or digital copy of the textbook while taking the quiz. Slides and notes from other students are not a substitute for reading the chapter, however. Gate 1 is specifically designed to test content that slides do not cover.</div>
+    </div>
+
+  </div>
+
+  <!-- GATE 2 -->
+  <div class="faq-block cat-gate2">
+    <div class="faq-block-hd">
+      <div class="faq-cat-dot"></div>
+      <span class="faq-cat-label">Gate 2 Quiz</span>
+      <span class="faq-cat-count">4 questions</span>
+    </div>
+
+    <div class="qa-pair">
+      <div class="qa-q">Can I retake Gate 2?</div>
+      <div class="qa-a"><strong>No.</strong> Gate 2 is <span class="inline-pill pill-red">1 attempt only</span>. Once you click Submit, the attempt is final and cannot be reopened. Do not start Gate 2 unless you have 90 uninterrupted minutes available and have reviewed all three sources: chapter, lecture video, and interactive apps.</div>
+    </div>
+
+    <div class="qa-pair">
+      <div class="qa-q">What does Gate 2 cover, and how is it structured?</div>
+      <div class="qa-a">Gate 2 has <strong>8 questions</strong> and a <strong>90-minute time limit</strong>. It synthesizes the chapter, lecture video, and interactive apps — not just reading recall. Expect quantitative problems requiring calculation (process capacity, inventory models, flow time, etc.) alongside conceptual questions. The quiz has four versions (A/B/C/D) assigned by student ID; numerical parameters differ between versions.</div>
+    </div>
+
+    <div class="qa-pair">
+      <div class="qa-q">When will I see my Gate 2 answers and score?</div>
+      <div class="qa-a">Your score is visible immediately after submission. Correct answers and full question feedback are released <strong>after the module closes</strong> (after Day 5 at 11:59 PM). This delay prevents students who are earlier in their module window from sharing answers with students who have not yet taken the quiz.</div>
+    </div>
+
+    <div class="qa-pair">
+      <div class="qa-q">Gate 2 is locked even though I passed Gate 1. What's wrong?</div>
+      <div class="qa-a">Gate 2 requires two conditions: you must have passed Gate 1 <em>and</em> submitted your initial discussion post. If your initial post has not been submitted, Gate 2 remains locked. Submit your post first — the unlock happens automatically once Canvas registers the submission.</div>
+    </div>
+
+  </div>
+
+  <!-- DISCUSSION -->
+  <div class="faq-block cat-disc">
+    <div class="faq-block-hd">
+      <div class="faq-cat-dot"></div>
+      <span class="faq-cat-label">Discussion</span>
+      <span class="faq-cat-count">6 questions</span>
+    </div>
+
+    <div class="qa-pair">
+      <div class="qa-q">Do I have to reply to a specific classmate, or can I choose any post?</div>
+      <div class="qa-a">You can reply to <strong>any post in the discussion</strong>. Choose a post that gives you something substantive to engage with — one that applies a specific concept, makes a claim you can evaluate, or describes a process you can analyze further. The grading criteria reward quality of engagement, not which post you chose.</div>
+    </div>
+
+    <div class="qa-pair">
+      <div class="qa-q">Why can't I see other students' posts before I write mine?</div>
+      <div class="qa-a">The discussion is set to <strong>post before view</strong> — you cannot read classmates' posts until you have submitted your own initial post. This is intentional: it ensures every student writes their own analysis independently before seeing how others approached the prompt. Once your post is submitted, all posts become visible.</div>
+    </div>
+
+    <div class="qa-pair">
+      <div class="qa-q">What earns full credit on the initial post?</div>
+      <div class="qa-a">Full credit requires: (1) a <strong>real, specific, observable</strong> business or process — not a fictional or textbook example; (2) correct application of at least one concept from the chapter, using the chapter's terminology precisely; (3) a complete response to all parts of the prompt. Vague descriptions ("a company I know of") and generic concept summaries earn partial credit. The rubric is attached to the discussion — review it before submitting.</div>
+    </div>
+
+    <div class="qa-pair">
+      <div class="qa-q">What earns full credit on the reply?</div>
+      <div class="qa-a">A reply that earns full credit does three things: (a) correctly identifies or evaluates the key claim in the original post; (b) adds a specific analytical contribution — new evidence, a calculation check, a contrasting scenario — using chapter concepts; (c) is clearly grounded in what the original post actually said, not a generic response. <strong>Replies that say "great post" or restate the original post earn minimal credit.</strong></div>
+    </div>
+
+    <div class="qa-pair">
+      <div class="qa-q">For M01 only: why am I not allowed to name my business in my initial post?</div>
+      <div class="qa-a">M01's discussion uses a <strong>peer identification mechanic</strong>: you describe a real business without naming it, and the student who replies tries to identify it from your description. Naming your business removes the challenge and triggers a <strong>10-point deduction</strong> from your score. Keep the name out of your post — confirm or deny the identification only after the reply has been submitted.</div>
+    </div>
+
+    <div class="qa-pair">
+      <div class="qa-q">The initial post deadline has passed. Can I still submit?</div>
+      <div class="qa-a">Yes — you can submit an initial post after the Day 3 deadline as long as the module has not yet closed. However, late posts are graded with a <strong>point deduction</strong> per the late policy in your syllabus, and you will have less time for your reply before the Day 5 close. Submitting an initial post is still required to unlock Gate 2 regardless of when it is submitted.</div>
+    </div>
+
+  </div>
+
+  <!-- CASE ANALYSIS -->
+  <div class="faq-block cat-case">
+    <div class="faq-block-hd">
+      <div class="faq-cat-dot"></div>
+      <span class="faq-cat-label">Case Analysis</span>
+      <span class="faq-cat-count">4 questions</span>
+    </div>
+
+    <div class="qa-pair">
+      <div class="qa-q">How is my case version assigned, and where do I find it?</div>
+      <div class="qa-a">Your version (A, B, C, or D) is assigned by <strong>student ID</strong>. The assignment table is in the <strong>Case Version Assignment</strong> page inside your module — it is always unlocked and visible from the start of the module. Look up your student ID in the table before you begin any calculations. If you cannot find your version, contact your instructor before starting work.</div>
+    </div>
+
+    <div class="qa-pair">
+      <div class="qa-q">The numbers in my case look different from a classmate's. Is that normal?</div>
+      <div class="qa-a">Yes. Each version (A/B/C/D) has <strong>different numerical parameters</strong>. This is by design. Do not use a classmate's numbers to check your answers — their version's correct answer is not your version's correct answer. Work only with the parameters listed for your version in the Case Assignment document.</div>
+    </div>
+
+    <div class="qa-pair">
+      <div class="qa-q">Can I resubmit the Case if I made an error?</div>
+      <div class="qa-a"><strong>No.</strong> Case Analysis allows <span class="inline-pill pill-red">1 submission</span>. Review your work carefully before submitting. Double-check that you have used your correct version's numbers, that all parts are answered, and that your work is shown for every calculation. Once submitted, the file is final.</div>
+    </div>
+
+    <div class="qa-pair">
+      <div class="qa-q">What format should I submit, and do I need to show my work?</div>
+      <div class="qa-a">Submit as a <strong>PDF or Word document</strong>. Showing your work is not optional — it is required for partial credit. A correct final answer with no supporting work earns zero on that part because the grader cannot verify the method. Write out your setup, identify variables, show the full calculation with units, and state your conclusion. Label each part clearly to match the question structure.</div>
+    </div>
+
+  </div>
+
+  <!-- GRADING -->
+  <div class="faq-block cat-grade">
+    <div class="faq-block-hd">
+      <div class="faq-cat-dot"></div>
+      <span class="faq-cat-label">Grading &amp; Points</span>
+      <span class="faq-cat-count">4 questions</span>
+    </div>
+
+    <div class="qa-pair">
+      <div class="qa-q">What is the total points possible, and how is each module broken down?</div>
+      <div class="qa-a">
+        The course total is <strong>3,250 points</strong> (13 modules × 250 points each). Each module:
+        <table style="margin-top:10px;border-collapse:collapse;font-size:12.5px;width:100%;max-width:440px;">
+          <thead>
+            <tr style="background:var(--navy);color:white;">
+              <th style="padding:7px 12px;text-align:left;font-size:11px;letter-spacing:.04em;text-transform:uppercase;">Assessment</th>
+              <th style="padding:7px 12px;text-align:right;font-size:11px;letter-spacing:.04em;text-transform:uppercase;">Points</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom:1px solid var(--gray-200);">
+              <td style="padding:7px 12px;">Gate 1 Quiz</td>
+              <td style="padding:7px 12px;text-align:right;color:var(--gray-400);">0 (access control)</td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--gray-200);">
+              <td style="padding:7px 12px;">Gate 2 Quiz</td>
+              <td style="padding:7px 12px;text-align:right;font-weight:700;">100</td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--gray-200);">
+              <td style="padding:7px 12px;">Discussion (post 20 + reply 30)</td>
+              <td style="padding:7px 12px;text-align:right;font-weight:700;">50</td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--gray-200);">
+              <td style="padding:7px 12px;">Case Analysis</td>
+              <td style="padding:7px 12px;text-align:right;font-weight:700;">100</td>
+            </tr>
+            <tr style="background:var(--blue-xlt);">
+              <td style="padding:7px 12px;font-weight:700;color:var(--navy);">Module total</td>
+              <td style="padding:7px 12px;text-align:right;font-weight:800;color:var(--navy);">250</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="qa-pair">
+      <div class="qa-q">Are there midterms, finals, or extra credit?</div>
+      <div class="qa-a">No. There are no midterms, no final exam, and no extra credit. Your entire grade comes from the 13 modules. Each module is weighted equally. Missing a module — or scoring poorly on a single assessment — is not catastrophic, but there is no mechanism to offset it through additional work.</div>
+    </div>
+
+    <div class="qa-pair">
+      <div class="qa-q">What is the late policy?</div>
+      <div class="qa-a">Module deadlines are <strong>firm</strong>. All assessments (Gate 2, Case Analysis, and discussion reply) close at 11:59 PM on Day 5. Canvas does not accept submissions after the module closes. Discussion initial posts submitted after the Day 3 deadline but before Day 5 are accepted with a point deduction. If you have a documented emergency, contact your instructor <strong>before</strong> the deadline — not after.</div>
+    </div>
+
+    <div class="qa-pair">
+      <div class="qa-q">My Canvas gradebook shows a score I think is wrong. What should I do?</div>
+      <div class="qa-a">For Gate 2, Canvas grades automatically — review the feedback shown after the module closes to understand any missed questions. For Discussion and Case Analysis, grades are entered manually after the module closes. If you believe a score is incorrect, email your instructor with the module number, the specific assessment, and a clear explanation of the discrepancy. Include your submission so the grader can re-review it.</div>
+    </div>
+
+  </div>
+
+  <!-- CANVAS / TECH -->
+  <div class="faq-block cat-canvas">
+    <div class="faq-block-hd">
+      <div class="faq-cat-dot"></div>
+      <span class="faq-cat-label">Canvas &amp; Technical</span>
+      <span class="faq-cat-count">3 questions</span>
+    </div>
+
+    <div class="qa-pair">
+      <div class="qa-q">I can see Gate 1 but the lecture, apps, discussion, and Gate 2 are not showing. What's wrong?</div>
+      <div class="qa-a">You have not yet passed Gate 1. All items listed after Gate 1 in the module are locked until you score 80% or higher. Once you pass Gate 1, Canvas unlocks the content automatically — <strong>it may take up to 60 seconds to refresh</strong>. Reload the module page if items do not appear immediately after passing. If they still do not appear after refreshing, contact your instructor.</div>
+    </div>
+
+    <div class="qa-pair">
+      <div class="qa-q">I passed Gate 1 and submitted my discussion post, but Gate 2 is still locked.</div>
+      <div class="qa-a">Canvas sometimes takes a few minutes to register a discussion post submission and trigger the Gate 2 unlock. Wait two to three minutes and reload the module page. If Gate 2 is still locked after five minutes, check that your discussion post was actually submitted (it should appear in the discussion thread, not just saved as a draft). If the post is confirmed submitted and Gate 2 remains locked, email your instructor.</div>
+    </div>
+
+    <div class="qa-pair">
+      <div class="qa-q">I am having a technical problem (Canvas is down, file won't upload, quiz crashed mid-attempt). What should I do?</div>
+      <div class="qa-a"><strong>Document it immediately.</strong> Take a screenshot of the error, note the exact time, and email your instructor right away — do not wait until the deadline. Canvas outages and technical failures are reviewed on a case-by-case basis, but only if reported promptly. "Canvas was down" is not a valid reason for a deadline extension if reported after the module has already closed.</div>
+    </div>
+
+  </div>
+
+  <!-- FOOTER NOTE -->
+  <div class="callout-blue">
+    <strong>Still have a question?</strong> Check the Course Roadmap and Getting Started pages first — scheduling and navigation questions are answered there. For anything else, email your instructor directly. Include your student ID, the module number, and the specific assessment in the subject line.
+  </div>
+
+</div>
+</body>
+</html>

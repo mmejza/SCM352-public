@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How to Succeed in SCM 352</title>
+<style>
+:root {
+  --navy:      #1a3a5c;
+  --blue:      #2563a8;
+  --blue-lt:   #dbeafe;
+  --blue-xlt:  #eff6ff;
+  --gold:      #f59e0b;
+  --gold-lt:   #fffbeb;
+  --gold-bdr:  #fde68a;
+  --green:     #16a34a;
+  --green-lt:  #f0fdf4;
+  --green-bdr: #bbf7d0;
+  --red:       #dc2626;
+  --red-lt:    #fef2f2;
+  --red-bdr:   #fecaca;
+  --amber:     #d97706;
+  --amber-lt:  #fffbeb;
+  --amber-bdr: #fde68a;
+  --gray-50:   #f9fafb;
+  --gray-100:  #f3f4f6;
+  --gray-200:  #e5e7eb;
+  --gray-400:  #9ca3af;
+  --gray-600:  #4b5563;
+  --gray-700:  #374151;
+  --gray-800:  #1f2937;
+}
+
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--gray-50);color:var(--gray-800);line-height:1.65;font-size:14px;}
+
+/* ── HERO ──────────────────────────────────────── */
+.hero{background:var(--navy);color:white;padding:40px 32px 36px;}
+.hero-eyebrow{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;}
+.hero h1{font-size:28px;font-weight:700;letter-spacing:-.02em;line-height:1.2;margin-bottom:12px;}
+.hero-sub{font-size:14px;color:rgba(255,255,255,.72);line-height:1.6;max-width:680px;}
+
+/* ── META STRIP ─────────────────────────────────── */
+.meta-strip{display:flex;gap:0;border-bottom:2px solid var(--gray-200);overflow-x:auto;background:white;flex-wrap:wrap;}
+.meta-item{padding:12px 22px;border-right:1px solid var(--gray-200);flex-shrink:0;}
+.meta-item:last-child{border-right:none;}
+.meta-label{font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--gray-400);margin-bottom:3px;}
+.meta-value{font-size:13px;font-weight:700;color:var(--navy);}
+
+/* ── BODY ───────────────────────────────────────── */
+.pg-body{max-width:900px;margin:0 auto;padding:36px 24px 72px;display:flex;flex-direction:column;gap:40px;}
+.section-heading{font-size:16px;font-weight:700;color:var(--navy);padding-bottom:12px;border-bottom:2px solid var(--blue-lt);margin-bottom:20px;}
+
+/* ── CALLOUTS ───────────────────────────────────── */
+.callout-blue{background:var(--blue-xlt);border:1.5px solid var(--blue-lt);border-left:4px solid var(--blue);border-radius:0 10px 10px 0;padding:14px 18px;font-size:13.5px;color:var(--gray-700);line-height:1.65;}
+.callout-blue strong{color:var(--navy);}
+.callout-gold{background:var(--gold-lt);border:1.5px solid var(--gold-bdr);border-left:4px solid var(--gold);border-radius:0 10px 10px 0;padding:14px 18px;font-size:13.5px;color:var(--gray-700);line-height:1.65;}
+.callout-gold strong{color:var(--navy);}
+
+/* ── HABIT CARDS ────────────────────────────────── */
+.habit-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(380px,1fr));gap:14px;}
+.habit-card{background:white;border:1px solid var(--gray-200);border-radius:12px;padding:20px 22px;display:flex;gap:16px;align-items:flex-start;}
+.habit-num{width:36px;height:36px;border-radius:50%;background:var(--navy);color:white;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;flex-shrink:0;font-family:Georgia,serif;margin-top:1px;}
+.habit-body{flex:1;}
+.habit-title{font-size:14px;font-weight:700;color:var(--navy);margin-bottom:6px;line-height:1.3;}
+.habit-desc{font-size:13px;color:var(--gray-600);line-height:1.65;}
+.habit-desc strong{color:var(--gray-800);}
+.habit-why{margin-top:10px;padding:8px 12px;background:var(--blue-xlt);border-radius:6px;font-size:12px;color:var(--navy);line-height:1.5;}
+.habit-why strong{font-weight:700;}
+
+/* ── MISTAKE CARDS ──────────────────────────────── */
+.mistake-list{display:flex;flex-direction:column;gap:10px;}
+.mistake-card{background:white;border:1px solid var(--gray-200);border-left:4px solid var(--red);border-radius:0 10px 10px 0;padding:14px 18px;display:flex;flex-direction:column;gap:6px;}
+.mistake-label{font-size:10px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--red);margin-bottom:2px;}
+.mistake-text{font-size:13px;color:var(--gray-700);line-height:1.6;}
+.mistake-fix{font-size:12.5px;color:var(--green);line-height:1.55;}
+.mistake-fix strong{font-weight:700;}
+
+/* ── QUANT NOTE ─────────────────────────────────── */
+.quant-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;}
+.quant-card{background:white;border:1px solid var(--gray-200);border-radius:10px;padding:14px 16px;}
+.quant-title{font-size:12px;font-weight:700;color:var(--navy);margin-bottom:5px;}
+.quant-desc{font-size:12px;color:var(--gray-600);line-height:1.55;}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">SCM 352 · Summer 2026 · Student Guide</div>
+  <h1>How to Succeed in SCM 352</h1>
+  <p class="hero-sub">This is a quantitative, fast-paced summer course. The structure rewards students who read ahead and work consistently. Six habits separate the students who do well from the ones who scramble.</p>
+</div>
+
+<!-- META STRIP -->
+<div class="meta-strip">
+  <div class="meta-item"><div class="meta-label">Format</div><div class="meta-value">Asynchronous · 5 weeks</div></div>
+  <div class="meta-item"><div class="meta-label">Modules</div><div class="meta-value">13 · rolling 5-day windows</div></div>
+  <div class="meta-item"><div class="meta-label">Graded work</div><div class="meta-value">Gate 2 · Discussion · Case Analysis</div></div>
+  <div class="meta-item"><div class="meta-label">Course total</div><div class="meta-value">3,250 pts</div></div>
+</div>
+
+<div class="pg-body">
+
+  <!-- HABITS -->
+  <div>
+    <div class="section-heading">Six Habits That Make the Difference</div>
+    <div class="habit-grid">
+
+      <div class="habit-card">
+        <div class="habit-num">1</div>
+        <div class="habit-body">
+          <div class="habit-title">Read the chapter before opening Gate 1</div>
+          <div class="habit-desc">Gate 1 is <strong>chapter-exclusive</strong>. Every question targets content that appears only in the textbook — specific numbers, definitions, and examples that lecture slides summarize or skip entirely. Students who skim the chapter and rely on slides fail Gate 1 at a much higher rate than students who read it carefully.</div>
+          <div class="habit-why"><strong>The cost of skipping:</strong> A failed Attempt 1 triggers a 24-hour lockout. In a 5-day module, that lockout eats your entire buffer. Reading first is time management, not extra work.</div>
+        </div>
+      </div>
+
+      <div class="habit-card">
+        <div class="habit-num">2</div>
+        <div class="habit-body">
+          <div class="habit-title">Front-load every module — open early, finish early</div>
+          <div class="habit-desc">All graded deadlines land on Day 5. Students who open on Day 1 and finish Gate 1 the same day have a full 72 hours to engage with lecture, apps, and the Case before the close. Students who open on Day 3 have a single day to do all of it. The module window is not an extension — it is a pacing tool.</div>
+          <div class="habit-why"><strong>In Week 1:</strong> M01, M02, and M03 overlap. If you fall behind on M01, you are already behind on M02 before M01 closes.</div>
+        </div>
+      </div>
+
+      <div class="habit-card">
+        <div class="habit-num">3</div>
+        <div class="habit-body">
+          <div class="habit-title">Prepare for Gate 2 across all three sources</div>
+          <div class="habit-desc">Gate 2 synthesizes the <strong>chapter, the lecture video, and the interactive apps</strong>. It is not a reading quiz — it requires applying frameworks and doing calculations. Students who skip the lecture or apps consistently miss the quantitative questions that require technique, not just recall. Budget time for all three before taking Gate 2.</div>
+          <div class="habit-why"><strong>One attempt, 90 minutes, 100 points.</strong> Read all 8 questions before answering any. Sketch diagrams or set up equations on scratch paper before committing numbers.</div>
+        </div>
+      </div>
+
+      <div class="habit-card">
+        <div class="habit-num">4</div>
+        <div class="habit-body">
+          <div class="habit-title">Make your discussion post specific and grounded</div>
+          <div class="habit-desc">The rubric rewards <strong>specificity and correct concept application</strong>. Describe a real, observable process — not a vague "company I worked for." Name the industry, the type of flow unit, what you actually observed. Apply the chapter's framework precisely. A post that says "my workplace has a bottleneck" earns far less than one that identifies which step, why, and what the capacity constraint is.</div>
+          <div class="habit-why"><strong>The reply matters too:</strong> The reply is 30 of 50 points. Engage with the analysis in the post you chose — do not just say "great post" or offer generic observations.</div>
+        </div>
+      </div>
+
+      <div class="habit-card">
+        <div class="habit-num">5</div>
+        <div class="habit-body">
+          <div class="habit-title">Verify your Case version before you start any calculations</div>
+          <div class="habit-desc">Each Case Analysis has four versions (A/B/C/D) with <strong>different numerical parameters</strong>. Your version is assigned by student ID and listed in the Case Version Assignment table in your module. Students who work the wrong version submit a perfectly executed wrong answer — it earns zero because the numbers are incorrect for their version, not because the method was wrong.</div>
+          <div class="habit-why"><strong>Check once before you start. Check again before you submit.</strong> The version letter should appear in your submission.</div>
+        </div>
+      </div>
+
+      <div class="habit-card">
+        <div class="habit-num">6</div>
+        <div class="habit-body">
+          <div class="habit-title">Show every step in the Case — no work means no partial credit</div>
+          <div class="habit-desc">The Case is graded on <strong>method as well as answer</strong>. A final number with no supporting work earns zero even if it is correct — the grader cannot award partial credit for reasoning they cannot see. Write out your setup, identify your variables, show the calculation, and state units. An organized, clearly labeled submission is faster to grade and less likely to lose points to ambiguity.</div>
+          <div class="habit-why"><strong>Label each part clearly</strong> (Part a, Part b, etc.). Match the question structure in your submission so the grader does not have to hunt for your answer.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- COMMON MISTAKES -->
+  <div>
+    <div class="section-heading">Common Mistakes — and How to Avoid Them</div>
+    <div class="mistake-list">
+
+      <div class="mistake-card">
+        <div class="mistake-label">Mistake 1</div>
+        <div class="mistake-text">Taking Gate 1 before finishing the chapter, failing, then reading to prepare for Attempt 2 — and finding the 24-hour wait has collapsed the module window.</div>
+        <div class="mistake-fix"><strong>Fix:</strong> Finish the chapter completely before opening Gate 1. The quiz is meant to verify you read; it is not a diagnostic to tell you what to read.</div>
+      </div>
+
+      <div class="mistake-card">
+        <div class="mistake-label">Mistake 2</div>
+        <div class="mistake-text">Waiting until Day 4 or Day 5 to start a module, then discovering that Gate 1 failure, a technical issue, or a time conflict has left no room to recover.</div>
+        <div class="mistake-fix"><strong>Fix:</strong> Treat Day 1 as the real start date. Open the module, read the chapter, and attempt Gate 1 on the day the module opens whenever possible.</div>
+      </div>
+
+      <div class="mistake-card">
+        <div class="mistake-label">Mistake 3</div>
+        <div class="mistake-text">Skipping the interactive apps because they feel optional, then encountering Gate 2 questions that require the exact quantitative technique the apps were designed to practice.</div>
+        <div class="mistake-fix"><strong>Fix:</strong> Complete the apps before taking Gate 2. The apps are not busy work — they are the practice set for the exam.</div>
+      </div>
+
+      <div class="mistake-card">
+        <div class="mistake-label">Mistake 4</div>
+        <div class="mistake-text">Writing a discussion post that describes a textbook process or a fictional scenario — the rubric requires a real, observable process the student has directly encountered.</div>
+        <div class="mistake-fix"><strong>Fix:</strong> Choose a business you have actually been to or worked at. Your post is credible because it is specific. Generic scenarios earn partial credit at best.</div>
+      </div>
+
+      <div class="mistake-card">
+        <div class="mistake-label">Mistake 5</div>
+        <div class="mistake-text">Submitting a Case Analysis with only final answers and no supporting work, then receiving a low score because the grader could not award partial credit.</div>
+        <div class="mistake-fix"><strong>Fix:</strong> Show every step. Even if your final answer is wrong, a correct setup with a calculation error earns substantial partial credit. No setup earns nothing.</div>
+      </div>
+
+      <div class="mistake-card">
+        <div class="mistake-label">Mistake 6</div>
+        <div class="mistake-text">Treating Gate 2, the Case, and the discussion reply as three separate tasks to do sequentially on Day 5 — and running out of time before completing all three.</div>
+        <div class="mistake-fix"><strong>Fix:</strong> They share one deadline but require different preparation. Draft the Case on Day 4. Write your reply on Day 4. Take Gate 2 on Day 5 after reviewing your notes. Avoid doing all three in the same sitting.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- QUANT NOTE -->
+  <div>
+    <div class="section-heading">A Note on the Quantitative Side of This Course</div>
+    <div class="callout-blue" style="margin-bottom:16px;">
+      SCM 352 is an analytical course. The frameworks are conceptual but the assessments are computational. You will calculate throughput rates, inventory costs, reorder quantities, and critical paths. <strong>Precision matters.</strong> A correct method with unit errors or rounding mistakes will cost points on Gate 2 and the Case.
+    </div>
+    <div class="quant-grid">
+
+      <div class="quant-card">
+        <div class="quant-title">Track your units</div>
+        <div class="quant-desc">Operations problems involve time, rate, and quantity — often in the same equation. Write units at every step: customers/hour, minutes/unit, units/week. Unit errors are the most common source of wrong answers on Gate 2.</div>
+      </div>
+
+      <div class="quant-card">
+        <div class="quant-title">Draw the process first</div>
+        <div class="quant-desc">For process analysis and inventory questions, sketch the flow or timeline before calculating. A quick diagram prevents most setup errors and makes your Case submission easier to follow.</div>
+      </div>
+
+      <div class="quant-card">
+        <div class="quant-title">Know which formula applies when</div>
+        <div class="quant-desc">Little's Law, capacity calculations, EOQ, and CPM each apply to a specific type of question. Part of exam preparation is knowing when to use each tool — not just how to use it.</div>
+      </div>
+
+      <div class="quant-card">
+        <div class="quant-title">Check boundary conditions</div>
+        <div class="quant-desc">Many problems have demand-constrained vs. capacity-constrained versions. Before finalizing an answer, ask: is demand or process capacity the binding constraint? Getting this wrong typically inverts the answer.</div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

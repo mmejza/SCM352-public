@@ -1,0 +1,1369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Multi-Step Process Analyzer — SCM 352 M03</title>
+<style>
+/*
+  ═══════════════════════════════════════════════════════
+  DESIGN SYSTEM CANONICAL :root — DO NOT MODIFY VARIABLES
+  Source: _course/module-design-system.md Section 1
+  ═══════════════════════════════════════════════════════
+*/
+:root {
+  --navy:        #1a3a5c;
+  --blue:        #2563a8;
+  --blue-lt:     #dbeafe;
+  --blue-xlt:    #eff6ff;
+  --gold:        #f59e0b;
+  --gold-lt:     #fffbeb;
+  --gold-bdr:    #fde68a;
+  --green:       #16a34a;
+  --green-lt:    #f0fdf4;
+  --green-bdr:   #bbf7d0;
+  --red:         #dc2626;
+  --red-lt:      #fef2f2;
+  --red-bdr:     #fecaca;
+  --amber:       #d97706;
+  --amber-lt:    #fffbeb;
+  --amber-bdr:   #fde68a;
+  --orange:      #ea580c;
+  --orange-lt:   #fff7ed;
+  --orange-bdr:  #fed7aa;
+  --purple:      #7c3aed;
+  --purple-lt:   #faf5ff;
+  --purple-bdr:  #ddd6fe;
+  --teal:        #0891b2;
+  --teal-lt:     #f0fdfe;
+  --teal-bdr:    #a5f3fc;
+  --gray-50:     #f9fafb;
+  --gray-100:    #f3f4f6;
+  --gray-200:    #e5e7eb;
+  --gray-300:    #d1d5db;
+  --gray-400:    #9ca3af;
+  --gray-600:    #4b5563;
+  --gray-700:    #374151;
+  --gray-800:    #1f2937;
+}
+
+/* ── RESET ─────────────────────────────────────────── */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: var(--gray-50);
+  color: var(--gray-800);
+  min-height: 100vh;
+}
+
+/* ── HEADER ─────────────────────────────────────────── */
+header {
+  background: var(--navy);
+  color: white;
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.header-badge {
+  background: var(--gold);
+  color: var(--navy);
+  font-weight: 700;
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+header h1 { font-size: 18px; font-weight: 600; }
+
+/* ── SCENARIO TAB NAV ───────────────────────────────── */
+.scenario-nav {
+  background: white;
+  border-bottom: 2px solid var(--gray-200);
+  padding: 0 24px;
+  display: flex;
+  gap: 0;
+  overflow-x: auto;
+}
+.scenario-btn {
+  padding: 12px 18px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--gray-600);
+  border-bottom: 3px solid transparent;
+  white-space: nowrap;
+  transition: all 0.15s;
+  position: relative;
+  top: 2px;
+}
+.scenario-btn:hover { color: var(--blue); }
+.scenario-btn.active { color: var(--blue); border-bottom-color: var(--blue); font-weight: 600; }
+.scenario-btn.completed { color: var(--green); }
+.scenario-btn.completed.active { border-bottom-color: var(--green); }
+.scenario-btn.locked { color: var(--gray-400); cursor: not-allowed; }
+
+/* ── MAIN LAYOUT ─────────────────────────────────────── */
+.main {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ── CARD ────────────────────────────────────────────── */
+.card {
+  background: white;
+  border: 1px solid var(--gray-200);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.card-header {
+  background: var(--blue-lt);
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--gray-200);
+}
+.card-header h2 { font-size: 15px; font-weight: 700; color: var(--navy); }
+.card-header p  { font-size: 13px; color: var(--gray-600); margin-top: 4px; }
+.card-body { padding: 20px; }
+
+/* ── PROCESS DATA TABLE ─────────────────────────────── */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  margin-bottom: 12px;
+}
+.data-table th {
+  background: var(--navy);
+  color: white;
+  padding: 9px 14px;
+  text-align: left;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+.data-table td {
+  padding: 9px 14px;
+  border-bottom: 1px solid var(--gray-200);
+  color: var(--gray-700);
+}
+.data-table tr:last-child td { border-bottom: none; }
+.data-table tr:nth-child(even) td { background: var(--gray-50); }
+.demand-note {
+  font-size: 13px;
+  color: var(--gray-700);
+  background: var(--blue-xlt);
+  border: 1px solid #bfdbfe;
+  border-radius: 8px;
+  padding: 10px 14px;
+  margin-top: 4px;
+}
+.demand-note strong { color: var(--navy); }
+
+/* ── STEP SECTIONS ───────────────────────────────────── */
+.step-section {
+  border: 1.5px solid var(--gray-200);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-top: 16px;
+}
+.step-section.locked {
+  opacity: 0.35;
+  pointer-events: none;
+}
+.step-header {
+  background: var(--gray-100);
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid var(--gray-200);
+}
+.step-num {
+  background: var(--navy);
+  color: white;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 4px;
+  letter-spacing: 0.04em;
+}
+.step-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--navy);
+}
+.step-done-badge {
+  margin-left: auto;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--green);
+  display: none;
+}
+.step-body { padding: 16px; }
+
+/* ── INPUT ROWS ──────────────────────────────────────── */
+.input-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+.input-row label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--gray-700);
+  min-width: 160px;
+}
+.input-row input[type="number"] {
+  width: 100px;
+  padding: 7px 10px;
+  border: 1.5px solid var(--gray-300);
+  border-radius: 7px;
+  font-size: 13px;
+  font-family: inherit;
+  color: var(--gray-800);
+  transition: border-color 0.15s;
+}
+.input-row input[type="number"]:focus {
+  outline: none;
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(37,99,168,0.1);
+}
+.input-unit {
+  font-size: 13px;
+  color: var(--gray-600);
+}
+.input-feedback {
+  font-size: 13px;
+  font-weight: 600;
+  margin-left: 4px;
+}
+.input-correct { color: var(--green); }
+.input-wrong   { color: var(--red); }
+
+/* ── RADIO / DROPDOWN ROWS ───────────────────────────── */
+.radio-group {
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+.radio-option {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--gray-700);
+  cursor: pointer;
+}
+.radio-option input[type="radio"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--blue);
+  cursor: pointer;
+}
+.select-input {
+  padding: 7px 10px;
+  border: 1.5px solid var(--gray-300);
+  border-radius: 7px;
+  font-size: 13px;
+  font-family: inherit;
+  color: var(--gray-800);
+  background: white;
+  cursor: pointer;
+  min-width: 220px;
+  transition: border-color 0.15s;
+}
+.select-input:focus {
+  outline: none;
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(37,99,168,0.1);
+}
+
+/* ── BUTTONS ─────────────────────────────────────────── */
+.btn {
+  padding: 10px 22px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: inherit;
+}
+.btn-primary   { background: var(--blue);  color: white; }
+.btn-secondary { background: var(--gray-100); color: var(--gray-800); }
+.btn-green     { background: var(--green); color: white; }
+.btn-primary:hover   { background: #1d4ed8; }
+.btn-primary:disabled { background: var(--gray-400); cursor: not-allowed; }
+.btn-secondary:hover { background: var(--gray-200); }
+.btn-green:hover { background: #15803d; }
+
+/* ── FEEDBACK PANEL ─────────────────────────────────── */
+.feedback-panel {
+  display: none;
+  margin-top: 14px;
+  border: 2px solid var(--gray-200);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.feedback-panel.show { display: block; }
+.fb-banner {
+  padding: 12px 16px;
+  font-size: 14px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.fb-correct { background: var(--green-lt); color: var(--green); border-bottom: 2px solid var(--green); }
+.fb-partial { background: var(--amber-lt); color: var(--amber); border-bottom: 2px solid var(--amber); }
+.fb-wrong   { background: var(--red-lt);   color: var(--red);   border-bottom: 2px solid var(--red); }
+.fb-body {
+  padding: 16px;
+  font-size: 13px;
+  line-height: 1.65;
+  background: white;
+}
+.fb-body p { margin-bottom: 6px; }
+.fb-body p:last-child { margin-bottom: 0; }
+
+/* ── SUMMARY TABLE ───────────────────────────────────── */
+.summary-section {
+  display: none;
+  margin-top: 20px;
+}
+.summary-section.show { display: block; }
+.summary-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  margin-top: 12px;
+}
+.summary-table th {
+  background: var(--navy);
+  color: white;
+  padding: 9px 14px;
+  text-align: left;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+.summary-table td {
+  padding: 9px 14px;
+  border-bottom: 1px solid var(--gray-200);
+  vertical-align: top;
+}
+.summary-table tr:last-child td { border-bottom: none; }
+.summary-table .row-correct td { background: var(--green-lt); }
+.summary-table .row-wrong td   { background: var(--red-lt); }
+.summary-table .row-partial td { background: var(--amber-lt); }
+.verdict-icon { font-size: 15px; font-weight: 700; }
+.verdict-correct { color: var(--green); }
+.verdict-wrong   { color: var(--red); }
+
+/* ── COMPLETE BANNER ─────────────────────────────────── */
+.complete-banner {
+  background: var(--green-lt);
+  border: 1.5px solid var(--green-bdr);
+  border-radius: 10px;
+  padding: 14px 18px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--green);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+/* ── HINT / TIP BOX ──────────────────────────────────── */
+.tip-box {
+  background: var(--gold-lt);
+  border: 1px solid var(--gold-bdr);
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--gray-800);
+  margin-bottom: 14px;
+}
+.tip-box strong { color: var(--navy); }
+
+/* ── DIFF TAG ────────────────────────────────────────── */
+.diff-tag {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 3px 9px;
+  border-radius: 100px;
+}
+.diff-easy   { background: var(--green-lt); color: var(--green); }
+.diff-medium { background: var(--amber-lt); color: var(--amber); }
+.diff-hard   { background: var(--red-lt);   color: var(--red); }
+
+/* ── RESPONSIVE ──────────────────────────────────────── */
+@media (max-width: 600px) {
+  .input-row label { min-width: 120px; }
+  .input-row input[type="number"] { width: 80px; }
+  .scenario-btn { padding: 10px 12px; font-size: 12px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ HEADER ═══ -->
+<header>
+  <div class="header-badge">SCM 352 · M03</div>
+  <h1>Multi-Step Process Analyzer</h1>
+</header>
+
+<!-- ═══ SCENARIO TAB NAV ═══ -->
+<nav class="scenario-nav" id="scenarioNav" role="tablist" aria-label="Scenarios"></nav>
+
+<!-- ═══ MAIN CONTENT ═══ -->
+<div class="main" id="mainContent">
+  <!-- Scenario card injected by JS -->
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════════════════════════════════
+const SCENARIOS = [
+  {
+    id: 1,
+    name: "Coffee Shop",
+    difficulty: "easy",
+    stations: [
+      { name: "Order Taking",  pt: 2,  workers: 1 },
+      { name: "Brewing",       pt: 4,  workers: 1 },
+      { name: "Packaging",     pt: 3,  workers: 1 }
+    ],
+    demandRate: 18,
+    demandUnit: "drinks/hr",
+    unit: "drink",
+    ans: {
+      capacities:      [30, 15, 20],
+      bottleneck:      "Brewing",
+      bottleneckIdx:   1,
+      tied:            false,
+      processCapacity: 15,
+      classification:  "capacity",
+      flowRate:        15,
+      utilizations:    [50, 100, 75],
+      cycleTime:       4
+    },
+    hint: "<strong>Formula recap:</strong> Capacity (units/hr) = Workers ÷ Processing time (min) × 60. Bottleneck = lowest capacity station. Flow rate = min{demand, process capacity}."
+  },
+  {
+    id: 2,
+    name: "Auto Repair",
+    difficulty: "medium",
+    stations: [
+      { name: "Intake & Diagnosis", pt: 5,  workers: 1 },
+      { name: "Repair",             pt: 30, workers: 2 },
+      { name: "Quality Check",      pt: 10, workers: 1 }
+    ],
+    demandRate: 5,
+    demandUnit: "cars/hr",
+    unit: "car",
+    ans: {
+      capacities:      [12, 4, 6],
+      bottleneck:      "Repair",
+      bottleneckIdx:   1,
+      tied:            false,
+      processCapacity: 4,
+      classification:  "capacity",
+      flowRate:        4,
+      utilizations:    [33.3, 100, 66.7],
+      cycleTime:       15
+    },
+    hint: "<strong>Multi-worker key:</strong> Repair has 2 mechanics. Capacity = 2 ÷ 30 × 60 = 4/hr — <em>not</em> 1 ÷ 30 × 60 = 2/hr. Always multiply by the number of workers."
+  },
+  {
+    id: 3,
+    name: "Admissions Office",
+    difficulty: "medium",
+    stations: [
+      { name: "Document Scan",     pt: 2,  workers: 1 },
+      { name: "Eligibility Review", pt: 12, workers: 2 },
+      { name: "Decision Entry",    pt: 3,  workers: 1 }
+    ],
+    demandRate: 8,
+    demandUnit: "applications/hr",
+    unit: "application",
+    ans: {
+      capacities:      [30, 10, 20],
+      bottleneck:      "Eligibility Review",
+      bottleneckIdx:   1,
+      tied:            false,
+      processCapacity: 10,
+      classification:  "demand",
+      flowRate:        8,
+      utilizations:    [26.7, 80, 40],
+      cycleTime:       7.5
+    },
+    hint: "<strong>Demand-constrained key:</strong> Process capacity = 10 apps/hr, but demand = 8 apps/hr. Since demand &lt; process capacity, flow rate = <em>demand</em> = 8 apps/hr. Utilization is based on flow rate, not process capacity."
+  },
+  {
+    id: 4,
+    name: "Food Production",
+    difficulty: "hard",
+    stations: [
+      { name: "Mixing",    pt: 5,  workers: 1 },
+      { name: "Cooking",   pt: 20, workers: 3 },
+      { name: "Packaging", pt: 6,  workers: 2 },
+      { name: "Labeling",  pt: 4,  workers: 1 }
+    ],
+    demandRate: 12,
+    demandUnit: "batches/hr",
+    unit: "batch",
+    ans: {
+      capacities:      [12, 9, 20, 15],
+      bottleneck:      "Cooking",
+      bottleneckIdx:   1,
+      tied:            false,
+      processCapacity: 9,
+      classification:  "capacity",
+      flowRate:        9,
+      utilizations:    [75, 100, 45, 60],
+      cycleTime:       6.67
+    },
+    hint: "<strong>Multi-worker, 4-station line:</strong> Each capacity = Workers ÷ PT × 60. Cooking: 3 ÷ 20 × 60 = 9/hr. Packaging: 2 ÷ 6 × 60 = 20/hr. Bottleneck is the lowest-capacity station."
+  },
+  {
+    id: 5,
+    name: "Emergency Clinic",
+    difficulty: "hard",
+    stations: [
+      { name: "Triage",      pt: 6,  workers: 2 },
+      { name: "Examination", pt: 5,  workers: 1 },
+      { name: "Discharge",   pt: 10, workers: 2 }
+    ],
+    demandRate: 15,
+    demandUnit: "patients/hr",
+    unit: "patient",
+    ans: {
+      capacities:      [20, 12, 12],
+      bottleneck:      "Examination AND Discharge (tied)",
+      bottleneckIdx:   -1,
+      tied:            true,
+      processCapacity: 12,
+      classification:  "capacity",
+      flowRate:        12,
+      utilizations:    [60, 100, 100],
+      cycleTime:       5
+    },
+    hint: "<strong>Tied bottleneck:</strong> Examination = 1 ÷ 5 × 60 = 12/hr. Discharge = 2 ÷ 10 × 60 = 12/hr. Both stations hit 100% utilization — both are co-bottlenecks."
+  }
+];
+
+// ═══════════════════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════════════════
+// stepState[scenarioId][stepNum] = { submitted: bool, status: 'correct'|'partial'|'wrong'|null }
+const stepState = {};
+const scenarioComplete = {}; // id → bool
+
+SCENARIOS.forEach(s => {
+  stepState[s.id] = {
+    1: { submitted: false, status: null },
+    2: { submitted: false, status: null },
+    3: { submitted: false, status: null },
+    4: { submitted: false, status: null }
+  };
+  scenarioComplete[s.id] = false;
+});
+
+let currentScenario = SCENARIOS[0].id;
+
+// ═══════════════════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════════════════
+function init() {
+  buildTabNav();
+  renderScenario(SCENARIOS[0].id);
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// TAB NAV
+// ═══════════════════════════════════════════════════════════════════
+function buildTabNav() {
+  const nav = document.getElementById('scenarioNav');
+  nav.innerHTML = '';
+  SCENARIOS.forEach((s, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'scenario-btn' +
+      (s.id === currentScenario ? ' active' : '') +
+      (scenarioComplete[s.id] ? ' completed' : '') +
+      (i > 0 && !isScenarioUnlocked(s.id) ? ' locked' : '');
+    btn.id = 'tab-' + s.id;
+    btn.setAttribute('role', 'tab');
+    btn.setAttribute('aria-selected', s.id === currentScenario ? 'true' : 'false');
+    const check = scenarioComplete[s.id] ? ' ✓' : '';
+    btn.textContent = 'S' + s.id + ' — ' + s.name + check;
+    btn.onclick = () => {
+      if (i > 0 && !isScenarioUnlocked(s.id)) return;
+      switchScenario(s.id);
+    };
+    nav.appendChild(btn);
+  });
+}
+
+function isScenarioUnlocked(sid) {
+  if (sid === 1) return true;
+  const prev = SCENARIOS.find(s => s.id === sid - 1);
+  if (!prev) return true;
+  return scenarioComplete[prev.id];
+}
+
+function updateTabNav() {
+  SCENARIOS.forEach((s, i) => {
+    const btn = document.getElementById('tab-' + s.id);
+    if (!btn) return;
+    btn.className = 'scenario-btn' +
+      (s.id === currentScenario ? ' active' : '') +
+      (scenarioComplete[s.id] ? ' completed' : '') +
+      (i > 0 && !isScenarioUnlocked(s.id) ? ' locked' : '');
+    const check = scenarioComplete[s.id] ? ' ✓' : '';
+    btn.textContent = 'S' + s.id + ' — ' + s.name + check;
+    btn.setAttribute('aria-selected', s.id === currentScenario ? 'true' : 'false');
+  });
+}
+
+function switchScenario(sid) {
+  currentScenario = sid;
+  updateTabNav();
+  renderScenario(sid);
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// RENDER SCENARIO
+// ═══════════════════════════════════════════════════════════════════
+function renderScenario(sid) {
+  const s = SCENARIOS.find(sc => sc.id === sid);
+  const main = document.getElementById('mainContent');
+  main.innerHTML = '';
+
+  // ── Scenario card ──────────────────────────────────────────────
+  const card = document.createElement('div');
+  card.className = 'card';
+  card.innerHTML = `
+    <div class="card-header">
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+        <h2>Scenario ${s.id} — ${s.name}</h2>
+        <span class="diff-tag diff-${s.difficulty}">${capitalize(s.difficulty)}</span>
+      </div>
+      <p>Complete all 4 steps to analyze this process. Steps unlock sequentially.</p>
+    </div>
+    <div class="card-body">
+
+      ${/* Process data table */''}
+      <div class="tip-box" id="hintBox-${s.id}" style="margin-bottom:14px;">${s.hint}</div>
+
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Station</th>
+            <th>Processing Time</th>
+            <th>Workers</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${s.stations.map(st => `
+            <tr>
+              <td><strong>${st.name}</strong></td>
+              <td>${st.pt} min/${s.unit}</td>
+              <td>${st.workers} ${st.workers > 1 ? 'workers' : 'worker'}</td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+
+      <div class="demand-note" style="margin-bottom:4px;">
+        <strong>Demand rate:</strong> ${s.demandRate} ${s.demandUnit}
+      </div>
+
+      ${buildStep1(s)}
+      ${buildStep2(s)}
+      ${buildStep3(s)}
+      ${buildStep4(s)}
+      <div class="summary-section" id="summary-${s.id}"></div>
+      <div id="completeBanner-${s.id}" style="display:none;">
+        <div class="complete-banner">&#10003; Scenario ${s.id} complete — great work!</div>
+      </div>
+    </div>
+  `;
+  main.appendChild(card);
+
+  // Apply lock/unlock states after rendering
+  applyStepLocks(s);
+
+  // If steps were previously submitted, re-apply feedback
+  rehydrateSteps(s);
+}
+
+function capitalize(str) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// BUILD STEP HTML
+// ═══════════════════════════════════════════════════════════════════
+function buildStep1(s) {
+  let inputs = s.stations.map((st, i) => `
+    <div class="input-row">
+      <label for="s${s.id}-cap-${i}">${st.name}</label>
+      <input type="number" id="s${s.id}-cap-${i}" min="0" step="0.1" placeholder="e.g. 30" aria-label="${st.name} capacity">
+      <span class="input-unit">${s.unit === 'application' ? 'apps' : s.unit + 's'}/hr</span>
+      <span class="input-feedback" id="s${s.id}-cap-fb-${i}"></span>
+    </div>
+  `).join('');
+
+  return `
+    <div class="step-section" id="step-${s.id}-1">
+      <div class="step-header">
+        <span class="step-num">STEP 1</span>
+        <span class="step-title">Capacity per Station</span>
+        <span class="step-done-badge" id="step-${s.id}-1-done">&#10003; Done</span>
+      </div>
+      <div class="step-body">
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:14px;">
+          Calculate the capacity of each station in units per hour.<br>
+          <em>Formula: Capacity = Workers ÷ Processing Time (min) × 60</em>
+        </p>
+        ${inputs}
+        <button class="btn btn-primary" id="check-${s.id}-1" onclick="checkStep1(${s.id})" style="margin-top:4px;">Check Step 1</button>
+        <div class="feedback-panel" id="fb-${s.id}-1">
+          <div class="fb-banner" id="fb-banner-${s.id}-1"></div>
+          <div class="fb-body" id="fb-body-${s.id}-1"></div>
+        </div>
+      </div>
+    </div>`;
+}
+
+function buildStep2(s) {
+  const options = s.stations.map(st => `<option value="${st.name}">${st.name}</option>`).join('');
+  const tiedOption = s.ans.tied
+    ? `<option value="${s.ans.bottleneck}">${s.ans.bottleneck}</option>`
+    : '';
+
+  return `
+    <div class="step-section locked" id="step-${s.id}-2">
+      <div class="step-header">
+        <span class="step-num">STEP 2</span>
+        <span class="step-title">Bottleneck &amp; Process Capacity</span>
+        <span class="step-done-badge" id="step-${s.id}-2-done">&#10003; Done</span>
+      </div>
+      <div class="step-body">
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:14px;">
+          Identify the bottleneck station (lowest capacity) and state the process capacity.
+        </p>
+        <div class="input-row" style="margin-bottom:14px;">
+          <label for="s${s.id}-bn">Bottleneck station</label>
+          <select class="select-input" id="s${s.id}-bn" aria-label="Bottleneck station">
+            <option value="">— select —</option>
+            ${options}
+            ${tiedOption}
+          </select>
+          <span class="input-feedback" id="s${s.id}-bn-fb"></span>
+        </div>
+        <div class="input-row">
+          <label for="s${s.id}-pc">Process capacity</label>
+          <input type="number" id="s${s.id}-pc" min="0" step="0.1" placeholder="e.g. 15" aria-label="Process capacity">
+          <span class="input-unit">${s.unit === 'application' ? 'apps' : s.unit + 's'}/hr</span>
+          <span class="input-feedback" id="s${s.id}-pc-fb"></span>
+        </div>
+        <button class="btn btn-primary" id="check-${s.id}-2" onclick="checkStep2(${s.id})" style="margin-top:4px;">Check Step 2</button>
+        <div class="feedback-panel" id="fb-${s.id}-2">
+          <div class="fb-banner" id="fb-banner-${s.id}-2"></div>
+          <div class="fb-body" id="fb-body-${s.id}-2"></div>
+        </div>
+      </div>
+    </div>`;
+}
+
+function buildStep3(s) {
+  return `
+    <div class="step-section locked" id="step-${s.id}-3">
+      <div class="step-header">
+        <span class="step-num">STEP 3</span>
+        <span class="step-title">Constraint Classification &amp; Flow Rate</span>
+        <span class="step-done-badge" id="step-${s.id}-3-done">&#10003; Done</span>
+      </div>
+      <div class="step-body">
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:14px;">
+          Classify the constraint and calculate the actual flow rate.<br>
+          <em>Flow rate = min{demand rate, process capacity}</em>
+        </p>
+        <div style="margin-bottom:14px;">
+          <div style="font-size:13px;font-weight:600;color:var(--gray-700);margin-bottom:8px;">Constraint type</div>
+          <div class="radio-group">
+            <label class="radio-option">
+              <input type="radio" name="s${s.id}-cls" value="capacity" id="s${s.id}-cls-cap">
+              Capacity-constrained
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="s${s.id}-cls" value="demand" id="s${s.id}-cls-dem">
+              Demand-constrained
+            </label>
+          </div>
+          <span class="input-feedback" id="s${s.id}-cls-fb" style="font-size:13px;font-weight:600;"></span>
+        </div>
+        <div class="input-row">
+          <label for="s${s.id}-fr">Flow rate</label>
+          <input type="number" id="s${s.id}-fr" min="0" step="0.1" placeholder="e.g. 15" aria-label="Flow rate">
+          <span class="input-unit">${s.unit === 'application' ? 'apps' : s.unit + 's'}/hr</span>
+          <span class="input-feedback" id="s${s.id}-fr-fb"></span>
+        </div>
+        <button class="btn btn-primary" id="check-${s.id}-3" onclick="checkStep3(${s.id})" style="margin-top:4px;">Check Step 3</button>
+        <div class="feedback-panel" id="fb-${s.id}-3">
+          <div class="fb-banner" id="fb-banner-${s.id}-3"></div>
+          <div class="fb-body" id="fb-body-${s.id}-3"></div>
+        </div>
+      </div>
+    </div>`;
+}
+
+function buildStep4(s) {
+  let utilInputs = s.stations.map((st, i) => `
+    <div class="input-row">
+      <label for="s${s.id}-util-${i}">${st.name}</label>
+      <input type="number" id="s${s.id}-util-${i}" min="0" max="200" step="0.1" placeholder="e.g. 100" aria-label="${st.name} utilization">
+      <span class="input-unit">%</span>
+      <span class="input-feedback" id="s${s.id}-util-fb-${i}"></span>
+    </div>
+  `).join('');
+
+  return `
+    <div class="step-section locked" id="step-${s.id}-4">
+      <div class="step-header">
+        <span class="step-num">STEP 4</span>
+        <span class="step-title">Utilization &amp; Cycle Time</span>
+        <span class="step-done-badge" id="step-${s.id}-4-done">&#10003; Done</span>
+      </div>
+      <div class="step-body">
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:14px;">
+          Calculate utilization for each station and the process cycle time.<br>
+          <em>Utilization = Flow rate ÷ Capacity × 100. Cycle time = 1 ÷ Flow rate × 60 (min/${s.unit}).</em>
+        </p>
+        ${utilInputs}
+        <div class="input-row" style="margin-top:6px;padding-top:12px;border-top:1px solid var(--gray-200);">
+          <label for="s${s.id}-ct">Cycle time</label>
+          <input type="number" id="s${s.id}-ct" min="0" step="0.01" placeholder="e.g. 4" aria-label="Cycle time">
+          <span class="input-unit">min/${s.unit}</span>
+          <span class="input-feedback" id="s${s.id}-ct-fb"></span>
+        </div>
+        <button class="btn btn-primary" id="check-${s.id}-4" onclick="checkStep4(${s.id})" style="margin-top:4px;">Check Step 4</button>
+        <div class="feedback-panel" id="fb-${s.id}-4">
+          <div class="fb-banner" id="fb-banner-${s.id}-4"></div>
+          <div class="fb-body" id="fb-body-${s.id}-4"></div>
+        </div>
+      </div>
+    </div>`;
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// STEP LOCK/UNLOCK
+// ═══════════════════════════════════════════════════════════════════
+function applyStepLocks(s) {
+  const st = stepState[s.id];
+  unlock(s.id, 1);                          // step 1 always unlocked
+  if (st[1].submitted) unlock(s.id, 2);
+  if (st[2].submitted) unlock(s.id, 3);
+  if (st[3].submitted) unlock(s.id, 4);
+}
+
+function unlock(sid, stepNum) {
+  const el = document.getElementById(`step-${sid}-${stepNum}`);
+  if (el) el.classList.remove('locked');
+}
+
+function lockCheckButton(sid, stepNum) {
+  const btn = document.getElementById(`check-${sid}-${stepNum}`);
+  if (btn) {
+    btn.disabled = true;
+    btn.textContent = 'Submitted';
+  }
+  const doneEl = document.getElementById(`step-${sid}-${stepNum}-done`);
+  if (doneEl) doneEl.style.display = 'inline';
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// CHECK STEP 1
+// ═══════════════════════════════════════════════════════════════════
+function checkStep1(sid) {
+  const s = SCENARIOS.find(sc => sc.id === sid);
+  const ans = s.ans;
+  let numCorrect = 0;
+  let messages = [];
+  let hasMultiWorkerError = false;
+
+  s.stations.forEach((st, i) => {
+    const raw = document.getElementById(`s${sid}-cap-${i}`).value;
+    const val = parseFloat(raw);
+    const correct = ans.capacities[i];
+    const fbEl = document.getElementById(`s${sid}-cap-fb-${i}`);
+
+    if (isNaN(val)) {
+      fbEl.textContent = '— enter a value';
+      fbEl.className = 'input-feedback input-wrong';
+      messages.push(`<p>&#10007; <strong>${st.name}:</strong> No value entered. Correct answer: ${correct}/hr.</p>`);
+    } else if (Math.abs(val - correct) <= 0.5) {
+      numCorrect++;
+      fbEl.textContent = '✓';
+      fbEl.className = 'input-feedback input-correct';
+    } else {
+      fbEl.textContent = '✗';
+      fbEl.className = 'input-feedback input-wrong';
+      // Check if the error is a missing-workers error
+      const naiveCapacity = (1 / st.pt) * 60;
+      if (st.workers > 1 && Math.abs(val - naiveCapacity) <= 0.5) {
+        hasMultiWorkerError = true;
+        messages.push(`<p>&#10007; <strong>${st.name}:</strong> Don't forget the ${st.workers} workers. Capacity = ${st.workers} ÷ ${st.pt} × 60 = <strong>${correct}/hr</strong> — not ${naiveCapacity}/hr.</p>`);
+      } else {
+        messages.push(`<p>&#10007; <strong>${st.name}:</strong> You entered ${val}. Correct: ${correct}/hr. (${st.workers} worker${st.workers > 1 ? 's' : ''} ÷ ${st.pt} min × 60 = ${correct}/hr)</p>`);
+      }
+    }
+  });
+
+  const total = s.stations.length;
+  let overallStatus, bannerClass, bannerText;
+
+  if (numCorrect === total) {
+    overallStatus = 'correct';
+    bannerClass = 'fb-correct';
+    bannerText = '&#10003; All station capacities are correct!';
+    messages = [];
+  } else if (numCorrect > 0) {
+    overallStatus = 'partial';
+    bannerClass = 'fb-partial';
+    bannerText = `&#9685; Partially correct — ${numCorrect} of ${total} stations correct. See details below.`;
+  } else {
+    overallStatus = 'wrong';
+    bannerClass = 'fb-wrong';
+    bannerText = `&#10007; No stations correct. Check your formula and try again — see details below.`;
+  }
+
+  showStepFeedback(sid, 1, bannerClass, bannerText, messages.join(''));
+  stepState[sid][1] = { submitted: true, status: overallStatus };
+  lockCheckButton(sid, 1);
+  unlock(sid, 2);
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// CHECK STEP 2
+// ═══════════════════════════════════════════════════════════════════
+function checkStep2(sid) {
+  const s = SCENARIOS.find(sc => sc.id === sid);
+  const ans = s.ans;
+
+  const bnVal   = document.getElementById(`s${sid}-bn`).value;
+  const pcRaw   = document.getElementById(`s${sid}-pc`).value;
+  const pcVal   = parseFloat(pcRaw);
+
+  const bnFbEl  = document.getElementById(`s${sid}-bn-fb`);
+  const pcFbEl  = document.getElementById(`s${sid}-pc-fb`);
+
+  let bnCorrect = false;
+  let pcCorrect = false;
+  let messages  = [];
+
+  // Grade bottleneck
+  if (bnVal === ans.bottleneck) {
+    bnCorrect = true;
+    bnFbEl.textContent = '✓';
+    bnFbEl.className = 'input-feedback input-correct';
+  } else {
+    bnFbEl.textContent = '✗';
+    bnFbEl.className = 'input-feedback input-wrong';
+    if (!bnVal) {
+      messages.push(`<p>&#10007; <strong>Bottleneck:</strong> No selection. Correct: <strong>${ans.bottleneck}</strong>.</p>`);
+    } else {
+      messages.push(`<p>&#10007; <strong>Bottleneck:</strong> You selected "${bnVal}". Correct: <strong>${ans.bottleneck}</strong> (lowest capacity station).</p>`);
+    }
+  }
+
+  // Grade process capacity
+  if (!isNaN(pcVal) && Math.abs(pcVal - ans.processCapacity) <= 0.5) {
+    pcCorrect = true;
+    pcFbEl.textContent = '✓';
+    pcFbEl.className = 'input-feedback input-correct';
+  } else {
+    pcFbEl.textContent = '✗';
+    pcFbEl.className = 'input-feedback input-wrong';
+    messages.push(`<p>&#10007; <strong>Process capacity:</strong> You entered ${isNaN(pcVal) ? 'nothing' : pcVal}. Correct: <strong>${ans.processCapacity} ${s.demandUnit}</strong> (equal to the bottleneck capacity).</p>`);
+  }
+
+  let overallStatus, bannerClass, bannerText;
+  if (bnCorrect && pcCorrect) {
+    overallStatus = 'correct';
+    bannerClass = 'fb-correct';
+    bannerText = '&#10003; Bottleneck and process capacity are both correct!';
+    messages = [];
+  } else if (bnCorrect || pcCorrect) {
+    overallStatus = 'partial';
+    bannerClass = 'fb-partial';
+    bannerText = '&#9685; Partially correct — one of two items correct. See details below.';
+  } else {
+    overallStatus = 'wrong';
+    bannerClass = 'fb-wrong';
+    bannerText = '&#10007; Both items incorrect. See details below.';
+  }
+
+  showStepFeedback(sid, 2, bannerClass, bannerText, messages.join(''));
+  stepState[sid][2] = { submitted: true, status: overallStatus };
+  lockCheckButton(sid, 2);
+  unlock(sid, 3);
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// CHECK STEP 3
+// ═══════════════════════════════════════════════════════════════════
+function checkStep3(sid) {
+  const s = SCENARIOS.find(sc => sc.id === sid);
+  const ans = s.ans;
+
+  const radios  = document.querySelectorAll(`input[name="s${sid}-cls"]`);
+  let clsVal    = null;
+  radios.forEach(r => { if (r.checked) clsVal = r.value; });
+
+  const frRaw   = document.getElementById(`s${sid}-fr`).value;
+  const frVal   = parseFloat(frRaw);
+
+  const clsFbEl = document.getElementById(`s${sid}-cls-fb`);
+  const frFbEl  = document.getElementById(`s${sid}-fr-fb`);
+
+  let clsCorrect = false;
+  let frCorrect  = false;
+  let messages   = [];
+
+  // Grade classification
+  if (clsVal === ans.classification) {
+    clsCorrect = true;
+    clsFbEl.textContent = '✓ Correct';
+    clsFbEl.className = 'input-feedback input-correct';
+  } else {
+    clsFbEl.textContent = clsVal ? '✗ Incorrect' : '✗ No selection';
+    clsFbEl.className = 'input-feedback input-wrong';
+    const correctLabel = ans.classification === 'capacity' ? 'Capacity-constrained' : 'Demand-constrained';
+    if (ans.classification === 'demand') {
+      messages.push(`<p>&#10007; <strong>Constraint type:</strong> This process is <strong>demand-constrained</strong>. The process capacity is ${ans.processCapacity} ${s.demandUnit}, but demand is only ${s.demandRate} ${s.demandUnit}. Since demand &lt; process capacity, the demand is the binding constraint.</p>`);
+    } else {
+      messages.push(`<p>&#10007; <strong>Constraint type:</strong> This process is <strong>capacity-constrained</strong>. The process capacity (${ans.processCapacity} ${s.demandUnit}) is less than demand (${s.demandRate} ${s.demandUnit}).</p>`);
+    }
+  }
+
+  // Grade flow rate
+  if (!isNaN(frVal) && Math.abs(frVal - ans.flowRate) <= 0.5) {
+    frCorrect = true;
+    frFbEl.textContent = '✓';
+    frFbEl.className = 'input-feedback input-correct';
+  } else {
+    frFbEl.textContent = '✗';
+    frFbEl.className = 'input-feedback input-wrong';
+    if (ans.classification === 'demand' && !isNaN(frVal) && Math.abs(frVal - ans.processCapacity) <= 0.5) {
+      // Student used process capacity instead of demand
+      messages.push(`<p>&#10007; <strong>Flow rate:</strong> Check the demand rate. Flow rate = min{demand, process capacity} = min{${s.demandRate}, ${ans.processCapacity}} = <strong>${ans.flowRate}/${s.unit === 'application' ? 'hr (apps)' : 'hr'}</strong> — not ${ans.processCapacity}. This process is demand-constrained.</p>`);
+    } else {
+      messages.push(`<p>&#10007; <strong>Flow rate:</strong> You entered ${isNaN(frVal) ? 'nothing' : frVal}. Correct: <strong>${ans.flowRate} ${s.demandUnit}</strong>. Flow rate = min{${s.demandRate}, ${ans.processCapacity}} = ${ans.flowRate}.</p>`);
+    }
+  }
+
+  let overallStatus, bannerClass, bannerText;
+  if (clsCorrect && frCorrect) {
+    overallStatus = 'correct';
+    bannerClass = 'fb-correct';
+    bannerText = '&#10003; Constraint classification and flow rate are both correct!';
+    messages = [];
+  } else if (clsCorrect || frCorrect) {
+    overallStatus = 'partial';
+    bannerClass = 'fb-partial';
+    bannerText = '&#9685; Partially correct — one of two items correct. See details below.';
+  } else {
+    overallStatus = 'wrong';
+    bannerClass = 'fb-wrong';
+    bannerText = '&#10007; Both items incorrect. See details below.';
+  }
+
+  showStepFeedback(sid, 3, bannerClass, bannerText, messages.join(''));
+  stepState[sid][3] = { submitted: true, status: overallStatus };
+  lockCheckButton(sid, 3);
+  unlock(sid, 4);
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// CHECK STEP 4
+// ═══════════════════════════════════════════════════════════════════
+function checkStep4(sid) {
+  const s = SCENARIOS.find(sc => sc.id === sid);
+  const ans = s.ans;
+
+  let numCorrect = 0;
+  let totalFields = s.stations.length + 1; // utilizations + cycle time
+  let messages = [];
+
+  // Grade utilizations
+  s.stations.forEach((st, i) => {
+    const raw = document.getElementById(`s${sid}-util-${i}`).value;
+    const val = parseFloat(raw);
+    const correct = ans.utilizations[i];
+    const fbEl = document.getElementById(`s${sid}-util-fb-${i}`);
+
+    if (!isNaN(val) && Math.abs(val - correct) <= 1.5) {
+      numCorrect++;
+      fbEl.textContent = '✓';
+      fbEl.className = 'input-feedback input-correct';
+    } else {
+      fbEl.textContent = '✗';
+      fbEl.className = 'input-feedback input-wrong';
+      messages.push(`<p>&#10007; <strong>${st.name} utilization:</strong> You entered ${isNaN(val) ? 'nothing' : val + '%'}. Correct: <strong>${correct}%</strong>. (Flow rate ${ans.flowRate} ÷ capacity ${ans.capacities[i]} × 100 = ${correct}%)</p>`);
+    }
+  });
+
+  // Grade cycle time
+  const ctRaw = document.getElementById(`s${sid}-ct`).value;
+  const ctVal = parseFloat(ctRaw);
+  const ctFbEl = document.getElementById(`s${sid}-ct-fb`);
+  const correctCT = ans.cycleTime;
+
+  if (!isNaN(ctVal) && Math.abs(ctVal - correctCT) <= 0.2) {
+    numCorrect++;
+    ctFbEl.textContent = '✓';
+    ctFbEl.className = 'input-feedback input-correct';
+  } else {
+    ctFbEl.textContent = '✗';
+    ctFbEl.className = 'input-feedback input-wrong';
+    messages.push(`<p>&#10007; <strong>Cycle time:</strong> You entered ${isNaN(ctVal) ? 'nothing' : ctVal + ' min'}. Correct: <strong>${correctCT} min/${s.unit}</strong>. (1 ÷ ${ans.flowRate} × 60 = ${correctCT})</p>`);
+  }
+
+  let overallStatus, bannerClass, bannerText;
+  if (numCorrect === totalFields) {
+    overallStatus = 'correct';
+    bannerClass = 'fb-correct';
+    bannerText = '&#10003; All utilizations and cycle time are correct!';
+    messages = [];
+  } else if (numCorrect >= Math.ceil(totalFields * 0.6)) {
+    overallStatus = 'partial';
+    bannerClass = 'fb-partial';
+    bannerText = `&#9685; Mostly correct — ${numCorrect} of ${totalFields} values correct. See details below.`;
+  } else {
+    overallStatus = 'wrong';
+    bannerClass = 'fb-wrong';
+    bannerText = `&#10007; ${numCorrect} of ${totalFields} values correct. See details below.`;
+  }
+
+  showStepFeedback(sid, 4, bannerClass, bannerText, messages.join(''));
+  stepState[sid][4] = { submitted: true, status: overallStatus };
+  lockCheckButton(sid, 4);
+
+  // Mark scenario complete
+  scenarioComplete[sid] = true;
+  updateTabNav();
+
+  // Show summary table and complete banner
+  setTimeout(() => {
+    showSummary(sid);
+    const banner = document.getElementById(`completeBanner-${sid}`);
+    if (banner) banner.style.display = 'block';
+    // Unlock next scenario tab
+    updateTabNav();
+    buildTabNav();
+  }, 600);
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// FEEDBACK HELPERS
+// ═══════════════════════════════════════════════════════════════════
+function showStepFeedback(sid, stepNum, bannerClass, bannerText, bodyHTML) {
+  const panel  = document.getElementById(`fb-${sid}-${stepNum}`);
+  const banner = document.getElementById(`fb-banner-${sid}-${stepNum}`);
+  const body   = document.getElementById(`fb-body-${sid}-${stepNum}`);
+  banner.className = 'fb-banner ' + bannerClass;
+  banner.innerHTML = bannerText;
+  body.innerHTML   = bodyHTML || '<p style="color:var(--green)">All values correct.</p>';
+  panel.classList.add('show');
+  panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// SUMMARY TABLE
+// ═══════════════════════════════════════════════════════════════════
+function showSummary(sid) {
+  const s = SCENARIOS.find(sc => sc.id === sid);
+  const ans = s.ans;
+  const container = document.getElementById(`summary-${sid}`);
+  if (!container) return;
+
+  // Collect student answers
+  const stuCaps = s.stations.map((_, i) => {
+    const v = parseFloat(document.getElementById(`s${sid}-cap-${i}`).value);
+    return isNaN(v) ? '—' : v;
+  });
+
+  const stuBn = document.getElementById(`s${sid}-bn`).value || '—';
+  const stuPc = parseFloat(document.getElementById(`s${sid}-pc`).value);
+  const stuPcStr = isNaN(stuPc) ? '—' : stuPc;
+
+  let stuCls = '—';
+  document.querySelectorAll(`input[name="s${sid}-cls"]`).forEach(r => {
+    if (r.checked) stuCls = r.value === 'capacity' ? 'Capacity-constrained' : 'Demand-constrained';
+  });
+
+  const stuFr = parseFloat(document.getElementById(`s${sid}-fr`).value);
+  const stuFrStr = isNaN(stuFr) ? '—' : stuFr;
+
+  const stuUtils = s.stations.map((_, i) => {
+    const v = parseFloat(document.getElementById(`s${sid}-util-${i}`).value);
+    return isNaN(v) ? '—' : v;
+  });
+
+  const stuCt = parseFloat(document.getElementById(`s${sid}-ct`).value);
+  const stuCtStr = isNaN(stuCt) ? '—' : stuCt;
+
+  // Build rows
+  function verdict(stuVal, corVal, tol) {
+    if (stuVal === '—') return '<span class="verdict-icon verdict-wrong">&#10007;</span>';
+    if (Math.abs(parseFloat(stuVal) - corVal) <= tol) return '<span class="verdict-icon verdict-correct">&#10003;</span>';
+    return '<span class="verdict-icon verdict-wrong">&#10007;</span>';
+  }
+  function verdictStr(stuStr, corStr) {
+    if (stuStr === corStr) return '<span class="verdict-icon verdict-correct">&#10003;</span>';
+    return '<span class="verdict-icon verdict-wrong">&#10007;</span>';
+  }
+  function rowClass(stuVal, corVal, tol) {
+    if (stuVal === '—') return 'row-wrong';
+    return Math.abs(parseFloat(stuVal) - corVal) <= tol ? 'row-correct' : 'row-wrong';
+  }
+  function rowClassStr(stuStr, corStr) {
+    return stuStr === corStr ? 'row-correct' : 'row-wrong';
+  }
+
+  const correctClsLabel = ans.classification === 'capacity' ? 'Capacity-constrained' : 'Demand-constrained';
+  const unitLabel = s.unit === 'application' ? 'apps/hr' : `${s.unit}s/hr`;
+  const unitLabelShort = s.unit === 'application' ? 'apps/hr' : `${s.unit}s/hr`;
+
+  let rows = '';
+
+  // Capacities
+  s.stations.forEach((st, i) => {
+    const rc = rowClass(stuCaps[i], ans.capacities[i], 0.5);
+    rows += `<tr class="${rc}">
+      <td>Capacity — ${st.name}</td>
+      <td>${stuCaps[i] !== '—' ? stuCaps[i] + ' ' + unitLabel : '—'}</td>
+      <td>${ans.capacities[i]} ${unitLabel}</td>
+      <td>${verdict(stuCaps[i], ans.capacities[i], 0.5)}</td>
+    </tr>`;
+  });
+
+  // Bottleneck
+  const bnRC = rowClassStr(stuBn, ans.bottleneck);
+  rows += `<tr class="${bnRC}">
+    <td>Bottleneck</td>
+    <td>${stuBn}</td>
+    <td>${ans.bottleneck}</td>
+    <td>${verdictStr(stuBn, ans.bottleneck)}</td>
+  </tr>`;
+
+  // Process capacity
+  const pcRC = rowClass(stuPcStr, ans.processCapacity, 0.5);
+  rows += `<tr class="${pcRC}">
+    <td>Process capacity</td>
+    <td>${stuPcStr !== '—' ? stuPcStr + ' ' + unitLabel : '—'}</td>
+    <td>${ans.processCapacity} ${unitLabel}</td>
+    <td>${verdict(stuPcStr, ans.processCapacity, 0.5)}</td>
+  </tr>`;
+
+  // Constraint type
+  const clsRC = rowClassStr(stuCls, correctClsLabel);
+  rows += `<tr class="${clsRC}">
+    <td>Constraint type</td>
+    <td>${stuCls}</td>
+    <td>${correctClsLabel}</td>
+    <td>${verdictStr(stuCls, correctClsLabel)}</td>
+  </tr>`;
+
+  // Flow rate
+  const frRC = rowClass(stuFrStr, ans.flowRate, 0.5);
+  rows += `<tr class="${frRC}">
+    <td>Flow rate</td>
+    <td>${stuFrStr !== '—' ? stuFrStr + ' ' + unitLabel : '—'}</td>
+    <td>${ans.flowRate} ${unitLabel}</td>
+    <td>${verdict(stuFrStr, ans.flowRate, 0.5)}</td>
+  </tr>`;
+
+  // Utilizations
+  s.stations.forEach((st, i) => {
+    const rc = rowClass(stuUtils[i], ans.utilizations[i], 1.5);
+    rows += `<tr class="${rc}">
+      <td>Utilization — ${st.name}</td>
+      <td>${stuUtils[i] !== '—' ? stuUtils[i] + '%' : '—'}</td>
+      <td>${ans.utilizations[i]}%</td>
+      <td>${verdict(stuUtils[i], ans.utilizations[i], 1.5)}</td>
+    </tr>`;
+  });
+
+  // Cycle time
+  const ctRC = rowClass(stuCtStr, ans.cycleTime, 0.2);
+  rows += `<tr class="${ctRC}">
+    <td>Cycle time</td>
+    <td>${stuCtStr !== '—' ? stuCtStr + ' min/' + s.unit : '—'}</td>
+    <td>${ans.cycleTime} min/${s.unit}</td>
+    <td>${verdict(stuCtStr, ans.cycleTime, 0.2)}</td>
+  </tr>`;
+
+  container.innerHTML = `
+    <div style="padding-top:8px;border-top:2px solid var(--gray-200);margin-top:8px;">
+      <h2 style="font-size:15px;font-weight:700;color:var(--navy);margin-bottom:10px;">Summary — Scenario ${s.id}: ${s.name}</h2>
+      <table class="summary-table">
+        <thead>
+          <tr>
+            <th>Metric</th>
+            <th>Your Answer</th>
+            <th>Correct Answer</th>
+            <th style="width:50px;text-align:center;">&#10003;/&#10007;</th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>
+  `;
+  container.classList.add('show');
+  container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// REHYDRATE (re-apply previously submitted steps on re-render)
+// ═══════════════════════════════════════════════════════════════════
+function rehydrateSteps(s) {
+  const st = stepState[s.id];
+  // If scenario already fully complete, show summary + banners
+  if (scenarioComplete[s.id]) {
+    // Summary already rendered — but we're re-rendering, so trigger it again
+    setTimeout(() => {
+      showSummary(s.id);
+      const banner = document.getElementById(`completeBanner-${s.id}`);
+      if (banner) banner.style.display = 'block';
+    }, 50);
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// START
+// ═══════════════════════════════════════════════════════════════════
+init();
+</script>
+</body>
+</html>

@@ -3,8 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- EDIT: Replace M## -->
-<title>Module M## Overview — SCM 352</title>
+<title>Module 03 Overview — SCM 352</title>
 <style>
 :root {
   --navy:#1a3a5c;--blue:#2563a8;--blue-lt:#dbeafe;--blue-xlt:#eff6ff;
@@ -58,84 +57,78 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
 <body>
 
 <div class="hero">
-  <!-- EDIT: Replace M## and module topic -->
-  <div class="hero-eyebrow">SCM 352 · Module M## · Summer 2026</div>
-  <!-- EDIT: Module title from architecture document -->
-  <h1>[Module Title from Architecture]</h1>
-  <!-- EDIT: One-paragraph framing from Architecture Section 1 -->
-  <p class="hero-sub">[Opening paragraph from Architecture Section 1 — verbatim copy]</p>
+  <div class="hero-eyebrow">SCM 352 · Module 03 · Summer 2026</div>
+  <h1>Process Analysis</h1>
+  <p class="hero-sub">Module 2 gave you three metrics and the formula that connects them. This module opens the black box. You will break a process into steps, assign a capacity to each step, find the step that limits the whole process, and calculate exactly how long it takes to complete any quantity of output. These tools tell you where to invest when you want more throughput — and why a faster machine sometimes does nothing for how many units you produce per hour.</p>
 </div>
 
 <div class="meta-strip">
-  <!-- EDIT: Adjust workload estimate and due dates from Architecture -->
-  <div class="meta-item"><div class="meta-label">Workload</div><div class="meta-value"><!-- BUILD --></div></div>
+  <div class="meta-item"><div class="meta-label">Workload</div><div class="meta-value">4.5–6 hours</div></div>
   <div class="meta-item"><div class="meta-label">Gate 1 due</div><div class="meta-value">Day 2</div></div>
-  <div class="meta-item"><div class="meta-label">Gate 2 due</div><div class="meta-value">Day 7 · 11:59 PM</div></div>
-  <div class="meta-item"><div class="meta-label">Case due</div><div class="meta-value">Day 7 · 11:59 PM</div></div>
+  <div class="meta-item"><div class="meta-label">Gate 2 due</div><div class="meta-value">Day 5 · 11:59 PM</div></div>
+  <div class="meta-item"><div class="meta-label">Case due</div><div class="meta-value">Day 5 · 11:59 PM</div></div>
   <div class="meta-item"><div class="meta-label">Module points</div><div class="meta-value">250 pts</div></div>
 </div>
 
 <div class="pg-body">
 
-  <!-- Context paragraphs from Architecture Section 1 -->
   <div style="font-size:14px;line-height:1.75;color:var(--gray-700);">
-    <!-- BUILD: Paste remaining context paragraphs from Architecture Section 1 -->
+    <p>This module is built around one central question: which step in a multi-step process determines how many units you can produce per hour? Finding that step — and only that step — is what process analysis is about. Before recommending any operational improvement, the first question is always the same: is this the bottleneck?</p>
   </div>
 
-  <!-- Gate lock callout — required on every overview page -->
   <div class="gate-callout">
-    <strong>Important — module is gated.</strong> All lecture videos, apps, the discussion, Gate 2, and the Case are locked until you pass Gate 1 with an 80% or higher score. Gate 1 draws exclusively on <!-- EDIT: chapter number --> of the textbook. Gate 1 is due Day 2.
+    <strong>Important — module is gated.</strong> All lecture videos, apps, the discussion, Gate 2, and the Case are locked until you pass Gate 1 with an 80% or higher score. Gate 1 draws exclusively on <strong>Chapter 3</strong> of the textbook — material not covered in slides or narration. Gate 1 is due Day 2.
   </div>
 
-  <!-- Agenda -->
   <div>
     <div class="section-h">What You Will Do This Module</div>
     <div class="agenda">
-      <div class="agenda-item"><div class="agenda-icon">📖</div><div style="flex:1"><strong>Read <!-- EDIT: Chapter # --></strong> <!-- EDIT: brief description --></div><div class="agenda-time"><!-- BUILD: time estimate --></div></div>
+      <div class="agenda-item"><div class="agenda-icon">📖</div><div style="flex:1"><strong>Read Chapter 3</strong> of the Cachon textbook — bottlenecks, capacity, process flow diagrams, and the four-step analysis procedure.</div><div class="agenda-time">90–120 min</div></div>
       <div class="agenda-item"><div class="agenda-icon">🔓</div><div style="flex:1"><strong>Complete Gate 1</strong> — reading check. Score 80% or above to unlock all remaining content.</div><div class="agenda-time">10–15 min</div></div>
-      <div class="agenda-item"><div class="agenda-icon">🎬</div><div style="flex:1"><strong>Watch two lecture video segments</strong> — <!-- EDIT: segment titles from architecture --></div><div class="agenda-time">~36 min</div></div>
-      <div class="agenda-item"><div class="agenda-icon">📊</div><div style="flex:1"><strong>Work through the slide deck.</strong> <!-- EDIT: slide count --> slides covering <!-- EDIT: topics -->.</div><div class="agenda-time">30–40 min</div></div>
-      <div class="agenda-item"><div class="agenda-icon">⚡</div><div style="flex:1"><strong>Complete three interactive apps</strong> — <!-- EDIT: app names from architecture --></div><div class="agenda-time"><!-- BUILD: combined app time --></div></div>
-      <div class="agenda-item"><div class="agenda-icon">💬</div><div style="flex:1"><strong>Participate in the Discussion.</strong> <!-- EDIT: discussion topic one-liner --> Initial post due Day 4; reply due Day 6.</div><div class="agenda-time">30–45 min</div></div>
-      <div class="agenda-item"><div class="agenda-icon">📝</div><div style="flex:1"><strong>Complete Gate 2</strong> — 8 questions, 100 points, 90-minute timer, one attempt. Due Day 7 at 11:59 PM.</div><div class="agenda-time">60–90 min</div></div>
-      <div class="agenda-item"><div class="agenda-icon">📋</div><div style="flex:1"><strong>Submit the Case Analysis.</strong> <!-- EDIT: case one-liner --> Your version is in the Case assignment. Due Day 7 at 11:59 PM.</div><div class="agenda-time">45–75 min</div></div>
+      <div class="agenda-item"><div class="agenda-icon">🎬</div><div style="flex:1"><strong>Watch two lecture video segments</strong> — "Why Faster Isn't Always More" and "The Four-Step Procedure and Where to Add Resources."</div><div class="agenda-time">~36 min</div></div>
+      <div class="agenda-item"><div class="agenda-icon">📊</div><div style="flex:1"><strong>Work through the slide deck.</strong> Covers process flow diagram conventions, the capacity formula, bottleneck identification, the four-step procedure, and three worked examples including parallel steps.</div><div class="agenda-time">40–50 min</div></div>
+      <div class="agenda-item"><div class="agenda-icon">⚡</div><div style="flex:1"><strong>Complete three interactive apps</strong> — <em>Capacity Calculator</em> (6 scenarios), <em>Multi-Step Process Analyzer</em> (5 scenarios, guided 4-step procedure), and <em>Q-Units Timer</em> (6 scenarios, empty vs. non-empty).</div><div class="agenda-time">35–42 min</div></div>
+      <div class="agenda-item"><div class="agenda-icon">💬</div><div style="flex:1"><strong>Participate in the Discussion: Bottleneck Hunting.</strong> Identify a real multi-step process from your week, hypothesize which step is the bottleneck, and reply to any post in the discussion. Initial post due Day 3; reply due Day 5.</div><div class="agenda-time">30–40 min</div></div>
+      <div class="agenda-item"><div class="agenda-icon">📝</div><div style="flex:1"><strong>Complete Gate 2</strong> — 8 questions, 100 points, 90-minute timer, one attempt. Due Day 5 at 11:59 PM.</div><div class="agenda-time">60–90 min</div></div>
+      <div class="agenda-item"><div class="agenda-icon">📋</div><div style="flex:1"><strong>Submit the Case Analysis: Riverside Health System Prescription Fulfillment Center (Process Analysis).</strong> Apply the four-step procedure to a parameterized healthcare supply chain scenario. Your version is determined by the last digit of your student ID. Due Day 5 at 11:59 PM.</div><div class="agenda-time">45–75 min</div></div>
     </div>
   </div>
 
   <div class="workload-box">
     <div class="workload-icon">⏱️</div>
     <div class="workload-text">
-      <!-- EDIT: workload estimate from architecture -->
-      <h3>Estimated total workload: [X–Y] hours</h3>
-      <p><!-- EDIT: session-planning advice specific to this module's structure --></p>
+      <h3>Estimated total workload: 4.5–6 hours</h3>
+      <p>Plan two sessions: one before Day 2 (reading + Gate 1) and one before Day 5 (Gate 2 + Case). The apps and lecture videos work best in one session after Gate 1, before starting Gate 2.</p>
     </div>
   </div>
 
-  <!-- Learning Objectives — from Architecture Section 2 -->
   <div>
     <div class="section-h">Learning Objectives</div>
     <div style="border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;">
       <table class="lo-table">
         <thead><tr><th style="width:7%">LO</th><th style="width:60%">You will be able to…</th><th style="width:13%">Bloom's Level</th><th style="width:20%">Assessed in</th></tr></thead>
         <tbody>
-          <!-- BUILD: one row per LO from Architecture Section 2 -->
-          <!-- <tr><td class="lo-num">LO#-1</td><td>[objective text]</td><td><span class="bloom-pill bl-apply">Apply</span></td><td>[assessments]</td></tr> -->
+          <tr><td class="lo-num">LO3-1</td><td>Draw a process flow diagram for a multi-step process, correctly identifying resources, inventory locations, and upstream/downstream direction</td><td><span class="bloom-pill bl-apply">Apply</span></td><td>Gate 1 Q5, Gate 2 Q4</td></tr>
+          <tr><td class="lo-num">LO3-2</td><td>Calculate the capacity of a resource from its processing time, including unit conversion and multiple-worker adjustments</td><td><span class="bloom-pill bl-apply">Apply</span></td><td>Gate 2 Q1, Q7, Case Part 2</td></tr>
+          <tr><td class="lo-num">LO3-3</td><td>Determine the flow rate of a process given demand rate and process capacity, and classify the process as capacity-constrained or demand-constrained</td><td><span class="bloom-pill bl-analyze">Analyze</span></td><td>Gate 2 Q3, Case Part 3</td></tr>
+          <tr><td class="lo-num">LO3-4</td><td>Execute the four-step multi-step process analysis procedure to identify the bottleneck and calculate utilization per resource and cycle time</td><td><span class="bloom-pill bl-analyze">Analyze</span></td><td>Gate 2 Q2, Case Parts 2–4</td></tr>
+          <tr><td class="lo-num">LO3-5</td><td>Calculate the time to produce a given quantity Q for both empty and non-empty systems, correctly identifying the processing time through an empty system</td><td><span class="bloom-pill bl-apply">Apply</span></td><td>Gate 2 Q5, Q6, Case Part 5</td></tr>
+          <tr><td class="lo-num">LO3-6</td><td>Explain why speed improvements to non-bottleneck steps do not change process capacity, and apply this reasoning to novel scenarios</td><td><span class="bloom-pill bl-evaluate">Evaluate</span></td><td>Gate 1 Q1, Gate 2 Q8, Case Part 6</td></tr>
         </tbody>
       </table>
     </div>
   </div>
 
-  <!-- Grading — from Architecture Section 8 -->
   <div>
-    <div class="section-h">Module M## Grading</div>
+    <div class="section-h">Module 03 Grading</div>
     <div style="border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;">
       <table class="grade-table">
         <thead><tr><th>Component</th><th style="text-align:right;">Points</th><th style="text-align:right;">% of Module</th><th>Due</th></tr></thead>
         <tbody>
           <tr><td><strong>Gate 1 Quiz</strong> — reading verification (access control only)</td><td style="text-align:right;">0</td><td style="text-align:right;color:var(--gray-400);">—</td><td>Day 2</td></tr>
-          <tr><td><strong>Gate 2 Quiz</strong> — chapter + lecture + app synthesis</td><td style="text-align:right;font-weight:700;">100</td><td style="text-align:right;">40%</td><td>Day 7</td></tr>
-          <tr><td><strong>Discussion</strong> — <!-- EDIT: discussion topic --></td><td style="text-align:right;font-weight:700;">50</td><td style="text-align:right;">20%</td><td>Post Day 4 / Reply Day 6</td></tr>
-          <tr><td><strong>Case Analysis M##</strong> — <!-- EDIT: case topic one-liner --></td><td style="text-align:right;font-weight:700;">100</td><td style="text-align:right;">40%</td><td>Day 7</td></tr>
+          <tr><td><strong>Gate 2 Quiz</strong> — chapter + lecture + app synthesis</td><td style="text-align:right;font-weight:700;">100</td><td style="text-align:right;">40%</td><td>Day 5</td></tr>
+          <tr><td><strong>Discussion: Bottleneck Hunting</strong></td><td style="text-align:right;font-weight:700;">50</td><td style="text-align:right;">20%</td><td>Post Day 3 / Reply Day 5</td></tr>
+          <tr><td><strong>Case Analysis M03</strong> — Riverside Prescription Fulfillment Center (Process Analysis)</td><td style="text-align:right;font-weight:700;">100</td><td style="text-align:right;">40%</td><td>Day 5</td></tr>
           <tr class="total-row"><td><strong>Module Total</strong></td><td style="text-align:right;font-weight:800;font-size:15px;">250</td><td style="text-align:right;font-weight:700;">100%</td><td></td></tr>
         </tbody>
       </table>

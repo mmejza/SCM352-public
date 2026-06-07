@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Q-Units Timer — SCM 352 M03</title>
+<style>
+/*
+  ═══════════════════════════════════════════════════════
+  DESIGN SYSTEM CANONICAL :root — DO NOT MODIFY VARIABLES
+  Source: _course/module-design-system.md Section 1
+  ═══════════════════════════════════════════════════════
+*/
+:root {
+  --navy:        #1a3a5c;
+  --blue:        #2563a8;
+  --blue-lt:     #dbeafe;
+  --blue-xlt:    #eff6ff;
+  --gold:        #f59e0b;
+  --gold-lt:     #fffbeb;
+  --gold-bdr:    #fde68a;
+  --green:       #16a34a;
+  --green-lt:    #f0fdf4;
+  --green-bdr:   #bbf7d0;
+  --red:         #dc2626;
+  --red-lt:      #fef2f2;
+  --red-bdr:     #fecaca;
+  --amber:       #d97706;
+  --amber-lt:    #fffbeb;
+  --amber-bdr:   #fde68a;
+  --orange:      #ea580c;
+  --orange-lt:   #fff7ed;
+  --orange-bdr:  #fed7aa;
+  --purple:      #7c3aed;
+  --purple-lt:   #faf5ff;
+  --purple-bdr:  #ddd6fe;
+  --teal:        #0891b2;
+  --teal-lt:     #f0fdfe;
+  --teal-bdr:    #a5f3fc;
+  --gray-50:     #f9fafb;
+  --gray-100:    #f3f4f6;
+  --gray-200:    #e5e7eb;
+  --gray-300:    #d1d5db;
+  --gray-400:    #9ca3af;
+  --gray-600:    #4b5563;
+  --gray-700:    #374151;
+  --gray-800:    #1f2937;
+}
+
+/* ── RESET ─────────────────────────────────────────── */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; background: var(--gray-50); color: var(--gray-800); min-height: 100vh; }
+
+/* ── HEADER ─────────────────────────────────────────── */
+header { background: var(--navy); color: white; padding: 16px 24px; display: flex; align-items: center; gap: 16px; }
+.header-badge { background: var(--gold); color: var(--navy); font-weight: 700; font-size: 11px; padding: 3px 8px; border-radius: 4px; letter-spacing: 0.05em; text-transform: uppercase; }
+header h1 { font-size: 18px; font-weight: 600; }
+
+/* ── DOT NAV ─────────────────────────────────────────── */
+.dot-track { background: white; border-bottom: 2px solid var(--gray-200); padding: 12px 24px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.dot-track-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--gray-600); }
+.dot-row { display: flex; gap: 6px; flex-wrap: wrap; }
+.dot { width: 30px; height: 30px; border-radius: 50%; border: 2px solid var(--gray-200); background: white; font-size: 11px; font-weight: 700; color: var(--gray-400); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s; }
+.dot:hover   { border-color: var(--blue); color: var(--blue); }
+.dot.active  { border-color: var(--blue);  background: var(--blue);  color: white; }
+.dot.d-correct { border-color: var(--green);  background: var(--green);  color: white; }
+.dot.d-partial { border-color: var(--amber);  background: var(--amber);  color: white; }
+.dot.d-wrong   { border-color: var(--red);    background: var(--red);    color: white; }
+
+/* ── LAYOUT ─────────────────────────────────────────── */
+.main { max-width: 1100px; margin: 0 auto; padding: 24px; display: grid; grid-template-columns: 1fr 300px; gap: 24px; align-items: start; }
+@media (max-width: 820px) { .main { grid-template-columns: 1fr; } }
+
+/* ── CARD ────────────────────────────────────────────── */
+.card { background: white; border: 1px solid var(--gray-200); border-radius: 12px; overflow: hidden; }
+.card-header { background: var(--blue-lt); padding: 14px 20px; border-bottom: 1px solid var(--gray-200); }
+.card-header h2 { font-size: 15px; font-weight: 700; color: var(--navy); }
+.card-header p  { font-size: 13px; color: var(--gray-600); margin-top: 4px; }
+.card-body { padding: 20px; }
+
+/* ── SCENARIO TEXT ───────────────────────────────────── */
+.scenario-desc { font-size: 14px; line-height: 1.7; color: var(--gray-800); background: var(--gray-50); border-left: 4px solid var(--blue); padding: 14px 16px; border-radius: 0 8px 8px 0; margin-bottom: 16px; }
+
+/* ── GIVEN DATA BLOCK ────────────────────────────────── */
+.given-block { background: var(--blue-xlt); border: 1px solid var(--blue-lt); border-radius: 8px; padding: 12px 16px; margin-bottom: 20px; font-size: 13px; line-height: 1.7; color: var(--gray-800); }
+.given-block strong { color: var(--navy); display: block; font-size: 13px; font-weight: 700; margin-bottom: 6px; }
+
+/* ── DIFFICULTY TAG ─────────────────────────────────── */
+.diff-tag { font-size: 11px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; padding: 3px 9px; border-radius: 100px; }
+.diff-easy   { background: var(--green-lt); color: var(--green); }
+.diff-medium { background: var(--amber-lt); color: var(--amber); }
+.diff-hard   { background: var(--red-lt);   color: var(--red); }
+
+/* ── STEP SECTIONS ───────────────────────────────────── */
+.step-section { border: 2px solid var(--gray-200); border-radius: 10px; margin-bottom: 14px; overflow: hidden; transition: border-color 0.2s; }
+.step-section.unlocked { border-color: var(--blue-lt); }
+.step-section.locked { opacity: 0.5; pointer-events: none; }
+.step-section.answered-correct { border-color: var(--green-bdr); background: var(--green-lt); }
+.step-section.answered-wrong   { border-color: var(--red-bdr); background: var(--red-lt); }
+.step-header { padding: 10px 14px; background: var(--gray-50); border-bottom: 1px solid var(--gray-200); display: flex; align-items: center; gap: 8px; }
+.step-label { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--gray-600); }
+.step-status { font-size: 13px; margin-left: auto; }
+.step-body { padding: 14px; }
+.step-question { font-size: 14px; font-weight: 600; color: var(--gray-800); margin-bottom: 10px; line-height: 1.5; }
+
+/* ── RADIO OPTIONS ───────────────────────────────────── */
+.radio-group { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
+.radio-option { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border: 2px solid var(--gray-200); border-radius: 8px; cursor: pointer; transition: border-color 0.15s, background 0.15s; background: white; user-select: none; }
+.radio-option:hover { border-color: var(--blue); background: var(--gray-50); }
+.radio-option.selected { border-color: var(--blue); background: var(--blue-xlt); }
+.radio-option input[type="radio"] { accent-color: var(--blue); width: 16px; height: 16px; cursor: pointer; }
+.radio-option span { font-size: 14px; color: var(--gray-800); line-height: 1.4; }
+
+/* ── NUMERIC INPUT ───────────────────────────────────── */
+.num-input-row { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; }
+.num-input { width: 120px; padding: 8px 12px; border: 2px solid var(--gray-300); border-radius: 8px; font-size: 15px; font-weight: 600; color: var(--gray-800); text-align: right; transition: border-color 0.15s; }
+.num-input:focus { outline: none; border-color: var(--blue); }
+.num-input-unit { font-size: 14px; color: var(--gray-600); }
+
+/* ── INLINE FEEDBACK ─────────────────────────────────── */
+.inline-fb { font-size: 13px; line-height: 1.6; padding: 10px 14px; border-radius: 6px; margin-top: 8px; }
+.inline-fb.fb-correct { background: var(--green-lt); border: 1px solid var(--green-bdr); color: var(--green); }
+.inline-fb.fb-wrong   { background: var(--red-lt);   border: 1px solid var(--red-bdr);   color: var(--red-700, #b91c1c); }
+.inline-fb.fb-info    { background: var(--amber-lt); border: 1px solid var(--amber-bdr); color: var(--amber); }
+
+/* ── BUTTONS ─────────────────────────────────────────── */
+.btn { padding: 10px 22px; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.15s; }
+.btn-primary   { background: var(--blue);     color: white; }
+.btn-secondary { background: var(--gray-100); color: var(--gray-800); }
+.btn-green     { background: var(--green);    color: white; }
+.btn-sm { padding: 7px 16px; font-size: 13px; }
+.btn-primary:hover   { background: #1d4ed8; }
+.btn-primary:disabled { background: var(--gray-400); cursor: not-allowed; }
+.btn-secondary:hover { background: var(--gray-200); }
+.btn-green:hover { background: #15803d; }
+.btn-group { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-top: 20px; }
+
+/* ── SCORE SIDEBAR ───────────────────────────────────── */
+.score-row { padding: 16px 20px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--gray-100); }
+.score-num { font-size: 28px; font-weight: 700; color: var(--navy); }
+.score-meta { font-size: 12px; color: var(--gray-600); line-height: 1.4; }
+.score-meta strong { color: var(--gray-800); display: block; font-size: 13px; }
+.prog-bar-outer { height: 5px; background: var(--gray-200); border-radius: 3px; overflow: hidden; margin: 0 20px 16px; }
+.prog-bar-inner { height: 100%; background: var(--blue); border-radius: 3px; transition: width 0.4s; }
+.score-detail-rows { padding: 0 20px 12px; display: flex; flex-direction: column; gap: 4px; }
+.score-detail-row { font-size: 12px; display: flex; justify-content: space-between; color: var(--gray-600); }
+
+/* ── CONCEPT BOX ─────────────────────────────────────── */
+.tip-box { background: var(--gold-lt); border: 1px solid var(--gold-bdr); border-radius: 8px; padding: 12px 16px; font-size: 13px; line-height: 1.7; color: var(--gray-800); }
+.tip-box strong { color: var(--navy); }
+
+/* ── FINAL SUMMARY ───────────────────────────────────── */
+.final-summary { display: none; text-align: center; padding: 24px 20px; }
+.final-summary.show { display: block; }
+.final-summary h3 { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+
+/* ── LOCK ICON ───────────────────────────────────────── */
+.lock-icon { font-size: 13px; color: var(--gray-400); }
+
+/* ── SEPARATOR ───────────────────────────────────────── */
+.step-divider { border: none; border-top: 1px dashed var(--gray-200); margin: 4px 0; }
+</style>
+</head>
+<body>
+
+<!-- ═══ HEADER ═══ -->
+<header>
+  <div class="header-badge">SCM 352 · M03</div>
+  <h1>Q-Units Timer</h1>
+</header>
+
+<!-- ═══ DOT NAV ═══ -->
+<div class="dot-track">
+  <span class="dot-track-label">Scenarios</span>
+  <div class="dot-row" id="dotRow"></div>
+</div>
+
+<!-- ═══ MAIN LAYOUT ═══ -->
+<div class="main">
+
+  <!-- LEFT: Main content -->
+  <div>
+    <div class="card" id="mainCard">
+      <div class="card-header">
+        <h2 id="cardTitle">Loading…</h2>
+        <p id="cardSubtitle"></p>
+      </div>
+      <div class="card-body" id="cardBody">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT: Sidebar -->
+  <div style="position:sticky;top:24px;display:flex;flex-direction:column;gap:16px;">
+
+    <!-- Score card -->
+    <div class="card">
+      <div class="card-header">
+        <h2>Your Score</h2>
+        <p>Updates after each scenario</p>
+      </div>
+      <div class="score-row">
+        <div class="score-num" id="scoreNum">0</div>
+        <div class="score-meta">
+          <strong id="scoreLabel">correct</strong>
+          <span id="scoreDetail">of 0 answered</span>
+        </div>
+      </div>
+      <div class="prog-bar-outer">
+        <div class="prog-bar-inner" id="progBar" style="width:0%"></div>
+      </div>
+      <div class="score-detail-rows">
+        <div class="score-detail-row"><span>First-try correct</span><span id="cntGreen" style="color:var(--green);font-weight:700">0</span></div>
+        <div class="score-detail-row"><span>Partially correct</span><span id="cntAmber" style="color:var(--amber);font-weight:700">0</span></div>
+        <div class="score-detail-row"><span>Incorrect gate</span><span id="cntRed" style="color:var(--red);font-weight:700">0</span></div>
+      </div>
+    </div>
+
+    <!-- Concept reference card -->
+    <div class="card">
+      <div class="card-header">
+        <h2>Key Formulas</h2>
+        <p>Chapter reference — LO3-5</p>
+      </div>
+      <div class="card-body">
+        <div class="tip-box">
+          <strong>Time to Produce Q Units</strong><br><br>
+          <strong>Non-empty system:</strong><br>
+          Time = Q &times; cycle time<br><br>
+          <strong>Empty system (worker-paced):</strong><br>
+          Time = T<sub>empty</sub> + (Q &minus; 1) &times; cycle time<br><br>
+          where T<sub>empty</sub> = sum of all processing times<br>
+          (use the <em>longest</em> time for parallel steps)<br><br>
+          <strong>Cycle time</strong> = 1 &divide; flow rate (in matching time units)
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══ FINAL SUMMARY ═══ (appended into mainCard by JS) -->
+
+<script>
+// ═══════════════════════════════════════════════════════════════════
+// SCENARIO DATA
+// ═══════════════════════════════════════════════════════════════════
+const SCENARIOS = [
+  {
+    id: 1,
+    difficulty: 'easy',
+    title: 'Bottling Line',
+    subtitle: 'Non-empty system — no parallel steps',
+    desc: 'A bottling line is currently running. The process capacity is 20 bottles per hour. The cycle time is 3 minutes per bottle. A supervisor needs to know how long it will take to complete 10 more bottles.',
+    given: [
+      'System state: <strong>Currently running</strong>',
+      'Process capacity: 20 bottles/hr',
+      'Cycle time: 3 min/bottle',
+      'Q: 10 bottles'
+    ],
+    systemState: 'nonempty',
+    hasParallel: false,
+    Q: 10,
+    cycleTime: 3,
+    calcSteps: [
+      { label: 'Time = Q × cycle time = 10 × 3 = <strong>30 minutes</strong>' }
+    ],
+    // Non-empty: one numeric step
+    nonemptyAnswer: 30,
+    nonemptyTolerance: 1,
+    nonemptyFeedbackCorrect: '✓ Correct. Time = Q × cycle time = 10 × 3 = <strong>30 minutes</strong>. The pipeline is already full, so every cycle completes one unit.',
+    nonemptyFeedbackWrong: '✗ Use Q × cycle time = 10 × 3 = 30 minutes. Since the system is non-empty, the pipeline is already running — every cycle time interval produces one finished unit.'
+  },
+  {
+    id: 2,
+    difficulty: 'easy',
+    title: 'Morning Bakery',
+    subtitle: 'Empty system — no parallel steps',
+    desc: 'A three-station bakery process starts empty at the beginning of the morning shift. Station 1 (mixing) takes 5 min/batch. Station 2 (baking) takes 8 min/batch. Station 3 (packaging) takes 4 min/batch. Process capacity is 15 batches/hr. A batch of 8 orders arrives when the process is empty.',
+    given: [
+      'System state: <strong>Empty at shift start</strong>',
+      'Station 1 (mixing): 5 min',
+      'Station 2 (baking): 8 min',
+      'Station 3 (packaging): 4 min',
+      'Process capacity: 15 batches/hr → cycle time: 4 min/batch',
+      'Q: 8 batches',
+      'No parallel steps'
+    ],
+    systemState: 'empty',
+    hasParallel: false,
+    Q: 8,
+    cycleTime: 4,
+    emptySteps: {
+      A: { answer: 17, tol: 0.5, question: 'What is the processing time through the empty system? (Sum of all station times, in minutes.)', feedbackCorrect: '✓ Correct. T<sub>empty</sub> = 5 + 8 + 4 = <strong>17 minutes</strong>.', feedbackWrong: '✗ Processing time through the empty system = sum of all station times = 5 + 8 + 4 = 17 minutes. Check that you added all three stations.' },
+      B: { answer: 28, tol: 0.5, question: 'What is (Q − 1) × cycle time?', feedbackCorrect: '✓ Correct. (Q − 1) × cycle time = (8 − 1) × 4 = 7 × 4 = <strong>28 minutes</strong>.', feedbackWrong: '✗ (Q − 1) × cycle time = (8 − 1) × 4 = 7 × 4 = 28 minutes. Remember to subtract 1 from Q because the first unit\'s time is already counted in T<sub>empty</sub>.' },
+      C: { answer: 45, tol: 1, question: 'What is the total time? (Add your Step A and Step B answers.)', feedbackCorrect: '✓ Correct. Total = T<sub>empty</sub> + (Q − 1) × cycle time = 17 + 28 = <strong>45 minutes</strong>.', feedbackWrong: '✗ Total = T<sub>empty</sub> + (Q − 1) × cycle time = 17 + 28 = 45 minutes. Add your Step A (17) and Step B (28) answers.' }
+    }
+  },
+  {
+    id: 3,
+    difficulty: 'medium',
+    title: 'Airport Security',
+    subtitle: 'Empty system — parallel steps',
+    desc: 'An airport security checkpoint begins empty at 6:00 AM. Step 1 (ID verification): 3 min/traveler. Step 2 runs two parallel activities simultaneously: body scan (8 min/traveler) and baggage X-ray (20 min/traveler). Step 3 (re-assembly): 4 min/traveler. Process capacity is 12 travelers/hr. Q = 15 travelers arrive when the checkpoint opens.',
+    given: [
+      'System state: <strong>Empty at opening</strong>',
+      'Step 1 (ID verification): 3 min',
+      'Step 2 — parallel: body scan (8 min) <em>and</em> baggage X-ray (20 min) simultaneously',
+      'Step 3 (re-assembly): 4 min',
+      'Process capacity: 12 travelers/hr → cycle time: 5 min/traveler',
+      'Q: 15 travelers'
+    ],
+    systemState: 'empty',
+    hasParallel: true,
+    parallelOptions: [
+      { id: 'sum',  label: 'The sum of all parallel times' },
+      { id: 'max',  label: 'The maximum (longest) parallel time' },
+      { id: 'avg',  label: 'The average of all parallel times' }
+    ],
+    parallelCorrect: 'max',
+    parallelFeedbackSum: '✗ Do not add parallel times. Both activities start simultaneously. The time to clear Step 2 is determined by whichever finishes last — the maximum. 20 min > 8 min → use 20 min.',
+    parallelFeedbackAvg: '✗ Do not average parallel times. Use the maximum — the longest parallel step is the binding constraint. 20 min > 8 min → use 20 min.',
+    Q: 15,
+    cycleTime: 5,
+    emptySteps: {
+      A: { answer: 27, tol: 0.5, question: 'What is the processing time through the empty system? (Use max of parallel times, in minutes.)', feedbackCorrect: '✓ Correct. T<sub>empty</sub> = 3 + max(8, 20) + 4 = 3 + 20 + 4 = <strong>27 minutes</strong>.', feedbackWrong: '✗ T<sub>empty</sub> = 3 + max(8, 20) + 4 = 3 + 20 + 4 = 27 minutes. Use the maximum of the two parallel times (20 min for baggage X-ray), not their sum.' },
+      B: { answer: 70, tol: 0.5, question: 'What is (Q − 1) × cycle time?', feedbackCorrect: '✓ Correct. (Q − 1) × cycle time = (15 − 1) × 5 = 14 × 5 = <strong>70 minutes</strong>.', feedbackWrong: '✗ (Q − 1) × cycle time = (15 − 1) × 5 = 14 × 5 = 70 minutes. Remember to subtract 1 from Q.' },
+      C: { answer: 97, tol: 1, question: 'What is the total time? (Add your Step A and Step B answers.)', feedbackCorrect: '✓ Correct. Total = 27 + 70 = <strong>97 minutes</strong>.', feedbackWrong: '✗ Total = T<sub>empty</sub> + (Q − 1) × cycle time = 27 + 70 = 97 minutes.' }
+    }
+  },
+  {
+    id: 4,
+    difficulty: 'medium',
+    title: 'Hospital Lab',
+    subtitle: 'Non-empty system — parallel steps present',
+    desc: 'A hospital lab process is currently running (non-empty). Step 1 (patient check-in): 3 min. Step 2 runs two parallel activities: blood draw (8 min) and vitals check (3 min). Step 3 (results entry): 5 min. Process capacity is 8 patients/hr → cycle time: 7.5 min/patient. Q = 20 patients.',
+    given: [
+      'System state: <strong>Currently running (non-empty)</strong>',
+      'Step 1 (check-in): 3 min',
+      'Step 2 — parallel: blood draw (8 min) and vitals check (3 min)',
+      'Step 3 (results entry): 5 min',
+      'Process capacity: 8 patients/hr → cycle time: 7.5 min/patient',
+      'Q: 20 patients'
+    ],
+    systemState: 'nonempty',
+    hasParallel: true,
+    Q: 20,
+    cycleTime: 7.5,
+    nonemptyAnswer: 150,
+    nonemptyTolerance: 1,
+    nonemptyFeedbackCorrect: '✓ Correct. For a non-empty system, use Q × cycle time = 20 × 7.5 = <strong>150 minutes</strong>. The parallel steps in the process do not change this formula — the pipeline is already full when the batch arrives.',
+    nonemptyFeedbackWrong: '✗ Use Q × cycle time = 20 × 7.5 = 150 minutes. For a non-empty system, the formula is simply Q × cycle time — regardless of whether parallel steps exist. The pipeline is already full.'
+  },
+  {
+    id: 5,
+    difficulty: 'hard',
+    title: 'Pharma Packaging',
+    subtitle: 'Empty system — 3-way parallel steps',
+    desc: 'A pharmaceutical packaging line starts empty. Step 1 (tablet counting): 4 min/bottle. Step 2 runs three parallel quality checks simultaneously: label inspection (6 min/bottle), seal integrity (15 min/bottle), and weight verification (9 min/bottle). Step 3 (final scan): 8 min/bottle. Process capacity is 10 bottles/hr → cycle time: 6 min/bottle. Q = 12 bottles.',
+    given: [
+      'System state: <strong>Empty at start</strong>',
+      'Step 1 (tablet counting): 4 min',
+      'Step 2 — 3-way parallel: label inspection (6 min), seal integrity (15 min), weight verification (9 min)',
+      'Step 3 (final scan): 8 min',
+      'Process capacity: 10 bottles/hr → cycle time: 6 min/bottle',
+      'Q: 12 bottles'
+    ],
+    systemState: 'empty',
+    hasParallel: true,
+    parallelOptions: [
+      { id: 'sum',  label: 'The sum of all parallel times' },
+      { id: 'max',  label: 'The maximum (longest) parallel time' },
+      { id: 'avg',  label: 'The average of all parallel times' }
+    ],
+    parallelCorrect: 'max',
+    parallelFeedbackSum: '✗ Do not add parallel times. All three quality checks run simultaneously. The time to clear Step 2 is the maximum — the slowest check determines when Step 2 is done. max(6, 15, 9) = 15 min (seal integrity).',
+    parallelFeedbackAvg: '✗ Do not average parallel times. Use the maximum — the longest parallel step is the binding constraint. max(6, 15, 9) = 15 min (seal integrity).',
+    Q: 12,
+    cycleTime: 6,
+    emptySteps: {
+      A: { answer: 27, tol: 0.5, question: 'What is the processing time through the empty system? (Use max of parallel times, in minutes.)', feedbackCorrect: '✓ Correct. T<sub>empty</sub> = 4 + max(6, 15, 9) + 8 = 4 + 15 + 8 = <strong>27 minutes</strong>.', feedbackWrong: '✗ T<sub>empty</sub> = 4 + max(6, 15, 9) + 8 = 4 + 15 + 8 = 27 minutes. Use the maximum of the three parallel times (15 min for seal integrity), not their sum.' },
+      B: { answer: 66, tol: 0.5, question: 'What is (Q − 1) × cycle time?', feedbackCorrect: '✓ Correct. (Q − 1) × cycle time = (12 − 1) × 6 = 11 × 6 = <strong>66 minutes</strong>.', feedbackWrong: '✗ (Q − 1) × cycle time = (12 − 1) × 6 = 11 × 6 = 66 minutes. Remember to subtract 1 from Q.' },
+      C: { answer: 93, tol: 1, question: 'What is the total time? (Add your Step A and Step B answers.)', feedbackCorrect: '✓ Correct. Total = 27 + 66 = <strong>93 minutes</strong>.', feedbackWrong: '✗ Total = T<sub>empty</sub> + (Q − 1) × cycle time = 27 + 66 = 93 minutes.' }
+    }
+  },
+  {
+    id: 6,
+    difficulty: 'hard',
+    title: 'Custom Furniture',
+    subtitle: 'Empty system — parallel tie',
+    desc: 'A custom furniture shop starts empty Monday morning. Step 1 (material cutting): 3 min/piece. Step 2 runs two parallel finishing processes simultaneously: sanding (12 min/piece) and staining (12 min/piece). Step 3 (assembly): 5 min/piece. Process capacity is 6 pieces/hr → cycle time: 10 min/piece. Q = 25 pieces.',
+    given: [
+      'System state: <strong>Empty at start</strong>',
+      'Step 1 (material cutting): 3 min',
+      'Step 2 — parallel tie: sanding (12 min) and staining (12 min) — both equal',
+      'Step 3 (assembly): 5 min',
+      'Process capacity: 6 pieces/hr → cycle time: 10 min/piece',
+      'Q: 25 pieces'
+    ],
+    systemState: 'empty',
+    hasParallel: true,
+    parallelOptions: [
+      { id: 'sum',  label: 'The sum of all parallel times' },
+      { id: 'max',  label: 'The maximum (longest) parallel time' },
+      { id: 'avg',  label: 'The average of all parallel times' }
+    ],
+    parallelCorrect: 'max',
+    parallelFeedbackSum: '✗ Do not add parallel times. Both finishing processes run simultaneously. Use the maximum — whichever finishes last determines when Step 2 is complete. Here both equal 12 min, so max = 12 min.',
+    parallelFeedbackAvg: '✗ Do not average parallel times. Use the maximum — the binding constraint. Here both parallel times are equal at 12 min, so max = avg = 12 min, but the correct reasoning is maximum, not average.',
+    Q: 25,
+    cycleTime: 10,
+    emptySteps: {
+      A: { answer: 20, tol: 0.5, question: 'What is the processing time through the empty system? (Use max of parallel times, in minutes.)', feedbackCorrect: '✓ Correct. T<sub>empty</sub> = 3 + max(12, 12) + 5 = 3 + 12 + 5 = <strong>20 minutes</strong>. Both parallel steps tie at 12 min.', feedbackWrong: '✗ T<sub>empty</sub> = 3 + max(12, 12) + 5 = 3 + 12 + 5 = 20 minutes. Both sanding and staining tie at 12 min — the maximum is 12.' },
+      B: { answer: 240, tol: 1, question: 'What is (Q − 1) × cycle time?', feedbackCorrect: '✓ Correct. (Q − 1) × cycle time = (25 − 1) × 10 = 24 × 10 = <strong>240 minutes</strong>.', feedbackWrong: '✗ (Q − 1) × cycle time = (25 − 1) × 10 = 24 × 10 = 240 minutes. Remember to subtract 1 from Q.' },
+      C: { answer: 260, tol: 2, question: 'What is the total time? (Add your Step A and Step B answers.)', feedbackCorrect: '✓ Correct. Total = 20 + 240 = <strong>260 minutes</strong>.', feedbackWrong: '✗ Total = T<sub>empty</sub> + (Q − 1) × cycle time = 20 + 240 = 260 minutes.' }
+    }
+  }
+];
+
+// ═══════════════════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════════════════
+let currentIdx = 0;
+// Per-scenario state object
+// state[id] = { gateAnswered, gateCorrect, parallelAnswered, parallelCorrect, stepsAnswered:{A,B,C}, result }
+const state = {};
+
+// Score counters
+let cntGreen = 0;  // gate + all steps correct on first try
+let cntAmber = 0;  // gate correct but a step wrong
+let cntRed   = 0;  // gate wrong
+let cntDone  = 0;
+
+function getState(id) {
+  if (!state[id]) {
+    state[id] = {
+      gateAnswered: false,
+      gateCorrect: null,      // true/false
+      parallelAnswered: false,
+      parallelCorrect: null,  // true/false
+      parallelAttempts: 0,
+      stepsState: {           // keyed by 'A', 'B', 'C'
+        A: { answered: false, correct: null, attempts: 0 },
+        B: { answered: false, correct: null, attempts: 0 },
+        C: { answered: false, correct: null, attempts: 0 }
+      },
+      nonemptyAnswered: false,
+      nonemptyCorrect: null,
+      nonemptyAttempts: 0,
+      dotResult: null,        // 'correct' | 'partial' | 'wrong'
+      done: false
+    };
+  }
+  return state[id];
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════════════════
+function init() {
+  buildDotNav();
+  loadScenario(0);
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// DOT NAV
+// ═══════════════════════════════════════════════════════════════════
+function buildDotNav() {
+  const row = document.getElementById('dotRow');
+  SCENARIOS.forEach((s, i) => {
+    const dot = document.createElement('button');
+    dot.className = 'dot' + (i === 0 ? ' active' : '');
+    dot.id = 'dot' + i;
+    dot.textContent = i + 1;
+    dot.title = s.title;
+    dot.onclick = () => loadScenario(i);
+    row.appendChild(dot);
+  });
+}
+
+function updateDotNav() {
+  SCENARIOS.forEach((s, i) => {
+    const dot = document.getElementById('dot' + i);
+    if (!dot) return;
+    dot.className = 'dot';
+    if (i === currentIdx) dot.classList.add('active');
+    const st = state[s.id];
+    if (st && st.dotResult === 'correct') dot.classList.add('d-correct');
+    else if (st && st.dotResult === 'partial') dot.classList.add('d-partial');
+    else if (st && st.dotResult === 'wrong') dot.classList.add('d-wrong');
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// LOAD SCENARIO
+// ═══════════════════════════════════════════════════════════════════
+function loadScenario(idx) {
+  currentIdx = idx;
+  const s = SCENARIOS[idx];
+  const st = getState(s.id);
+
+  // Header
+  document.getElementById('cardTitle').textContent = `Scenario ${idx + 1}: ${s.title}`;
+  document.getElementById('cardSubtitle').textContent = s.subtitle;
+
+  // Build card body
+  const body = document.getElementById('cardBody');
+  body.innerHTML = '';
+
+  // Meta row
+  const meta = document.createElement('div');
+  meta.style.cssText = 'display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap;';
+  meta.innerHTML = `<div class="diff-tag diff-${s.difficulty}">${s.difficulty.charAt(0).toUpperCase() + s.difficulty.slice(1)}</div>
+    <div style="margin-left:auto;font-size:12px;font-weight:600;color:var(--gray-400);">${idx+1} / ${SCENARIOS.length}</div>`;
+  body.appendChild(meta);
+
+  // Scenario description
+  const desc = document.createElement('div');
+  desc.className = 'scenario-desc';
+  desc.textContent = s.desc;
+  body.appendChild(desc);
+
+  // Given data block
+  const given = document.createElement('div');
+  given.className = 'given-block';
+  given.innerHTML = '<strong>Given:</strong>' + s.given.map(g => `<div>• ${g}</div>`).join('');
+  body.appendChild(given);
+
+  // Gate question section
+  body.appendChild(buildGateSection(s, st));
+
+  // Navigation buttons
+  const navGroup = document.createElement('div');
+  navGroup.className = 'btn-group';
+  navGroup.id = 'navGroup';
+
+  if (idx > 0) {
+    const prevBtn = document.createElement('button');
+    prevBtn.className = 'btn btn-secondary';
+    prevBtn.textContent = '← Previous';
+    prevBtn.onclick = () => loadScenario(idx - 1);
+    navGroup.appendChild(prevBtn);
+  }
+
+  if (idx < SCENARIOS.length - 1) {
+    const nextBtn = document.createElement('button');
+    nextBtn.className = 'btn btn-green';
+    nextBtn.id = 'mainNextBtn';
+    nextBtn.textContent = 'Next →';
+    nextBtn.onclick = () => loadScenario(idx + 1);
+    navGroup.appendChild(nextBtn);
+  } else {
+    const finishBtn = document.createElement('button');
+    finishBtn.className = 'btn btn-green';
+    finishBtn.id = 'mainNextBtn';
+    finishBtn.textContent = 'See Results';
+    finishBtn.onclick = showFinalSummary;
+    navGroup.appendChild(finishBtn);
+  }
+
+  body.appendChild(navGroup);
+
+  updateDotNav();
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// GATE SECTION
+// ═══════════════════════════════════════════════════════════════════
+function buildGateSection(s, st) {
+  const section = document.createElement('div');
+  section.className = 'step-section unlocked';
+  section.id = `gate-section-${s.id}`;
+
+  const hdr = document.createElement('div');
+  hdr.className = 'step-header';
+  hdr.innerHTML = `<span class="step-label">Gate Question</span>
+    <span class="step-status" id="gate-status-${s.id}"></span>`;
+  section.appendChild(hdr);
+
+  const body = document.createElement('div');
+  body.className = 'step-body';
+  body.id = `gate-body-${s.id}`;
+
+  body.innerHTML = `<div class="step-question">Is this system empty or non-empty when the batch arrives?</div>
+    <div class="radio-group" id="gate-radios-${s.id}">
+      <label class="radio-option" id="gate-opt-empty-${s.id}">
+        <input type="radio" name="gate-${s.id}" value="empty" onchange="onGateChange(${s.id})">
+        <span>○ Empty (no units in process)</span>
+      </label>
+      <label class="radio-option" id="gate-opt-nonempty-${s.id}">
+        <input type="radio" name="gate-${s.id}" value="nonempty" onchange="onGateChange(${s.id})">
+        <span>○ Non-empty (already running)</span>
+      </label>
+    </div>
+    <div style="margin-top:10px;">
+      <button class="btn btn-primary btn-sm" id="gate-check-${s.id}" onclick="checkGate(${s.id})" disabled>Check</button>
+    </div>
+    <div id="gate-fb-${s.id}"></div>`;
+
+  section.appendChild(body);
+
+  // If already answered, replay
+  if (st.gateAnswered) {
+    replayGate(s, st, body, section);
+  }
+
+  return section;
+}
+
+function onGateChange(id) {
+  const btn = document.getElementById(`gate-check-${id}`);
+  if (btn) btn.disabled = false;
+  // highlight selected
+  const radios = document.querySelectorAll(`#gate-radios-${id} .radio-option`);
+  radios.forEach(opt => {
+    opt.classList.toggle('selected', opt.querySelector('input').checked);
+  });
+}
+
+function checkGate(id) {
+  const s = SCENARIOS.find(x => x.id === id);
+  const st = getState(id);
+  if (st.gateAnswered) return;
+
+  const selected = document.querySelector(`input[name="gate-${id}"]:checked`);
+  if (!selected) return;
+
+  const val = selected.value;
+  const correct = (val === s.systemState);
+  st.gateAnswered = true;
+  st.gateCorrect = correct;
+
+  // Disable radios and button
+  document.querySelectorAll(`#gate-radios-${id} input`).forEach(r => r.disabled = true);
+  document.getElementById(`gate-check-${id}`).disabled = true;
+  document.getElementById(`gate-check-${id}`).style.display = 'none';
+
+  const fbDiv = document.getElementById(`gate-fb-${id}`);
+  const statusSpan = document.getElementById(`gate-status-${id}`);
+
+  if (correct) {
+    statusSpan.textContent = '✓';
+    statusSpan.style.color = 'var(--green)';
+    fbDiv.innerHTML = `<div class="inline-fb fb-correct">✓ Correct — this is a <strong>${s.systemState === 'empty' ? 'empty' : 'non-empty'}</strong> system.</div>`;
+    // Now unlock the next step(s)
+    appendPostGateSteps(s, st);
+  } else {
+    statusSpan.textContent = '✗';
+    statusSpan.style.color = 'var(--red)';
+    const correctLabel = s.systemState === 'empty' ? 'empty' : 'non-empty';
+    let msg = '';
+    if (val === 'nonempty' && s.systemState === 'empty') {
+      msg = '✗ The scenario says the system begins empty — no units are currently in process. Use the empty-system formula: T<sub>empty</sub> + (Q−1) × cycle time.';
+    } else {
+      msg = '✗ The scenario says the process is already running. Use the non-empty formula: Q × cycle time.';
+    }
+    fbDiv.innerHTML = `<div class="inline-fb fb-wrong">${msg}<br><em>The correct answer is <strong>${correctLabel}</strong>. Continuing with the correct path…</em></div>`;
+    // Still unlock next step with correct path
+    appendPostGateSteps(s, st);
+    // Mark dot as wrong
+    if (!st.dotResult) {
+      st.dotResult = 'wrong';
+      cntRed++;
+      cntDone++;
+      updateScoreDisplay();
+    }
+  }
+
+  updateDotNav();
+}
+
+function replayGate(s, st, body, section) {
+  // Re-select the previously chosen option — find from stored data
+  // We need to know what they selected — store it
+  // Actually we just need to replay the visual state
+  const fbDiv = document.getElementById(`gate-fb-${s.id}`);
+  const statusSpan = document.getElementById(`gate-status-${s.id}`);
+  document.querySelectorAll(`#gate-radios-${s.id} input`).forEach(r => r.disabled = true);
+  const checkBtn = document.getElementById(`gate-check-${s.id}`);
+  if (checkBtn) { checkBtn.disabled = true; checkBtn.style.display = 'none'; }
+
+  if (st.gateCorrect) {
+    statusSpan.textContent = '✓';
+    statusSpan.style.color = 'var(--green)';
+    fbDiv.innerHTML = `<div class="inline-fb fb-correct">✓ Correct — this is a <strong>${s.systemState === 'empty' ? 'empty' : 'non-empty'}</strong> system.</div>`;
+  } else {
+    statusSpan.textContent = '✗';
+    statusSpan.style.color = 'var(--red)';
+    const correctLabel = s.systemState === 'empty' ? 'empty' : 'non-empty';
+    fbDiv.innerHTML = `<div class="inline-fb fb-wrong">✗ The correct answer is <strong>${correctLabel}</strong>.</div>`;
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// POST-GATE STEPS (appended after gate is answered)
+// ═══════════════════════════════════════════════════════════════════
+function appendPostGateSteps(s, st) {
+  const body = document.getElementById('cardBody');
+  const navGroup = document.getElementById('navGroup');
+
+  if (s.systemState === 'nonempty') {
+    // One numeric step: Q × CT
+    const section = buildNonemptyStep(s, st);
+    body.insertBefore(section, navGroup);
+    if (st.nonemptyAnswered) replayNonemptyStep(s, st);
+  } else {
+    // Empty path
+    if (s.hasParallel) {
+      // Parallel gate first, then A, B, C
+      const pgSection = buildParallelGateSection(s, st);
+      body.insertBefore(pgSection, navGroup);
+      if (st.parallelAnswered) {
+        replayParallelGate(s, st);
+        // Append empty steps
+        appendEmptySteps(s, st, navGroup);
+      }
+    } else {
+      // Directly A, B, C
+      appendEmptySteps(s, st, navGroup);
+    }
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// NON-EMPTY STEP
+// ═══════════════════════════════════════════════════════════════════
+function buildNonemptyStep(s, st) {
+  const section = document.createElement('div');
+  section.className = 'step-section unlocked';
+  section.id = `nonempty-section-${s.id}`;
+
+  const hdr = document.createElement('div');
+  hdr.className = 'step-header';
+  hdr.innerHTML = `<span class="step-label">Calculation</span>
+    <span class="step-status" id="nonempty-status-${s.id}"></span>`;
+  section.appendChild(hdr);
+
+  const body = document.createElement('div');
+  body.className = 'step-body';
+
+  body.innerHTML = `<div class="step-question">Calculate Q × cycle time. What is the total time (in minutes)?</div>
+    <div class="num-input-row">
+      <input type="number" class="num-input" id="nonempty-input-${s.id}" placeholder="0" min="0" step="0.1" oninput="onNumInput('nonempty-input-${s.id}', 'nonempty-check-${s.id}')">
+      <span class="num-input-unit">minutes</span>
+    </div>
+    <button class="btn btn-primary btn-sm" id="nonempty-check-${s.id}" onclick="checkNonempty(${s.id})" disabled>Check</button>
+    <div id="nonempty-fb-${s.id}"></div>`;
+
+  section.appendChild(body);
+  return section;
+}
+
+function onNumInput(inputId, btnId) {
+  const inp = document.getElementById(inputId);
+  const btn = document.getElementById(btnId);
+  if (btn) btn.disabled = !(inp && inp.value.trim() !== '');
+}
+
+function checkNonempty(id) {
+  const s = SCENARIOS.find(x => x.id === id);
+  const st = getState(id);
+  if (st.nonemptyAnswered) return;
+
+  const inp = document.getElementById(`nonempty-input-${id}`);
+  const val = parseFloat(inp.value);
+  if (isNaN(val)) return;
+
+  st.nonemptyAttempts++;
+  const correct = Math.abs(val - s.nonemptyAnswer) <= s.nonemptyTolerance;
+  st.nonemptyAnswered = true;
+  st.nonemptyCorrect = correct;
+
+  inp.disabled = true;
+  document.getElementById(`nonempty-check-${id}`).disabled = true;
+  document.getElementById(`nonempty-check-${id}`).style.display = 'none';
+
+  const fbDiv = document.getElementById(`nonempty-fb-${id}`);
+  const statusSpan = document.getElementById(`nonempty-status-${id}`);
+  const section = document.getElementById(`nonempty-section-${id}`);
+
+  if (correct) {
+    statusSpan.textContent = '✓';
+    statusSpan.style.color = 'var(--green)';
+    section.classList.add('answered-correct');
+    fbDiv.innerHTML = `<div class="inline-fb fb-correct">${s.nonemptyFeedbackCorrect}</div>`;
+    // Dot result
+    if (!st.dotResult) {
+      st.dotResult = st.gateCorrect ? 'correct' : 'wrong';
+      if (st.dotResult === 'correct') { cntGreen++; }
+      cntDone++;
+      updateScoreDisplay();
+    }
+  } else {
+    statusSpan.textContent = '✗';
+    statusSpan.style.color = 'var(--red)';
+    section.classList.add('answered-wrong');
+    fbDiv.innerHTML = `<div class="inline-fb fb-wrong">${s.nonemptyFeedbackWrong}</div>`;
+    // Dot result
+    if (!st.dotResult) {
+      st.dotResult = st.gateCorrect ? 'partial' : 'wrong';
+      if (st.dotResult === 'partial') { cntAmber++; }
+      else if (st.dotResult === 'wrong') { cntRed++; }
+      cntDone++;
+      updateScoreDisplay();
+    }
+  }
+  st.done = true;
+  updateDotNav();
+}
+
+function replayNonemptyStep(s, st) {
+  const inp = document.getElementById(`nonempty-input-${s.id}`);
+  if (inp) {
+    inp.value = s.nonemptyAnswer;
+    inp.disabled = true;
+  }
+  const checkBtn = document.getElementById(`nonempty-check-${s.id}`);
+  if (checkBtn) { checkBtn.disabled = true; checkBtn.style.display = 'none'; }
+  const fbDiv = document.getElementById(`nonempty-fb-${s.id}`);
+  const statusSpan = document.getElementById(`nonempty-status-${s.id}`);
+  const section = document.getElementById(`nonempty-section-${s.id}`);
+
+  if (st.nonemptyCorrect) {
+    statusSpan.textContent = '✓'; statusSpan.style.color = 'var(--green)';
+    section.classList.add('answered-correct');
+    fbDiv.innerHTML = `<div class="inline-fb fb-correct">${s.nonemptyFeedbackCorrect}</div>`;
+  } else {
+    statusSpan.textContent = '✗'; statusSpan.style.color = 'var(--red)';
+    section.classList.add('answered-wrong');
+    fbDiv.innerHTML = `<div class="inline-fb fb-wrong">${s.nonemptyFeedbackWrong}</div>`;
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// PARALLEL GATE SECTION
+// ═══════════════════════════════════════════════════════════════════
+function buildParallelGateSection(s, st) {
+  const section = document.createElement('div');
+  section.className = 'step-section unlocked';
+  section.id = `pg-section-${s.id}`;
+
+  const hdr = document.createElement('div');
+  hdr.className = 'step-header';
+  hdr.innerHTML = `<span class="step-label">Parallel Step Rule</span>
+    <span class="step-status" id="pg-status-${s.id}"></span>`;
+  section.appendChild(hdr);
+
+  const body = document.createElement('div');
+  body.className = 'step-body';
+
+  const radiosHTML = s.parallelOptions.map(opt =>
+    `<label class="radio-option" id="pg-opt-${opt.id}-${s.id}">
+      <input type="radio" name="pg-${s.id}" value="${opt.id}" onchange="onPGChange(${s.id})">
+      <span>${opt.label}</span>
+    </label>`
+  ).join('');
+
+  body.innerHTML = `<div class="step-question">For the parallel steps in this scenario, which processing time do you use?</div>
+    <div class="radio-group" id="pg-radios-${s.id}">${radiosHTML}</div>
+    <button class="btn btn-primary btn-sm" id="pg-check-${s.id}" onclick="checkParallelGate(${s.id})" disabled>Check</button>
+    <div id="pg-fb-${s.id}"></div>`;
+
+  section.appendChild(body);
+  return section;
+}
+
+function onPGChange(id) {
+  const btn = document.getElementById(`pg-check-${id}`);
+  if (btn) btn.disabled = false;
+  document.querySelectorAll(`#pg-radios-${id} .radio-option`).forEach(opt => {
+    opt.classList.toggle('selected', opt.querySelector('input').checked);
+  });
+}
+
+function checkParallelGate(id) {
+  const s = SCENARIOS.find(x => x.id === id);
+  const st = getState(id);
+
+  const selected = document.querySelector(`input[name="pg-${id}"]:checked`);
+  if (!selected) return;
+
+  const val = selected.value;
+  const correct = (val === 'max');
+
+  st.parallelAttempts++;
+
+  const fbDiv = document.getElementById(`pg-fb-${id}`);
+  const statusSpan = document.getElementById(`pg-status-${id}`);
+
+  if (correct) {
+    st.parallelAnswered = true;
+    st.parallelCorrect = true;
+
+    document.querySelectorAll(`#pg-radios-${id} input`).forEach(r => r.disabled = true);
+    document.getElementById(`pg-check-${id}`).disabled = true;
+    document.getElementById(`pg-check-${id}`).style.display = 'none';
+
+    statusSpan.textContent = '✓';
+    statusSpan.style.color = 'var(--green)';
+    fbDiv.innerHTML = `<div class="inline-fb fb-correct">✓ Correct — use the <strong>maximum</strong> (longest) parallel time. Both parallel activities start simultaneously; the one that finishes last determines when Step 2 is complete.</div>`;
+
+    // Append empty steps now
+    const navGroup = document.getElementById('navGroup');
+    appendEmptySteps(s, st, navGroup);
+  } else {
+    // Wrong — explain and let retry
+    let msg = '';
+    if (val === 'sum') msg = s.parallelFeedbackSum;
+    else if (val === 'avg') msg = s.parallelFeedbackAvg;
+
+    fbDiv.innerHTML = `<div class="inline-fb fb-wrong">${msg}<br><em>Try again.</em></div>`;
+
+    // Uncheck and let retry
+    document.querySelectorAll(`#pg-radios-${id} .radio-option`).forEach(opt => {
+      opt.classList.remove('selected');
+      opt.querySelector('input').checked = false;
+    });
+    document.getElementById(`pg-check-${id}`).disabled = true;
+
+    // Track partial for dot
+    if (!st.dotResult && st.parallelAttempts >= 2) {
+      // After two wrong parallel attempts, mark partial at minimum
+    }
+  }
+  updateDotNav();
+}
+
+function replayParallelGate(s, st) {
+  const fbDiv = document.getElementById(`pg-fb-${s.id}`);
+  const statusSpan = document.getElementById(`pg-status-${s.id}`);
+  if (!fbDiv || !statusSpan) return;
+
+  document.querySelectorAll(`#pg-radios-${s.id} input`).forEach(r => r.disabled = true);
+  const checkBtn = document.getElementById(`pg-check-${s.id}`);
+  if (checkBtn) { checkBtn.disabled = true; checkBtn.style.display = 'none'; }
+
+  statusSpan.textContent = '✓';
+  statusSpan.style.color = 'var(--green)';
+  fbDiv.innerHTML = `<div class="inline-fb fb-correct">✓ Correct — use the <strong>maximum</strong> (longest) parallel time.</div>`;
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// EMPTY STEPS A, B, C
+// ═══════════════════════════════════════════════════════════════════
+function appendEmptySteps(s, st, navGroup) {
+  const body = document.getElementById('cardBody');
+  const steps = ['A', 'B', 'C'];
+
+  steps.forEach(key => {
+    const stepData = s.emptySteps[key];
+    const stepSt = st.stepsState[key];
+    const section = buildEmptyStep(s, st, key, stepData, stepSt);
+    body.insertBefore(section, navGroup);
+  });
+
+  // Now replay any already-answered steps
+  steps.forEach(key => {
+    if (st.stepsState[key].answered) {
+      replayEmptyStep(s, st, key);
+    }
+  });
+
+  // Unlock only the first unanswered step
+  updateEmptyStepLocks(s, st);
+}
+
+function buildEmptyStep(s, st, key, stepData, stepSt) {
+  const section = document.createElement('div');
+  section.className = 'step-section locked';
+  section.id = `step-${key}-section-${s.id}`;
+
+  const hdr = document.createElement('div');
+  hdr.className = 'step-header';
+  hdr.innerHTML = `<span class="step-label">Step ${key}</span>
+    <span class="lock-icon" id="step-${key}-lock-${s.id}">🔒</span>
+    <span class="step-status" id="step-${key}-status-${s.id}"></span>`;
+  section.appendChild(hdr);
+
+  const body = document.createElement('div');
+  body.className = 'step-body';
+
+  body.innerHTML = `<div class="step-question">${stepData.question}</div>
+    <div class="num-input-row">
+      <input type="number" class="num-input" id="step-${key}-input-${s.id}" placeholder="0" min="0" step="0.1"
+        oninput="onNumInput('step-${key}-input-${s.id}', 'step-${key}-check-${s.id}')">
+      <span class="num-input-unit">minutes</span>
+    </div>
+    <button class="btn btn-primary btn-sm" id="step-${key}-check-${s.id}" onclick="checkEmptyStep(${s.id}, '${key}')" disabled>Check</button>
+    <div id="step-${key}-fb-${s.id}"></div>`;
+
+  section.appendChild(body);
+  return section;
+}
+
+function updateEmptyStepLocks(s, st) {
+  const steps = ['A', 'B', 'C'];
+  let foundFirst = false;
+  steps.forEach(key => {
+    const section = document.getElementById(`step-${key}-section-${s.id}`);
+    const lockIcon = document.getElementById(`step-${key}-lock-${s.id}`);
+    if (!section) return;
+    const stepSt = st.stepsState[key];
+    if (stepSt.answered) {
+      section.classList.remove('locked', 'unlocked');
+      if (stepSt.correct) section.classList.add('answered-correct');
+      else section.classList.add('answered-wrong');
+      if (lockIcon) lockIcon.style.display = 'none';
+    } else if (!foundFirst) {
+      section.classList.remove('locked');
+      section.classList.add('unlocked');
+      if (lockIcon) lockIcon.style.display = 'none';
+      foundFirst = true;
+    } else {
+      section.classList.remove('unlocked', 'answered-correct', 'answered-wrong');
+      section.classList.add('locked');
+      if (lockIcon) lockIcon.style.display = '';
+    }
+  });
+}
+
+function checkEmptyStep(id, key) {
+  const s = SCENARIOS.find(x => x.id === id);
+  const st = getState(id);
+  const stepSt = st.stepsState[key];
+  if (stepSt.answered) return;
+
+  const inp = document.getElementById(`step-${key}-input-${id}`);
+  const val = parseFloat(inp.value);
+  if (isNaN(val)) return;
+
+  stepSt.attempts++;
+  const stepData = s.emptySteps[key];
+  const correct = Math.abs(val - stepData.answer) <= stepData.tol;
+  stepSt.answered = true;
+  stepSt.correct = correct;
+
+  inp.disabled = true;
+  const checkBtn = document.getElementById(`step-${key}-check-${id}`);
+  checkBtn.disabled = true;
+  checkBtn.style.display = 'none';
+
+  const fbDiv = document.getElementById(`step-${key}-fb-${id}`);
+  const statusSpan = document.getElementById(`step-${key}-status-${id}`);
+  const section = document.getElementById(`step-${key}-section-${id}`);
+
+  if (correct) {
+    statusSpan.textContent = '✓'; statusSpan.style.color = 'var(--green)';
+    section.classList.remove('unlocked'); section.classList.add('answered-correct');
+    fbDiv.innerHTML = `<div class="inline-fb fb-correct">${stepData.feedbackCorrect}</div>`;
+  } else {
+    statusSpan.textContent = '✗'; statusSpan.style.color = 'var(--red)';
+    section.classList.remove('unlocked'); section.classList.add('answered-wrong');
+    fbDiv.innerHTML = `<div class="inline-fb fb-wrong">${stepData.feedbackWrong}</div>`;
+  }
+
+  // Check if all steps done
+  const allDone = ['A','B','C'].every(k => st.stepsState[k].answered);
+  if (allDone && !st.done) {
+    st.done = true;
+    // Determine dot result
+    const allCorrect = ['A','B','C'].every(k => st.stepsState[k].correct);
+    const gateOk = st.gateCorrect;
+    const parallelOk = !s.hasParallel || st.parallelCorrect;
+    if (!st.dotResult) {
+      if (gateOk && parallelOk && allCorrect) {
+        st.dotResult = 'correct'; cntGreen++;
+      } else if (gateOk) {
+        st.dotResult = 'partial'; cntAmber++;
+      } else {
+        st.dotResult = 'wrong'; cntRed++;
+      }
+      cntDone++;
+      updateScoreDisplay();
+    }
+  }
+
+  updateEmptyStepLocks(s, st);
+  updateDotNav();
+}
+
+function replayEmptyStep(s, st, key) {
+  const stepData = s.emptySteps[key];
+  const stepSt = st.stepsState[key];
+
+  const inp = document.getElementById(`step-${key}-input-${s.id}`);
+  if (inp) { inp.value = stepData.answer; inp.disabled = true; }
+  const checkBtn = document.getElementById(`step-${key}-check-${s.id}`);
+  if (checkBtn) { checkBtn.disabled = true; checkBtn.style.display = 'none'; }
+
+  const fbDiv = document.getElementById(`step-${key}-fb-${s.id}`);
+  const statusSpan = document.getElementById(`step-${key}-status-${s.id}`);
+  const section = document.getElementById(`step-${key}-section-${s.id}`);
+
+  if (stepSt.correct) {
+    if (statusSpan) { statusSpan.textContent = '✓'; statusSpan.style.color = 'var(--green)'; }
+    if (section) { section.classList.remove('locked','unlocked'); section.classList.add('answered-correct'); }
+    if (fbDiv) fbDiv.innerHTML = `<div class="inline-fb fb-correct">${stepData.feedbackCorrect}</div>`;
+  } else {
+    if (statusSpan) { statusSpan.textContent = '✗'; statusSpan.style.color = 'var(--red)'; }
+    if (section) { section.classList.remove('locked','unlocked'); section.classList.add('answered-wrong'); }
+    if (fbDiv) fbDiv.innerHTML = `<div class="inline-fb fb-wrong">${stepData.feedbackWrong}</div>`;
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// SCORE DISPLAY
+// ═══════════════════════════════════════════════════════════════════
+function updateScoreDisplay() {
+  document.getElementById('scoreNum').textContent = cntGreen;
+  document.getElementById('scoreDetail').textContent = `of ${cntDone} completed`;
+  document.getElementById('progBar').style.width = (cntDone / SCENARIOS.length * 100) + '%';
+  document.getElementById('cntGreen').textContent = cntGreen;
+  document.getElementById('cntAmber').textContent = cntAmber;
+  document.getElementById('cntRed').textContent   = cntRed;
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// FINAL SUMMARY
+// ═══════════════════════════════════════════════════════════════════
+function showFinalSummary() {
+  const body = document.getElementById('cardBody');
+  body.innerHTML = '';
+  document.getElementById('cardTitle').textContent = 'All Scenarios Complete';
+  document.getElementById('cardSubtitle').textContent = 'Review your results below';
+
+  const total = SCENARIOS.length;
+  const pct = total > 0 ? Math.round((cntGreen / total) * 100) : 0;
+
+  const summary = document.createElement('div');
+  summary.className = 'final-summary show';
+  summary.innerHTML = `
+    <h3 style="color:var(--green)">All ${total} Scenarios Complete</h3>
+    <p style="font-size:22px;font-weight:700;color:var(--navy);margin:10px 0">${cntGreen} / ${total} fully correct</p>
+    <p style="color:var(--gray-600);font-size:13px;margin-bottom:16px">${pct}% first-try correct</p>
+
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:20px;">
+      <div style="background:var(--green-lt);border:1px solid var(--green-bdr);border-radius:8px;padding:10px 18px;font-size:14px;">
+        <strong style="color:var(--green);font-size:20px;">${cntGreen}</strong><br>
+        <span style="font-size:12px;color:var(--gray-600);">First-try correct</span>
+      </div>
+      <div style="background:var(--amber-lt);border:1px solid var(--amber-bdr);border-radius:8px;padding:10px 18px;font-size:14px;">
+        <strong style="color:var(--amber);font-size:20px;">${cntAmber}</strong><br>
+        <span style="font-size:12px;color:var(--gray-600);">Partial</span>
+      </div>
+      <div style="background:var(--red-lt);border:1px solid var(--red-bdr);border-radius:8px;padding:10px 18px;font-size:14px;">
+        <strong style="color:var(--red);font-size:20px;">${cntRed}</strong><br>
+        <span style="font-size:12px;color:var(--gray-600);">Gate wrong</span>
+      </div>
+    </div>
+
+    <div class="tip-box" style="text-align:left;margin-bottom:16px;">
+      <strong>Key Takeaway:</strong><br>
+      For <strong>empty systems</strong>, pay the upfront processing time once (T<sub>empty</sub>), then add
+      (Q&nbsp;&minus;&nbsp;1)&nbsp;&times;&nbsp;cycle time. For <strong>non-empty systems</strong>, the pipeline is already full —
+      every cycle produces one unit, so simply use Q&nbsp;&times;&nbsp;cycle time.
+      <strong>Parallel steps</strong>: always take the <em>maximum</em> time, not the sum — both activities start
+      simultaneously, so the longest one is the binding constraint.
+    </div>
+
+    <button class="btn btn-secondary" onclick="restartApp()" style="margin-top:4px;">↩ Restart All Scenarios</button>
+  `;
+  body.appendChild(summary);
+
+  updateDotNav();
+}
+
+function restartApp() {
+  // Reset state
+  SCENARIOS.forEach(s => { delete state[s.id]; });
+  cntGreen = 0; cntAmber = 0; cntRed = 0; cntDone = 0;
+  updateScoreDisplay();
+  loadScenario(0);
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// START
+// ═══════════════════════════════════════════════════════════════════
+init();
+</script>
+</body>
+</html>

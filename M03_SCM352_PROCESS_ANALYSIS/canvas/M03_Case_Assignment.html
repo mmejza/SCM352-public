@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Case Analysis M## — [Case Title] — SCM 352</title>
+<title>Case Analysis M03 — Riverside Prescription Fulfillment Center — SCM 352</title>
 <style>
-:root{--navy:#1a3a5c;--blue:#2563a8;--blue-lt:#dbeafe;--blue-xlt:#eff6ff;--gold:#f59e0b;--gold-lt:#fffbeb;--gold-bdr:#fde68a;--green:#16a34a;--green-lt:#f0fdf4;--green-bdr:#bbf7d0;--red:#dc2626;--red-lt:#fef2f2;--red-bdr:#fecaca;--amber:#d97706;--amber-lt:#fffbeb;--amber-bdr:#fde68a;--purple:#7c3aed;--purple-lt:#faf5ff;--purple-bdr:#ddd6fe;--teal:#0891b2;--teal-lt:#f0fdfe;--teal-bdr:#a5f3fc;--gray-50:#f9fafb;--gray-100:#f3f4f6;--gray-200:#e5e7eb;--gray-300:#d1d5db;--gray-400:#9ca3af;--gray-600:#4b5563;--gray-700:#374151;--gray-800:#1f2937;}
+:root{--navy:#1a3a5c;--blue:#2563a8;--blue-lt:#dbeafe;--blue-xlt:#eff6ff;--gold:#f59e0b;--gold-lt:#fffbeb;--gold-bdr:#fde68a;--green:#16a34a;--green-lt:#f0fdf4;--green-bdr:#bbf7d0;--red:#dc2626;--red-lt:#fef2f2;--red-bdr:#fecaca;--amber:#d97706;--amber-lt:#fffbeb;--amber-bdr:#fde68a;--orange:#ea580c;--orange-lt:#fff7ed;--orange-bdr:#fed7aa;--purple:#7c3aed;--purple-lt:#faf5ff;--purple-bdr:#ddd6fe;--teal:#0891b2;--teal-lt:#f0fdfe;--teal-bdr:#a5f3fc;--gray-50:#f9fafb;--gray-100:#f3f4f6;--gray-200:#e5e7eb;--gray-300:#d1d5db;--gray-400:#9ca3af;--gray-600:#4b5563;--gray-700:#374151;--gray-800:#1f2937;}
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--gray-50);color:var(--gray-800);line-height:1.65;font-size:14px;}
 .pg-header{background:var(--navy);color:white;padding:24px 28px;}
@@ -47,6 +47,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
 .part2 .section-hd{background:var(--green-lt);} .part2 .part-badge{background:var(--green);color:white;} .part2 .pts-badge{background:var(--green-bdr);color:var(--green);}
 .part3 .section-hd{background:var(--purple-lt);} .part3 .part-badge{background:var(--purple);color:white;} .part3 .pts-badge{background:var(--purple-bdr);color:var(--purple);}
 .part4 .section-hd{background:var(--teal-lt);} .part4 .part-badge{background:var(--teal);color:white;} .part4 .pts-badge{background:var(--teal-bdr);color:var(--teal);}
+.part5 .section-hd{background:var(--amber-lt);} .part5 .part-badge{background:var(--amber);color:white;} .part5 .pts-badge{background:var(--amber-bdr);color:var(--amber);}
+.part6 .section-hd{background:var(--red-lt);} .part6 .part-badge{background:var(--red);color:white;} .part6 .pts-badge{background:var(--red-bdr);color:var(--red);}
 .ver-tabs{border:1.5px solid var(--gray-200);border-radius:10px;overflow:hidden;margin:16px 0;}
 .ver-tab-hd{display:flex;border-bottom:1.5px solid var(--gray-200);background:var(--gray-50);}
 .ver-tab-btn{flex:1;padding:10px 0;border:none;background:none;cursor:pointer;font-size:13px;font-weight:700;color:var(--gray-400);border-right:1px solid var(--gray-200);transition:all 0.15s;display:flex;align-items:center;justify-content:center;gap:6px;}
@@ -60,21 +62,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
 .data-table th{background:var(--navy);color:white;padding:9px 13px;text-align:left;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;}
 .data-table td{padding:9px 13px;border-bottom:1px solid var(--gray-100);}
 .data-table tr:last-child td{border-bottom:none;}
-.data-table td:first-child{font-weight:700;}
-.better-note{font-size:10px;font-weight:600;color:var(--green);display:block;margin-top:2px;}
+.data-table td:first-child{font-weight:600;}
 .q-block{margin-bottom:16px;padding:14px 16px;border:1.5px solid var(--gray-200);border-radius:8px;background:var(--gray-50);}
 .q-block:last-child{margin-bottom:0;}
 .q-num{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--gray-400);margin-bottom:5px;}
 .q-text{font-size:13.5px;line-height:1.65;color:var(--gray-700);}
 .q-pts{display:inline-block;margin-top:7px;font-size:11px;font-weight:700;padding:2px 9px;border-radius:100px;background:var(--blue-lt);color:var(--navy);}
-.om-table{width:100%;border-collapse:collapse;font-size:13px;margin:12px 0;}
-.om-table th{background:var(--navy);color:white;padding:9px 13px;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;text-align:left;}
-.om-table td{padding:11px 13px;border-bottom:1px solid var(--gray-100);vertical-align:top;}
-.om-table tr:last-child td{border-bottom:none;}
-.om-table td:first-child{font-weight:600;color:var(--gray-800);}
-.om-table td:nth-child(2){color:var(--blue);font-weight:600;font-size:12px;}
-.om-table td:nth-child(3){background:#fafafa;color:var(--gray-400);font-style:italic;font-size:12px;}
-.scenario-box{background:var(--gray-50);border:1.5px solid var(--gray-200);border-left:4px solid var(--teal);border-radius:0 8px 8px 0;padding:16px 18px;font-size:13.5px;line-height:1.75;color:var(--gray-700);margin:12px 0;}
+.continuity-box{background:var(--blue-xlt);border:1.5px solid #bfdbfe;border-left:4px solid var(--blue);border-radius:0 8px 8px 0;padding:14px 16px;font-size:13px;line-height:1.7;color:var(--gray-700);margin-top:14px;}
+.continuity-box strong{color:var(--navy);}
 .submit-list{display:flex;flex-direction:column;gap:6px;}
 .submit-item{display:flex;gap:10px;align-items:flex-start;padding:9px 13px;background:var(--gray-50);border:1px solid var(--gray-200);border-radius:7px;font-size:13px;line-height:1.5;color:var(--gray-700);}
 .submit-item::before{content:'☐';font-size:16px;flex-shrink:0;color:var(--gray-400);margin-top:-1px;}
@@ -84,58 +79,56 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
 .grade-table tr:last-child td{border-bottom:none;}
 .grade-table tr.total td{font-weight:700;background:var(--blue-xlt);color:var(--navy);font-size:14px;}
 .pts-right{text-align:right;font-weight:700;font-size:15px;color:var(--navy);}
+.intro-p{font-size:13.5px;line-height:1.7;color:var(--gray-700);margin-bottom:16px;}
 </style>
 </head>
 <body>
 
 <div class="pg-header">
-  <!-- EDIT: Replace M## and case subtitle -->
-  <div class="pg-header-eyebrow">SCM 352 · Module M## · Case Analysis</div>
-  <!-- EDIT: Case title from M##_Case.md -->
-  <h1>[Case Title from M##_Case.md]</h1>
-  <p>Parameterized case — 4 versions · 100 points · Due Day 7 at 11:59 PM</p>
+  <div class="pg-header-eyebrow">SCM 352 · M03 · Case Analysis</div>
+  <h1>Riverside Health System Prescription Fulfillment Center</h1>
+  <p>Parameterized case — 4 versions · 100 points · Due Day 5 at 11:59 PM</p>
 </div>
 
 <div class="meta-strip">
   <div class="meta-cell"><div class="meta-lbl">Points</div><div class="meta-val">100</div></div>
-  <div class="meta-cell"><div class="meta-lbl">Due</div><div class="meta-val">Day 7 · 11:59 PM</div></div>
+  <div class="meta-cell"><div class="meta-lbl">Due</div><div class="meta-val">Day 5 · 11:59 PM</div></div>
   <div class="meta-cell"><div class="meta-lbl">Format</div><div class="meta-val">PDF or Word</div></div>
   <div class="meta-cell"><div class="meta-lbl">Attempts</div><div class="meta-val">1</div></div>
-  <div class="meta-cell"><div class="meta-lbl">Allowed resources</div><div class="meta-val">Ch. [#] · Lectures · Apps · Slides</div></div>
+  <div class="meta-cell"><div class="meta-lbl">Allowed resources</div><div class="meta-val">Ch. 3 · Lectures · Apps · Slides</div></div>
 </div>
 
 <div class="pg-body">
 
-  <!-- VERSION ASSIGNMENT — always first, always this style -->
+  <!-- VERSION ASSIGNMENT BANNER -->
   <div class="version-banner">
     <div class="version-banner-hd">
       <div><h2>Find Your Assigned Version</h2><p>Use the last digit of your student ID. Submit only your assigned version.</p></div>
     </div>
     <table class="version-table">
-      <thead><tr><th>Last digit of student ID</th><th>Your version</th><th><!-- BUILD: identifying info per version (e.g., company + key number) --></th></tr></thead>
+      <thead><tr><th>Last digit of student ID</th><th>Your version</th><th>Station 2 workers</th></tr></thead>
       <tbody>
-        <!-- BUILD: 4 rows from M##_Case.md VERSION ASSIGNMENT KEY section -->
-        <tr><td>0 or 1</td><td><span class="ver-badge ver-a">A</span></td><td><!-- BUILD --></td></tr>
-        <tr><td>2 or 3</td><td><span class="ver-badge ver-b">B</span></td><td><!-- BUILD --></td></tr>
-        <tr><td>4 or 5</td><td><span class="ver-badge ver-c">C</span></td><td><!-- BUILD --></td></tr>
-        <tr><td>6, 7, 8, or 9</td><td><span class="ver-badge ver-d">D</span></td><td><!-- BUILD --></td></tr>
+        <tr><td>0 or 1</td><td><span class="ver-badge ver-a">A</span></td><td>2 technicians at Station 2 · demand = 18 rx/hr</td></tr>
+        <tr><td>2 or 3</td><td><span class="ver-badge ver-b">B</span></td><td>3 technicians at Station 2 · demand = 16 rx/hr</td></tr>
+        <tr><td>4 or 5</td><td><span class="ver-badge ver-c">C</span></td><td>2 technicians at Station 2 · demand = 12 rx/hr</td></tr>
+        <tr><td>6, 7, 8, or 9</td><td><span class="ver-badge ver-d">D</span></td><td>2 technicians at Station 2 · demand = 14 rx/hr</td></tr>
       </tbody>
     </table>
   </div>
 
-  <!-- RULES — always these 3 alerts -->
+  <!-- ALERT BOXES -->
   <div style="display:flex;flex-direction:column;gap:10px;">
     <div class="alert alert-red">
       <div class="alert-icon">🚫</div>
-      <div class="alert-body"><strong>Do not collaborate on version-specific calculations.</strong>Parts 1 and 2 use data unique to your version. Submitting another version's numbers constitutes academic dishonesty.</div>
+      <div class="alert-body"><strong>Do not collaborate on version-specific calculations.</strong> Parts 2 through 5 use data unique to your version. Submitting another version's numbers constitutes academic dishonesty.</div>
     </div>
     <div class="alert alert-gold">
       <div class="alert-icon">📋</div>
-      <div class="alert-body"><strong>Show all calculation steps with labeled intermediate values.</strong>Answers without supporting work will not receive full credit, even if numerically correct.</div>
+      <div class="alert-body"><strong>Show all calculation steps with labeled intermediate values.</strong> The formula, the substitution, and the final answer with units must all be visible. Answers without supporting work will not receive full credit, even if numerically correct.</div>
     </div>
     <div class="alert alert-blue">
       <div class="alert-icon">ℹ️</div>
-      <div class="alert-body">Parts 3 and 4 are the same for all versions. You may discuss concepts but your written responses must be your own.</div>
+      <div class="alert-body">Parts 1 and 4 are conceptual and the same for all versions. You may discuss concepts but your written responses must be your own.</div>
     </div>
   </div>
 
@@ -144,125 +137,271 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
     <div class="sec-div">Background — All Versions</div>
     <div class="section-card" style="margin-top:14px;">
       <div class="section-bd">
-        <!-- BUILD: Background text from M##_Case.md (same for all versions) -->
+        <p style="font-size:13.5px;line-height:1.75;color:var(--gray-700);">Riverside Health System operates a centralized prescription fulfillment center that fills prescriptions for 14 outpatient clinics across the region. The center uses a worker-paced, three-station sequential process. Your task is to complete a full process analysis — from capacity calculations through bottleneck identification, flow rate, utilization, and time-to-produce — and make a data-driven recommendation about where to add resources if patient volume grows.</p>
+        <div class="continuity-box">
+          <strong>Continuity note:</strong> This case extends the Riverside Health System scenario from Module 2. You now have additional data about how the center's work is organized into three discrete processing stations, and the tools to analyze what those stations can actually handle.
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- PART 1 — version-specific data, same questions -->
+  <!-- VERSION PARAMETERS (TABBED) -->
   <div>
-    <div class="sec-div">Part 1 — [Part 1 Title from M##_Case.md]</div>
+    <div class="sec-div">Your Version — Operating Parameters</div>
+    <div class="section-card" style="margin-top:14px;">
+      <div class="section-bd">
+        <p class="intro-p">Locate your assigned version tab and use those processing times and staffing levels throughout the case.</p>
+
+        <div class="ver-tabs">
+          <div class="ver-tab-hd">
+            <button class="ver-tab-btn active" onclick="switchTab('params','a')" id="params-tab-a"><span class="vb ver-a">A</span> Version A</button>
+            <button class="ver-tab-btn" onclick="switchTab('params','b')" id="params-tab-b"><span class="vb ver-b">B</span> Version B</button>
+            <button class="ver-tab-btn" onclick="switchTab('params','c')" id="params-tab-c"><span class="vb ver-c">C</span> Version C</button>
+            <button class="ver-tab-btn" onclick="switchTab('params','d')" id="params-tab-d"><span class="vb ver-d">D</span> Version D</button>
+          </div>
+
+          <!-- Version A -->
+          <div class="ver-tab-panel active" id="params-panel-a">
+            <table class="data-table">
+              <thead><tr><th>Parameter</th><th>Value</th></tr></thead>
+              <tbody>
+                <tr><td>Station 1 — Prescription Verification</td><td>3 min/rx · 1 pharmacist</td></tr>
+                <tr><td>Station 2 — Drug Preparation</td><td>5 min/rx · 2 technicians</td></tr>
+                <tr><td>Station 3 — Quality Check &amp; Packaging</td><td>4 min/rx · 1 pharmacist</td></tr>
+                <tr><td>Demand rate</td><td>18 prescriptions/hr</td></tr>
+                <tr><td>Batch size Q (Part 5)</td><td>20 prescriptions</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Version B -->
+          <div class="ver-tab-panel" id="params-panel-b">
+            <table class="data-table">
+              <thead><tr><th>Parameter</th><th>Value</th></tr></thead>
+              <tbody>
+                <tr><td>Station 1 — Prescription Verification</td><td>4 min/rx · 1 pharmacist</td></tr>
+                <tr><td>Station 2 — Drug Preparation</td><td>6 min/rx · 3 technicians</td></tr>
+                <tr><td>Station 3 — Quality Check &amp; Packaging</td><td>5 min/rx · 1 pharmacist</td></tr>
+                <tr><td>Demand rate</td><td>16 prescriptions/hr</td></tr>
+                <tr><td>Batch size Q (Part 5)</td><td>25 prescriptions</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Version C -->
+          <div class="ver-tab-panel" id="params-panel-c">
+            <table class="data-table">
+              <thead><tr><th>Parameter</th><th>Value</th></tr></thead>
+              <tbody>
+                <tr><td>Station 1 — Prescription Verification</td><td>2 min/rx · 1 pharmacist</td></tr>
+                <tr><td>Station 2 — Drug Preparation</td><td>8 min/rx · 2 technicians</td></tr>
+                <tr><td>Station 3 — Quality Check &amp; Packaging</td><td>3 min/rx · 1 pharmacist</td></tr>
+                <tr><td>Demand rate</td><td>12 prescriptions/hr</td></tr>
+                <tr><td>Batch size Q (Part 5)</td><td>15 prescriptions</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Version D -->
+          <div class="ver-tab-panel" id="params-panel-d">
+            <table class="data-table">
+              <thead><tr><th>Parameter</th><th>Value</th></tr></thead>
+              <tbody>
+                <tr><td>Station 1 — Prescription Verification</td><td>5 min/rx · 1 pharmacist</td></tr>
+                <tr><td>Station 2 — Drug Preparation</td><td>4 min/rx · 2 technicians</td></tr>
+                <tr><td>Station 3 — Quality Check &amp; Packaging</td><td>6 min/rx · 1 pharmacist</td></tr>
+                <tr><td>Demand rate</td><td>14 prescriptions/hr</td></tr>
+                <tr><td>Batch size Q (Part 5)</td><td>12 prescriptions</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- PART 1 — Process Flow Diagram -->
+  <div>
+    <div class="sec-div">Part 1 — Process Flow Diagram · Same for all versions</div>
     <div class="section-card part1" style="margin-top:14px;">
       <div class="section-hd">
         <div class="part-badge">1</div>
         <div class="section-hd-text">
-          <!-- EDIT: Part 1 title from M##_Case.md -->
-          <h2>[Part 1 Title]</h2>
-          <p>Use the data table for your assigned version only</p>
+          <h2>Process Flow Diagram</h2>
+          <p>Same for all versions</p>
         </div>
-        <!-- EDIT: Part 1 point value from M##_Case.md -->
-        <div class="pts-badge">## pts</div>
+        <div class="pts-badge">15 pts</div>
       </div>
       <div class="section-bd">
-        <!-- BUILD: intro paragraph for Part 1 -->
-
-        <div class="ver-tabs">
-          <div class="ver-tab-hd">
-            <button class="ver-tab-btn" onclick="switchTab('p1','a')" id="p1-tab-a"><span class="vb ver-a">A</span> Version A</button>
-            <button class="ver-tab-btn" onclick="switchTab('p1','b')" id="p1-tab-b"><span class="vb ver-b">B</span> Version B</button>
-            <button class="ver-tab-btn" onclick="switchTab('p1','c')" id="p1-tab-c"><span class="vb ver-c">C</span> Version C</button>
-            <button class="ver-tab-btn" onclick="switchTab('p1','d')" id="p1-tab-d"><span class="vb ver-d">D</span> Version D</button>
-          </div>
-          <div class="ver-tab-panel" id="p1-panel-a">
-            <!-- BUILD: Version A data table from M##_Case.md -->
-            <table class="data-table">
-              <thead><tr><!-- BUILD: column headers --></tr></thead>
-              <tbody><!-- BUILD: version A data rows --></tbody>
-            </table>
-          </div>
-          <div class="ver-tab-panel" id="p1-panel-b"><!-- BUILD: Version B data --></div>
-          <div class="ver-tab-panel" id="p1-panel-c"><!-- BUILD: Version C data --></div>
-          <div class="ver-tab-panel" id="p1-panel-d"><!-- BUILD: Version D data --></div>
-        </div>
-
-        <!-- BUILD: Part 1 questions from M##_Case.md -->
         <div class="q-block">
           <div class="q-num">Question 1a</div>
-          <div class="q-text"><!-- BUILD --></div>
-          <span class="q-pts">## pts</span>
+          <div class="q-text">Draw or describe in words a complete process flow diagram for the Riverside center using Chapter 3 conventions. Label all three resources by their station name, mark the flow unit (prescription), show all inventory locations with triangles, and indicate upstream/downstream direction.</div>
+          <span class="q-pts">8 pts</span>
         </div>
         <div class="q-block">
           <div class="q-num">Question 1b</div>
-          <div class="q-text"><!-- BUILD --></div>
-          <span class="q-pts">## pts</span>
+          <div class="q-text">Station 2 in your version has more than one worker. Draw or describe how this is represented in the process flow diagram. What does having multiple workers at Station 2 mean for the capacity formula you will use in Part 2?</div>
+          <span class="q-pts">3 pts</span>
         </div>
         <div class="q-block">
           <div class="q-num">Question 1c</div>
-          <div class="q-text"><!-- BUILD --></div>
-          <span class="q-pts">## pts</span>
+          <div class="q-text">The center currently operates as a worker-paced process. In two sentences: (1) explain what worker-paced means for the physical layout of the center, and (2) explain why this means triangles appear between each station pair.</div>
+          <span class="q-pts">4 pts</span>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- PART 2 — version-specific data, same questions -->
+  <!-- PART 2 — Capacity Analysis -->
   <div>
-    <div class="sec-div">Part 2 — [Part 2 Title] &nbsp;·&nbsp; Version-specific data</div>
+    <div class="sec-div">Part 2 — Capacity Analysis · Version-specific data</div>
     <div class="section-card part2" style="margin-top:14px;">
       <div class="section-hd">
         <div class="part-badge">2</div>
-        <div class="section-hd-text"><h2>[Part 2 Title]</h2><p>Show all calculation steps</p></div>
-        <div class="pts-badge">## pts</div>
+        <div class="section-hd-text">
+          <h2>Capacity Analysis</h2>
+          <p>Version-specific data — use your assigned version's table above</p>
+        </div>
+        <div class="pts-badge">25 pts</div>
       </div>
       <div class="section-bd">
-        <!-- BUILD: intro paragraph -->
-        <div class="ver-tabs">
-          <div class="ver-tab-hd">
-            <button class="ver-tab-btn" onclick="switchTab('p2','a')" id="p2-tab-a"><span class="vb ver-a">A</span> Version A</button>
-            <button class="ver-tab-btn" onclick="switchTab('p2','b')" id="p2-tab-b"><span class="vb ver-b">B</span> Version B</button>
-            <button class="ver-tab-btn" onclick="switchTab('p2','c')" id="p2-tab-c"><span class="vb ver-c">C</span> Version C</button>
-            <button class="ver-tab-btn" onclick="switchTab('p2','d')" id="p2-tab-d"><span class="vb ver-d">D</span> Version D</button>
-          </div>
-          <div class="ver-tab-panel" id="p2-panel-a"><!-- BUILD: Version A data --></div>
-          <div class="ver-tab-panel" id="p2-panel-b"><!-- BUILD: Version B data --></div>
-          <div class="ver-tab-panel" id="p2-panel-c"><!-- BUILD: Version C data --></div>
-          <div class="ver-tab-panel" id="p2-panel-d"><!-- BUILD: Version D data --></div>
+        <div class="q-block">
+          <div class="q-num">Question 2a</div>
+          <div class="q-text">Calculate the capacity of each station in prescriptions per hour. For each station, write the formula Capacity = m ÷ processing time, substitute your version's values, and show the conversion from minutes to hours. <em>(4 pts per station)</em></div>
+          <span class="q-pts">12 pts</span>
         </div>
-        <!-- BUILD: Part 2 questions -->
+        <div class="q-block">
+          <div class="q-num">Question 2b</div>
+          <div class="q-text">Identify the bottleneck and state the process capacity. In one sentence, explain why the bottleneck — not the other stations — determines the process capacity.</div>
+          <span class="q-pts">7 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Question 2c</div>
+          <div class="q-text">Is Station 2 the bottleneck in your version? Why or why not? Note: Station 2 has the longest processing time per worker but also has multiple workers. Show your reasoning explicitly.</div>
+          <span class="q-pts">6 pts</span>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- PART 3 — same for all versions -->
+  <!-- PART 3 — Flow Rate and Classification -->
   <div>
-    <div class="sec-div">Part 3 — [Part 3 Title] &nbsp;·&nbsp; Same for all versions</div>
+    <div class="sec-div">Part 3 — Flow Rate and Classification · Version-specific data</div>
     <div class="section-card part3" style="margin-top:14px;">
       <div class="section-hd">
         <div class="part-badge">3</div>
-        <div class="section-hd-text"><h2>[Part 3 Title]</h2><p><!-- BUILD: subtitle --></p></div>
-        <div class="pts-badge">## pts</div>
+        <div class="section-hd-text">
+          <h2>Flow Rate and Classification</h2>
+          <p>Version-specific data</p>
+        </div>
+        <div class="pts-badge">15 pts</div>
       </div>
       <div class="section-bd">
-        <!-- BUILD: Part 3 intro and questions. If OM decision table, use .om-table structure -->
+        <div class="q-block">
+          <div class="q-num">Question 3a</div>
+          <div class="q-text">Calculate the flow rate of the center given the demand rate in your version. Write the min{demand, process capacity} setup explicitly, substitute your values, and state the flow rate.</div>
+          <span class="q-pts">6 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Question 3b</div>
+          <div class="q-text">Classify the process as capacity-constrained or demand-constrained. In two sentences, explain what this means for the inventory of waiting prescriptions and whether a queue will be visible at the bottleneck station.</div>
+          <span class="q-pts">5 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Question 3c</div>
+          <div class="q-text">Calculate the utilization rate of each station. Which station has the most slack capacity? Express each utilization as a percentage.</div>
+          <span class="q-pts">4 pts</span>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- PART 4 — same for all versions, usually scenario + inhibitors -->
+  <!-- PART 4 — Cycle Time -->
   <div>
-    <div class="sec-div">Part 4 — [Part 4 Title] &nbsp;·&nbsp; Same for all versions</div>
+    <div class="sec-div">Part 4 — Cycle Time · Same for all versions</div>
     <div class="section-card part4" style="margin-top:14px;">
       <div class="section-hd">
         <div class="part-badge">4</div>
-        <div class="section-hd-text"><h2>[Part 4 Title]</h2><p><!-- BUILD: subtitle --></p></div>
-        <div class="pts-badge">## pts</div>
+        <div class="section-hd-text">
+          <h2>Cycle Time</h2>
+          <p>Same for all versions — use your flow rate from Part 3</p>
+        </div>
+        <div class="pts-badge">10 pts</div>
       </div>
       <div class="section-bd">
-        <p style="font-size:13px;font-weight:600;color:var(--gray-700);margin-bottom:10px;">Read the following scenario carefully before answering.</p>
-        <div class="scenario-box">
-          <!-- BUILD: Part 4 scenario text from M##_Case.md — verbatim -->
+        <div class="q-block">
+          <div class="q-num">Question 4a</div>
+          <div class="q-text">Calculate the cycle time of the process in minutes per prescription. Show the formula and unit conversion.</div>
+          <span class="q-pts">4 pts</span>
         </div>
-        <!-- BUILD: Part 4 questions -->
+        <div class="q-block">
+          <div class="q-num">Question 4b</div>
+          <div class="q-text">The operations director asks: "How long until the next prescription is complete?" In plain language (no formulas), explain what the cycle time tells her and what it does NOT tell her. Your answer should distinguish cycle time from flow time. (3–5 sentences)</div>
+          <span class="q-pts">6 pts</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PART 5 — Time to Produce Q Prescriptions -->
+  <div>
+    <div class="sec-div">Part 5 — Time to Produce Q Prescriptions · Version-specific batch size</div>
+    <div class="section-card part5" style="margin-top:14px;">
+      <div class="section-hd">
+        <div class="part-badge">5</div>
+        <div class="section-hd-text">
+          <h2>Time to Produce Q Prescriptions</h2>
+          <p>Version-specific Q — use the batch size from your version's parameter table</p>
+        </div>
+        <div class="pts-badge">20 pts</div>
+      </div>
+      <div class="section-bd">
+        <div class="q-block">
+          <div class="q-num">Question 5a</div>
+          <div class="q-text">The center begins Monday morning with an empty process. Your version's batch of Q prescriptions arrives at shift start. How long will it take to complete all Q prescriptions?<br><br>
+          (1) Calculate the processing time through the empty system — the sum of all three station processing times using your version's data.<br>
+          (2) Apply the empty-system formula: Time = T<sub>empty</sub> + (Q &minus; 1) &times; cycle time.<br><br>
+          Show each step and express your final answer in minutes.</div>
+          <span class="q-pts">12 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Question 5b</div>
+          <div class="q-text">Later in the same day, the center is fully running (non-empty). Another Q prescriptions arrive. How long will this batch take? Apply the non-empty formula, show your work, and express the answer in minutes. Then in one sentence, explain why the two answers differ.</div>
+          <span class="q-pts">8 pts</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PART 6 — Recommendation -->
+  <div>
+    <div class="sec-div">Part 6 — Recommendation · Version-specific</div>
+    <div class="section-card part6" style="margin-top:14px;">
+      <div class="section-hd">
+        <div class="part-badge">6</div>
+        <div class="section-hd-text">
+          <h2>Recommendation</h2>
+          <p>Version-specific — requires your results from Parts 2 and 3</p>
+        </div>
+        <div class="pts-badge">15 pts</div>
+      </div>
+      <div class="section-bd">
+        <div class="q-block">
+          <div class="q-num">Question 6a</div>
+          <div class="q-text">The operations director expects patient volume to grow by 25%, increasing the demand rate to 125% of its current value. Calculate the new demand rate. Then calculate the new flow rate. Will the center remain demand-constrained, or will it become capacity-constrained after demand grows? Show your min{} setup.</div>
+          <span class="q-pts">6 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Question 6b</div>
+          <div class="q-text">If the center becomes capacity-constrained after demand grows, identify the most cost-effective point to add one worker. Calculate the new capacity of that station after adding one worker, and the new process capacity. If the bottleneck shifts, identify the new bottleneck as well.</div>
+          <span class="q-pts">6 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Question 6c</div>
+          <div class="q-text">A colleague argues: "We should upgrade the prescription scanning software at Station 1 — it would cut Station 1's processing time in half." Using the Cougar Mountain principle from Chapter 3, evaluate this recommendation. Is Station 1 the bottleneck in your version before or after demand growth? Does upgrading Station 1 help process capacity?</div>
+          <span class="q-pts">3 pts</span>
+        </div>
       </div>
     </div>
   </div>
@@ -278,7 +417,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
         <div class="submit-list">
           <div class="submit-item">Your file is saved as <strong>PDF or Word (.docx)</strong>.</div>
           <div class="submit-item">Your <strong>assigned version (A, B, C, or D)</strong> is written at the top of your document.</div>
-          <!-- BUILD: Part-specific checklist items from M##_Case.md -->
+          <div class="submit-item">Part 2 shows the capacity formula with <strong>all three values substituted</strong> (m, processing time, 60 min/hr).</div>
+          <div class="submit-item">Part 3a shows the <strong>min{demand, process capacity} setup explicitly</strong> before stating the flow rate.</div>
+          <div class="submit-item">Part 5a shows the <strong>empty-system processing time</strong> as a sum of station times before applying the formula.</div>
+          <div class="submit-item">Part 5b includes <strong>one comparison sentence</strong> explaining why the empty-system time differs from the non-empty time.</div>
+          <div class="submit-item">Part 6c explicitly identifies <strong>whether Station 1 is the bottleneck</strong> in your version.</div>
         </div>
       </div>
     </div>
@@ -292,11 +435,22 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
     <table class="grade-table">
       <thead><tr><th>Part</th><th>Content</th><th style="text-align:right;">Points</th><th>Primary LO</th></tr></thead>
       <tbody>
-        <!-- BUILD: rows from M##_Case.md GRADING SUMMARY section -->
-        <tr><td><strong>Part 1</strong></td><td><!-- BUILD --></td><td class="pts-right">##</td><td>LO#-#</td></tr>
-        <tr><td><strong>Part 2</strong></td><td><!-- BUILD --></td><td class="pts-right">##</td><td>LO#-#</td></tr>
-        <tr><td><strong>Part 3</strong></td><td><!-- BUILD --></td><td class="pts-right">##</td><td>LO#-#</td></tr>
-        <tr><td><strong>Part 4</strong></td><td><!-- BUILD --></td><td class="pts-right">##</td><td>LO#-#</td></tr>
+        <tr><td><strong>Part 1a</strong></td><td>Process flow diagram — resources, inventory, flow unit</td><td class="pts-right">8</td><td>LO3-1</td></tr>
+        <tr><td><strong>Part 1b</strong></td><td>Multi-worker representation + capacity formula implication</td><td class="pts-right">3</td><td>LO3-1 / LO3-2</td></tr>
+        <tr><td><strong>Part 1c</strong></td><td>Worker-paced explanation + triangle justification</td><td class="pts-right">4</td><td>LO3-1</td></tr>
+        <tr><td><strong>Part 2a</strong></td><td>Capacity calculation — all 3 stations with formula</td><td class="pts-right">12</td><td>LO3-2</td></tr>
+        <tr><td><strong>Part 2b</strong></td><td>Bottleneck + process capacity + 1-sentence explanation</td><td class="pts-right">7</td><td>LO3-4</td></tr>
+        <tr><td><strong>Part 2c</strong></td><td>Station 2 bottleneck analysis</td><td class="pts-right">6</td><td>LO3-2 / LO3-4</td></tr>
+        <tr><td><strong>Part 3a</strong></td><td>Flow rate with min{} setup</td><td class="pts-right">6</td><td>LO3-3</td></tr>
+        <tr><td><strong>Part 3b</strong></td><td>Constraint classification + queue implication</td><td class="pts-right">5</td><td>LO3-3</td></tr>
+        <tr><td><strong>Part 3c</strong></td><td>Utilizations per station</td><td class="pts-right">4</td><td>LO3-4</td></tr>
+        <tr><td><strong>Part 4a</strong></td><td>Cycle time calculation</td><td class="pts-right">4</td><td>LO3-4</td></tr>
+        <tr><td><strong>Part 4b</strong></td><td>Cycle time vs. flow time distinction</td><td class="pts-right">6</td><td>LO3-4</td></tr>
+        <tr><td><strong>Part 5a</strong></td><td>Empty-system time — T_empty + formula</td><td class="pts-right">12</td><td>LO3-5</td></tr>
+        <tr><td><strong>Part 5b</strong></td><td>Non-empty time + comparison sentence</td><td class="pts-right">8</td><td>LO3-5</td></tr>
+        <tr><td><strong>Part 6a</strong></td><td>Demand growth &#8594; new flow rate + classification</td><td class="pts-right">6</td><td>LO3-3 / LO3-6</td></tr>
+        <tr><td><strong>Part 6b</strong></td><td>Add-a-worker analysis + new bottleneck</td><td class="pts-right">6</td><td>LO3-4 / LO3-6</td></tr>
+        <tr><td><strong>Part 6c</strong></td><td>Cougar Mountain principle applied</td><td class="pts-right">3</td><td>LO3-6</td></tr>
         <tr class="total"><td colspan="2"><strong>Total</strong></td><td class="pts-right">100</td><td></td></tr>
       </tbody>
     </table>
@@ -306,9 +460,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
 
 <script>
 function switchTab(part, ver) {
-  ['a','b','c','d'].forEach(v => {
-    const btn   = document.getElementById(part + '-tab-' + v);
-    const panel = document.getElementById(part + '-panel-' + v);
+  ['a','b','c','d'].forEach(function(v) {
+    var btn   = document.getElementById(part + '-tab-' + v);
+    var panel = document.getElementById(part + '-panel-' + v);
     if (btn)   btn.classList.toggle('active', v === ver);
     if (panel) panel.classList.toggle('active', v === ver);
   });

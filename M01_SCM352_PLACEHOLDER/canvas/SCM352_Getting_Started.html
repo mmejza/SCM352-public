@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Getting Started — SCM 352</title>
+<style>
+:root {
+  --navy:      #1a3a5c;
+  --blue:      #2563a8;
+  --blue-lt:   #dbeafe;
+  --blue-xlt:  #eff6ff;
+  --gold:      #f59e0b;
+  --gold-lt:   #fffbeb;
+  --gold-bdr:  #fde68a;
+  --green:     #16a34a;
+  --green-lt:  #f0fdf4;
+  --green-bdr: #bbf7d0;
+  --red:       #dc2626;
+  --red-lt:    #fef2f2;
+  --red-bdr:   #fecaca;
+  --amber:     #d97706;
+  --amber-lt:  #fffbeb;
+  --amber-bdr: #fde68a;
+  --gray-50:   #f9fafb;
+  --gray-100:  #f3f4f6;
+  --gray-200:  #e5e7eb;
+  --gray-400:  #9ca3af;
+  --gray-600:  #4b5563;
+  --gray-700:  #374151;
+  --gray-800:  #1f2937;
+}
+
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--gray-50);color:var(--gray-800);line-height:1.65;font-size:14px;}
+
+/* ── HERO ──────────────────────────────────────── */
+.hero{background:var(--navy);color:white;padding:40px 32px 36px;}
+.hero-eyebrow{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;}
+.hero h1{font-size:28px;font-weight:700;letter-spacing:-.02em;line-height:1.2;margin-bottom:12px;}
+.hero-sub{font-size:14px;color:rgba(255,255,255,.72);line-height:1.6;max-width:680px;}
+
+/* ── META STRIP ─────────────────────────────────── */
+.meta-strip{display:flex;gap:0;border-bottom:2px solid var(--gray-200);overflow-x:auto;background:white;flex-wrap:wrap;}
+.meta-item{padding:12px 22px;border-right:1px solid var(--gray-200);flex-shrink:0;}
+.meta-item:last-child{border-right:none;}
+.meta-label{font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--gray-400);margin-bottom:3px;}
+.meta-value{font-size:13px;font-weight:700;color:var(--navy);}
+
+/* ── BODY ───────────────────────────────────────── */
+.pg-body{max-width:900px;margin:0 auto;padding:36px 24px 72px;display:flex;flex-direction:column;gap:40px;}
+.section-heading{font-size:16px;font-weight:700;color:var(--navy);padding-bottom:12px;border-bottom:2px solid var(--blue-lt);margin-bottom:20px;}
+
+/* ── CALLOUT BOXES ──────────────────────────────── */
+.callout-blue{background:var(--blue-xlt);border:1.5px solid var(--blue-lt);border-left:4px solid var(--blue);border-radius:0 10px 10px 0;padding:14px 18px;font-size:13.5px;color:var(--gray-700);line-height:1.65;}
+.callout-blue strong{color:var(--navy);}
+.callout-gold{background:var(--gold-lt);border:1.5px solid var(--gold-bdr);border-left:4px solid var(--gold);border-radius:0 10px 10px 0;padding:14px 18px;font-size:13.5px;color:var(--gray-700);line-height:1.65;}
+.callout-gold strong{color:var(--navy);}
+.callout-green{background:var(--green-lt);border:1.5px solid var(--green-bdr);border-left:4px solid var(--green);border-radius:0 10px 10px 0;padding:14px 18px;font-size:13.5px;color:var(--gray-700);line-height:1.65;}
+.callout-green strong{color:var(--green);}
+
+/* ── STEP CARDS ─────────────────────────────────── */
+.steps-list{display:flex;flex-direction:column;gap:12px;}
+.step-card{background:white;border:1px solid var(--gray-200);border-radius:12px;padding:18px 20px;display:flex;gap:16px;align-items:flex-start;}
+.step-num{width:34px;height:34px;border-radius:50%;background:var(--navy);color:white;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;flex-shrink:0;font-family:Georgia,serif;margin-top:1px;}
+.step-body{flex:1;}
+.step-title{font-size:15px;font-weight:700;color:var(--navy);margin-bottom:5px;}
+.step-desc{font-size:13px;color:var(--gray-600);line-height:1.65;}
+.step-desc strong{color:var(--gray-800);}
+.step-card.step-done .step-num{background:var(--green);}
+.step-card.step-warn .step-num{background:var(--gold);}
+.step-tag{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:2px 8px;border-radius:100px;margin-top:8px;}
+.tag-gate{background:var(--gold-lt);color:var(--amber);border:1px solid var(--gold-bdr);}
+.tag-action{background:var(--blue-xlt);color:var(--blue);border:1px solid var(--blue-lt);}
+.tag-deadline{background:var(--red-lt);color:var(--red);border:1px solid var(--red-bdr);}
+
+/* ── MODULE ANATOMY ─────────────────────────────── */
+.anatomy-wrap{background:white;border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;}
+.anatomy-row{display:flex;align-items:center;gap:12px;padding:11px 16px;border-bottom:1px solid var(--gray-100);}
+.anatomy-row:last-child{border-bottom:none;}
+.anatomy-num{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0;color:white;}
+.anum-open{background:var(--navy);}
+.anum-gate{background:var(--gold);}
+.anum-locked{background:var(--gray-400);}
+.anum-green{background:var(--green);}
+.anatomy-item{flex:1;font-size:13px;font-weight:600;color:var(--navy);}
+.anatomy-sub{font-size:11.5px;color:var(--gray-400);font-weight:400;}
+.anatomy-status{font-size:10px;font-weight:700;padding:2px 8px;border-radius:100px;white-space:nowrap;flex-shrink:0;}
+.status-open{background:var(--green-lt);color:var(--green);border:1px solid var(--green-bdr);}
+.status-gate{background:var(--gold-lt);color:var(--amber);border:1px solid var(--gold-bdr);}
+.status-locked{background:var(--gray-100);color:var(--gray-400);border:1px solid var(--gray-200);}
+.anatomy-divider{background:var(--blue-xlt);padding:7px 16px;font-size:10.5px;font-weight:700;color:var(--navy);letter-spacing:.06em;text-transform:uppercase;border-bottom:1px solid var(--blue-lt);}
+
+/* ── 5-DAY TIMELINE ─────────────────────────────── */
+.timeline{display:flex;gap:0;border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;background:white;}
+.tday{flex:1;padding:14px 12px;border-right:1px solid var(--gray-200);display:flex;flex-direction:column;gap:4px;min-width:0;}
+.tday:last-child{border-right:none;}
+.tday-num{font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--gray-400);margin-bottom:2px;}
+.tday-action{font-size:12px;font-weight:700;color:var(--navy);line-height:1.3;}
+.tday-note{font-size:11px;color:var(--gray-400);line-height:1.4;}
+.tday.td-gate{border-top:3px solid var(--gold);}
+.tday.td-post{border-top:3px solid var(--blue);}
+.tday.td-buf{border-top:3px solid var(--gray-200);}
+.tday.td-close{border-top:3px solid var(--green);}
+.tday.td-open{border-top:3px solid var(--navy);}
+.tday .due-pill{display:inline-block;font-size:10px;font-weight:700;padding:1px 6px;border-radius:100px;margin-top:4px;width:fit-content;}
+.pill-gate{background:var(--gold-lt);color:var(--amber);}
+.pill-post{background:var(--blue-xlt);color:var(--blue);}
+.pill-close{background:var(--green-lt);color:var(--green);}
+
+/* ── FIRST WEEK TABLE ───────────────────────────── */
+.fw-wrap{border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;background:white;}
+.fw-table{width:100%;border-collapse:collapse;font-size:13px;}
+.fw-table th{background:var(--navy);color:white;padding:9px 14px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;}
+.fw-table td{padding:10px 14px;border-bottom:1px solid var(--gray-100);vertical-align:top;}
+.fw-table tr:last-child td{border-bottom:none;}
+.fw-mod{font-weight:800;color:var(--navy);}
+.fw-date{font-size:12px;color:var(--gray-600);white-space:nowrap;}
+.fw-close{font-size:12px;font-weight:700;color:var(--navy);white-space:nowrap;}
+.fw-note{font-size:11.5px;color:var(--gray-400);margin-top:3px;}
+.overlap-pill{display:inline-block;font-size:10px;font-weight:700;color:var(--amber);background:var(--amber-lt);border:1px solid var(--amber-bdr);padding:1px 6px;border-radius:100px;white-space:nowrap;}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">SCM 352 · Summer 2026 · Onboarding</div>
+  <h1>Getting Started</h1>
+  <p class="hero-sub">Five things to do before Day 1 closes. The course opens Monday June 8 — you have until Friday June 12 at 11:59 PM to complete M01. Start with Step 1 now.</p>
+</div>
+
+<!-- META STRIP -->
+<div class="meta-strip">
+  <div class="meta-item"><div class="meta-label">M01 opens</div><div class="meta-value">Mon Jun 8</div></div>
+  <div class="meta-item"><div class="meta-label">M01 closes</div><div class="meta-value">Fri Jun 12 · 11:59 PM</div></div>
+  <div class="meta-item"><div class="meta-label">Gate 1 due</div><div class="meta-value">Tue Jun 9 · 11:59 PM</div></div>
+  <div class="meta-item"><div class="meta-label">Textbook</div><div class="meta-value">Cachon &amp; Terwiesch — Operations Management</div></div>
+</div>
+
+<div class="pg-body">
+
+  <!-- STEPS -->
+  <div>
+    <div class="section-heading">Your First Five Steps</div>
+    <div class="steps-list">
+
+      <div class="step-card">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title">Get the textbook open before anything else</div>
+          <div class="step-desc">This course uses <strong>Cachon &amp; Terwiesch, Operations Management</strong>. Every Gate 1 quiz is drawn exclusively from the chapter text — slides and lecture videos are not a substitute. Have the book (print or digital) accessible before you open Canvas. If you do not yet have access, email your instructor immediately — Gate 1 cannot be completed without reading the chapter first.</div>
+          <span class="step-tag tag-action">Do this first</span>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title">Open Canvas → Modules → find M01</div>
+          <div class="step-desc">Navigate to <strong>Modules</strong> in the left sidebar. M01 is the first module. Click <strong>M01 — Module Overview</strong> to see the full item list for this module. Read through it — you will see which items are unlocked immediately and which are locked behind Gate 1. This page is your control panel for the module.</div>
+          <span class="step-tag tag-action">Canvas Modules → M01</span>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-title">Read Chapter 1 before taking Gate 1</div>
+          <div class="step-desc"><strong>Gate 1 is chapter-exclusive.</strong> All five questions test content that appears only in the chapter — not in lecture slides or video. The questions target specific numbers, definitions, and examples that skimmable readers typically miss. Budget 60–90 minutes for a thorough first read. Reading after attempting Gate 1 is an expensive way to use your second attempt.</div>
+          <span class="step-tag tag-gate">Read first, then quiz</span>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <div class="step-title">Take Gate 1 — score 80% to unlock everything</div>
+          <div class="step-desc">Gate 1 is a <strong>5-question multiple-choice quiz worth 0 points</strong>. You need to score 4 of 5 (80%) to unlock the lecture slides, video, interactive apps, discussion, Gate 2, and Case Analysis. You have two attempts; if you score below 80% on Attempt 1, a second attempt unlocks after a 24-hour waiting period. Gate 1 is <strong>due Day 2 at 11:59 PM</strong> — for M01 that is Tuesday Jun 9. Waiting until Day 2 to start reading puts your second attempt at risk.</div>
+          <span class="step-tag tag-gate">Due Tue Jun 9 · 11:59 PM</span>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-num">5</div>
+        <div class="step-body">
+          <div class="step-title">Note your M01 close date and open the Course Roadmap</div>
+          <div class="step-desc">Everything in M01 — Gate 2, Case Analysis, and your discussion reply — closes on <strong>Friday Jun 12 at 11:59 PM</strong>. That is Day 5. Open the <strong>Course Roadmap &amp; Key Dates</strong> page (in the Course Information module) and scan the full schedule. M02 opens Wednesday Jun 10 and M03 opens Friday Jun 12 — three modules will be open simultaneously by the end of Week 1. Set calendar reminders now.</div>
+          <span class="step-tag tag-deadline">M01 closes Fri Jun 12 · 11:59 PM</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- THE 5-DAY PATTERN -->
+  <div>
+    <div class="section-heading">The 5-Day Module Pattern</div>
+    <div class="callout-blue" style="margin-bottom:16px;">
+      Every module runs on the same structure. The deadlines below are relative — <strong>Day 1</strong> is the date the module opens in Canvas, which differs for each module. All deadlines are at <strong>11:59 PM</strong> on the listed day.
+    </div>
+    <div class="timeline">
+      <div class="tday td-open">
+        <div class="tday-num">Day 1</div>
+        <div class="tday-action">Module opens</div>
+        <div class="tday-note">Read the chapter. Start Gate 1 when ready. Gate 1 is open the moment the module unlocks.</div>
+      </div>
+      <div class="tday td-gate">
+        <div class="tday-num">Day 2</div>
+        <div class="tday-action">Gate 1 due</div>
+        <div class="tday-note">Score 80% to unlock all content. Miss this and you lose a full day on your second attempt.</div>
+        <span class="due-pill pill-gate">Gate 1 · 11:59 PM</span>
+      </div>
+      <div class="tday td-post">
+        <div class="tday-num">Day 3</div>
+        <div class="tday-action">Discussion post due</div>
+        <div class="tday-note">Initial post due. Submitting your post also unlocks Gate 2. Do not wait until Day 5.</div>
+        <span class="due-pill pill-post">Initial post · 11:59 PM</span>
+      </div>
+      <div class="tday td-buf">
+        <div class="tday-num">Day 4</div>
+        <div class="tday-action">Working buffer</div>
+        <div class="tday-note">No deadline. Use the time for Gate 2 prep, the Case Analysis, and reading peers' discussion posts.</div>
+      </div>
+      <div class="tday td-close">
+        <div class="tday-num">Day 5</div>
+        <div class="tday-action">Everything closes</div>
+        <div class="tday-note">Gate 2, Case Analysis, and discussion reply all share this one deadline. Nothing reopens after close.</div>
+        <span class="due-pill pill-close">Gate 2 · Case · Reply · 11:59 PM</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODULE ANATOMY -->
+  <div>
+    <div class="section-heading">What Is Inside Each Module</div>
+    <p style="font-size:13px;color:var(--gray-600);line-height:1.65;margin-bottom:16px;">Each module contains the same set of items in the same order. Items 1–3 are available immediately when the module opens. Items 4–9 unlock automatically once you pass Gate 1.</p>
+
+    <div class="anatomy-wrap">
+      <div class="anatomy-divider">Always unlocked when the module opens</div>
+
+      <div class="anatomy-row">
+        <div class="anatomy-num anum-open">1</div>
+        <div class="anatomy-item">Module Overview <span class="anatomy-sub">— canvas setup instructions, item list, grading summary</span></div>
+        <span class="anatomy-status status-open">Open</span>
+      </div>
+      <div class="anatomy-row">
+        <div class="anatomy-num anum-open">2</div>
+        <div class="anatomy-item">Chapter Slides <span class="anatomy-sub">— slide deck aligned to textbook chapter</span></div>
+        <span class="anatomy-status status-open">Open</span>
+      </div>
+      <div class="anatomy-row">
+        <div class="anatomy-num anum-gate">3</div>
+        <div class="anatomy-item">Gate 1 Quiz <span class="anatomy-sub">— 5 questions, chapter-only, 80% to pass, 0 pts</span></div>
+        <span class="anatomy-status status-gate">Access control</span>
+      </div>
+
+      <div class="anatomy-divider">Unlocks automatically after passing Gate 1</div>
+
+      <div class="anatomy-row">
+        <div class="anatomy-num anum-locked">4</div>
+        <div class="anatomy-item">Lecture Video <span class="anatomy-sub">— instructor walkthrough of key analytical frameworks</span></div>
+        <span class="anatomy-status status-locked">After Gate 1</span>
+      </div>
+      <div class="anatomy-row">
+        <div class="anatomy-num anum-locked">5</div>
+        <div class="anatomy-item">Interactive Apps <span class="anatomy-sub">— browser-based practice tools for quantitative methods</span></div>
+        <span class="anatomy-status status-locked">After Gate 1</span>
+      </div>
+      <div class="anatomy-row">
+        <div class="anatomy-num anum-locked">6</div>
+        <div class="anatomy-item">Case Assignment <span class="anatomy-sub">— parameterized case; your version is assigned by student ID</span></div>
+        <span class="anatomy-status status-locked">After Gate 1</span>
+      </div>
+      <div class="anatomy-row">
+        <div class="anatomy-num anum-locked">7</div>
+        <div class="anatomy-item">Gate 2 Instructions <span class="anatomy-sub">— quiz format, version table, what to expect</span></div>
+        <span class="anatomy-status status-locked">After Gate 1</span>
+      </div>
+      <div class="anatomy-row">
+        <div class="anatomy-num anum-locked">8</div>
+        <div class="anatomy-item">Discussion <span class="anatomy-sub">— initial post (20 pts) + reply to any post (30 pts)</span></div>
+        <span class="anatomy-status status-locked">After Gate 1</span>
+      </div>
+      <div class="anatomy-row">
+        <div class="anatomy-num anum-green">9</div>
+        <div class="anatomy-item">Gate 2 Quiz <span class="anatomy-sub">— 8 questions, 90 min, 1 attempt, 100 pts; unlocks after discussion post is submitted</span></div>
+        <span class="anatomy-status status-locked">After post</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- FIRST WEEK -->
+  <div>
+    <div class="section-heading">Your First Week at a Glance</div>
+    <div class="callout-gold" style="margin-bottom:16px;">
+      Three modules open during Week 1. They are independent — each has its own 5-day window and its own deadlines. Working through M01 early gives you time to start M02 before M01 closes.
+    </div>
+
+    <div class="fw-wrap">
+      <table class="fw-table">
+        <thead>
+          <tr>
+            <th>Module</th>
+            <th>Topic</th>
+            <th>Opens</th>
+            <th>Gate 1 Due</th>
+            <th>Post Due</th>
+            <th>Closes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="fw-mod">M01</td>
+            <td>Introduction to Operations Management <div class="fw-note">Ch. 01 — Customer utility, efficient frontier, system inhibitors</div></td>
+            <td class="fw-date">Mon Jun 8</td>
+            <td class="fw-date">Tue Jun 9</td>
+            <td class="fw-date">Wed Jun 10</td>
+            <td class="fw-close">Fri Jun 12</td>
+          </tr>
+          <tr>
+            <td class="fw-mod">M02</td>
+            <td>Process Measurement <div class="fw-note">Ch. 02 — Little's Law, inventory, flow rate, flow time</div></td>
+            <td class="fw-date">Wed Jun 10 <div style="margin-top:3px;"><span class="overlap-pill">opens while M01 is active</span></div></td>
+            <td class="fw-date">Thu Jun 11</td>
+            <td class="fw-date">Fri Jun 12</td>
+            <td class="fw-close">Sun Jun 14</td>
+          </tr>
+          <tr>
+            <td class="fw-mod">M03</td>
+            <td>Process Analysis <div class="fw-note">Ch. 03 — Bottlenecks, process capacity, time-to-Q</div></td>
+            <td class="fw-date">Fri Jun 12 <div style="margin-top:3px;"><span class="overlap-pill">opens while M01 &amp; M02 active</span></div></td>
+            <td class="fw-date">Sat Jun 13</td>
+            <td class="fw-date">Sun Jun 14</td>
+            <td class="fw-close">Tue Jun 16</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- SUPPORT -->
+  <div>
+    <div class="section-heading">Questions and Support</div>
+    <div class="callout-green">
+      <strong>Check the FAQ page first.</strong> It covers the most common questions about Gate 1 failures, case versions, discussion mechanics, and grade calculations. If your question is not answered there, email your instructor directly — include your student ID and the module number in the subject line. Do not wait until a deadline to report a technical issue with Canvas access.
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

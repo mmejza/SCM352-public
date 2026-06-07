@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Course Roadmap &amp; Key Dates — SCM 352</title>
+<style>
+:root {
+  --navy:      #1a3a5c;
+  --blue:      #2563a8;
+  --blue-lt:   #dbeafe;
+  --blue-xlt:  #eff6ff;
+  --gold:      #f59e0b;
+  --gold-lt:   #fffbeb;
+  --gold-bdr:  #fde68a;
+  --green:     #16a34a;
+  --green-lt:  #f0fdf4;
+  --green-bdr: #bbf7d0;
+  --red:       #dc2626;
+  --red-lt:    #fef2f2;
+  --red-bdr:   #fecaca;
+  --amber:     #d97706;
+  --amber-lt:  #fffbeb;
+  --amber-bdr: #fde68a;
+  --gray-50:   #f9fafb;
+  --gray-100:  #f3f4f6;
+  --gray-200:  #e5e7eb;
+  --gray-400:  #9ca3af;
+  --gray-600:  #4b5563;
+  --gray-700:  #374151;
+  --gray-800:  #1f2937;
+}
+
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--gray-50);color:var(--gray-800);line-height:1.65;font-size:14px;}
+
+/* ── HERO ──────────────────────────────────────── */
+.hero{background:var(--navy);color:white;padding:40px 32px 36px;}
+.hero-eyebrow{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;}
+.hero h1{font-size:28px;font-weight:700;letter-spacing:-.02em;line-height:1.2;margin-bottom:12px;}
+.hero-sub{font-size:14px;color:rgba(255,255,255,.72);line-height:1.6;max-width:680px;}
+
+/* ── META STRIP ─────────────────────────────────── */
+.meta-strip{display:flex;gap:0;border-bottom:2px solid var(--gray-200);overflow-x:auto;background:white;flex-wrap:wrap;}
+.meta-item{padding:12px 22px;border-right:1px solid var(--gray-200);flex-shrink:0;}
+.meta-item:last-child{border-right:none;}
+.meta-label{font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--gray-400);margin-bottom:3px;}
+.meta-value{font-size:13px;font-weight:700;color:var(--navy);}
+
+/* ── BODY ───────────────────────────────────────── */
+.pg-body{max-width:1060px;margin:0 auto;padding:36px 24px 72px;display:flex;flex-direction:column;gap:40px;}
+.section-heading{font-size:16px;font-weight:700;color:var(--navy);padding-bottom:12px;border-bottom:2px solid var(--blue-lt);margin-bottom:16px;}
+
+/* ── CALLOUT BOXES ──────────────────────────────── */
+.pacing-box{background:var(--blue-xlt);border:1.5px solid var(--blue-lt);border-left:4px solid var(--blue);border-radius:0 10px 10px 0;padding:14px 18px;font-size:13.5px;color:var(--gray-700);line-height:1.65;}
+.pacing-box strong{color:var(--navy);}
+.alert-red{background:var(--red-lt);border:1.5px solid var(--red-bdr);border-left:4px solid var(--red);border-radius:0 10px 10px 0;padding:14px 18px;font-size:13.5px;color:var(--gray-700);line-height:1.65;}
+.alert-red strong{color:var(--red);}
+
+/* ── KEY DATES CARDS ────────────────────────────── */
+.kd-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;}
+.kd-card{background:white;border:1px solid var(--gray-200);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:3px;}
+.kd-card.kd-green{border-color:var(--green-bdr);background:var(--green-lt);}
+.kd-card.kd-red{border-color:var(--red-bdr);background:var(--red-lt);}
+.kd-card.kd-gold{border-color:var(--gold-bdr);background:var(--gold-lt);}
+.kd-icon{font-size:16px;margin-bottom:4px;}
+.kd-date{font-size:16px;font-weight:800;color:var(--navy);line-height:1.2;}
+.kd-card.kd-green .kd-date{color:var(--green);}
+.kd-card.kd-red   .kd-date{color:var(--red);}
+.kd-card.kd-gold  .kd-date{color:var(--amber);}
+.kd-label{font-size:12.5px;font-weight:600;color:var(--gray-700);}
+.kd-note{font-size:11px;color:var(--gray-400);margin-top:2px;}
+
+/* ── WEEK BLOCKS ────────────────────────────────── */
+.weeks-stack{display:flex;flex-direction:column;gap:14px;}
+.week-block{background:white;border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;}
+.week-hd{background:var(--navy);color:white;padding:11px 16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.week-label{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);}
+.week-dates-text{font-size:13px;font-weight:700;flex:1;}
+.week-count{font-size:11px;color:rgba(255,255,255,.55);}
+.week-part-tag{font-size:10px;font-weight:700;color:var(--gold);background:rgba(245,158,11,.18);padding:2px 8px;border-radius:100px;white-space:nowrap;}
+
+.mod-row{display:flex;align-items:center;gap:10px;padding:11px 16px;border-bottom:1px solid var(--gray-100);flex-wrap:wrap;}
+.mod-row:last-child{border-bottom:none;}
+.mod-chip{display:inline-flex;align-items:center;justify-content:center;background:var(--navy);color:white;font-size:11px;font-weight:800;letter-spacing:.04em;padding:3px 9px;border-radius:5px;flex-shrink:0;min-width:38px;}
+.ch-tag{font-size:11px;font-weight:600;color:var(--gray-400);flex-shrink:0;width:38px;}
+.mod-title-sm{font-size:13px;font-weight:600;color:var(--navy);flex:1;min-width:180px;}
+.date-range{display:flex;align-items:center;gap:5px;flex-shrink:0;}
+.dopen{font-size:12px;color:var(--green);font-weight:600;white-space:nowrap;}
+.darr{font-size:11px;color:var(--gray-400);}
+.dclose{font-size:12px;font-weight:700;color:var(--gray-700);white-space:nowrap;}
+.win-pill{font-size:10px;font-weight:700;color:var(--gray-400);background:var(--gray-100);padding:2px 7px;border-radius:100px;flex-shrink:0;white-space:nowrap;}
+.hol-pill{font-size:10px;font-weight:700;color:var(--red);background:var(--red-lt);border:1px solid var(--red-bdr);padding:2px 7px;border-radius:100px;flex-shrink:0;white-space:nowrap;}
+
+/* ── DEADLINE TABLE ─────────────────────────────── */
+.dt-wrap{border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;background:white;}
+.dt{width:100%;border-collapse:collapse;font-size:12.5px;}
+.dt th{background:var(--navy);color:white;padding:10px 14px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;white-space:nowrap;}
+.dt td{padding:9px 14px;border-bottom:1px solid var(--gray-100);vertical-align:middle;}
+.dt tr:last-child td{border-bottom:none;}
+.dt tr.part-sep td{background:var(--blue-xlt);font-size:10px;font-weight:800;color:var(--navy);text-transform:uppercase;letter-spacing:.07em;padding:5px 14px;}
+.dt tr.hol-row td{background:var(--red-lt);}
+.dt .mn{font-weight:800;color:var(--navy);white-space:nowrap;}
+.dt .dc{white-space:nowrap;font-size:12px;}
+.dt .dc-close{white-space:nowrap;font-size:12px;font-weight:700;color:var(--navy);}
+.dt .dc-hol{white-space:nowrap;font-size:12px;font-weight:700;color:var(--red);}
+.dt .dc-short{white-space:nowrap;font-size:12px;font-weight:700;color:var(--amber);}
+.dt .pts{text-align:right;font-weight:700;color:var(--navy);}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">SCM 352 · Summer 2026 · Course Roadmap</div>
+  <h1>Schedule &amp; Key Dates</h1>
+  <p class="hero-sub">Thirteen modules, five weeks, one rolling deadline per module. Every module follows the same five-day structure. Use this page to plan ahead — all close deadlines are firm at 11:59 PM on the listed date.</p>
+</div>
+
+<!-- META STRIP -->
+<div class="meta-strip">
+  <div class="meta-item"><div class="meta-label">Course opens</div><div class="meta-value">Mon Jun 8</div></div>
+  <div class="meta-item"><div class="meta-label">Course closes</div><div class="meta-value">Fri Jul 10</div></div>
+  <div class="meta-item"><div class="meta-label">Total modules</div><div class="meta-value">13</div></div>
+  <div class="meta-item"><div class="meta-label">Module window</div><div class="meta-value">5-day rolling</div></div>
+  <div class="meta-item"><div class="meta-label">Points per module</div><div class="meta-value">250 pts</div></div>
+  <div class="meta-item"><div class="meta-label">Course total</div><div class="meta-value">3,250 pts</div></div>
+</div>
+
+<div class="pg-body">
+
+  <!-- HOW IT WORKS -->
+  <div>
+    <div class="section-heading">How This Schedule Works</div>
+    <div class="pacing-box">
+      Each module has its own <strong>5-day open window</strong> — modules open on a rolling basis and do not all close at the same time. Within each module: <strong>Day 1</strong> = module opens, read the chapter; <strong>Day 2</strong> = Gate 1 due at 11:59 PM (unlocks all content); <strong>Day 3</strong> = initial discussion post due at 11:59 PM; <strong>Day 5</strong> = everything closes at 11:59 PM — Gate 2, Case Analysis, and discussion reply all share the same final deadline. Because modules stagger, two or three will be open at the same time during most weeks. Work ahead when you can.
+    </div>
+  </div>
+
+  <!-- KEY DATES -->
+  <div>
+    <div class="section-heading">Key Dates at a Glance</div>
+    <div class="kd-grid">
+
+      <div class="kd-card kd-green">
+        <div class="kd-icon">▶</div>
+        <div class="kd-date">Mon Jun 8</div>
+        <div class="kd-label">Course opens · M01 unlocks</div>
+        <div class="kd-note">First Gate 1 due Tue Jun 9</div>
+      </div>
+
+      <div class="kd-card">
+        <div class="kd-icon">◆</div>
+        <div class="kd-date">Fri Jun 19</div>
+        <div class="kd-label">M06 opens · Part 2 begins</div>
+        <div class="kd-note">Lean, Quality &amp; Inventory</div>
+      </div>
+
+      <div class="kd-card">
+        <div class="kd-icon">◆</div>
+        <div class="kd-date">Sat Jul 5</div>
+        <div class="kd-label">M11 opens · Part 3 begins</div>
+        <div class="kd-note">Forecasting, Scheduling &amp; Projects</div>
+      </div>
+
+      <div class="kd-card kd-red">
+        <div class="kd-icon">⚑</div>
+        <div class="kd-date">Sat Jul 4</div>
+        <div class="kd-label">M09 closes — Independence Day</div>
+        <div class="kd-note">Plan ahead; deadline is firm at 11:59 PM</div>
+      </div>
+
+      <div class="kd-card kd-gold">
+        <div class="kd-icon">■</div>
+        <div class="kd-date">Fri Jul 10</div>
+        <div class="kd-label">Course ends · M12 &amp; M13 close</div>
+        <div class="kd-note">All work due by 11:59 PM</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- WEEK BY WEEK -->
+  <div>
+    <div class="section-heading">Week-by-Week Schedule</div>
+    <div class="weeks-stack">
+
+      <!-- WEEK 1 -->
+      <div class="week-block">
+        <div class="week-hd">
+          <span class="week-label">Week 1</span>
+          <span class="week-dates-text">Jun 8 – Jun 16</span>
+          <span class="week-count">3 modules</span>
+          <span class="week-part-tag">Part 1 — Process Foundations</span>
+        </div>
+        <div class="mod-row">
+          <span class="mod-chip">M01</span>
+          <span class="ch-tag">Ch. 01</span>
+          <span class="mod-title-sm">Introduction to Operations Management</span>
+          <div class="date-range">
+            <span class="dopen">Mon Jun 8</span>
+            <span class="darr">→</span>
+            <span class="dclose">Fri Jun 12</span>
+          </div>
+          <span class="win-pill">5 days</span>
+        </div>
+        <div class="mod-row">
+          <span class="mod-chip">M02</span>
+          <span class="ch-tag">Ch. 02</span>
+          <span class="mod-title-sm">Process Measurement</span>
+          <div class="date-range">
+            <span class="dopen">Wed Jun 10</span>
+            <span class="darr">→</span>
+            <span class="dclose">Sun Jun 14</span>
+          </div>
+          <span class="win-pill">5 days</span>
+        </div>
+        <div class="mod-row">
+          <span class="mod-chip">M03</span>
+          <span class="ch-tag">Ch. 03</span>
+          <span class="mod-title-sm">Process Analysis</span>
+          <div class="date-range">
+            <span class="dopen">Fri Jun 12</span>
+            <span class="darr">→</span>
+            <span class="dclose">Tue Jun 16</span>
+          </div>
+          <span class="win-pill">5 days</span>
+        </div>
+      </div>
+
+      <!-- WEEK 2 -->
+      <div class="week-block">
+        <div class="week-hd">
+          <span class="week-label">Week 2</span>
+          <span class="week-dates-text">Jun 15 – Jun 23</span>
+          <span class="week-count">3 modules</span>
+          <span class="week-part-tag">Part 1 → Part 2</span>
+        </div>
+        <div class="mod-row">
+          <span class="mod-chip">M04</span>
+          <span class="ch-tag">Ch. 04</span>
+          <span class="mod-title-sm">Process Improvement</span>
+          <div class="date-range">
+            <span class="dopen">Mon Jun 15</span>
+            <span class="darr">→</span>
+            <span class="dclose">Fri Jun 19</span>
+          </div>
+          <span class="win-pill">5 days</span>
+        </div>
+        <div class="mod-row">
+          <span class="mod-chip">M05</span>
+          <span class="ch-tag">Ch. 05</span>
+          <span class="mod-title-sm">Process Analysis with Multiple Flow Units</span>
+          <div class="date-range">
+            <span class="dopen">Wed Jun 17</span>
+            <span class="darr">→</span>
+            <span class="dclose">Sun Jun 21</span>
+          </div>
+          <span class="win-pill">5 days</span>
+        </div>
+        <div class="mod-row">
+          <span class="mod-chip">M06</span>
+          <span class="ch-tag">Ch. 08</span>
+          <span class="mod-title-sm">Lean Operations and the Toyota Production System</span>
+          <div class="date-range">
+            <span class="dopen">Fri Jun 19</span>
+            <span class="darr">→</span>
+            <span class="dclose">Tue Jun 23</span>
+          </div>
+          <span class="win-pill">5 days</span>
+        </div>
+      </div>
+
+      <!-- WEEK 3 -->
+      <div class="week-block">
+        <div class="week-hd">
+          <span class="week-label">Week 3</span>
+          <span class="week-dates-text">Jun 22 – Jun 29</span>
+          <span class="week-count">2 modules</span>
+          <span class="week-part-tag">Part 2 — Lean, Quality &amp; Inventory</span>
+        </div>
+        <div class="mod-row">
+          <span class="mod-chip">M07</span>
+          <span class="ch-tag">Ch. 09</span>
+          <span class="mod-title-sm">Quality and Statistical Process Control</span>
+          <div class="date-range">
+            <span class="dopen">Mon Jun 22</span>
+            <span class="darr">→</span>
+            <span class="dclose">Fri Jun 26</span>
+          </div>
+          <span class="win-pill">5 days</span>
+        </div>
+        <div class="mod-row">
+          <span class="mod-chip">M08</span>
+          <span class="ch-tag">Ch. 10</span>
+          <span class="mod-title-sm">Introduction to Inventory Management</span>
+          <div class="date-range">
+            <span class="dopen">Thu Jun 25</span>
+            <span class="darr">→</span>
+            <span class="dclose">Mon Jun 29</span>
+          </div>
+          <span class="win-pill">5 days</span>
+        </div>
+      </div>
+
+      <!-- WEEK 4 -->
+      <div class="week-block">
+        <div class="week-hd">
+          <span class="week-label">Week 4</span>
+          <span class="week-dates-text">Jun 29 – Jul 9</span>
+          <span class="week-count">3 modules</span>
+          <span class="week-part-tag">Part 2 → Part 3</span>
+        </div>
+        <div class="mod-row">
+          <span class="mod-chip">M09</span>
+          <span class="ch-tag">Ch. 11</span>
+          <span class="mod-title-sm">Supply Chain Management</span>
+          <div class="date-range">
+            <span class="dopen">Mon Jun 29</span>
+            <span class="darr">→</span>
+            <span class="dclose">Sat Jul 4</span>
+          </div>
+          <span class="hol-pill">⚑ Jul 4 holiday</span>
+        </div>
+        <div class="mod-row">
+          <span class="mod-chip">M10</span>
+          <span class="ch-tag">Ch. 12</span>
+          <span class="mod-title-sm">Inventory Management with Steady Demand</span>
+          <div class="date-range">
+            <span class="dopen">Wed Jul 1</span>
+            <span class="darr">→</span>
+            <span class="dclose">Sun Jul 5</span>
+          </div>
+          <span class="win-pill">5 days</span>
+        </div>
+        <div class="mod-row">
+          <span class="mod-chip">M11</span>
+          <span class="ch-tag">Ch. 15</span>
+          <span class="mod-title-sm">Forecasting</span>
+          <div class="date-range">
+            <span class="dopen">Sat Jul 5</span>
+            <span class="darr">→</span>
+            <span class="dclose">Wed Jul 9</span>
+          </div>
+          <span class="win-pill">5 days</span>
+        </div>
+      </div>
+
+      <!-- WEEK 5 -->
+      <div class="week-block">
+        <div class="week-hd">
+          <span class="week-label">Week 5</span>
+          <span class="week-dates-text">Jul 6 – Jul 10</span>
+          <span class="week-count">2 modules</span>
+          <span class="week-part-tag">Part 3 — Forecasting, Scheduling &amp; Projects</span>
+        </div>
+        <div class="mod-row">
+          <span class="mod-chip">M12</span>
+          <span class="ch-tag">Ch. 18</span>
+          <span class="mod-title-sm">Scheduling to Prioritize Demand</span>
+          <div class="date-range">
+            <span class="dopen">Mon Jul 6</span>
+            <span class="darr">→</span>
+            <span class="dclose">Fri Jul 10</span>
+          </div>
+          <span class="win-pill">5 days</span>
+        </div>
+        <div class="mod-row">
+          <span class="mod-chip">M13</span>
+          <span class="ch-tag">Ch. 19</span>
+          <span class="mod-title-sm">Project Management</span>
+          <div class="date-range">
+            <span class="dopen">Tue Jul 7</span>
+            <span class="darr">→</span>
+            <span class="dclose">Fri Jul 10</span>
+          </div>
+          <span class="win-pill">4 days</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FULL DEADLINE REFERENCE TABLE -->
+  <div>
+    <div class="section-heading">All Module Deadlines — Quick Reference</div>
+    <p style="font-size:13px;color:var(--gray-600);margin-bottom:16px;line-height:1.6;">All times are <strong>11:59 PM</strong>. Gate 1 and initial post deadlines apply only if you open the module on Day 1. If you open the module later, those deadlines have already passed — Gate 1 must be completed before module content unlocks regardless of when you open it.</p>
+
+    <div class="dt-wrap">
+      <table class="dt">
+        <thead>
+          <tr>
+            <th>Module</th>
+            <th>Title</th>
+            <th>Opens (Day 1)</th>
+            <th>Gate 1 Due (Day 2)</th>
+            <th>Post Due (Day 3)</th>
+            <th>Everything Closes (Day 5)</th>
+            <th style="text-align:right">Pts</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <tr class="part-sep">
+            <td colspan="7">Part 1 — Process Foundations &nbsp;·&nbsp; M01–M05 &nbsp;·&nbsp; Chapters 1–5</td>
+          </tr>
+          <tr>
+            <td class="mn">M01</td>
+            <td>Introduction to Operations Management</td>
+            <td class="dc">Mon Jun 8</td>
+            <td class="dc">Tue Jun 9</td>
+            <td class="dc">Wed Jun 10</td>
+            <td class="dc-close">Fri Jun 12</td>
+            <td class="pts">250</td>
+          </tr>
+          <tr>
+            <td class="mn">M02</td>
+            <td>Process Measurement</td>
+            <td class="dc">Wed Jun 10</td>
+            <td class="dc">Thu Jun 11</td>
+            <td class="dc">Fri Jun 12</td>
+            <td class="dc-close">Sun Jun 14</td>
+            <td class="pts">250</td>
+          </tr>
+          <tr>
+            <td class="mn">M03</td>
+            <td>Process Analysis</td>
+            <td class="dc">Fri Jun 12</td>
+            <td class="dc">Sat Jun 13</td>
+            <td class="dc">Sun Jun 14</td>
+            <td class="dc-close">Tue Jun 16</td>
+            <td class="pts">250</td>
+          </tr>
+          <tr>
+            <td class="mn">M04</td>
+            <td>Process Improvement</td>
+            <td class="dc">Mon Jun 15</td>
+            <td class="dc">Tue Jun 16</td>
+            <td class="dc">Wed Jun 17</td>
+            <td class="dc-close">Fri Jun 19</td>
+            <td class="pts">250</td>
+          </tr>
+          <tr>
+            <td class="mn">M05</td>
+            <td>Process Analysis with Multiple Flow Units</td>
+            <td class="dc">Wed Jun 17</td>
+            <td class="dc">Thu Jun 18</td>
+            <td class="dc">Fri Jun 19</td>
+            <td class="dc-close">Sun Jun 21</td>
+            <td class="pts">250</td>
+          </tr>
+
+          <tr class="part-sep">
+            <td colspan="7">Part 2 — Lean, Quality &amp; Inventory &nbsp;·&nbsp; M06–M10 &nbsp;·&nbsp; Chapters 8–12</td>
+          </tr>
+          <tr>
+            <td class="mn">M06</td>
+            <td>Lean Operations and the Toyota Production System</td>
+            <td class="dc">Fri Jun 19</td>
+            <td class="dc">Sat Jun 20</td>
+            <td class="dc">Sun Jun 21</td>
+            <td class="dc-close">Tue Jun 23</td>
+            <td class="pts">250</td>
+          </tr>
+          <tr>
+            <td class="mn">M07</td>
+            <td>Quality and Statistical Process Control</td>
+            <td class="dc">Mon Jun 22</td>
+            <td class="dc">Tue Jun 23</td>
+            <td class="dc">Wed Jun 24</td>
+            <td class="dc-close">Fri Jun 26</td>
+            <td class="pts">250</td>
+          </tr>
+          <tr>
+            <td class="mn">M08</td>
+            <td>Introduction to Inventory Management</td>
+            <td class="dc">Thu Jun 25</td>
+            <td class="dc">Fri Jun 26</td>
+            <td class="dc">Sat Jun 27</td>
+            <td class="dc-close">Mon Jun 29</td>
+            <td class="pts">250</td>
+          </tr>
+          <tr class="hol-row">
+            <td class="mn">M09</td>
+            <td>Supply Chain Management</td>
+            <td class="dc">Mon Jun 29</td>
+            <td class="dc">Tue Jun 30</td>
+            <td class="dc">Wed Jul 1</td>
+            <td class="dc-hol">Sat Jul 4 ⚑</td>
+            <td class="pts">250</td>
+          </tr>
+          <tr>
+            <td class="mn">M10</td>
+            <td>Inventory Management with Steady Demand</td>
+            <td class="dc">Wed Jul 1</td>
+            <td class="dc">Thu Jul 2</td>
+            <td class="dc">Fri Jul 3</td>
+            <td class="dc-close">Sun Jul 5</td>
+            <td class="pts">250</td>
+          </tr>
+
+          <tr class="part-sep">
+            <td colspan="7">Part 3 — Forecasting, Scheduling &amp; Projects &nbsp;·&nbsp; M11–M13 &nbsp;·&nbsp; Chapters 15, 18, 19</td>
+          </tr>
+          <tr>
+            <td class="mn">M11</td>
+            <td>Forecasting</td>
+            <td class="dc">Sat Jul 5</td>
+            <td class="dc">Sun Jul 6</td>
+            <td class="dc">Mon Jul 7</td>
+            <td class="dc-close">Wed Jul 9</td>
+            <td class="pts">250</td>
+          </tr>
+          <tr>
+            <td class="mn">M12</td>
+            <td>Scheduling to Prioritize Demand</td>
+            <td class="dc">Mon Jul 6</td>
+            <td class="dc">Tue Jul 7</td>
+            <td class="dc">Wed Jul 8</td>
+            <td class="dc-close">Fri Jul 10</td>
+            <td class="pts">250</td>
+          </tr>
+          <tr>
+            <td class="mn">M13</td>
+            <td>Project Management</td>
+            <td class="dc">Tue Jul 7</td>
+            <td class="dc">Wed Jul 8</td>
+            <td class="dc">Thu Jul 9</td>
+            <td class="dc-short">Fri Jul 10 †</td>
+            <td class="pts">250</td>
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:11.5px;color:var(--gray-400);margin-top:10px;line-height:1.6;">
+      <strong style="color:var(--red);">⚑</strong> M09 closes on Independence Day (Saturday Jul 4). Submit early — the deadline does not move.<br>
+      <strong style="color:var(--amber);">†</strong> M13 is a 4-day final module. Discussion reply window is compressed; see the M13 Discussion Page for adjusted expectations.
+    </p>
+  </div>
+
+  <!-- HOLIDAY ALERT -->
+  <div class="alert-red">
+    <strong>Independence Day — July 4, 2026</strong><br>
+    M09 (Supply Chain Management) closes at 11:59 PM on Saturday, July 4. This deadline will not be extended. If you plan to observe the holiday, complete M09 by <strong>Friday July 3</strong> to avoid a last-minute submission. M10's initial discussion post is due Friday July 3 — submit it before the holiday as well. Note this in your personal calendar when you receive the syllabus.
+  </div>
+
+</div>
+</body>
+</html>

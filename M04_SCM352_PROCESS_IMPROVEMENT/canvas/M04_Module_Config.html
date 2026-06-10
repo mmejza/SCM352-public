@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Canvas Module Config — M04 SCM 352</title>
+<style>
+:root{--navy:#1a3a5c;--blue:#2563a8;--blue-lt:#dbeafe;--blue-xlt:#eff6ff;--blue-bdr:#bfdbfe;--gold:#f59e0b;--gold-lt:#fffbeb;--gold-bdr:#fde68a;--gold-dark:#92400e;--green:#16a34a;--green-lt:#f0fdf4;--green-bdr:#bbf7d0;--red:#dc2626;--red-lt:#fef2f2;--red-bdr:#fecaca;--amber:#d97706;--amber-lt:#fffbeb;--amber-bdr:#fde68a;--teal:#0891b2;--teal-lt:#f0fdfe;--teal-bdr:#a5f3fc;--purple:#7c3aed;--purple-lt:#faf5ff;--purple-bdr:#ddd6fe;--ver-a-bg:#dcfce7;--ver-a-txt:#166534;--ver-b-txt:#1e40af;--ver-c-txt:#6b21a8;--ver-d-bg:#fef9c3;--ver-d-txt:#854d0e;--gray-50:#f9fafb;--gray-100:#f3f4f6;--gray-200:#e5e7eb;--gray-400:#9ca3af;--gray-600:#4b5563;--gray-700:#374151;--gray-800:#1f2937;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--gray-50);color:var(--gray-800);font-size:13.5px;line-height:1.55;}
+.pg-header{background:var(--navy);color:white;padding:18px 28px;display:flex;align-items:center;gap:14px;}
+.badge{background:var(--gold);color:var(--navy);font-weight:700;font-size:10px;padding:3px 8px;border-radius:4px;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;flex-shrink:0;}
+.pg-header h1{font-size:18px;font-weight:700;}
+.pg-header p{font-size:12px;color:rgba(255,255,255,.65);}
+.header-right{margin-left:auto;font-size:12px;color:rgba(255,255,255,.55);text-align:right;line-height:1.6;}
+.pg-body{max-width:1020px;margin:0 auto;padding:28px 20px 60px;display:flex;flex-direction:column;gap:32px;}
+.sec-heading{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--gray-400);padding-bottom:10px;border-bottom:1px solid var(--gray-200);margin-bottom:4px;}
+.card{background:white;border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;}
+.card-hd{padding:13px 20px;border-bottom:1px solid var(--gray-200);display:flex;align-items:center;gap:10px;}
+.card-hd h2{font-size:14px;font-weight:700;color:var(--navy);}
+.card-hd p{font-size:12px;color:var(--gray-600);margin-top:2px;}
+.card-bd{padding:18px 20px;}
+.alert{border-radius:10px;padding:13px 16px;font-size:13px;line-height:1.6;display:flex;gap:10px;align-items:flex-start;}
+.alert-icon{font-size:17px;flex-shrink:0;margin-top:1px;}
+.alert-body{flex:1;}
+.alert-body strong{display:block;margin-bottom:3px;}
+.alert-gold{background:var(--gold-lt);border:1.5px solid var(--gold-bdr);}
+.alert-red{background:var(--red-lt);border:1.5px solid var(--red-bdr);}
+.alert-blue{background:var(--blue-xlt);border:1.5px solid var(--blue-bdr);}
+.checklist{display:flex;flex-direction:column;gap:6px;}
+.check-item{display:flex;align-items:flex-start;gap:10px;padding:9px 12px;border:1px solid var(--gray-200);border-radius:8px;background:var(--gray-50);cursor:pointer;transition:background 0.1s;}
+.check-item:hover{background:var(--blue-xlt);}
+.check-item input[type="checkbox"]{width:16px;height:16px;accent-color:var(--blue);flex-shrink:0;margin-top:1px;cursor:pointer;}
+.check-item label{cursor:pointer;flex:1;font-size:13px;line-height:1.5;}
+.check-item label strong{color:var(--navy);}
+.check-tag{font-size:10px;font-weight:700;padding:2px 7px;border-radius:100px;white-space:nowrap;flex-shrink:0;align-self:flex-start;margin-top:2px;}
+.tag-file{background:var(--blue-lt);color:var(--navy);}
+.tag-canvas{background:var(--green-lt);color:var(--green);}
+.tag-config{background:var(--amber-lt);color:var(--amber);}
+.tag-verify{background:var(--red-lt);color:var(--red);}
+.seq-table{width:100%;border-collapse:collapse;font-size:12.5px;}
+.seq-table th{background:var(--navy);color:white;padding:9px 11px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;}
+.seq-table td{padding:9px 11px;border-bottom:1px solid var(--gray-100);vertical-align:top;line-height:1.45;}
+.seq-table tr:last-child td{border-bottom:none;}
+.seq-table tr:hover td{background:var(--gray-50);}
+.seq-table tr.gated td{background:var(--blue-xlt);}
+.seq-table tr.gated:hover td{background:var(--blue-lt);}
+.item-num{width:26px;height:26px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:white;flex-shrink:0;}
+.n-open{background:var(--gray-400);}
+.n-gate{background:var(--gold);color:var(--navy);}
+.n-lock{background:var(--blue);}
+.type-pill{font-size:10px;font-weight:700;padding:2px 7px;border-radius:100px;letter-spacing:.03em;white-space:nowrap;display:inline-block;}
+.tp-page{background:var(--gray-100);color:var(--gray-600);}
+.tp-link{background:var(--teal-lt);color:var(--teal);border:1px solid var(--teal-bdr);}
+.tp-quiz{background:var(--gold-lt);color:var(--amber);border:1px solid var(--gold-bdr);}
+.tp-media{background:var(--purple-lt);color:var(--purple);border:1px solid var(--purple-bdr);}
+.tp-tool{background:var(--blue-xlt);color:var(--blue);border:1px solid var(--blue-bdr);}
+.tp-disc{background:var(--green-lt);color:var(--green);border:1px solid var(--green-bdr);}
+.tp-assign{background:var(--red-lt);color:var(--red);border:1px solid var(--red-bdr);}
+.lock-note{font-size:11px;color:var(--blue);font-weight:600;white-space:nowrap;}
+.open-note{font-size:11px;color:var(--gray-400);}
+code{font-family:'SF Mono','Fira Code',Menlo,monospace;font-size:11.5px;background:var(--gray-100);border:1px solid var(--gray-200);border-radius:4px;padding:1px 6px;color:var(--navy);}
+.field-value{display:inline-block;background:var(--blue-xlt);border:1px solid var(--blue-lt);border-radius:4px;padding:1px 7px;font-size:12px;color:var(--navy);font-weight:600;}
+.spec-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;margin-top:4px;}
+.spec-card{border:1px solid var(--gray-200);border-radius:10px;overflow:hidden;}
+.spec-hd{padding:9px 14px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--gray-200);}
+.spec-hd h3{font-size:12.5px;font-weight:700;color:var(--gray-800);flex:1;}
+.spec-bd{padding:10px 14px;font-size:12px;color:var(--gray-700);}
+.spec-row{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--gray-100);gap:8px;}
+.spec-row:last-child{border-bottom:none;}
+.spec-key{color:var(--gray-400);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.04em;flex-shrink:0;}
+.spec-val{font-weight:600;color:var(--gray-800);text-align:right;}
+.ver-table{width:100%;border-collapse:collapse;font-size:12.5px;}
+.ver-table th{background:var(--navy);color:white;padding:8px 12px;text-align:left;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;}
+.ver-table td{padding:8px 12px;border-bottom:1px solid var(--gray-100);line-height:1.45;}
+.ver-table tr:last-child td{border-bottom:none;}
+.ver-a{background:var(--green-lt);} .ver-b{background:var(--blue-xlt);} .ver-c{background:var(--purple-lt);} .ver-d{background:var(--gold-lt);}
+.mon-row{display:flex;gap:14px;padding:12px 0;border-bottom:1px solid var(--gray-100);font-size:13px;line-height:1.55;}
+.mon-row:last-child{border-bottom:none;}
+.mon-day{font-size:11px;font-weight:800;padding:3px 9px;border-radius:100px;white-space:nowrap;align-self:flex-start;margin-top:1px;flex-shrink:0;}
+.day-3{background:var(--gold-lt);color:var(--amber);border:1px solid var(--gold-bdr);}
+.day-4{background:var(--blue-xlt);color:var(--blue);border:1px solid var(--blue-bdr);}
+.day-6{background:var(--red-lt);color:var(--red);border:1px solid var(--red-bdr);}
+.post{background:var(--green-lt);color:var(--green);border:1px solid var(--green-bdr);}
+.ver-badge{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:4px;font-size:10px;font-weight:800;}
+.vb-a{background:var(--ver-a-bg);color:var(--ver-a-txt);} .vb-b{background:var(--blue-lt);color:var(--ver-b-txt);} .vb-c{background:var(--purple-lt);color:var(--ver-c-txt);} .vb-d{background:var(--ver-d-bg);color:var(--ver-d-txt);}
+</style>
+</head>
+<body>
+
+<div class="pg-header">
+  <div class="badge">SCM 352 · M04</div>
+  <div>
+    <h1>Canvas Module M04 Configuration Guide</h1>
+    <p>Instructor use only · Pre-launch setup reference · Process Improvement</p>
+  </div>
+  <div class="header-right">12 module items<br>Est. setup: 30–45 min</div>
+</div>
+
+<div class="pg-body">
+
+  <!-- PRE-LAUNCH CHECKLIST -->
+  <div>
+    <div class="sec-heading">Step 0 — Pre-Launch Checklist</div>
+    <div class="card" style="margin-top:14px;">
+      <div class="card-hd" style="background:var(--gold-lt);">
+        <div><h2 style="color:var(--gold-dark);">Complete before touching Canvas</h2><p style="color:var(--amber);">All assets must be ready and verified before configuring the module sequence</p></div>
+      </div>
+      <div class="card-bd">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+          <div>
+            <div style="font-size:11px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--gray-400);margin-bottom:8px;">Files to Have Ready</div>
+            <div class="checklist">
+              <div class="check-item"><input type="checkbox" id="c1"><label for="c1"><strong>Gates QTI zip</strong> — <code>gates/SCM352_M04_Gates_QTI.zip</code></label><span class="check-tag tag-file">FILE</span></div>
+              <div class="check-item"><input type="checkbox" id="c2"><label for="c2"><strong>App 1</strong> — <code>apps/M04_EfficiencyMetrics_Identifier.html</code></label><span class="check-tag tag-file">FILE</span></div>
+              <div class="check-item"><input type="checkbox" id="c3"><label for="c3"><strong>App 2</strong> — <code>apps/M04_TaktTime_Trainer.html</code></label><span class="check-tag tag-file">FILE</span></div>
+              <div class="check-item"><input type="checkbox" id="c4"><label for="c4"><strong>App 3</strong> — <code>apps/M04_FinancialImpact_Identifier.html</code></label><span class="check-tag tag-file">FILE</span></div>
+              <div class="check-item"><input type="checkbox" id="c5"><label for="c5"><strong>Slide viewer</strong> — <code>viewer/index.html</code> + slides/ folder</label><span class="check-tag tag-file">FILE</span></div>
+              <div class="check-item"><input type="checkbox" id="c6"><label for="c6"><strong>Lecture Segment 1 video</strong> — recorded, captioned, uploaded (from <code>video/</code> scripts)</label><span class="check-tag tag-file">FILE</span></div>
+              <div class="check-item"><input type="checkbox" id="c7"><label for="c7"><strong>Lecture Segment 2 video</strong> — recorded, captioned, uploaded</label><span class="check-tag tag-file">FILE</span></div>
+              <div class="check-item"><input type="checkbox" id="c8"><label for="c8"><strong>Chapter 4 publisher URL</strong> — Cachon textbook access link</label><span class="check-tag tag-file">FILE</span></div>
+            </div>
+          </div>
+          <div>
+            <div style="font-size:11px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--gray-400);margin-bottom:8px;">Canvas Actions</div>
+            <div class="checklist">
+              <div class="check-item"><input type="checkbox" id="c9"><label for="c9"><strong>Import Gates QTI</strong> — Course Settings → Import → QTI .zip</label><span class="check-tag tag-canvas">CANVAS</span></div>
+              <div class="check-item"><input type="checkbox" id="c10"><label for="c10"><strong>Upload 3 app files</strong> — Files → M04_Apps folder</label><span class="check-tag tag-canvas">CANVAS</span></div>
+              <div class="check-item"><input type="checkbox" id="c11"><label for="c11"><strong>Upload slide viewer</strong> — Files → M04_Viewer folder</label><span class="check-tag tag-canvas">CANVAS</span></div>
+              <div class="check-item"><input type="checkbox" id="c12"><label for="c12"><strong>Upload lecture videos</strong> — Canvas Media → M04 folder + captions verified</label><span class="check-tag tag-canvas">CANVAS</span></div>
+              <div class="check-item"><input type="checkbox" id="c13"><label for="c13"><strong>Configure Gate 2 Q1</strong> — 4 Question Groups (A/B/C/D), student ID assignment rule</label><span class="check-tag tag-config">CONFIG</span></div>
+              <div class="check-item"><input type="checkbox" id="c14"><label for="c14"><strong>Create Canvas Module M04</strong> — enable sequential progression</label><span class="check-tag tag-canvas">CANVAS</span></div>
+              <div class="check-item"><input type="checkbox" id="c15"><label for="c15"><strong>Verify Gate 1 lock in Student View</strong> — items 4–12 must not be accessible below 80%</label><span class="check-tag tag-verify">VERIFY</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODULE SEQUENCE -->
+  <div>
+    <div class="sec-heading">Step 1 — Module Sequence Quick Reference</div>
+    <div class="alert alert-blue" style="margin-top:12px;margin-bottom:12px;">
+      <div class="alert-icon">ℹ️</div>
+      <div class="alert-body">Items 1–3 are open from module release. Items 4–12 are locked until Gate 1 ≥ 80%. Blue rows = gated items. The Gate 1 quiz itself (item 3) is always accessible.</div>
+    </div>
+    <div class="card">
+      <table class="seq-table">
+        <thead>
+          <tr>
+            <th style="width:4%">#</th>
+            <th style="width:32%">Canvas Item Name — Use Exactly As Written</th>
+            <th style="width:10%">Type</th>
+            <th style="width:7%">Points</th>
+            <th style="width:14%">Due / Opens</th>
+            <th style="width:13%">Timer / Attempts</th>
+            <th style="width:20%">Unlock Condition</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><div class="item-num n-open">1</div></td><td><strong>Module M04 Overview</strong></td><td><span class="type-pill tp-page">Page</span></td><td>—</td><td>Open on release</td><td>—</td><td><span class="open-note">No requirement</span></td></tr>
+          <tr><td><div class="item-num n-open">2</div></td><td><strong>Chapter 4 Reading</strong></td><td><span class="type-pill tp-link">Ext. URL</span></td><td>—</td><td>Open on release</td><td>—</td><td><span class="open-note">Must view #1</span></td></tr>
+          <tr><td><div class="item-num n-gate">3</div></td><td><strong>Gate 1 — Reading Check</strong></td><td><span class="type-pill tp-quiz">Quiz</span></td><td>0</td><td>Due Day 2 · 11:59 PM</td><td>2 attempts<br>24-hr cooldown</td><td><span class="open-note">Must view #2</span></td></tr>
+          <tr class="gated"><td><div class="item-num n-lock">4</div></td><td><strong>Lecture: What Idle Time Is Really Costing You</strong></td><td><span class="type-pill tp-media">Media</span></td><td>—</td><td>After Gate 1</td><td>—</td><td><span class="lock-note">🔒 Gate 1 ≥ 80%</span></td></tr>
+          <tr class="gated"><td><div class="item-num n-lock">5</div></td><td><strong>Lecture: The Takt Time Discipline and When to Stop Improving</strong></td><td><span class="type-pill tp-media">Media</span></td><td>—</td><td>After Gate 1</td><td>—</td><td><span class="lock-note">🔒 Must view #4</span></td></tr>
+          <tr class="gated"><td><div class="item-num n-lock">6</div></td><td><strong>Slide Deck — Module M04</strong></td><td><span class="type-pill tp-tool">Ext. Tool</span></td><td>—</td><td>After Gate 1</td><td>—</td><td><span class="lock-note">🔒 Must view #5</span></td></tr>
+          <tr class="gated"><td><div class="item-num n-lock">7</div></td><td><strong>App 1: Efficiency Metrics Calculator</strong></td><td><span class="type-pill tp-tool">Ext. Tool</span></td><td>—</td><td>After Gate 1</td><td>—</td><td><span class="lock-note">🔒 Must view #6</span></td></tr>
+          <tr class="gated"><td><div class="item-num n-lock">8</div></td><td><strong>App 2: Takt Time &amp; Target Manpower Trainer</strong></td><td><span class="type-pill tp-tool">Ext. Tool</span></td><td>—</td><td>After Gate 1</td><td>—</td><td><span class="lock-note">🔒 Must view #7</span></td></tr>
+          <tr class="gated"><td><div class="item-num n-lock">9</div></td><td><strong>App 3: Financial Impact Simulator</strong></td><td><span class="type-pill tp-tool">Ext. Tool</span></td><td>—</td><td>After Gate 1</td><td>—</td><td><span class="lock-note">🔒 Must view #8</span></td></tr>
+          <tr class="gated"><td><div class="item-num n-lock">10</div></td><td><strong>Discussion: Idle Time in the Wild</strong></td><td><span class="type-pill tp-disc">Discussion</span></td><td>30</td><td>M05 module close</td><td>—</td><td><span class="lock-note">🔒 Must view #9</span></td></tr>
+          <tr class="gated"><td><div class="item-num n-lock">11</div></td><td><strong>Gate 2 Quiz</strong></td><td><span class="type-pill tp-quiz">Quiz</span></td><td>100</td><td>Due Day 6 · 11:59 PM</td><td>90 min<br>1 attempt</td><td><span class="lock-note">🔒 Must post #10</span></td></tr>
+          <tr class="gated"><td><div class="item-num n-lock">12</div></td><td><strong>Case Analysis M04</strong></td><td><span class="type-pill tp-assign">Assignment</span></td><td>100</td><td>Due Day 6 · 11:59 PM</td><td>—</td><td><span class="lock-note">🔒 Must submit #11</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ITEM CONFIGURATION SPECS -->
+  <div>
+    <div class="sec-heading">Step 2 — Item Configuration Specs (Module-Specific)</div>
+    <div class="alert alert-gold" style="margin-top:12px;">
+      <div class="alert-icon">ℹ️</div>
+      <div class="alert-body">Standard items (Overview page, Ext. URL, Media embeds, Ext. Tool embed, Discussion, Assignment) follow the same Canvas configuration as M01–M03. Only Gate 1, Gate 2, and the Discussion unlock rule differ from defaults — those are detailed below.</div>
+    </div>
+    <div class="spec-grid" style="margin-top:14px;">
+
+      <div class="spec-card" style="border-color:var(--gold-bdr);">
+        <div class="spec-hd" style="background:var(--gold-lt);border-color:var(--gold-bdr);">
+          <div class="item-num n-gate" style="width:22px;height:22px;font-size:10px;">3</div>
+          <h3>Gate 1 — Reading Check</h3>
+          <span class="type-pill tp-quiz">Quiz</span>
+        </div>
+        <div class="spec-bd">
+          <div class="spec-row"><span class="spec-key">Points</span><span class="spec-val">0</span></div>
+          <div class="spec-row"><span class="spec-key">Questions drawn</span><span class="spec-val">5 from bank of 7</span></div>
+          <div class="spec-row"><span class="spec-key">Shuffle answers</span><span class="spec-val">Yes</span></div>
+          <div class="spec-row"><span class="spec-key">Attempts</span><span class="spec-val">2 max · 24-hr cooldown</span></div>
+          <div class="spec-row"><span class="spec-key">Due</span><span class="spec-val">Day 2 · 11:59 PM</span></div>
+          <div class="spec-row"><span class="spec-key">Required score</span><span class="spec-val" style="color:var(--red);font-weight:800;">≥ 80% to unlock items 4–12</span></div>
+          <div class="spec-row"><span class="spec-key">Content source</span><span class="spec-val">Chapter 4 only (no lecture content)</span></div>
+        </div>
+      </div>
+
+      <div class="spec-card" style="border-color:var(--gold-bdr);">
+        <div class="spec-hd" style="background:var(--gold-lt);border-color:var(--gold-bdr);">
+          <div class="item-num n-gate" style="width:22px;height:22px;font-size:10px;">11</div>
+          <h3>Gate 2 Quiz</h3>
+          <span class="type-pill tp-quiz">Quiz</span>
+        </div>
+        <div class="spec-bd">
+          <div class="spec-row"><span class="spec-key">Points</span><span class="spec-val">100</span></div>
+          <div class="spec-row"><span class="spec-key">Questions</span><span class="spec-val">8 questions total</span></div>
+          <div class="spec-row"><span class="spec-key">Attempts</span><span class="spec-val" style="color:var(--red);font-weight:800;">1 only — no resubmit</span></div>
+          <div class="spec-row"><span class="spec-key">Time limit</span><span class="spec-val" style="color:var(--red);font-weight:800;">90 minutes</span></div>
+          <div class="spec-row"><span class="spec-key">Due</span><span class="spec-val">Day 6 · 11:59 PM</span></div>
+          <div class="spec-row"><span class="spec-key">Versioned questions</span><span class="spec-val">Q1 only (4 groups A–D)</span></div>
+          <div class="spec-row"><span class="spec-key">Q7 status</span><span class="spec-val">Fixed — same for all students</span></div>
+          <div class="spec-row"><span class="spec-key">Show answers</span><span class="spec-val">After module close</span></div>
+        </div>
+      </div>
+
+      <div class="spec-card" style="border-color:var(--green-bdr);">
+        <div class="spec-hd" style="background:var(--green-lt);border-color:var(--green-bdr);">
+          <div class="item-num n-lock" style="width:22px;height:22px;font-size:10px;">10</div>
+          <h3>Discussion: Idle Time in the Wild</h3>
+          <span class="type-pill tp-disc">Discussion</span>
+        </div>
+        <div class="spec-bd">
+          <div class="spec-row"><span class="spec-key">Points</span><span class="spec-val">30</span></div>
+          <div class="spec-row"><span class="spec-key">Post type</span><span class="spec-val">Initial post only — no peer reply required</span></div>
+          <div class="spec-row"><span class="spec-key">Due</span><span class="spec-val">M05 module close</span></div>
+          <div class="spec-row"><span class="spec-key">Graded using</span><span class="spec-val">M04_Discussion_Rubric.html</span></div>
+          <div class="spec-row"><span class="spec-key">Unlock rule</span><span class="spec-val">Must submit App 3 (item 9)</span></div>
+          <div class="spec-row"><span class="spec-key">Naming penalty</span><span class="spec-val" style="color:var(--red);">−10 pts if no named business</span></div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- CANVAS SETUP PROCEDURES: 5f.4 iFrame embed · 5f.5 Q1 version groups · 5f.7 Gate 1 retake cooldown -->
+    <div class="card" style="margin-top:16px;">
+      <div class="card-hd" style="background:var(--blue-xlt);">
+        <div><h2>Canvas Setup Procedures</h2><p>iFrame embed · Gate 2 Q1 version groups · Gate 1 retake cooldown workaround</p></div>
+      </div>
+      <div class="card-bd" style="display:flex;flex-direction:column;gap:20px;">
+
+        <!-- A: iFrame embed -->
+        <div>
+          <div style="font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--navy);margin-bottom:8px;">A — App / Viewer iFrame Embed (Items 5, 6, 7, 8, 9)</div>
+          <div class="alert alert-blue" style="margin-bottom:10px;">
+            <div class="alert-icon">ℹ️</div>
+            <div class="alert-body">Apps and the slide viewer are hosted HTML files. Use Canvas <em>External URL</em> items to link out, or embed inline via a Canvas Page with the iFrame template below.</div>
+          </div>
+          <div style="font-size:12.5px;color:var(--gray-700);line-height:1.7;display:flex;flex-direction:column;gap:5px;">
+            <div><strong>Step 1.</strong> In Canvas Modules → click <strong>+</strong> → select <em>External URL</em>. Paste the hosted file URL. Title it exactly as the module item name (e.g., "App 1 — Efficiency Metrics Identifier").</div>
+            <div><strong>Step 2.</strong> Check <em>Load in a new tab</em> unless inline embedding is required. For inline embedding, create a Canvas Page, switch the editor to HTML mode, and paste the iFrame template:</div>
+          </div>
+          <div style="background:var(--gray-800);color:#e5e7eb;font-family:'SF Mono','Fira Code',monospace;font-size:11.5px;border-radius:8px;padding:12px 14px;margin-top:8px;line-height:1.8;overflow-x:auto;">
+&lt;p&gt;&lt;iframe<br>
+&nbsp;&nbsp;src="[HOSTED_FILE_URL]"<br>
+&nbsp;&nbsp;width="100%"<br>
+&nbsp;&nbsp;height="720"<br>
+&nbsp;&nbsp;style="border:none;overflow:hidden;"<br>
+&nbsp;&nbsp;allowfullscreen="true"<br>
+&nbsp;&nbsp;webkitallowfullscreen="true"<br>
+&nbsp;&nbsp;mozallowfullscreen="true"&gt;<br>
+&lt;/iframe&gt;&lt;/p&gt;</div>
+          <div style="font-size:11.5px;color:var(--gray-600);margin-top:6px;">Replace <code>[HOSTED_FILE_URL]</code> with the actual URL. Height 720 works for all M04 apps. Use 800 for the slide viewer.</div>
+        </div>
+
+        <!-- B: Gate 2 Q1 version groups -->
+        <div style="border-top:1px solid var(--gray-200);padding-top:16px;">
+          <div style="font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--navy);margin-bottom:8px;">B — Gate 2 Q1 Version Groups Setup (Question Group Method)</div>
+          <div class="alert alert-gold" style="margin-bottom:10px;">
+            <div class="alert-icon">⚙️</div>
+            <div class="alert-body"><strong>Canvas Classic Quizzes.</strong> Q1 has 4 versions (A–D). Use a Question Group to hold all 4 and pick 1 per student, then verify ID-to-version alignment using the quiz statistics export.</div>
+          </div>
+          <div style="font-size:12.5px;color:var(--gray-700);line-height:1.7;display:flex;flex-direction:column;gap:5px;">
+            <div><strong>Step 1.</strong> In the Gate 2 quiz editor, click <em>New Question Group</em>.</div>
+            <div><strong>Step 2.</strong> Name it <em>Q1 – Efficiency Metrics Chain (Versioned)</em>. Set Pick = <strong>1</strong>, Points = <strong>20</strong>.</div>
+            <div><strong>Step 3.</strong> Add all 4 version questions to the group from the question bank. Label each question with its version letter (e.g., "Q1-A — Outpatient Lab").</div>
+            <div><strong>Step 4.</strong> After the quiz closes, export the Student Analysis CSV: Quiz → Statistics → Student Analysis. This shows which version (question) each student received.</div>
+            <div><strong>Step 5.</strong> Cross-check: confirm the assigned version matches the ID-last-digit rule (0–1→A, 2–3→B, 4–5→C, 6–9→D). For any mismatch, manually apply the correct answer key for that student. The CSV is the authoritative version record — do not rely on student self-report.</div>
+          </div>
+        </div>
+
+        <!-- C: Gate 1 retake cooldown -->
+        <div style="border-top:1px solid var(--gray-200);padding-top:16px;">
+          <div style="font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--navy);margin-bottom:8px;">C — Gate 1 Retake Cooldown (Canvas Limitation &amp; Workaround)</div>
+          <div class="alert alert-red" style="margin-bottom:10px;">
+            <div class="alert-icon">⚠️</div>
+            <div class="alert-body"><strong>Canvas Classic Quizzes has no native timed cooldown between attempts.</strong> The 24-hr cooldown policy must be enforced manually by the instructor.</div>
+          </div>
+          <div style="font-size:12.5px;color:var(--gray-700);line-height:1.7;display:flex;flex-direction:column;gap:5px;">
+            <div><strong>Setup:</strong> Configure Gate 1 with <em>Allowed Attempts = 1</em>. Students who score &lt;80% will see the quiz locked and must contact you to request a retake.</div>
+            <div><strong>Granting a retake:</strong> SpeedGrader → click student → "Moderate This Quiz" → Extra Attempts +1. Only grant after confirming ≥24 hours have elapsed since the first attempt (check the attempt timestamp in SpeedGrader).</div>
+            <div><strong>Tracking:</strong> Maintain a retake log (spreadsheet): student name, first-attempt time, retake-granted time, second-attempt score. Graders must check this log before granting any retake to avoid inconsistent enforcement.</div>
+            <div><strong>Edge case — early request:</strong> If a student emails within 24 hrs of failing, reply with the exact date/time they become eligible. Do not grant the attempt early.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- GATE 2 VERSION TABLE -->
+  <div>
+    <div class="sec-heading">Step 3 — Gate 2 Version Reference</div>
+    <div class="alert alert-blue" style="margin-top:12px;margin-bottom:12px;">
+      <div class="alert-icon">ℹ️</div>
+      <div class="alert-body"><strong>Only Q1 is parameterized by version.</strong> Q7 uses a fixed scenario (Two Clinics A and B) that is identical for all students. Q2–Q6 and Q8 are also fixed. Assign Q1 version by student ID last digit: 0–1→A, 2–3→B, 4–5→C, 6–9→D.</div>
+    </div>
+
+    <div style="font-size:11px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--gray-400);margin-bottom:8px;margin-top:4px;">Q1 — Efficiency Metrics Chain (20 pts, version-specific)</div>
+    <div style="border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;margin-bottom:20px;background:white;">
+      <table class="ver-table">
+        <thead>
+          <tr>
+            <th style="width:6%">Ver.</th>
+            <th style="width:20%">Scenario name</th>
+            <th style="width:21%">Processing times (S1/S2/S3, min/unit)</th>
+            <th style="width:12%">Wage ($/hr)</th>
+            <th style="width:20%">Key answers (BN, process cap, CDL)</th>
+            <th style="width:21%">Common student errors</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="ver-a">
+            <td><span class="ver-badge vb-a">A</span></td>
+            <td><strong>Outpatient Lab</strong></td>
+            <td>S1=6, S2=10, S3=7</td>
+            <td>$18/hr</td>
+            <td>BN=S2; Cap=6/hr; CT=10 min; LC=23 min; Idle=7 min; Util=76.7%; CDL=$9.00/unit</td>
+            <td>CDL unit conversion missing; idle time at BN assumed non-zero</td>
+          </tr>
+          <tr class="ver-b">
+            <td><span class="ver-badge vb-b">B</span></td>
+            <td><strong>Auto Parts Assembly</strong></td>
+            <td>S1=8, S2=5, S3=12</td>
+            <td>$16/hr</td>
+            <td>BN=S3; Cap=5/hr; CT=12 min; LC=25 min; Idle=11 min; Util=69.4%; CDL=$9.60/unit</td>
+            <td>BN identified as S1 due to alphabetical order confusion; wrong idle at S3</td>
+          </tr>
+          <tr class="ver-c">
+            <td><span class="ver-badge vb-c">C</span></td>
+            <td><strong>Hospital Specimen</strong></td>
+            <td>S1=4, S2=9, S3=6</td>
+            <td>$20/hr</td>
+            <td>BN=S2; Cap=6.67/hr; CT=9 min; LC=19 min; Idle=8 min; Util=70.4%; CDL=$9.00/unit</td>
+            <td>Uses 6.67 correctly but rounds CDL incorrectly; CDL unit conversion skipped</td>
+          </tr>
+          <tr class="ver-d">
+            <td><span class="ver-badge vb-d">D</span></td>
+            <td><strong>Document Processing</strong></td>
+            <td>S1=5, S2=7, S3=3</td>
+            <td>$15/hr</td>
+            <td>BN=S2; Cap=8.57/hr; CT=7 min; LC=15 min; Idle=6 min; Util=71.4%; CDL=$5.25/unit</td>
+            <td>Confuses S3 (fastest) as BN; CDL = wage ÷ PT instead of wage ÷ flow rate</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div style="font-size:11px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--gray-400);margin-bottom:8px;">Q7 — Financial Impact of Process Improvement (15 pts, FIXED for all students)</div>
+    <div style="border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;background:white;padding:16px 18px;">
+      <p style="font-size:13px;line-height:1.7;color:var(--gray-700);margin-bottom:10px;"><strong>Scenario:</strong> Two urgent care clinics (Clinic A and Clinic B) share identical 3-step process: S1=4 min, S2=10 min (bottleneck), S3=5 min. Workers: 3 at $22/hr each. Revenue=$55/patient, VC=$12/patient, Fixed=$60/hr. Vendor upgrade reduces S2 from 10→8 min. Clinic A: demand=5/hr (<span style="color:var(--red);font-weight:700;">demand-constrained</span>). Clinic B: demand=8/hr (<span style="color:var(--green);font-weight:700;">capacity-constrained</span>).</p>
+      <table class="ver-table" style="margin-top:0;">
+        <thead><tr><th>Clinic</th><th>Before: flow rate + profit</th><th>After: flow rate + profit</th><th>Change</th><th>Key teaching point</th></tr></thead>
+        <tbody>
+          <tr><td><strong>A (demand-constrained)</strong></td><td>FR=5/hr; Profit=5×43−66−60=<strong>$89/hr</strong></td><td>FR=5/hr (unchanged); Profit=<strong>$89/hr</strong></td><td style="color:var(--red);font-weight:700;">$0 (0%)</td><td>Demand caps flow rate; more capacity = no revenue gain</td></tr>
+          <tr><td><strong>B (capacity-constrained)</strong></td><td>FR=6/hr; Profit=6×43−126=<strong>$132/hr</strong></td><td>FR=7.5/hr; Profit=7.5×43−126=<strong>$196.50/hr</strong></td><td style="color:var(--green);font-weight:700;">+$64.50 (+48.9%)</td><td>Bottleneck improvement directly increases flow rate and revenue</td></tr>
+        </tbody>
+      </table>
+      <p style="font-size:12px;color:var(--red);margin-top:10px;font-weight:600;">⚠️ Most common error: Student calculates Clinic A profit increasing because new process capacity is 7.5 &gt; 5. Correct reasoning: capacity &gt; demand means demand is still the binding constraint — flow rate stays at 5.</p>
+    </div>
+  </div>
+
+  <!-- MONITORING -->
+  <div>
+    <div class="sec-heading">Step 4 — During-Module Monitoring (est. 30 min total)</div>
+    <div class="card" style="margin-top:14px;">
+      <div class="card-bd">
+        <div class="mon-row">
+          <div class="mon-day day-3">Day 3</div>
+          <div><strong>Pull Gate 1 completion report.</strong> Chapter 4 has the most complex reading in the first four modules — Section 4.6 (Tables 4.1 and 4.2) is particularly dense. Students with 0 Gate 1 attempts by Day 3 have effectively no path to completing the module on time. Send a targeted nudge to those students only; do not broadcast to the whole class. Nudge message should reference the Day 6 deadline, not just the Gate 1 itself.</div>
+        </div>
+        <div class="mon-row">
+          <div class="mon-day day-4">Day 4</div>
+          <div><strong>Scan discussion initial posts for two issues.</strong> (1) <em>Business naming:</em> Watch for posts that describe a process without identifying a specific business by name — apply the 10-pt naming deduction per the rubric. (2) <em>Demand-constrained logic in Part 4:</em> Posts that recommend a bottleneck improvement without distinguishing between capacity-constrained and demand-constrained are missing the core LO4-6 skill. Leave a brief comment pointing to the distinction — this often pre-empts the same error in Gate 2 Q7 and Case Part 5.</div>
+        </div>
+        <div class="mon-row">
+          <div class="mon-day day-6">Day 6 (after Gate 2 closes)</div>
+          <div><strong>Export quiz statistics. Watch for three error patterns:</strong> (1) <em>Q1 cycle time error</em> — students who use process capacity (rather than demand-limited flow rate) as the cycle time denominator for demand-constrained versions. (2) <em>Q5 unnecessary reassignment</em> — the packaging line problem is intentionally demand-constrained; students who blindly reassign the bottleneck activity without first checking demand vs. capacity are falling into the same trap as Table 4.2. (3) <em>Q7 Clinic A profit increase</em> — most common Q7 error; student correctly computes new process capacity but forgets that demand (5/hr) is still the binding constraint. If &gt;15% of class misses Q7, address in an announcement before Case grading begins.</div>
+        </div>
+        <div class="mon-row">
+          <div class="mon-day post">Post-module</div>
+          <div><strong>Grade Discussion initial posts after M05 module closes.</strong> Discussion posts are due at M05 close — do not grade before then. Use <code>M04_Discussion_Rubric.html</code> in SpeedGrader. Estimated 2–4 min per submission. If a student's post identifies a demand-constrained business (Part 4 recommends no improvement or recommends against investment), confirm they used the correct framework — this is full credit, not an error.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ASSESSMENT GRADING SUMMARY -->
+  <div>
+    <div class="sec-heading">Assessment Grading Summary</div>
+    <div class="card" style="margin-top:14px;">
+      <table class="seq-table">
+        <thead><tr><th>Assessment / Question</th><th style="text-align:right;">Points</th><th>Autograded?</th><th>Est. Time / Student</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Gate 1</strong></td><td style="text-align:right;">0</td><td style="color:var(--green);font-weight:700;">Yes</td><td>0 min</td><td>Monitor completion rates only — no grading</td></tr>
+          <tr><td><strong>Gate 2 Q1</strong> — Efficiency Metrics Chain</td><td style="text-align:right;">20</td><td style="color:var(--green);font-weight:700;">Numeric</td><td>6–8 min</td><td>Verify unit conversion shown; flag cycle-time error for demand-constrained versions</td></tr>
+          <tr><td><strong>Gate 2 Q2</strong> — Takt time (rate form) + TM</td><td style="text-align:right;">12</td><td style="color:var(--green);font-weight:700;">Numeric</td><td>3–4 min</td><td>Check rounding direction (must round up for TM); unit conversion required</td></tr>
+          <tr><td><strong>Gate 2 Q3</strong> — Takt time (available-time form) + TM</td><td style="text-align:right;">12</td><td style="color:var(--green);font-weight:700;">Numeric</td><td>3–4 min</td><td>Confirm setup: Available time / Required quantity — not rate form</td></tr>
+          <tr><td><strong>Gate 2 Q4</strong> — CT vs. TT distinction</td><td style="text-align:right;">10</td><td style="color:var(--amber);font-weight:700;">Partial</td><td>3–4 min</td><td>Part (c) is conceptual: deduct 2/3 pts if gap direction misidentified</td></tr>
+          <tr><td><strong>Gate 2 Q5</strong> — Line balancing (demand-constrained trap)</td><td style="text-align:right;">15</td><td style="color:var(--amber);font-weight:700;">Partial</td><td>4–5 min</td><td>Process IS demand-constrained — unnecessary reassignment = partial credit only; must check demand vs. capacity first</td></tr>
+          <tr><td><strong>Gate 2 Q6</strong> — CDL before/after improvement</td><td style="text-align:right;">8</td><td style="color:var(--green);font-weight:700;">Numeric</td><td>2–3 min</td><td>20% PT reduction → 20% CDL reduction for all versions (clean pattern)</td></tr>
+          <tr><td><strong>Gate 2 Q7</strong> — Financial impact (Two Clinics)</td><td style="text-align:right;">15</td><td style="color:var(--red);font-weight:700;">Rubric</td><td>4–5 min</td><td>Clinic A must show $0 profit change; if student shows increase, misread demand-constrained condition</td></tr>
+          <tr><td><strong>Gate 2 Q8</strong> — Specialization classification</td><td style="text-align:right;">8</td><td style="color:var(--amber);font-weight:700;">Partial</td><td>2–3 min</td><td>4 items × 2 pts; must use correct course term (not just describe the concept)</td></tr>
+          <tr><td><strong>Discussion — Idle Time in the Wild</strong></td><td style="text-align:right;">30</td><td style="color:var(--red);font-weight:700;">Rubric</td><td>2–4 min</td><td>Grade after M05 close; see M04_Discussion_Rubric.html; apply naming penalty first</td></tr>
+          <tr><td><strong>Case Analysis M04</strong></td><td style="text-align:right;">100</td><td style="color:var(--red);font-weight:700;">Rubric</td><td>8–12 min</td><td>Version-specific; see M04_Case_Rubric.html; Version C correct answer = 0% / REJECT</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

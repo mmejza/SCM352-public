@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Case Analysis M04 — Riverside Health System — SCM 352</title>
+<style>
+:root{--navy:#1a3a5c;--blue:#2563a8;--blue-lt:#dbeafe;--blue-xlt:#eff6ff;--blue-bdr:#bfdbfe;--gold:#f59e0b;--gold-lt:#fffbeb;--gold-bdr:#fde68a;--green:#16a34a;--green-lt:#f0fdf4;--green-bdr:#bbf7d0;--red:#dc2626;--red-lt:#fef2f2;--red-bdr:#fecaca;--amber:#d97706;--amber-lt:#fffbeb;--amber-bdr:#fde68a;--purple:#7c3aed;--purple-lt:#faf5ff;--purple-bdr:#ddd6fe;--teal:#0891b2;--teal-lt:#f0fdfe;--teal-bdr:#a5f3fc;--orange:#ea580c;--orange-lt:#fff7ed;--orange-bdr:#fed7aa;--ver-a-bg:#dcfce7;--ver-a-txt:#166534;--ver-b-txt:#1e40af;--ver-c-txt:#6b21a8;--ver-d-bg:#fef9c3;--ver-d-txt:#854d0e;--gray-50:#f9fafb;--gray-100:#f3f4f6;--gray-200:#e5e7eb;--gray-300:#d1d5db;--gray-400:#9ca3af;--gray-600:#4b5563;--gray-700:#374151;--gray-800:#1f2937;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--gray-50);color:var(--gray-800);line-height:1.65;font-size:14px;}
+.pg-header{background:var(--navy);color:white;padding:24px 28px;}
+.pg-header-eyebrow{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
+.pg-header h1{font-size:22px;font-weight:700;letter-spacing:-.01em;margin-bottom:6px;}
+.pg-header p{font-size:13px;color:rgba(255,255,255,.68);}
+.meta-strip{background:white;border-bottom:2px solid var(--gray-200);display:flex;gap:0;overflow-x:auto;}
+.meta-cell{padding:11px 20px;border-right:1px solid var(--gray-200);flex-shrink:0;}
+.meta-cell:last-child{border-right:none;}
+.meta-lbl{font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--gray-400);margin-bottom:2px;}
+.meta-val{font-size:13px;font-weight:700;color:var(--navy);}
+.pg-body{max-width:860px;margin:0 auto;padding:28px 22px 60px;display:flex;flex-direction:column;gap:28px;}
+.version-banner{background:var(--navy);border-radius:12px;overflow:hidden;border:2px solid var(--navy);}
+.version-banner-hd{padding:13px 20px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,255,255,.15);}
+.version-banner-hd h2{font-size:14px;font-weight:700;color:white;}
+.version-banner-hd p{font-size:12px;color:rgba(255,255,255,.6);margin-top:2px;}
+.version-table{width:100%;border-collapse:collapse;font-size:13px;}
+.version-table th{padding:9px 16px;text-align:left;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:rgba(255,255,255,.55);border-bottom:1px solid rgba(255,255,255,.1);}
+.version-table td{padding:10px 16px;border-bottom:1px solid rgba(255,255,255,.07);color:rgba(255,255,255,.85);}
+.version-table tr:last-child td{border-bottom:none;}
+.ver-badge{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:6px;font-size:13px;font-weight:800;}
+.ver-a{background:var(--ver-a-bg);color:var(--ver-a-txt);} .ver-b{background:var(--blue-lt);color:var(--ver-b-txt);} .ver-c{background:var(--purple-lt);color:var(--ver-c-txt);} .ver-d{background:var(--ver-d-bg);color:var(--ver-d-txt);}
+.alert{border-radius:10px;padding:13px 16px;font-size:13.5px;line-height:1.6;display:flex;gap:11px;align-items:flex-start;}
+.alert-icon{font-size:17px;flex-shrink:0;margin-top:1px;}
+.alert-body{flex:1;}
+.alert-body strong{display:block;margin-bottom:3px;}
+.alert-red{background:var(--red-lt);border:1.5px solid var(--red-bdr);}
+.alert-gold{background:var(--gold-lt);border:1.5px solid var(--gold-bdr);}
+.alert-blue{background:var(--blue-xlt);border:1.5px solid var(--blue-bdr);}
+.sec-div{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--gray-400);padding-bottom:10px;border-bottom:1px solid var(--gray-200);margin-bottom:-4px;}
+.section-card{background:white;border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;}
+.section-hd{padding:14px 20px;border-bottom:1px solid var(--gray-200);display:flex;align-items:center;gap:12px;}
+.part-badge{display:flex;align-items:center;justify-content:center;min-width:36px;height:36px;border-radius:8px;font-size:12px;font-weight:800;flex-shrink:0;}
+.section-hd-text h2{font-size:15px;font-weight:700;color:var(--navy);}
+.section-hd-text p{font-size:12px;color:var(--gray-600);margin-top:2px;}
+.pts-badge{margin-left:auto;flex-shrink:0;font-size:13px;font-weight:700;padding:4px 12px;border-radius:100px;}
+.section-bd{padding:20px;}
+.part1 .section-hd{background:var(--blue-xlt);} .part1 .part-badge{background:var(--blue);color:white;} .part1 .pts-badge{background:var(--blue-lt);color:var(--navy);}
+.part2 .section-hd{background:var(--green-lt);} .part2 .part-badge{background:var(--green);color:white;} .part2 .pts-badge{background:var(--green-bdr);color:var(--green);}
+.part3 .section-hd{background:var(--purple-lt);} .part3 .part-badge{background:var(--purple);color:white;} .part3 .pts-badge{background:var(--purple-bdr);color:var(--purple);}
+.part4 .section-hd{background:var(--teal-lt);} .part4 .part-badge{background:var(--teal);color:white;} .part4 .pts-badge{background:var(--teal-bdr);color:var(--teal);}
+.part5 .section-hd{background:var(--orange-lt);} .part5 .part-badge{background:var(--orange);color:white;} .part5 .pts-badge{background:var(--orange-bdr);color:var(--orange);}
+.part6 .section-hd{background:var(--red-lt);} .part6 .part-badge{background:var(--red);color:white;} .part6 .pts-badge{background:var(--red-bdr);color:var(--red);}
+.ver-tabs{border:1.5px solid var(--gray-200);border-radius:10px;overflow:hidden;margin:16px 0;}
+.ver-tab-hd{display:flex;border-bottom:1.5px solid var(--gray-200);background:var(--gray-50);}
+.ver-tab-btn{flex:1;padding:10px 0;border:none;background:none;cursor:pointer;font-size:13px;font-weight:700;color:var(--gray-400);border-right:1px solid var(--gray-200);transition:all 0.15s;display:flex;align-items:center;justify-content:center;gap:6px;}
+.ver-tab-btn:last-child{border-right:none;}
+.ver-tab-btn:hover{color:var(--navy);background:white;}
+.ver-tab-btn.active{color:var(--navy);background:white;box-shadow:inset 0 -2px 0 var(--blue);}
+.ver-tab-btn .vb{width:20px;height:20px;border-radius:4px;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;}
+.ver-tab-panel{display:none;padding:16px;}
+.ver-tab-panel.active{display:block;}
+.data-table{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px;}
+.data-table th{background:var(--navy);color:white;padding:9px 13px;text-align:left;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;}
+.data-table td{padding:9px 13px;border-bottom:1px solid var(--gray-100);}
+.data-table tr:last-child td{border-bottom:none;}
+.data-table td:first-child{font-weight:700;}
+.data-params{margin-top:10px;display:flex;flex-wrap:wrap;gap:8px;}
+.param-chip{background:var(--blue-xlt);border:1px solid var(--blue-lt);border-radius:6px;padding:5px 12px;font-size:12px;font-weight:600;color:var(--navy);}
+.q-block{margin-bottom:16px;padding:14px 16px;border:1.5px solid var(--gray-200);border-radius:8px;background:var(--gray-50);}
+.q-block:last-child{margin-bottom:0;}
+.q-num{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--gray-400);margin-bottom:5px;}
+.q-text{font-size:13.5px;line-height:1.65;color:var(--gray-700);}
+.q-pts{display:inline-block;margin-top:7px;font-size:11px;font-weight:700;padding:2px 9px;border-radius:100px;background:var(--blue-lt);color:var(--navy);}
+.q-note{font-size:12px;color:var(--gray-600);margin-top:7px;padding:7px 10px;background:var(--gold-lt);border-radius:5px;border-left:3px solid var(--gold-bdr);}
+.subact-table{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px;}
+.subact-table th{background:var(--teal);color:white;padding:8px 12px;text-align:left;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;}
+.subact-table td{padding:9px 12px;border-bottom:1px solid var(--gray-100);}
+.subact-table tr:last-child td{border-bottom:none;}
+.subact-table td:first-child{font-weight:700;color:var(--teal);}
+.fin-table{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px;}
+.fin-table th{background:var(--navy);color:white;padding:9px 13px;text-align:left;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;}
+.fin-table td{padding:9px 13px;border-bottom:1px solid var(--gray-100);}
+.fin-table tr:last-child td{border-bottom:none;}
+.fin-table td:first-child{font-weight:700;color:var(--gray-700);}
+.fin-table td:last-child{font-weight:700;color:var(--navy);}
+.submit-list{display:flex;flex-direction:column;gap:6px;}
+.submit-item{display:flex;gap:10px;align-items:flex-start;padding:9px 13px;background:var(--gray-50);border:1px solid var(--gray-200);border-radius:7px;font-size:13px;line-height:1.5;color:var(--gray-700);}
+.submit-item::before{content:'☐';font-size:16px;flex-shrink:0;color:var(--gray-400);margin-top:-1px;}
+.grade-table{width:100%;border-collapse:collapse;font-size:13px;}
+.grade-table th{background:var(--navy);color:white;padding:9px 13px;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;text-align:left;}
+.grade-table td{padding:9px 13px;border-bottom:1px solid var(--gray-100);}
+.grade-table tr.total td{font-weight:700;background:var(--blue-xlt);color:var(--navy);font-size:14px;}
+.pts-right{text-align:right;font-weight:700;font-size:15px;color:var(--navy);}
+</style>
+</head>
+<body>
+
+<div class="pg-header">
+  <div class="pg-header-eyebrow">SCM 352 · Module M04 · Case Analysis</div>
+  <h1>Riverside Health System — Prescription Fulfillment Center</h1>
+  <p>Process Improvement Analysis · 4 versions · 100 points · Due Day 6 at 11:59 PM</p>
+</div>
+
+<div class="meta-strip">
+  <div class="meta-cell"><div class="meta-lbl">Points</div><div class="meta-val">100</div></div>
+  <div class="meta-cell"><div class="meta-lbl">Due</div><div class="meta-val">Day 6 · 11:59 PM</div></div>
+  <div class="meta-cell"><div class="meta-lbl">Format</div><div class="meta-val">PDF or Word</div></div>
+  <div class="meta-cell"><div class="meta-lbl">Attempts</div><div class="meta-val">1</div></div>
+  <div class="meta-cell"><div class="meta-lbl">Allowed resources</div><div class="meta-val">Ch. 4 · Lectures · Apps · Slides</div></div>
+</div>
+
+<div class="pg-body">
+
+  <div class="version-banner">
+    <div class="version-banner-hd">
+      <div><h2>Find Your Assigned Version</h2><p>Use the last digit of your student ID. Submit only your assigned version.</p></div>
+    </div>
+    <table class="version-table">
+      <thead><tr><th>Last digit of student ID</th><th>Your version</th><th>Station processing times (min/rx)</th></tr></thead>
+      <tbody>
+        <tr><td>0 or 1</td><td><span class="ver-badge ver-a">A</span></td><td>S1 = 3 min · S2 = 8 min · S3 = 4 min · Demand = 10/hr</td></tr>
+        <tr><td>2 or 3</td><td><span class="ver-badge ver-b">B</span></td><td>S1 = 5 min · S2 = 4 min · S3 = 7 min · Demand = 12/hr</td></tr>
+        <tr><td>4 or 5</td><td><span class="ver-badge ver-c">C</span></td><td>S1 = 4 min · S2 = 7 min · S3 = 5 min · Demand = 7/hr</td></tr>
+        <tr><td>6, 7, 8, or 9</td><td><span class="ver-badge ver-d">D</span></td><td>S1 = 6 min · S2 = 5 min · S3 = 9 min · Demand = 9/hr</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:10px;">
+    <div class="alert alert-red">
+      <div class="alert-icon">🚫</div>
+      <div class="alert-body"><strong>Do not collaborate on version-specific calculations.</strong> Parts 1, 2, 3, 5, and 6 use data unique to your version. Submitting another version's numbers constitutes academic dishonesty.</div>
+    </div>
+    <div class="alert alert-gold">
+      <div class="alert-icon">📋</div>
+      <div class="alert-body"><strong>Show all calculation steps with labeled intermediate values.</strong> Answers without supporting work will not receive full credit, even if numerically correct. This is especially important for Parts 1, 2, and 5.</div>
+    </div>
+    <div class="alert alert-blue">
+      <div class="alert-icon">ℹ️</div>
+      <div class="alert-body"><strong>Continuity note:</strong> This case extends the Riverside Health System from Modules 2 and 3. The center now has wage data and financial parameters added. For this analysis, assume one worker per station regardless of your M03 version's worker counts.</div>
+    </div>
+  </div>
+
+  <!-- BACKGROUND -->
+  <div>
+    <div class="sec-div">Background — All Versions</div>
+    <div class="section-card" style="margin-top:14px;">
+      <div class="section-bd">
+        <p style="font-size:13.5px;line-height:1.75;color:var(--gray-700);">The Riverside Health System Prescription Fulfillment Center processes inpatient prescriptions through a three-step sequential process: <strong>Station 1</strong> (prescription intake and verification), <strong>Station 2</strong> (drug retrieval and preparation), and <strong>Station 3</strong> (final check and dispensing). The center operates one shift of <strong>10 hours per day</strong>, with one worker per station. The operations director has received wage and financial data and has asked you to evaluate the current efficiency of the process, determine optimal staffing, evaluate a proposed technology upgrade, and make a financial recommendation.</p>
+        <p style="font-size:13.5px;line-height:1.75;color:var(--gray-700);margin-top:12px;">Your version's processing times, demand rate, wage, and financial parameters are shown in the version tabs in each part below. Use only your assigned version's data throughout the case.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- PART 1 -->
+  <div>
+    <div class="sec-div">Part 1 — Efficiency Metrics &nbsp;·&nbsp; Version-specific data</div>
+    <div class="section-card part1" style="margin-top:14px;">
+      <div class="section-hd">
+        <div class="part-badge">1</div>
+        <div class="section-hd-text">
+          <h2>Efficiency Metrics</h2>
+          <p>Use your version's data table only — all workers paid same wage per station</p>
+        </div>
+        <div class="pts-badge">25 pts</div>
+      </div>
+      <div class="section-bd">
+        <div class="ver-tabs">
+          <div class="ver-tab-hd">
+            <button class="ver-tab-btn active" onclick="switchTab('p1','a')" id="p1-tab-a"><span class="vb ver-a">A</span> Version A</button>
+            <button class="ver-tab-btn" onclick="switchTab('p1','b')" id="p1-tab-b"><span class="vb ver-b">B</span> Version B</button>
+            <button class="ver-tab-btn" onclick="switchTab('p1','c')" id="p1-tab-c"><span class="vb ver-c">C</span> Version C</button>
+            <button class="ver-tab-btn" onclick="switchTab('p1','d')" id="p1-tab-d"><span class="vb ver-d">D</span> Version D</button>
+          </div>
+          <div class="ver-tab-panel active" id="p1-panel-a">
+            <table class="data-table">
+              <thead><tr><th>Station</th><th>Processing Time (min/rx)</th><th>Workers</th></tr></thead>
+              <tbody>
+                <tr><td>S1 — Intake &amp; Verification</td><td>3</td><td>1</td></tr>
+                <tr><td>S2 — Drug Retrieval &amp; Preparation</td><td>8</td><td>1</td></tr>
+                <tr><td>S3 — Final Check &amp; Dispensing</td><td>4</td><td>1</td></tr>
+              </tbody>
+            </table>
+            <div class="data-params">
+              <span class="param-chip">Demand = 10 rx/hr</span>
+              <span class="param-chip">Wage = $14/hr</span>
+              <span class="param-chip">Shift = 10 hr/day</span>
+            </div>
+          </div>
+          <div class="ver-tab-panel" id="p1-panel-b">
+            <table class="data-table">
+              <thead><tr><th>Station</th><th>Processing Time (min/rx)</th><th>Workers</th></tr></thead>
+              <tbody>
+                <tr><td>S1 — Intake &amp; Verification</td><td>5</td><td>1</td></tr>
+                <tr><td>S2 — Drug Retrieval &amp; Preparation</td><td>4</td><td>1</td></tr>
+                <tr><td>S3 — Final Check &amp; Dispensing</td><td>7</td><td>1</td></tr>
+              </tbody>
+            </table>
+            <div class="data-params">
+              <span class="param-chip">Demand = 12 rx/hr</span>
+              <span class="param-chip">Wage = $16/hr</span>
+              <span class="param-chip">Shift = 10 hr/day</span>
+            </div>
+          </div>
+          <div class="ver-tab-panel" id="p1-panel-c">
+            <table class="data-table">
+              <thead><tr><th>Station</th><th>Processing Time (min/rx)</th><th>Workers</th></tr></thead>
+              <tbody>
+                <tr><td>S1 — Intake &amp; Verification</td><td>4</td><td>1</td></tr>
+                <tr><td>S2 — Drug Retrieval &amp; Preparation</td><td>7</td><td>1</td></tr>
+                <tr><td>S3 — Final Check &amp; Dispensing</td><td>5</td><td>1</td></tr>
+              </tbody>
+            </table>
+            <div class="data-params">
+              <span class="param-chip">Demand = 7 rx/hr</span>
+              <span class="param-chip">Wage = $14/hr</span>
+              <span class="param-chip">Shift = 10 hr/day</span>
+            </div>
+          </div>
+          <div class="ver-tab-panel" id="p1-panel-d">
+            <table class="data-table">
+              <thead><tr><th>Station</th><th>Processing Time (min/rx)</th><th>Workers</th></tr></thead>
+              <tbody>
+                <tr><td>S1 — Intake &amp; Verification</td><td>6</td><td>1</td></tr>
+                <tr><td>S2 — Drug Retrieval &amp; Preparation</td><td>5</td><td>1</td></tr>
+                <tr><td>S3 — Final Check &amp; Dispensing</td><td>9</td><td>1</td></tr>
+              </tbody>
+            </table>
+            <div class="data-params">
+              <span class="param-chip">Demand = 9 rx/hr</span>
+              <span class="param-chip">Wage = $12/hr</span>
+              <span class="param-chip">Shift = 10 hr/day</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="q-block">
+          <div class="q-num">Question 1a</div>
+          <div class="q-text">Calculate the capacity of each station in prescriptions per hour. Identify the bottleneck station.</div>
+          <span class="q-pts">6 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Question 1b</div>
+          <div class="q-text">State the flow rate. Show the min{demand, process capacity} setup and classify the process as <strong>capacity-constrained</strong> or <strong>demand-constrained</strong>.</div>
+          <span class="q-pts">5 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Question 1c</div>
+          <div class="q-text">Calculate the cycle time in minutes per prescription.</div>
+          <span class="q-pts">3 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Question 1d</div>
+          <div class="q-text">Calculate the labor content in minutes per prescription.</div>
+          <span class="q-pts">3 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Question 1e</div>
+          <div class="q-text">Calculate the idle time at each station and the total idle time per prescription.</div>
+          <span class="q-pts">4 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Question 1f</div>
+          <div class="q-text">Calculate the average labor utilization using both formulas: (1) Labor content ÷ (Labor content + Total idle time) and (2) Labor content ÷ (Cycle time × Number of employees). Confirm both formulas produce the same result.</div>
+          <span class="q-pts">4 pts</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PART 2 -->
+  <div>
+    <div class="sec-div">Part 2 — Cost of Direct Labor &nbsp;·&nbsp; Use Part 1 data</div>
+    <div class="section-card part2" style="margin-top:14px;">
+      <div class="section-hd">
+        <div class="part-badge">2</div>
+        <div class="section-hd-text"><h2>Cost of Direct Labor</h2><p>Use your version's wage and flow rate from Part 1</p></div>
+        <div class="pts-badge">10 pts</div>
+      </div>
+      <div class="section-bd">
+        <div class="q-block">
+          <div class="q-num">Question 2a</div>
+          <div class="q-text">Calculate the cost of direct labor per prescription. <strong>Show the flow rate unit conversion before dividing</strong> — wages are in $/hr, so flow rate must be in rx/hr before you calculate $/rx.</div>
+          <span class="q-pts">6 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Question 2b</div>
+          <div class="q-text">If the center fills prescriptions at your flow rate for an entire 10-hour shift, how much does total direct labor cost for the day? How does this compare to the total prescription revenue for that shift? Show both calculations.</div>
+          <span class="q-pts">4 pts</span>
+          <div class="q-note">Revenue per prescription for your version is given in Part 5's version tabs. You may look ahead to Part 5 to find your revenue per rx, or return to this question after completing Part 5.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PART 3 -->
+  <div>
+    <div class="sec-div">Part 3 — Takt Time and Target Manpower &nbsp;·&nbsp; Use Part 1 demand rate</div>
+    <div class="section-card part3" style="margin-top:14px;">
+      <div class="section-hd">
+        <div class="part-badge">3</div>
+        <div class="section-hd-text"><h2>Takt Time and Target Manpower</h2><p>Use your version's demand rate from Part 1</p></div>
+        <div class="pts-badge">15 pts</div>
+      </div>
+      <div class="section-bd">
+        <div class="q-block">
+          <div class="q-num">Question 3a</div>
+          <div class="q-text">Calculate the takt time using the <strong>rate form</strong>: Takt time = 1 ÷ Demand rate. Express your answer in minutes per prescription. Show the unit conversion explicitly.</div>
+          <span class="q-pts">4 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Question 3b</div>
+          <div class="q-text">Calculate the target manpower (TM = Labor content ÷ Takt time). If the result is not an integer, state both the rounded-down and rounded-up staffing levels and identify which guarantees meeting demand. Reference the Chapter 4 rounding guidance.</div>
+          <span class="q-pts">5 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Question 3c</div>
+          <div class="q-text">The center currently employs exactly 3 workers — one per station. Compare this to the target manpower you calculated. What does the comparison reveal about this version's current staffing efficiency? <strong>Version C specifically:</strong> explain why target manpower is less than 3 and what the operations manager should consider.</div>
+          <span class="q-pts">6 pts</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PART 4 -->
+  <div>
+    <div class="sec-div">Part 4 — Line Balancing &nbsp;·&nbsp; Version-specific sub-activities</div>
+    <div class="section-card part4" style="margin-top:14px;">
+      <div class="section-hd">
+        <div class="part-badge">4</div>
+        <div class="section-hd-text"><h2>Line Balancing</h2><p>Station 2 sub-activities differ by version — use your version's table below</p></div>
+        <div class="pts-badge">15 pts</div>
+      </div>
+      <div class="section-bd">
+        <p style="font-size:13.5px;line-height:1.65;color:var(--gray-700);margin-bottom:4px;">The operations director has broken Station 2 into the sub-activities shown below. Assume all sub-activities must be performed in the order listed and cannot be skipped. Sub-activities can be reassigned to an adjacent station (S1 or S3) if the receiving station's total processing time would not exceed the takt time.</p>
+
+        <div class="ver-tabs">
+          <div class="ver-tab-hd">
+            <button class="ver-tab-btn active" onclick="switchTab('p4','a')" id="p4-tab-a"><span class="vb ver-a">A</span> Version A</button>
+            <button class="ver-tab-btn" onclick="switchTab('p4','b')" id="p4-tab-b"><span class="vb ver-b">B</span> Version B</button>
+            <button class="ver-tab-btn" onclick="switchTab('p4','c')" id="p4-tab-c"><span class="vb ver-c">C</span> Version C</button>
+            <button class="ver-tab-btn" onclick="switchTab('p4','d')" id="p4-tab-d"><span class="vb ver-d">D</span> Version D</button>
+          </div>
+          <div class="ver-tab-panel active" id="p4-panel-a">
+            <table class="subact-table">
+              <thead><tr><th>Sub-activity</th><th>Processing Time</th><th>Must follow</th></tr></thead>
+              <tbody>
+                <tr><td>A — Drug retrieval</td><td>3 min</td><td>—</td></tr>
+                <tr><td>B — Measurement</td><td>3 min</td><td>Sub-A</td></tr>
+                <tr><td>C — Label preparation</td><td>2 min</td><td>Sub-B</td></tr>
+              </tbody>
+            </table>
+            <p style="font-size:12px;color:var(--gray-600);margin-top:8px;">Station 2 total = 8 min (= 3 + 3 + 2) ✓</p>
+          </div>
+          <div class="ver-tab-panel" id="p4-panel-b">
+            <table class="subact-table">
+              <thead><tr><th>Sub-activity</th><th>Processing Time</th><th>Must follow</th></tr></thead>
+              <tbody>
+                <tr><td>A — Record verification</td><td>2 min</td><td>—</td></tr>
+                <tr><td>B — Completion check</td><td>2 min</td><td>Sub-A</td></tr>
+              </tbody>
+            </table>
+            <p style="font-size:12px;color:var(--gray-600);margin-top:8px;">Station 2 total = 4 min (= 2 + 2) ✓</p>
+          </div>
+          <div class="ver-tab-panel" id="p4-panel-c">
+            <table class="subact-table">
+              <thead><tr><th>Sub-activity</th><th>Processing Time</th><th>Must follow</th></tr></thead>
+              <tbody>
+                <tr><td>A — Drug retrieval</td><td>3 min</td><td>—</td></tr>
+                <tr><td>B — Measurement</td><td>4 min</td><td>Sub-A</td></tr>
+              </tbody>
+            </table>
+            <p style="font-size:12px;color:var(--gray-600);margin-top:8px;">Station 2 total = 7 min (= 3 + 4) ✓</p>
+          </div>
+          <div class="ver-tab-panel" id="p4-panel-d">
+            <table class="subact-table">
+              <thead><tr><th>Sub-activity</th><th>Processing Time</th><th>Must follow</th></tr></thead>
+              <tbody>
+                <tr><td>A — Drug selection</td><td>2 min</td><td>—</td></tr>
+                <tr><td>B — Preparation</td><td>2 min</td><td>Sub-A</td></tr>
+                <tr><td>C — Verification</td><td>1 min</td><td>Sub-B</td></tr>
+              </tbody>
+            </table>
+            <p style="font-size:12px;color:var(--gray-600);margin-top:8px;">Station 2 total = 5 min (= 2 + 2 + 1) ✓</p>
+          </div>
+        </div>
+
+        <div class="q-block">
+          <div class="q-num">Question 4a</div>
+          <div class="q-text">Using the takt time from Part 3, determine whether the bottleneck station's processing time exceeds the takt time. If it does, identify which sub-activity should be reassigned from the bottleneck to an adjacent station, and verify that the receiving station's new total processing time does not exceed the takt time. If the bottleneck's processing time does not exceed the takt time, explain why no reassignment is necessary.</div>
+          <span class="q-pts">10 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Question 4b</div>
+          <div class="q-text">If a reassignment was made in 4a, calculate the new process capacity after the reassignment. If no reassignment was made, state the current process capacity and explain why line balancing is not the binding issue for this version.</div>
+          <span class="q-pts">5 pts</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PART 5 -->
+  <div>
+    <div class="sec-div">Part 5 — Financial Impact of Proposed Improvement &nbsp;·&nbsp; Version-specific parameters</div>
+    <div class="section-card part5" style="margin-top:14px;">
+      <div class="section-hd">
+        <div class="part-badge">5</div>
+        <div class="section-hd-text"><h2>Financial Impact of Proposed Improvement</h2><p>Vendor software reduces the bottleneck station's processing time by 1 minute</p></div>
+        <div class="pts-badge">20 pts</div>
+      </div>
+      <div class="section-bd">
+        <p style="font-size:13.5px;line-height:1.65;color:var(--gray-700);margin-bottom:4px;">A medical technology vendor is offering software that reduces the bottleneck station's processing time by <strong>1 minute</strong>. Your version's financial parameters are shown below.</p>
+
+        <div class="ver-tabs">
+          <div class="ver-tab-hd">
+            <button class="ver-tab-btn active" onclick="switchTab('p5','a')" id="p5-tab-a"><span class="vb ver-a">A</span> Version A</button>
+            <button class="ver-tab-btn" onclick="switchTab('p5','b')" id="p5-tab-b"><span class="vb ver-b">B</span> Version B</button>
+            <button class="ver-tab-btn" onclick="switchTab('p5','c')" id="p5-tab-c"><span class="vb ver-c">C</span> Version C</button>
+            <button class="ver-tab-btn" onclick="switchTab('p5','d')" id="p5-tab-d"><span class="vb ver-d">D</span> Version D</button>
+          </div>
+          <div class="ver-tab-panel active" id="p5-panel-a">
+            <table class="fin-table">
+              <thead><tr><th>Parameter</th><th>Value</th></tr></thead>
+              <tbody>
+                <tr><td>Revenue per prescription</td><td>$18</td></tr>
+                <tr><td>Variable cost per prescription</td><td>$3</td></tr>
+                <tr><td>Fixed overhead per hour</td><td>$40</td></tr>
+                <tr><td>Wage per worker per hour</td><td>$14 (3 workers)</td></tr>
+                <tr><td>Bottleneck improvement</td><td>S2: 8 min → 7 min</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="ver-tab-panel" id="p5-panel-b">
+            <table class="fin-table">
+              <thead><tr><th>Parameter</th><th>Value</th></tr></thead>
+              <tbody>
+                <tr><td>Revenue per prescription</td><td>$20</td></tr>
+                <tr><td>Variable cost per prescription</td><td>$4</td></tr>
+                <tr><td>Fixed overhead per hour</td><td>$45</td></tr>
+                <tr><td>Wage per worker per hour</td><td>$16 (3 workers)</td></tr>
+                <tr><td>Bottleneck improvement</td><td>S3: 7 min → 6 min</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="ver-tab-panel" id="p5-panel-c">
+            <table class="fin-table">
+              <thead><tr><th>Parameter</th><th>Value</th></tr></thead>
+              <tbody>
+                <tr><td>Revenue per prescription</td><td>$15</td></tr>
+                <tr><td>Variable cost per prescription</td><td>$2.50</td></tr>
+                <tr><td>Fixed overhead per hour</td><td>$35</td></tr>
+                <tr><td>Wage per worker per hour</td><td>$14 (3 workers)</td></tr>
+                <tr><td>Bottleneck improvement</td><td>S2: 7 min → 6 min</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="ver-tab-panel" id="p5-panel-d">
+            <table class="fin-table">
+              <thead><tr><th>Parameter</th><th>Value</th></tr></thead>
+              <tbody>
+                <tr><td>Revenue per prescription</td><td>$16</td></tr>
+                <tr><td>Variable cost per prescription</td><td>$3</td></tr>
+                <tr><td>Fixed overhead per hour</td><td>$25</td></tr>
+                <tr><td>Wage per worker per hour</td><td>$12 (3 workers)</td></tr>
+                <tr><td>Bottleneck improvement</td><td>S3: 9 min → 8 min</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="q-block">
+          <div class="q-num">Question 5a</div>
+          <div class="q-text">Calculate the new process capacity and flow rate after the 1-minute bottleneck improvement. Show which station becomes (or remains) the bottleneck after the improvement.</div>
+          <span class="q-pts">4 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Question 5b</div>
+          <div class="q-text">Calculate hourly profit <strong>before</strong> and <strong>after</strong> the improvement. Show all four components for each: (1) revenue per hour, (2) variable cost per hour, (3) total wage cost per hour, (4) fixed overhead per hour.</div>
+          <span class="q-pts">10 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Question 5c</div>
+          <div class="q-text">Calculate the percentage change in profit from before to after the improvement (not including the tech cost — that is addressed in Part 6). <strong>Version C specifically:</strong> explain in 2–3 sentences why the improvement produces 0% profit change, using the terms <em>demand-constrained</em> and <em>flow rate</em>.</div>
+          <span class="q-pts">6 pts</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PART 6 -->
+  <div>
+    <div class="sec-div">Part 6 — Managerial Recommendation &nbsp;·&nbsp; Version-specific tech cost</div>
+    <div class="section-card part6" style="margin-top:14px;">
+      <div class="section-hd">
+        <div class="part-badge">6</div>
+        <div class="section-hd-text"><h2>Managerial Recommendation</h2><p>Include the vendor's hourly lease cost in your final profitability analysis</p></div>
+        <div class="pts-badge">15 pts</div>
+      </div>
+      <div class="section-bd">
+        <div class="ver-tabs">
+          <div class="ver-tab-hd">
+            <button class="ver-tab-btn active" onclick="switchTab('p6','a')" id="p6-tab-a"><span class="vb ver-a">A</span> Version A</button>
+            <button class="ver-tab-btn" onclick="switchTab('p6','b')" id="p6-tab-b"><span class="vb ver-b">B</span> Version B</button>
+            <button class="ver-tab-btn" onclick="switchTab('p6','c')" id="p6-tab-c"><span class="vb ver-c">C</span> Version C</button>
+            <button class="ver-tab-btn" onclick="switchTab('p6','d')" id="p6-tab-d"><span class="vb ver-d">D</span> Version D</button>
+          </div>
+          <div class="ver-tab-panel active" id="p6-panel-a"><p style="font-size:14px;font-weight:700;color:var(--navy);">Tech lease cost: <span style="color:var(--red);">$8 per hour</span></p></div>
+          <div class="ver-tab-panel" id="p6-panel-b"><p style="font-size:14px;font-weight:700;color:var(--navy);">Tech lease cost: <span style="color:var(--red);">$10 per hour</span></p></div>
+          <div class="ver-tab-panel" id="p6-panel-c"><p style="font-size:14px;font-weight:700;color:var(--navy);">Tech lease cost: <span style="color:var(--red);">$5 per hour</span></p></div>
+          <div class="ver-tab-panel" id="p6-panel-d"><p style="font-size:14px;font-weight:700;color:var(--navy);">Tech lease cost: <span style="color:var(--red);">$7 per hour</span></p></div>
+        </div>
+
+        <div class="q-block">
+          <div class="q-num">Question 6a</div>
+          <div class="q-text">Recalculate the net hourly profit after the improvement by subtracting your version's tech lease cost from the "after improvement" profit you calculated in Part 5b. Compare this to the original hourly profit (before improvement, before tech cost). Is the improvement financially worthwhile?</div>
+          <span class="q-pts">6 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Question 6b</div>
+          <div class="q-text">Write a <strong>3–5 sentence recommendation</strong> to the operations director. Your recommendation must explicitly reference: (1) whether the process is capacity-constrained or demand-constrained, (2) the gross margin of the process (contribution margin ÷ revenue), and (3) whether the flow rate change — if any — is large enough to justify the leasing cost. State your final recommendation: accept or reject the vendor offer.</div>
+          <span class="q-pts">9 pts</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUBMISSION CHECKLIST -->
+  <div>
+    <div class="sec-div">Submission Requirements</div>
+    <div class="section-card" style="margin-top:14px;">
+      <div class="section-hd" style="background:var(--gray-50);padding:13px 20px;border-bottom:1px solid var(--gray-200);">
+        <h2 style="font-size:14px;font-weight:700;color:var(--navy);">Before you submit, verify the following</h2>
+      </div>
+      <div class="section-bd">
+        <div class="submit-list">
+          <div class="submit-item">Your file is saved as <strong>PDF or Word (.docx)</strong>.</div>
+          <div class="submit-item">Your <strong>assigned version (A, B, C, or D)</strong> is written at the top of your document.</div>
+          <div class="submit-item">All six parts are present and in order.</div>
+          <div class="submit-item">Part 1f shows both utilization formulas with matching results.</div>
+          <div class="submit-item">Part 2a shows the flow rate unit conversion (rx/min → rx/hr) before dividing into wages.</div>
+          <div class="submit-item">Part 5b shows all four profit components (revenue, variable cost, wages, fixed cost) for both before and after.</div>
+          <div class="submit-item">Part 6b uses the terms "capacity-constrained" or "demand-constrained" and states a clear accept/reject recommendation.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GRADING SUMMARY -->
+  <div class="section-card">
+    <div style="background:var(--blue-xlt);padding:13px 20px;border-bottom:1px solid var(--gray-200);">
+      <h2 style="font-size:14px;font-weight:700;color:var(--navy);">Grading Summary · 100 points total</h2>
+    </div>
+    <table class="grade-table">
+      <thead><tr><th>Part</th><th>Content</th><th style="text-align:right;">Points</th><th>Primary LO</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Part 1</strong></td><td>Efficiency metrics chain — all 6 metrics</td><td class="pts-right">25</td><td>LO4-1</td></tr>
+        <tr><td><strong>Part 2</strong></td><td>Cost of direct labor + unit conversion</td><td class="pts-right">10</td><td>LO4-1</td></tr>
+        <tr><td><strong>Part 3</strong></td><td>Takt time + target manpower + staffing comparison</td><td class="pts-right">15</td><td>LO4-2, LO4-3</td></tr>
+        <tr><td><strong>Part 4</strong></td><td>Line balancing — sub-activity reassignment</td><td class="pts-right">15</td><td>LO4-4</td></tr>
+        <tr><td><strong>Part 5</strong></td><td>Financial impact before/after improvement</td><td class="pts-right">20</td><td>LO4-6</td></tr>
+        <tr><td><strong>Part 6</strong></td><td>Recommendation with tech cost and constraint analysis</td><td class="pts-right">15</td><td>LO4-6</td></tr>
+        <tr class="total"><td colspan="2"><strong>Total</strong></td><td class="pts-right">100</td><td></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<script>
+function switchTab(part, ver) {
+  ['a','b','c','d'].forEach(v => {
+    const btn   = document.getElementById(part + '-tab-' + v);
+    const panel = document.getElementById(part + '-panel-' + v);
+    if (btn)   btn.classList.toggle('active', v === ver);
+    if (panel) panel.classList.toggle('active', v === ver);
+  });
+}
+</script>
+</body>
+</html>

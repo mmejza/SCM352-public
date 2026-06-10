@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Takt Time &amp; Target Manpower Trainer — SCM 352 M04</title>
+<style>
+:root {
+  --navy:#1a3a5c;--blue:#2563a8;--blue-lt:#dbeafe;--blue-xlt:#eff6ff;
+  --gold:#f59e0b;--gold-lt:#fffbeb;--gold-bdr:#fde68a;
+  --green:#16a34a;--green-lt:#f0fdf4;--green-bdr:#bbf7d0;
+  --red:#dc2626;--red-lt:#fef2f2;--red-bdr:#fecaca;
+  --amber:#d97706;--amber-lt:#fffbeb;--amber-bdr:#fde68a;
+  --teal:#0891b2;--teal-lt:#f0fdfe;--teal-bdr:#a5f3fc;
+  --gray-50:#f9fafb;--gray-100:#f3f4f6;--gray-200:#e5e7eb;
+  --gray-300:#d1d5db;--gray-400:#9ca3af;--gray-600:#4b5563;
+  --gray-700:#374151;--gray-800:#1f2937;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--gray-50);color:var(--gray-800);min-height:100vh}
+header{background:var(--navy);color:white;padding:16px 24px;display:flex;align-items:center;gap:16px}
+.header-badge{background:var(--gold);color:var(--navy);font-weight:700;font-size:11px;padding:3px 8px;border-radius:4px;letter-spacing:.05em;text-transform:uppercase}
+header h1{font-size:18px;font-weight:600}
+.scenario-nav{background:white;border-bottom:2px solid var(--gray-200);padding:0 24px;display:flex;overflow-x:auto}
+.scenario-btn{padding:12px 18px;border:none;background:none;cursor:pointer;font-size:13px;font-weight:500;color:var(--gray-600);border-bottom:3px solid transparent;white-space:nowrap;transition:all .15s}
+.scenario-btn:hover{color:var(--blue)}
+.scenario-btn.active{color:var(--blue);border-bottom-color:var(--blue);font-weight:600}
+.scenario-btn.sc-done{color:var(--green)}
+.scenario-btn.sc-done::after{content:' ✓'}
+.main{max-width:1100px;margin:0 auto;padding:24px;display:grid;grid-template-columns:1fr 300px;gap:24px;align-items:start}
+@media(max-width:820px){.main{grid-template-columns:1fr}}
+.card{background:white;border:1px solid var(--gray-200);border-radius:12px;overflow:hidden}
+.card-header{background:var(--blue-lt);padding:14px 20px;border-bottom:1px solid var(--gray-200)}
+.card-header h2{font-size:15px;font-weight:700;color:var(--navy)}
+.card-header p{font-size:13px;color:var(--gray-600);margin-top:4px}
+.card-body{padding:20px}
+.scenario-desc{font-size:14px;line-height:1.7;background:var(--gray-50);border-left:4px solid var(--teal);padding:14px 16px;border-radius:0 8px 8px 0;margin-bottom:16px}
+.given-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin-bottom:16px}
+.given-cell{background:var(--blue-xlt);border:1px solid var(--blue-lt);border-radius:8px;padding:10px 12px;text-align:center}
+.given-label{font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--blue);margin-bottom:3px}
+.given-val{font-size:15px;font-weight:700;color:var(--navy)}
+.diff-tag{font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:3px 9px;border-radius:100px}
+.diff-easy{background:var(--green-lt);color:var(--green)}
+.diff-medium{background:var(--amber-lt);color:var(--amber)}
+.diff-hard{background:var(--red-lt);color:var(--red)}
+.step-track{display:flex;align-items:center;gap:3px;margin-bottom:16px}
+.step-pip{width:28px;height:28px;border-radius:50%;border:2px solid var(--gray-200);background:white;font-size:10px;font-weight:700;color:var(--gray-400);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s}
+.step-pip.s-done{border-color:var(--green);background:var(--green);color:white}
+.step-pip.s-active{border-color:var(--teal);background:var(--teal);color:white}
+.step-conn{flex:1;height:2px;background:var(--gray-200)}
+.step-conn.c-done{background:var(--green)}
+.step-label{font-size:12px;font-weight:700;color:var(--navy);margin-bottom:8px}
+.step-q{font-size:14px;line-height:1.6;margin-bottom:14px}
+.option-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+.option-grid.single-col{grid-template-columns:1fr}
+@media(max-width:600px){.option-grid{grid-template-columns:1fr}}
+.option-card{display:flex;align-items:flex-start;gap:10px;padding:11px 13px;border:2px solid var(--gray-200);border-radius:10px;cursor:pointer;transition:border-color .15s,background .15s;background:white;user-select:none;text-align:left}
+.option-card:hover:not(.disabled){border-color:var(--teal);background:var(--teal-lt)}
+.option-card.selected{border-color:var(--teal);background:var(--teal-lt)}
+.option-card.o-correct{border-color:var(--green);background:var(--green-lt);pointer-events:none}
+.option-card.o-wrong{border-color:var(--red);background:var(--red-lt);pointer-events:none}
+.option-card.disabled{pointer-events:none;opacity:.6}
+.opt-radio{width:16px;height:16px;border-radius:50%;border:2px solid var(--gray-300);flex-shrink:0;margin-top:2px;transition:all .15s}
+.option-card.selected .opt-radio{border-color:var(--teal);background:var(--teal)}
+.option-card.o-correct .opt-radio{border-color:var(--green);background:var(--green)}
+.option-card.o-wrong .opt-radio{border-color:var(--red);background:var(--red)}
+.opt-text{font-size:13px;line-height:1.45}
+.opt-sub{font-size:11px;color:var(--gray-600);margin-top:3px}
+.btn{padding:9px 20px;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;transition:all .15s}
+.btn-primary{background:var(--teal);color:white}
+.btn-secondary{background:var(--gray-100);color:var(--gray-800)}
+.btn-green{background:var(--green);color:white}
+.btn-primary:hover{background:#0e7490}
+.btn-primary:disabled{background:var(--gray-400);cursor:not-allowed}
+.btn-secondary:hover{background:var(--gray-200)}
+.btn-green:hover{background:#15803d}
+.btn-group{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.fb-panel{display:none;margin-top:14px;border:2px solid var(--gray-200);border-radius:10px;overflow:hidden}
+.fb-panel.show{display:block}
+.fb-banner{padding:10px 14px;font-size:14px;font-weight:700;display:flex;align-items:center;gap:8px}
+.fb-correct{background:var(--green-lt);color:var(--green);border-bottom:2px solid var(--green)}
+.fb-wrong{background:var(--red-lt);color:var(--red);border-bottom:2px solid var(--red)}
+.fb-body{padding:14px;font-size:13px;line-height:1.6;background:white}
+.think-deeper{background:var(--gold-lt);border:1.5px solid var(--gold-bdr);border-radius:8px;padding:11px 14px;margin-top:10px;font-size:13px;line-height:1.55}
+.think-label{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--amber);margin-bottom:5px}
+.comparison-box{background:var(--teal-lt);border:1px solid var(--teal-bdr);border-radius:8px;padding:12px 14px;margin-bottom:14px;font-size:13px;display:none}
+.comparison-box.show{display:block}
+.comparison-box strong{color:var(--teal)}
+.cmp-row{display:flex;align-items:center;gap:8px;margin-top:6px;font-size:13px}
+.cmp-val{font-weight:700;font-size:15px;color:var(--navy)}
+.cmp-verdict{font-weight:700;padding:2px 8px;border-radius:100px;font-size:11px}
+.v-over{background:var(--red-lt);color:var(--red)}
+.v-match{background:var(--green-lt);color:var(--green)}
+.v-under{background:var(--amber-lt);color:var(--amber)}
+.sc-complete{background:var(--green-lt);border:1px solid var(--green-bdr);border-radius:10px;padding:18px;text-align:center;margin-top:12px;display:none}
+.sc-complete h3{color:var(--green);font-size:15px;font-weight:700;margin-bottom:8px}
+.final-box{display:none;text-align:center;padding:24px 12px}
+.final-box.show{display:block}
+.score-row{padding:14px 18px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--gray-100)}
+.score-num{font-size:28px;font-weight:700;color:var(--navy)}
+.score-meta{font-size:12px;color:var(--gray-600);line-height:1.4}
+.score-meta strong{color:var(--gray-800);display:block;font-size:13px}
+.prog-outer{height:5px;background:var(--gray-200);border-radius:3px;overflow:hidden;margin:0 18px 14px}
+.prog-inner{height:100%;background:var(--teal);border-radius:3px;transition:width .4s}
+.tip-box{background:var(--gold-lt);border:1px solid var(--gold-bdr);border-radius:8px;padding:11px 14px;font-size:12px;line-height:1.6;color:var(--gray-800)}
+.tip-box strong{color:var(--navy)}
+.ref-table{width:100%;border-collapse:collapse;font-size:12px;margin-top:8px}
+.ref-table th{background:var(--teal-lt);padding:6px 8px;text-align:left;font-weight:700;color:var(--teal);border-bottom:1px solid var(--teal-bdr)}
+.ref-table td{padding:6px 8px;border-bottom:1px solid var(--gray-100);vertical-align:top}
+.ref-table tr:last-child td{border-bottom:none}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-badge">SCM 352 · M04</div>
+  <h1>Takt Time &amp; Target Manpower Trainer</h1>
+</header>
+
+<div class="scenario-nav" id="scenarioNav"></div>
+
+<div class="main">
+  <div>
+    <div class="card">
+      <div class="card-header">
+        <h2 id="cardTitle"></h2>
+        <p id="cardSub"></p>
+      </div>
+      <div class="card-body">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap">
+          <span class="diff-tag" id="diffTag"></span>
+          <span style="margin-left:auto;font-size:11px;font-weight:600;color:var(--gray-400)" id="vigNum"></span>
+        </div>
+        <div class="scenario-desc" id="scenDesc"></div>
+        <div class="given-grid" id="givenGrid"></div>
+        <div class="step-track" id="stepTrack"></div>
+        <div class="comparison-box" id="cmpBox"></div>
+        <div id="stepArea"></div>
+        <div class="sc-complete" id="scComplete">
+          <h3 id="completeTitle"></h3>
+          <p id="completeMsg" style="font-size:13px;color:var(--gray-600);margin-bottom:12px"></p>
+          <button class="btn btn-green" id="nextScBtn" onclick="goNextScenario()"></button>
+        </div>
+        <div class="final-box" id="finalBox"></div>
+      </div>
+    </div>
+  </div>
+
+  <div style="position:sticky;top:24px;display:flex;flex-direction:column;gap:16px">
+    <div class="card">
+      <div class="card-header"><h2>Progress</h2><p>Steps completed</p></div>
+      <div class="score-row">
+        <div class="score-num" id="scoreNum">0</div>
+        <div class="score-meta">
+          <strong id="scoreLabel">steps correct</strong>
+          <span id="scoreDetail">of 15 total</span>
+        </div>
+      </div>
+      <div class="prog-outer"><div class="prog-inner" id="progBar" style="width:0%"></div></div>
+    </div>
+    <div class="card">
+      <div class="card-header"><h2>Takt Time Reference</h2><p>Chapter 4 · LO4-2 / LO4-3</p></div>
+      <div class="card-body">
+        <div class="tip-box">
+          <strong>Two forms — same result:</strong><br>
+          Rate form: Takt = 1 ÷ demand rate<br>
+          &nbsp;&nbsp;(demand in units/hr → takt in hr/unit)<br>
+          &nbsp;&nbsp;or: Takt = 60 ÷ demand rate (min/unit)<br><br>
+          Available-time form:<br>
+          &nbsp;&nbsp;Takt = available time ÷ demand volume<br><br>
+          <strong>Target Manpower:</strong><br>
+          TM = Labor Content ÷ Takt time<br>
+          (round up — no fractional workers)<br><br>
+          <strong>CT vs. Takt:</strong><br>
+          CT &gt; takt → worker exceeds takt pace<br>
+          CT = takt → perfectly balanced<br>
+          CT &lt; takt → under-utilized capacity
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><h2>Demand-Constrained Check</h2><p>Before balancing any line</p></div>
+      <div class="card-body">
+        <div class="tip-box" style="border-left:3px solid var(--red);background:var(--red-lt)">
+          <strong style="color:var(--red)">Check first:</strong><br>
+          If demand &lt; process capacity → process is demand-constrained. CT = 60 ÷ demand. Takt = CT. No worker exceeds takt. <strong>No line balancing needed.</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const SC = [
+  {
+    id:1, title:'Box Packaging Line', sub:'Scenario 1 of 5 · Rate Form, Integer TM', diff:'easy',
+    desc:'An assembly line packages gift boxes. Management wants to know whether the process is staffed correctly for current demand.',
+    given:[{lbl:'Demand',val:'10 boxes/hr'},{lbl:'Labor Content',val:'18 min/box'},{lbl:'Current Workers',val:'3'},{lbl:'Current CT',val:'8 min/box'}],
+    taktResult:'6 min/box',
+    tmResult:'3 workers (18 ÷ 6 = 3.0 — exact)',
+    steps:[
+      {label:'Step 1 of 3 — Select Your Form',
+       q:'Demand is stated as 10 boxes per hour. Which takt time formula applies here?',
+       wide:true,
+       opts:[
+         {v:'rate',t:'Rate Form',sub:'Takt = 60 ÷ demand rate · Use when demand is given as units per hour'},
+         {v:'avail',t:'Available-Time Form',sub:'Takt = available time ÷ demand volume · Use when demand is given as total units over a period'},
+         {v:'either',t:'Either Form',sub:'Both formulas apply equally and will give the same result here'}
+       ],
+       ans:'rate',
+       reveal:'The Rate Form applies. Demand is stated as a rate (10/hr), so takt = 60 ÷ 10. The Available-Time Form would require knowing the total available time in the period and total demand units — those are not given here. When you see "X units per hour," use the Rate Form.',
+       td:null},
+      {label:'Step 2 of 3 — Compute Takt Time',
+       q:'Using the Rate Form, what is the takt time? Demand = 10 boxes/hr.',
+       opts:[
+         {v:'6',t:'6 min/box — 60 ÷ 10'},{v:'10',t:'10 min/box — inverting 60 and demand'},{v:'8',t:'8 min/box — current cycle time (not takt)'},{v:'1.8',t:'1.8 min/box — LC ÷ current workers'}
+       ],
+       ans:'6',
+       reveal:'Takt = 60 ÷ demand rate = 60 ÷ 10 = 6 min/box. Takt time is the pace demand sets — one box every 6 minutes. It is a market property, not a process property.',
+       td:null,showCmp:false},
+      {label:'Step 3 of 3 — TM and Diagnosis',
+       q:'Takt = 6 min. LC = 18 min. Current workers = 3. Current CT = 8 min. Choose the correct target manpower and CT-vs-takt diagnosis.',
+       opts:[
+         {v:'a',t:'TM = 3 (exact). CT = 8 > takt = 6 → at least one worker exceeds takt pace. Line balancing needed.'},
+         {v:'b',t:'TM = 2 (round up from 1.5). CT = 8 > takt = 6 → understaffed; hire one worker.'},
+         {v:'c',t:'TM = 3. CT = 8 < takt = 6 → process produces faster than demand; reduce workers.'},
+         {v:'d',t:'TM = 4 (round up from 3.0). CT = 8 > takt = 6 → need another worker to meet pace.'}
+       ],
+       ans:'a',
+       reveal:'TM = LC ÷ takt = 18 ÷ 6 = 3.0 → exactly 3 workers. Current staffing (3) matches TM — headcount is right. But CT = 8 min exceeds takt = 6 min, meaning at least one worker\'s task assignment takes longer than 6 min. The fix is rebalancing work across the three workers, not adding more people.',
+       td:'TM tells you the minimum workers needed if perfectly balanced. CT > takt tells you the current balance is wrong. These diagnose different problems: TM → headcount, CT-vs-takt → assignment quality.',
+       showCmp:true}
+    ]
+  },
+  {
+    id:2, title:'E-Commerce Fulfillment', sub:'Scenario 2 of 5 · Rate Form, Non-Integer TM', diff:'medium',
+    desc:'An e-commerce fulfillment center processes orders. The operations manager suspects the center is overstaffed for current order volume.',
+    given:[{lbl:'Demand',val:'8 orders/hr'},{lbl:'Labor Content',val:'14 min/order'},{lbl:'Current Workers',val:'4'},{lbl:'Current CT',val:'5 min/order'}],
+    taktResult:'7.5 min/order',
+    tmResult:'2 workers (14 ÷ 7.5 = 1.87 → round up to 2)',
+    steps:[
+      {label:'Step 1 of 3 — Select Your Form',
+       q:'Demand is 8 orders per hour. Which takt time formula applies here?',
+       wide:true,
+       opts:[
+         {v:'rate',t:'Rate Form',sub:'Takt = 60 ÷ demand rate · Applies when demand is given as a rate per unit time'},
+         {v:'avail',t:'Available-Time Form',sub:'Takt = available time ÷ demand volume · Applies when total volume over a period is given'},
+         {v:'either',t:'Either Form',sub:'Both formulas will give the same result here'}
+       ],
+       ans:'rate',
+       reveal:'Rate Form applies — demand is stated as 8/hr. Takt = 60 ÷ 8 = 7.5 min/order.',
+       td:null},
+      {label:'Step 2 of 3 — Compute Takt Time',
+       q:'Using the Rate Form, what is takt time? Demand = 8 orders/hr.',
+       opts:[
+         {v:'7.5',t:'7.5 min/order — 60 ÷ 8'},{v:'8',t:'8 min/order — demand rate misread as minutes'},{v:'5',t:'5 min/order — current cycle time'},{v:'1.75',t:'1.75 min/order — LC ÷ current workers'}
+       ],
+       ans:'7.5',
+       reveal:'Takt = 60 ÷ 8 = 7.5 min/order. Non-integer takt times are normal — do not round takt at this step. Rounding takt before computing TM introduces error.',
+       td:null,showCmp:false},
+      {label:'Step 3 of 3 — TM and Diagnosis',
+       q:'Takt = 7.5 min. LC = 14 min. Current workers = 4. Current CT = 5 min. Choose the correct TM and diagnosis.',
+       opts:[
+         {v:'a',t:'TM = 2 (1.87 rounded up). CT = 5 < takt = 7.5 → each worker is below takt pace. Overstaffed by 2.'},
+         {v:'b',t:'TM = 2 (1.87 rounded up). CT = 5 < takt = 7.5 → process is too slow; need line balancing.'},
+         {v:'c',t:'TM = 1 (1.87 rounded down). CT = 5 < takt = 7.5 → no problem detected.'},
+         {v:'d',t:'TM = 2. CT = 5 > takt = 7.5 → at least one worker exceeds takt. Rebalance needed.'}
+       ],
+       ans:'a',
+       reveal:'TM = 14 ÷ 7.5 = 1.87 → round UP to 2 (cannot staff fractionally). Current = 4. Excess workers = 4 − 2 = 2. CT = 5 min < takt = 7.5 min means every worker finishes their share of work before the takt deadline — the process is running faster than demand requires. The overstaffing signal comes from TM (2) vs. current (4), not from CT vs. takt alone.',
+       td:'Always round TM UP. Rounding down would mean the process cannot keep pace with demand when tasks are perfectly balanced. The +1 from rounding up is the cushion for imperfect balance and demand variability.',
+       showCmp:true}
+    ]
+  },
+  {
+    id:3, title:'Commercial Print Shop', sub:'Scenario 3 of 5 · Available-Time Form, Shift Conversion', diff:'medium',
+    desc:'A print shop runs 2 shifts of 8 hours each per day. Management wants to size the crew for daily production demand.',
+    given:[{lbl:'Shifts',val:'2 × 8 hr = 960 min'},{lbl:'Daily Demand',val:'160 units/day'},{lbl:'Labor Content',val:'18 min/unit'},{lbl:'Current Workers',val:'4'},{lbl:'Current CT',val:'5 min/unit'}],
+    taktResult:'6 min/unit',
+    tmResult:'3 workers (18 ÷ 6 = 3.0 — exact)',
+    steps:[
+      {label:'Step 1 of 3 — Select Your Form',
+       q:'Demand is given as 160 units per day across 2 shifts. Which form applies?',
+       wide:true,
+       opts:[
+         {v:'rate',t:'Rate Form',sub:'Takt = 60 ÷ demand rate · Best when demand is given as an hourly rate'},
+         {v:'avail',t:'Available-Time Form',sub:'Takt = available time ÷ demand volume · Best when total volume and total time are given'},
+         {v:'either',t:'Either Form',sub:'Both will give the same answer if you convert units consistently'}
+       ],
+       ans:'avail',
+       reveal:'The Available-Time Form is the most direct here. Available time = 2 shifts × 8 hr × 60 min/hr = 960 min. Daily demand = 160 units. Takt = 960 ÷ 160 = 6 min/unit. The Rate Form would also work (demand = 160 ÷ 960 min = 0.167/min → takt = 6 min), but requires an extra unit conversion step.',
+       td:'When given total volume over a period and total available time, use the Available-Time Form directly. It avoids the intermediate step of converting to an hourly rate.'},
+      {label:'Step 2 of 3 — Compute Takt Time',
+       q:'Using the Available-Time Form: available time = 960 min, daily demand = 160 units. What is takt?',
+       opts:[
+         {v:'6',t:'6 min/unit — 960 ÷ 160'},{v:'8',t:'8 min/unit — 1 shift (480 min) ÷ 160 (wrong time)'},{v:'5',t:'5 min/unit — current cycle time'},{v:'12',t:'12 min/unit — 960 ÷ 80 (only 1 shift counted)'}
+       ],
+       ans:'6',
+       reveal:'Takt = available time ÷ demand = 960 ÷ 160 = 6 min/unit. The 8-min trap uses only one shift (480 min) instead of both (960 min), halving available time and doubling the computed takt. Always calculate total available time across all shifts before dividing.',
+       td:null,showCmp:false},
+      {label:'Step 3 of 3 — TM and Diagnosis',
+       q:'Takt = 6 min. LC = 18 min. Current workers = 4. Current CT = 5 min. Select the correct TM and diagnosis.',
+       opts:[
+         {v:'a',t:'TM = 3 (exact). CT = 5 < takt = 6 → each worker finishes ahead of takt. Overstaffed by 1.'},
+         {v:'b',t:'TM = 3. CT = 5 > takt = 6 → at least one worker exceeds takt. Rebalance.'},
+         {v:'c',t:'TM = 2 (rounded). CT = 5 < takt = 6 → overstaffed by 2.'},
+         {v:'d',t:'TM = 4 (matches current). No overstaffing problem.'}
+       ],
+       ans:'a',
+       reveal:'TM = 18 ÷ 6 = 3.0 → exactly 3 workers. Current = 4 → 1 excess worker. CT = 5 min < takt = 6 min confirms that the current workers are finishing ahead of the takt pace — the process has more capacity than demand requires. Overstaffing signal = current (4) > TM (3).',
+       td:null,showCmp:true}
+    ]
+  },
+  {
+    id:4, title:'Hospital Radiology Department', sub:'Scenario 4 of 5 · Available-Time Form, Large Overstaffing', diff:'medium',
+    desc:'A hospital radiology department runs one 8-hour shift. The department manager is evaluating whether current staffing is aligned with patient scan demand.',
+    given:[{lbl:'Available Time',val:'1 shift × 8 hr = 480 min'},{lbl:'Demand',val:'40 patients/shift'},{lbl:'Labor Content',val:'24 min/patient'},{lbl:'Current Workers',val:'5'},{lbl:'Current CT',val:'6 min/patient'}],
+    taktResult:'12 min/patient',
+    tmResult:'2 workers (24 ÷ 12 = 2.0 — exact)',
+    steps:[
+      {label:'Step 1 of 3 — Select Your Form',
+       q:'Available time = 480 min/shift, demand = 40 patients/shift. Which form applies?',
+       wide:true,
+       opts:[
+         {v:'rate',t:'Rate Form',sub:'Takt = 60 ÷ demand rate · Demand here is 40 patients per 480 min = 5/hr'},
+         {v:'avail',t:'Available-Time Form',sub:'Takt = available time ÷ demand volume · Direct: 480 ÷ 40'},
+         {v:'either',t:'Either Form',sub:'Both give the same result with consistent unit handling'}
+       ],
+       ans:'avail',
+       reveal:'Available-Time Form is most direct: takt = 480 ÷ 40 = 12 min/patient. Rate Form also works: 40 patients ÷ 480 min = 0.0833/min → takt = 1/0.0833 = 12 min. Both are correct; Available-Time Form avoids the extra conversion step.',
+       td:null},
+      {label:'Step 2 of 3 — Compute Takt Time',
+       q:'Available time = 480 min, demand = 40 patients. What is takt?',
+       opts:[
+         {v:'12',t:'12 min/patient — 480 ÷ 40'},{v:'6',t:'6 min/patient — current cycle time'},{v:'8',t:'8 min/patient — 480 ÷ 60 (uses hours instead of patients)'},{v:'9.6',t:'9.6 min/patient — 480 ÷ 50 (wrong demand)'}
+       ],
+       ans:'12',
+       reveal:'Takt = 480 ÷ 40 = 12 min/patient. Each patient should be processed every 12 minutes to serve exactly 40 patients in the shift. The current CT (6 min) is half the takt — the process is running at twice the required pace.',
+       td:null,showCmp:false},
+      {label:'Step 3 of 3 — TM and Diagnosis',
+       q:'Takt = 12 min. LC = 24 min. Current workers = 5. Current CT = 6 min. Select the correct analysis.',
+       opts:[
+         {v:'a',t:'TM = 2 (exact). CT = 6 < takt = 12 → each worker is well below takt. Overstaffed by 3.'},
+         {v:'b',t:'TM = 2. CT = 6 < takt = 12 → process is undersupplied; needs demand generation, not staffing change.'},
+         {v:'c',t:'TM = 3 (rounded). CT = 6 < takt = 12 → overstaffed by 2.'},
+         {v:'d',t:'TM = 2. CT = 6 > takt = 12 → workers exceed takt, line balancing needed.'}
+       ],
+       ans:'a',
+       reveal:'TM = 24 ÷ 12 = 2.0 → exactly 2 workers. Current = 5 → 3 excess workers. CT = 6 min is exactly half of takt = 12 min, which makes sense: 5 workers each handling 24÷5 = 4.8 min → CT ≈ 4.8 min (or with perfect balance, closer to 4.8). Either way, CT << takt confirms significant over-capacity. The 3 excess workers represent labor cost paid for capacity that demand does not require.',
+       td:'Overstaffing of this magnitude is common in hospital departments where historical headcount was built around peak demand or patient safety minimums that may not apply uniformly to all services.',
+       showCmp:true}
+    ]
+  },
+  {
+    id:5, title:'Technical Support Center', sub:'Scenario 5 of 5 · Either Form Works', diff:'hard',
+    desc:'A technical support center handles calls during one 8-hour shift. Both demand rate and shift hours are known. The manager wants to verify current staffing against takt time.',
+    given:[{lbl:'Demand',val:'15 calls/hr'},{lbl:'Available Time',val:'8-hr shift = 480 min'},{lbl:'Daily Demand',val:'15 × 8 = 120 calls'},{lbl:'Labor Content',val:'16 min/call'},{lbl:'Current Workers',val:'4'},{lbl:'Current CT',val:'4 min/call'}],
+    taktResult:'4 min/call',
+    tmResult:'4 workers (16 ÷ 4 = 4.0 — exact)',
+    steps:[
+      {label:'Step 1 of 3 — Select Your Form',
+       q:'Both hourly demand (15/hr) and available time (480 min, 120 calls/shift) are known. Which form applies?',
+       wide:true,
+       opts:[
+         {v:'rate',t:'Rate Form only',sub:'Takt = 60 ÷ 15 = 4 min · Only the hourly rate approach works here'},
+         {v:'avail',t:'Available-Time Form only',sub:'Takt = 480 ÷ 120 = 4 min · Only the available-time approach works here'},
+         {v:'either',t:'Either Form — both apply',sub:'Rate and Available-Time forms give the same result when data is consistent'}
+       ],
+       ans:'either',
+       reveal:'Both forms work and give the same answer. Rate Form: takt = 60 ÷ 15 = 4 min/call. Available-Time Form: takt = 480 ÷ 120 = 4 min/call. When you have both the rate and the total volume/available time, either formula is valid. They must agree — if they don\'t, check your unit conversions.',
+       td:'The two forms are mathematically equivalent: (60 min/hr) ÷ (demand in units/hr) = (total min available) ÷ (total units demanded). Both describe the same relationship.'},
+      {label:'Step 2 of 3 — Compute Takt Time',
+       q:'Using either form, what is the takt time?',
+       opts:[
+         {v:'4',t:'4 min/call — both forms give 4 min'},{v:'8',t:'8 min/call — uses only half the demand'},{v:'15',t:'15 min/call — demand rate confused with minutes'},{v:'3',t:'3 min/call — uses 5 workers instead of 4'}
+       ],
+       ans:'4',
+       reveal:'Takt = 60 ÷ 15 = 4 min/call = 480 ÷ 120 = 4 min/call. Both forms confirm 4 min. This consistency check is a useful verification step when you have sufficient data for both formulas.',
+       td:null,showCmp:false},
+      {label:'Step 3 of 3 — TM and Diagnosis',
+       q:'Takt = 4 min. LC = 16 min. Current workers = 4. Current CT = 4 min. What is the correct analysis?',
+       opts:[
+         {v:'a',t:'TM = 4 (exact). CT = 4 = takt = 4 → process runs at exactly the takt pace. Perfectly staffed and balanced.'},
+         {v:'b',t:'TM = 4. CT = 4 = takt = 4 → appears balanced, but TM should be rounded up to 5 for variability buffer.'},
+         {v:'c',t:'TM = 3 (16 ÷ 4 rounded down). CT = 4 = takt → overstaffed by 1.'},
+         {v:'d',t:'TM = 4. CT = 4 > takt = 4 → one worker exceeds takt. Rebalancing required.'}
+       ],
+       ans:'a',
+       reveal:'TM = 16 ÷ 4 = 4.0 (exact integer). Current = 4 = TM. CT = 4 min = takt = 4 min. This is the ideal state: headcount matches TM, and the process is running at exactly the takt rate. Perfect balance. In practice, demand variability (calls bunching up) would provide its own case for an additional worker — but by the numbers, this process is precisely matched to demand.',
+       td:'CT = takt is the goal of line balancing. When every worker\'s processing time equals takt, no worker is idle and none exceeds the required pace. This is the target state that line balancing works toward.',
+       showCmp:true}
+    ]
+  }
+];
+
+// ── STATE ──────────────────────────────────────────────
+let scIdx = 0;
+let stIdx = 0;
+let selOpt = null;
+let submitted = false;
+let stDone = [];
+let scDone = [];
+let totalCorrect = 0;
+const TOTAL_STEPS = 15;
+
+function init() {
+  SC.forEach((_,i) => { stDone[i] = []; scDone[i] = false; });
+  buildNav();
+  renderScenario(0);
+}
+
+function buildNav() {
+  const nav = document.getElementById('scenarioNav');
+  SC.forEach((sc, i) => {
+    const b = document.createElement('button');
+    b.className = 'scenario-btn' + (i===0?' active':'');
+    b.id = 'scBtn' + i;
+    b.textContent = 'S' + (i+1) + ' — ' + sc.title;
+    b.onclick = () => goScenario(i);
+    nav.appendChild(b);
+  });
+}
+
+function updateNavBtn(i) {
+  const b = document.getElementById('scBtn'+i);
+  if (!b) return;
+  b.className = 'scenario-btn' + (i===scIdx?' active':'') + (scDone[i]?' sc-done':'');
+}
+
+function goScenario(i) {
+  scIdx = i;
+  stIdx = 0;
+  selOpt = null;
+  submitted = false;
+  SC.forEach((_,j) => updateNavBtn(j));
+  renderScenario(i);
+}
+
+function goNextScenario() {
+  if (scIdx < SC.length - 1) goScenario(scIdx + 1);
+  else showFinal();
+}
+
+function renderScenario(si) {
+  const sc = SC[si];
+  document.getElementById('cardTitle').textContent = sc.title;
+  document.getElementById('cardSub').textContent = sc.sub;
+  const dt = document.getElementById('diffTag');
+  dt.textContent = sc.diff.charAt(0).toUpperCase()+sc.diff.slice(1);
+  dt.className = 'diff-tag diff-'+sc.diff;
+  document.getElementById('vigNum').textContent = 'Scenario '+(si+1)+' of '+SC.length;
+  document.getElementById('scenDesc').textContent = sc.desc;
+
+  const gg = document.getElementById('givenGrid');
+  gg.innerHTML = sc.given.map(g=>`<div class="given-cell"><div class="given-label">${g.lbl}</div><div class="given-val">${g.val}</div></div>`).join('');
+
+  document.getElementById('cmpBox').classList.remove('show');
+  document.getElementById('scComplete').style.display = 'none';
+  document.getElementById('finalBox').classList.remove('show');
+
+  buildStepTrack(si);
+
+  if (scDone[si]) {
+    showComparisonBox(si);
+    showScenarioComplete(si);
+  } else {
+    const resume = stDone[si].findIndex(v => !v);
+    stIdx = (resume === -1) ? sc.steps.length - 1 : resume;
+    if (stIdx > 0) showComparisonBox(si);
+    renderStep(si, stIdx);
+  }
+}
+
+function buildStepTrack(si) {
+  const sc = SC[si];
+  const track = document.getElementById('stepTrack');
+  track.innerHTML = '';
+  sc.steps.forEach((_,t) => {
+    if (t > 0) {
+      const c = document.createElement('div');
+      c.className = 'step-conn' + (stDone[si][t-1] ? ' c-done':'');
+      c.id = 'conn'+si+'_'+t;
+      track.appendChild(c);
+    }
+    const pip = document.createElement('div');
+    pip.id = 'pip'+si+'_'+t;
+    pip.className = 'step-pip ' + (stDone[si][t] ? 's-done' : (t===stIdx && !scDone[si] ? 's-active':''));
+    pip.textContent = t+1;
+    track.appendChild(pip);
+  });
+}
+
+function updateStepTrack(si, ti) {
+  SC[si].steps.forEach((_,t) => {
+    const pip = document.getElementById('pip'+si+'_'+t);
+    if (pip) pip.className = 'step-pip ' + (stDone[si][t] ? 's-done' : (t===ti ? 's-active':''));
+    const conn = document.getElementById('conn'+si+'_'+t);
+    if (conn) conn.className = 'step-conn' + (stDone[si][t-1] ? ' c-done':'');
+  });
+}
+
+function showComparisonBox(si) {
+  const sc = SC[si];
+  const box = document.getElementById('cmpBox');
+  if (!box) return;
+  box.classList.add('show');
+  box.innerHTML = `
+    <strong>Takt time computed:</strong> ${sc.taktResult}<br>
+    <strong>Target Manpower:</strong> ${sc.tmResult}`;
+}
+
+function renderStep(si, ti) {
+  stIdx = ti;
+  selOpt = null;
+  submitted = false;
+  const sc = SC[si];
+  const step = sc.steps[ti];
+  updateStepTrack(si, ti);
+
+  const gridCls = step.wide ? 'option-grid single-col' : 'option-grid';
+
+  const area = document.getElementById('stepArea');
+  area.innerHTML = `
+    <div class="step-label">${step.label}</div>
+    <div class="step-q">${step.q}</div>
+    <div class="${gridCls}" id="optGrid">
+      ${step.opts.map(o=>`
+        <div class="option-card ${stDone[si][ti]?'disabled':''}" id="opt_${o.v}" onclick="selectOpt('${o.v}')">
+          <div class="opt-radio"></div>
+          <div>
+            <div class="opt-text">${o.t}</div>
+            ${o.sub ? `<div class="opt-sub">${o.sub}</div>` : ''}
+          </div>
+        </div>`).join('')}
+    </div>
+    <div class="btn-group">
+      <button class="btn btn-primary" id="submitBtn" onclick="handleSubmit()" disabled>Check Answer</button>
+    </div>
+    <div class="fb-panel" id="fbPanel">
+      <div class="fb-banner" id="fbBanner"></div>
+      <div class="fb-body">
+        <div id="fbReveal"></div>
+        ${step.td ? `<div class="think-deeper"><div class="think-label">Think Deeper</div><div>${step.td}</div></div>` : ''}
+      </div>
+    </div>`;
+
+  if (stDone[si][ti]) replayStep(si, ti);
+}
+
+function replayStep(si, ti) {
+  submitted = true;
+  document.getElementById('submitBtn').style.display = 'none';
+  const step = SC[si].steps[ti];
+  markOptions(step, null, 'correct');
+  showFeedback(step, 'correct');
+  if (ti < SC[si].steps.length - 1) addNextBtn(si, ti);
+}
+
+function selectOpt(v) {
+  if (submitted) return;
+  selOpt = v;
+  document.querySelectorAll('.option-card').forEach(el => el.classList.remove('selected'));
+  const c = document.getElementById('opt_'+v);
+  if (c) c.classList.add('selected');
+  document.getElementById('submitBtn').disabled = false;
+}
+
+function handleSubmit() {
+  if (!selOpt || submitted) return;
+  submitted = true;
+  const sc = SC[scIdx];
+  const step = sc.steps[stIdx];
+  const correct = (selOpt === step.ans);
+
+  markOptions(step, selOpt, correct ? 'correct' : 'wrong');
+
+  if (correct && !stDone[scIdx][stIdx]) {
+    stDone[scIdx][stIdx] = true;
+    totalCorrect++;
+    updateScore();
+    updateStepTrack(scIdx, stIdx);
+    updateNavBtn(scIdx);
+    if (step.showCmp) showComparisonBox(scIdx);
+  }
+
+  showFeedback(step, correct ? 'correct' : 'wrong');
+  document.getElementById('submitBtn').style.display = 'none';
+
+  if (correct) {
+    if (stIdx < sc.steps.length - 1) addNextBtn(scIdx, stIdx);
+    else {
+      scDone[scIdx] = true;
+      updateNavBtn(scIdx);
+      setTimeout(() => showScenarioComplete(scIdx), 700);
+    }
+  } else {
+    addRetryBtn();
+  }
+}
+
+function markOptions(step, chosen, result) {
+  document.querySelectorAll('.option-card').forEach(el => {
+    el.classList.add('disabled');
+    const v = el.id.replace('opt_','');
+    if (v === step.ans) el.classList.add('o-correct');
+    else if (v === chosen && result === 'wrong') el.classList.add('o-wrong');
+  });
+}
+
+function addNextBtn(si, ti) {
+  const bg = document.querySelector('.btn-group');
+  if (!bg) return;
+  const b = document.createElement('button');
+  b.className = 'btn btn-green';
+  b.textContent = 'Next Step →';
+  b.onclick = () => renderStep(si, ti+1);
+  bg.appendChild(b);
+}
+
+function addRetryBtn() {
+  const bg = document.querySelector('.btn-group');
+  if (!bg) return;
+  const b = document.createElement('button');
+  b.className = 'btn btn-secondary';
+  b.textContent = '↩ Try Again';
+  b.onclick = () => renderStep(scIdx, stIdx);
+  bg.appendChild(b);
+}
+
+function showFeedback(step, status) {
+  const panel = document.getElementById('fbPanel');
+  const banner = document.getElementById('fbBanner');
+  const reveal = document.getElementById('fbReveal');
+  if (!panel) return;
+  banner.className = 'fb-banner fb-' + status;
+  banner.innerHTML = status === 'correct' ? '✓ Correct.' : '✗ Incorrect — see the explanation below.';
+  reveal.innerHTML = step.reveal || '';
+  panel.classList.add('show');
+}
+
+function showScenarioComplete(si) {
+  document.getElementById('stepArea').innerHTML = '';
+  const box = document.getElementById('scComplete');
+  box.style.display = 'block';
+  document.getElementById('completeTitle').textContent = 'Scenario ' + (si+1) + ' Complete ✓';
+  document.getElementById('completeMsg').textContent = SC[si].title + ' — all 3 steps done.';
+  const btn = document.getElementById('nextScBtn');
+  btn.textContent = si < SC.length - 1 ? 'Next Scenario →' : 'See Final Summary';
+}
+
+function updateScore() {
+  document.getElementById('scoreNum').textContent = totalCorrect;
+  document.getElementById('progBar').style.width = ((totalCorrect / TOTAL_STEPS) * 100) + '%';
+}
+
+function showFinal() {
+  document.getElementById('scComplete').style.display = 'none';
+  const box = document.getElementById('finalBox');
+  box.classList.add('show');
+  const pct = Math.round((totalCorrect / TOTAL_STEPS) * 100);
+  box.innerHTML = `
+    <h3 style="color:var(--green);font-size:18px;margin-bottom:8px">All 5 Scenarios Complete</h3>
+    <p style="font-size:22px;font-weight:700;color:var(--navy);margin:10px 0">${totalCorrect} / ${TOTAL_STEPS} steps</p>
+    <p style="color:var(--gray-600);font-size:13px;margin-bottom:16px">${pct}% correct</p>
+    <div class="tip-box" style="text-align:left;max-width:480px;margin:0 auto 16px">
+      <strong>Gate 2 and Case readiness:</strong><br>
+      Gate 2 Q2 and Q3 test takt time computation and TM in both forms. Gate 2 Q5 (demand-constrained wrinkle) tests whether you check constraint type before applying takt diagnostics. Case Parts 3 and 4 ask for TM and line balancing for Riverside Health. Always identify the form, compute takt exactly, then round TM up.
+    </div>
+    <button class="btn btn-secondary" onclick="goScenario(0)">↩ Restart from Scenario 1</button>`;
+}
+
+init();
+</script>
+</body>
+</html>

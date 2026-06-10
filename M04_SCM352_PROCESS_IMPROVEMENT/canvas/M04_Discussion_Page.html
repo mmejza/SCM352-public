@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Discussion: Idle Time in the Wild — SCM 352 M04</title>
+<style>
+:root {
+  --navy:#1a3a5c;--blue:#2563a8;--blue-lt:#dbeafe;--blue-xlt:#eff6ff;
+  --gold:#f59e0b;--gold-lt:#fffbeb;--gold-bdr:#fde68a;
+  --green:#16a34a;--green-lt:#f0fdf4;--green-bdr:#bbf7d0;
+  --red:#dc2626;--red-lt:#fef2f2;--red-bdr:#fecaca;
+  --purple:#7c3aed;--purple-lt:#faf5ff;--purple-bdr:#ddd6fe;
+  --teal:#0891b2;--teal-lt:#f0fdfe;--teal-bdr:#a5f3fc;
+  --blue-bdr:#bfdbfe;--gold-dark:#92400e;
+  --gray-50:#f9fafb;--gray-100:#f3f4f6;--gray-200:#e5e7eb;--gray-300:#d1d5db;
+  --gray-400:#9ca3af;--gray-600:#4b5563;--gray-700:#374151;--gray-800:#1f2937;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--gray-50);color:var(--gray-800);line-height:1.6;}
+.page-header{background:var(--navy);color:white;padding:20px 28px;display:flex;align-items:flex-start;gap:16px;}
+.header-badge{background:var(--gold);color:var(--navy);font-weight:700;font-size:11px;padding:3px 9px;border-radius:4px;letter-spacing:.05em;text-transform:uppercase;white-space:nowrap;flex-shrink:0;}
+.header-text h1{font-size:20px;font-weight:700;margin-bottom:4px;}
+.header-text p{font-size:13px;color:rgba(255,255,255,.7);}
+.meta-strip{display:flex;gap:0;flex-wrap:wrap;border-bottom:2px solid var(--gray-200);background:white;}
+.meta-pill{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;padding:9px 16px;border-right:1px solid var(--gray-200);color:var(--gray-700);}
+.pip{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.pg-body{max-width:860px;margin:0 auto;padding:28px 24px 48px;display:flex;flex-direction:column;gap:24px;}
+.sec-div{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--gray-400);padding-bottom:10px;border-bottom:1px solid var(--gray-200);margin-bottom:-4px;}
+.card{background:white;border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;}
+.card-hd{padding:14px 20px;border-bottom:1px solid var(--gray-200);display:flex;align-items:center;gap:10px;}
+.card-hd h2{font-size:15px;font-weight:700;color:var(--navy);}
+.card-hd p{font-size:12px;color:var(--gray-600);margin-top:2px;}
+.card-bd{padding:20px;}
+.alert{border-radius:10px;padding:13px 16px;font-size:13.5px;line-height:1.6;display:flex;gap:11px;align-items:flex-start;}
+.alert-icon{font-size:17px;flex-shrink:0;margin-top:1px;}
+.alert-body{flex:1;}
+.alert-body strong{display:block;margin-bottom:3px;}
+.alert-red{background:var(--red-lt);border:1.5px solid var(--red-bdr);}
+.alert-gold{background:var(--gold-lt);border:1.5px solid var(--gold-bdr);}
+.alert-blue{background:var(--blue-xlt);border:1.5px solid var(--blue-bdr);}
+.part{border:1.5px solid var(--gray-200);border-radius:10px;overflow:hidden;margin-bottom:14px;}
+.part:last-child{margin-bottom:0;}
+.part-header{padding:12px 16px;display:flex;align-items:center;gap:12px;border-bottom:1.5px solid var(--gray-200);}
+.part-num{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;flex-shrink:0;color:white;}
+.part-title{flex:1;font-size:14px;font-weight:700;color:var(--gray-800);}
+.part-pts{font-size:12px;font-weight:700;padding:3px 9px;border-radius:100px;white-space:nowrap;}
+.part-body{padding:14px 16px;font-size:13.5px;line-height:1.65;color:var(--gray-700);}
+.part-body p+p{margin-top:8px;}
+.example-note{font-size:12px;color:var(--gray-600);margin-top:8px;padding:8px 12px;background:var(--gray-50);border-radius:6px;border-left:3px solid var(--gray-300);}
+.part-1 .part-header{background:var(--blue-xlt);border-color:var(--blue-bdr);} .part-1 .part-num{background:var(--blue);} .part-1 .part-pts{background:var(--blue-lt);color:var(--navy);}
+.part-2 .part-header{background:var(--purple-lt);border-color:var(--purple-bdr);} .part-2 .part-num{background:var(--purple);} .part-2 .part-pts{background:var(--purple-bdr);color:var(--purple);}
+.part-3 .part-header{background:var(--teal-lt);border-color:var(--teal-bdr);} .part-3 .part-num{background:var(--teal);} .part-3 .part-pts{background:var(--teal-bdr);color:var(--teal);}
+.part-4 .part-header{background:var(--green-lt);border-color:var(--green-bdr);} .part-4 .part-num{background:var(--green);} .part-4 .part-pts{background:var(--green-bdr);color:var(--green);}
+.pts-table{width:100%;border-collapse:collapse;font-size:13.5px;}
+.pts-table th{background:var(--navy);color:white;padding:9px 14px;text-align:left;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;}
+.pts-table td{padding:9px 14px;border-bottom:1px solid var(--gray-100);vertical-align:top;}
+.pts-table tr:last-child td{border-bottom:none;}
+.pts-table tr.total-row td{font-weight:700;background:var(--gray-50);font-size:14px;border-top:2px solid var(--gray-200);}
+.pts-num{font-weight:700;font-size:15px;color:var(--navy);text-align:right;white-space:nowrap;}
+.tip-list{list-style:none;padding:0;display:flex;flex-direction:column;gap:8px;}
+.tip-list li{display:flex;gap:10px;font-size:13.5px;line-height:1.55;color:var(--gray-700);}
+.tip-list li::before{content:'→';color:var(--gold);font-weight:700;flex-shrink:0;margin-top:1px;}
+.prohibited-list{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;}
+.prohibited-tag{font-size:12px;font-weight:600;padding:3px 10px;border-radius:100px;background:var(--red-lt);color:var(--red);border:1px solid var(--red-bdr);}
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div class="header-badge">SCM 352 · M04</div>
+  <div class="header-text">
+    <h1>Discussion: Idle Time in the Wild</h1>
+    <p>Module M04 Discussion · 30 points · Item 10 of 12</p>
+  </div>
+</div>
+
+<div class="meta-strip">
+  <div class="meta-pill"><div class="pip" style="background:var(--blue)"></div> Due at M05 module close</div>
+  <div class="meta-pill"><div class="pip" style="background:var(--green)"></div> 30 points total</div>
+  <div class="meta-pill"><div class="pip" style="background:var(--gold)"></div> 30–45 minutes</div>
+  <div class="meta-pill"><div class="pip" style="background:var(--teal)"></div> LO4-1 · LO4-3 · LO4-6</div>
+</div>
+
+<div class="pg-body">
+
+  <div class="card">
+    <div class="card-hd" style="background:var(--blue-xlt);">
+      <div><h2>What You Are Doing</h2><p>Apply module efficiency metrics to a real process you observed this week</p></div>
+    </div>
+    <div class="card-bd">
+      <p style="font-size:13.5px;line-height:1.7;color:var(--gray-700);">Identify a multi-step service or production process you observed or participated in this week. Write an initial post that estimates the process's efficiency metrics, calculates its approximate takt time, and evaluates whether a specific improvement would actually increase profits. Your post must connect Module 4 vocabulary to something you personally witnessed — not a process from the textbook or lectures.</p>
+    </div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:12px;">
+    <div class="alert alert-red">
+      <div class="alert-icon">🚫</div>
+      <div class="alert-body">
+        <strong>Do not name your business in your initial post.</strong>
+        Describe the type of business (e.g., "a fast-food counter," "a pharmacy," "a hotel check-in") but do not include the brand name, location, or any identifying detail. Posts naming a business will receive a 10-point deduction.
+      </div>
+    </div>
+    <div class="alert alert-red">
+      <div class="alert-icon">🚫</div>
+      <div class="alert-body">
+        <strong>Do not use businesses from the chapter or the following prohibited list:</strong>
+        <div class="prohibited-list">
+          <span class="prohibited-tag">Subway</span>
+          <span class="prohibited-tag">Coffee kiosk (narration example)</span>
+          <span class="prohibited-tag">Laptop manufacturer (slides)</span>
+          <span class="prohibited-tag">Packaging line (Gate 2 Q5)</span>
+          <span class="prohibited-tag">Vehicle inspection station (Gate 2 Q4)</span>
+          <span class="prohibited-tag">Riverside Health System</span>
+        </div>
+      </div>
+    </div>
+    <div class="alert alert-gold">
+      <div class="alert-icon">📅</div>
+      <div class="alert-body">
+        <strong>The business must be one you interacted with this week.</strong>
+        Generic descriptions of hypothetical processes do not qualify. Your estimates must be grounded in something you actually observed — wait times, worker activity levels, flow of customers or products. "I think a typical pharmacy works like this" is not an observation.
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="sec-div">Initial Post &nbsp;·&nbsp; 30 points total &nbsp;·&nbsp; No reply required</div>
+    <div class="card" style="margin-top:16px;">
+      <div class="card-bd" style="padding:16px;">
+
+        <div class="part part-1">
+          <div class="part-header">
+            <div class="part-num">1</div>
+            <div class="part-title">Process and Metrics Estimate</div>
+            <div class="part-pts">9 pts</div>
+          </div>
+          <div class="part-body">
+            <p>Name the type of process and identify at least three sequential steps. Estimate (do not calculate) the processing time at each step. Based on your estimates, hypothesize:</p>
+            <p><strong>(a)</strong> Which step is the bottleneck and why.</p>
+            <p><strong>(b)</strong> What the labor content is (rough sum of processing times).</p>
+            <p><strong>(c)</strong> Where the most idle time occurs — which non-bottleneck station has the longest wait for the bottleneck to finish.</p>
+            <div class="example-note">Example framing: "The bottleneck appears to be Step 2 because workers there were consistently occupied while Step 1 and Step 3 workers waited. Labor content ≈ 3 + 8 + 4 = 15 minutes. Most idle time is at Step 3, which waits an estimated 4 minutes per unit."</div>
+          </div>
+        </div>
+
+        <div class="part part-2">
+          <div class="part-header">
+            <div class="part-num">2</div>
+            <div class="part-title">Efficiency Diagnosis</div>
+            <div class="part-pts">9 pts</div>
+          </div>
+          <div class="part-body">
+            <p>Without calculating wages, estimate qualitatively whether average labor utilization at this process appears <strong>high</strong> (&gt;80%), <strong>moderate</strong> (50–80%), or <strong>low</strong> (&lt;50%). Explain your reasoning in 3–4 sentences using specific observations:</p>
+            <p><strong>(a)</strong> What did you observe that indicated workers were idle? (For example: workers standing, chatting, waiting for another step to finish, or visibly unoccupied between units.)</p>
+            <p><strong>(b)</strong> What did you observe at the bottleneck that indicated it was running at or near capacity? (For example: a queue forming, workers visibly rushed, no pause between units.)</p>
+            <div class="example-note">Note: You are estimating from observation, not calculating. Use hedged language: "it appeared that…" or "based on what I observed…"</div>
+          </div>
+        </div>
+
+        <div class="part part-3">
+          <div class="part-header">
+            <div class="part-num">3</div>
+            <div class="part-title">Takt Time Reflection</div>
+            <div class="part-pts">6 pts</div>
+          </div>
+          <div class="part-body">
+            <p>Estimate the demand rate for this process (customers or units per hour based on your observation). Use this to calculate the approximate takt time.</p>
+            <p><strong>(a)</strong> Show the takt time calculation: Takt time = 1 / Demand rate (include units).</p>
+            <p><strong>(b)</strong> Compare this to your estimated cycle time (the time between successive outputs at the bottleneck). Is the process running faster, slower, or about right relative to what demand requires? What does this gap tell the manager?</p>
+            <div class="example-note">It is fine if your demand estimate is rough (e.g., "approximately 15 customers/hr based on observing about one every 4 minutes"). What matters is that you show the calculation and interpret the comparison correctly.</div>
+          </div>
+        </div>
+
+        <div class="part part-4">
+          <div class="part-header">
+            <div class="part-num">4</div>
+            <div class="part-title">Improvement Recommendation</div>
+            <div class="part-pts">6 pts</div>
+          </div>
+          <div class="part-body">
+            <p>Based on your bottleneck hypothesis, identify <strong>one specific improvement strategy</strong> from Chapter 4 (reassign activities to off-load the bottleneck, automate a step, add a worker, specialize roles, or reduce processing time at the bottleneck). Then answer:</p>
+            <p><strong>(a)</strong> Which strategy would you recommend, and which step would it target?</p>
+            <p><strong>(b)</strong> Would this improvement likely increase profits? Explain in <strong>one sentence</strong> using the terms <em>demand-constrained</em> or <em>capacity-constrained</em>. For example: "This improvement would increase profits because the process appears capacity-constrained — demand exceeds the bottleneck's current output rate, so increasing capacity would directly increase flow rate and revenue."</p>
+            <div class="example-note">This is Part 4 of the Case Analysis at the module level. Practicing this logic here will prepare you for Case Part 6, which requires a formal financial recommendation.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-hd" style="background:var(--blue-xlt);">
+      <div><h2>Points Summary</h2><p>30 points total · 13% of module grade · Initial post only — no reply required</p></div>
+    </div>
+    <table class="pts-table">
+      <thead><tr><th>Component</th><th>Criteria</th><th style="text-align:right;">Points</th></tr></thead>
+      <tbody>
+        <tr><td rowspan="4" style="font-weight:600;color:var(--navy);vertical-align:top;padding-top:12px;">Initial Post<br><span style="font-weight:400;font-size:12px;color:var(--gray-600);">No reply required</span></td>
+          <td>1 — Process and Metrics Estimate</td><td class="pts-num">9</td></tr>
+        <tr><td>2 — Efficiency Diagnosis</td><td class="pts-num">9</td></tr>
+        <tr><td>3 — Takt Time Reflection</td><td class="pts-num">6</td></tr>
+        <tr><td>4 — Improvement Recommendation</td><td class="pts-num">6</td></tr>
+        <tr class="total-row"><td colspan="2">Total</td><td class="pts-num">30</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-hd" style="background:var(--gold-lt);border-color:var(--gold-bdr);">
+      <div><h2 style="color:var(--gold-dark);">Tips for Full Credit</h2></div>
+    </div>
+    <div class="card-bd">
+      <ul class="tip-list">
+        <li>Three steps is the minimum — but more steps let you demonstrate more idle time analysis. Four or five steps with different processing times makes Parts 1 and 2 much richer.</li>
+        <li>For Part 2, the key is specificity: "workers were talking to each other" is not as strong as "the Step 3 worker finished each unit in about 2 minutes and then stood idle for 5–6 minutes waiting for Step 2 to complete."</li>
+        <li>For Part 3, show the takt time formula with units explicitly. Takt time = 1 / (15 customers/hr) = 0.067 hr/customer × 60 = 4 min/customer. Units must be visible.</li>
+        <li>For Part 4, the demand-constrained / capacity-constrained distinction is the most commonly missed element. If the process has visible queues (customers waiting), it is capacity-constrained. If workers are frequently idle, it may be demand-constrained.</li>
+        <li>Do not use any example from the textbook, narration scripts, or any previous module discussion — the prohibited list above is not exhaustive. If you are unsure whether an example is prohibited, choose a different one.</li>
+        <li>Part 4 of this discussion maps directly to Case Part 6 (Managerial Recommendation, 15 pts). Practice using the three-question framework from Lecture Segment 2: Is the process capacity-constrained? Will it stay capacity-constrained after the improvement? Is the gross margin high enough to justify the cost?</li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

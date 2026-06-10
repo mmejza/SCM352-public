@@ -1,0 +1,57 @@
+<section class="slide-page" data-title="Worked Example: Metrics Chain Solution" data-lo="LO4-1" data-notes="Full solution chain for the s06 insurance claims example. Verify: bottleneck = S1 (3/hr), flow rate = 3/hr (unlimited demand), CT = 20 min, LC = 45 min, total idle = 15 min, avg util = 75%, CDL = $15.00. CDL is clean because (3×$15)/3 = $15.">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">LO4-1</span>
+      <span class="le-course">SCM 352 · Module 04</span>
+    </div>
+    <span class="le-pagenum">07 / 21</span>
+  </div>
+  <div class="le-titleblock">
+    <div class="le-title">Metrics Chain <span>Solution</span></div>
+    <div class="le-sub">Insurance claims · unlimited demand · wages $15/hr</div>
+  </div>
+  <div class="le-body">
+    <div class="two-col">
+      <div>
+        <table class="clean-table">
+          <thead>
+            <tr><th>Station</th><th>Capacity (claims/hr)</th><th>Idle (min)</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>S1</strong> — 20 min</td><td><span class="pos">3.0</span> ← bottleneck</td><td>0 min</td></tr>
+            <tr><td><strong>S2</strong> — 10 min</td><td>6.0</td><td>10 min</td></tr>
+            <tr><td><strong>S3</strong> — 15 min</td><td>4.0</td><td>5 min</td></tr>
+            <tr class="total-row"><td><strong>Total</strong></td><td>—</td><td><strong>15 min</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px;">
+        <div class="formula-box" style="font-size:calc(11px * var(--slide-scale));">
+          Flow rate = min{ ∞, 3 } = <strong>3 claims / hr</strong>
+        </div>
+        <div class="formula-box" style="font-size:calc(11px * var(--slide-scale));">
+          Cycle time = 60 ÷ 3 = <strong>20 min / claim</strong>
+        </div>
+        <div class="formula-box" style="font-size:calc(11px * var(--slide-scale));">
+          Labor content = 20+10+15 = <strong>45 min</strong>
+        </div>
+        <div class="formula-box" style="font-size:calc(11px * var(--slide-scale));">
+          Avg util = 45 ÷ 60 = <strong>75%</strong>
+        </div>
+        <div class="formula-box" style="font-size:calc(11px * var(--slide-scale));border-left-color:var(--amber);">
+          CDL = (3 × $15) ÷ 3 = <strong class="pos">$15.00 / claim</strong>
+        </div>
+      </div>
+    </div>
+    <div class="callout teal" style="margin-top:2px;">
+      <div class="callout-label">Read-Off Logic</div>
+      <p>Avg util = LC ÷ (CT × N) = 45 ÷ (20 × 3) = 75%. &nbsp; Idle time per station = CT − PT<sub>i</sub>: S2 waits 10 min, S3 waits 5 min, S1 never waits.</p>
+    </div>
+  </div>
+  <div class="le-footer">
+    <div class="le-lo-pills"><span class="le-lo-pill">LO4-1</span></div>
+    <div><span class="le-gate-note">Gate 2 · Q1 and Q6</span></div>
+  </div>
+</section>

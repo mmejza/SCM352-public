@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Financial Impact Simulator — SCM 352 M04</title>
+<style>
+:root {
+  --navy:#1a3a5c;--blue:#2563a8;--blue-lt:#dbeafe;--blue-xlt:#eff6ff;
+  --gold:#f59e0b;--gold-lt:#fffbeb;--gold-bdr:#fde68a;
+  --green:#16a34a;--green-lt:#f0fdf4;--green-bdr:#bbf7d0;
+  --red:#dc2626;--red-lt:#fef2f2;--red-bdr:#fecaca;
+  --amber:#d97706;--amber-lt:#fffbeb;--amber-bdr:#fde68a;
+  --purple:#7c3aed;--purple-lt:#faf5ff;--purple-bdr:#ddd6fe;
+  --teal:#0891b2;--teal-lt:#f0fdfe;--teal-bdr:#a5f3fc;
+  --gray-50:#f9fafb;--gray-100:#f3f4f6;--gray-200:#e5e7eb;
+  --gray-300:#d1d5db;--gray-400:#9ca3af;--gray-600:#4b5563;
+  --gray-700:#374151;--gray-800:#1f2937;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--gray-50);color:var(--gray-800);min-height:100vh}
+header{background:var(--navy);color:white;padding:16px 24px;display:flex;align-items:center;gap:16px}
+.header-badge{background:var(--gold);color:var(--navy);font-weight:700;font-size:11px;padding:3px 8px;border-radius:4px;letter-spacing:.05em;text-transform:uppercase}
+header h1{font-size:18px;font-weight:600}
+.scenario-nav{background:white;border-bottom:2px solid var(--gray-200);padding:0 24px;display:flex;overflow-x:auto}
+.scenario-btn{padding:12px 18px;border:none;background:none;cursor:pointer;font-size:13px;font-weight:500;color:var(--gray-600);border-bottom:3px solid transparent;white-space:nowrap;transition:all .15s}
+.scenario-btn:hover{color:var(--blue)}
+.scenario-btn.active{color:var(--blue);border-bottom-color:var(--blue);font-weight:600}
+.scenario-btn.sc-done{color:var(--green)}
+.scenario-btn.sc-done::after{content:' ✓'}
+.main{max-width:1100px;margin:0 auto;padding:24px;display:grid;grid-template-columns:1fr 300px;gap:24px;align-items:start}
+@media(max-width:820px){.main{grid-template-columns:1fr}}
+.card{background:white;border:1px solid var(--gray-200);border-radius:12px;overflow:hidden}
+.card-header{background:var(--blue-lt);padding:14px 20px;border-bottom:1px solid var(--gray-200)}
+.card-header h2{font-size:15px;font-weight:700;color:var(--navy)}
+.card-header p{font-size:13px;color:var(--gray-600);margin-top:4px}
+.card-body{padding:20px}
+.diff-tag{font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:3px 9px;border-radius:100px}
+.diff-easy{background:var(--green-lt);color:var(--green)}
+.diff-medium{background:var(--amber-lt);color:var(--amber)}
+.diff-hard{background:var(--red-lt);color:var(--red)}
+
+/* ── PROCESS PANEL ───────────────────────────────────── */
+.sim-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px}
+@media(max-width:700px){.sim-grid{grid-template-columns:1fr 1fr}}
+.sim-panel{background:var(--gray-50);border:1px solid var(--gray-200);border-radius:10px;padding:14px}
+.sim-panel-hdr{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--gray-400);margin-bottom:10px}
+.sim-row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;font-size:13px}
+.sim-key{color:var(--gray-600)}
+.sim-val{font-weight:700;color:var(--navy)}
+.sim-panel.highlight{background:var(--amber-lt);border-color:var(--amber-bdr)}
+.sim-panel.highlight .sim-panel-hdr{color:var(--amber)}
+
+/* ── BEFORE PROFIT ───────────────────────────────────── */
+.before-profit-box{background:white;border:2px solid var(--gray-200);border-radius:10px;padding:14px;margin-bottom:16px}
+.before-profit-hdr{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--gray-600);margin-bottom:8px}
+.profit-calc{font-size:13px;line-height:1.7;color:var(--gray-700)}
+.profit-calc .result{font-size:16px;font-weight:700;color:var(--navy);margin-top:4px;padding-top:4px;border-top:1px solid var(--gray-200)}
+
+/* ── DEMAND TOGGLE ───────────────────────────────────── */
+.demand-section{margin-bottom:16px}
+.demand-label{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--gray-600);margin-bottom:8px}
+.demand-toggle{display:flex;gap:0;border:2px solid var(--gray-200);border-radius:10px;overflow:hidden;margin-bottom:12px}
+.demand-btn{flex:1;padding:12px 8px;border:none;background:white;cursor:pointer;font-size:13px;font-weight:600;color:var(--gray-600);transition:all .15s;text-align:center}
+.demand-btn:hover{background:var(--gray-50)}
+.demand-btn.d-high.active{background:var(--green);color:white}
+.demand-btn.d-low.active{background:var(--red);color:white}
+.demand-btn .d-sub{font-size:11px;font-weight:400;display:block;margin-top:2px;opacity:.8}
+
+/* ── RESULT PANEL ────────────────────────────────────── */
+.result-panel{border:2px solid var(--gray-200);border-radius:10px;overflow:hidden;transition:border-color .2s;min-height:160px}
+.result-panel.res-high{border-color:var(--green)}
+.result-panel.res-low{border-color:var(--red)}
+.result-panel.res-neutral{border-color:var(--gray-200)}
+.result-hdr{padding:10px 14px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+.result-hdr.rh-high{background:var(--green-lt);color:var(--green)}
+.result-hdr.rh-low{background:var(--red-lt);color:var(--red)}
+.result-hdr.rh-neutral{background:var(--gray-100);color:var(--gray-600)}
+.result-body{padding:14px;background:white}
+.result-calc{font-size:13px;line-height:1.75;color:var(--gray-700)}
+.result-profit{font-size:18px;font-weight:700;margin-top:8px;padding-top:8px;border-top:1px solid var(--gray-200)}
+.result-profit.pos{color:var(--green)}
+.result-profit.neg{color:var(--red)}
+.delta-tag{font-size:12px;font-weight:700;padding:2px 8px;border-radius:100px;margin-left:8px}
+.delta-pos{background:var(--green-lt);color:var(--green)}
+.delta-neg{background:var(--red-lt);color:var(--red)}
+.delta-zero{background:var(--amber-lt);color:var(--amber)}
+.constraint-tag{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;padding:2px 8px;border-radius:100px;display:inline-block;margin-top:6px}
+.ct-cap{background:var(--blue-lt);color:var(--blue)}
+.ct-dem{background:var(--amber-lt);color:var(--amber)}
+.result-placeholder{display:flex;align-items:center;justify-content:center;height:130px;font-size:13px;color:var(--gray-400);font-style:italic}
+
+/* ── DIAGNOSIS QUESTION ──────────────────────────────── */
+.diag-section{margin-top:16px}
+.diag-label{font-size:13px;font-weight:700;color:var(--navy);margin-bottom:10px;line-height:1.5}
+.option-grid{display:grid;grid-template-columns:1fr;gap:8px;margin-bottom:14px}
+.option-card{display:flex;align-items:flex-start;gap:10px;padding:11px 13px;border:2px solid var(--gray-200);border-radius:10px;cursor:pointer;transition:border-color .15s,background .15s;background:white;user-select:none}
+.option-card:hover:not(.disabled){border-color:var(--blue);background:var(--gray-50)}
+.option-card.selected{border-color:var(--blue);background:var(--blue-xlt)}
+.option-card.o-correct{border-color:var(--green);background:var(--green-lt);pointer-events:none}
+.option-card.o-wrong{border-color:var(--red);background:var(--red-lt);pointer-events:none}
+.option-card.disabled{pointer-events:none;opacity:.6}
+.opt-radio{width:16px;height:16px;border-radius:50%;border:2px solid var(--gray-300);flex-shrink:0;margin-top:2px;transition:all .15s}
+.option-card.selected .opt-radio{border-color:var(--blue);background:var(--blue)}
+.option-card.o-correct .opt-radio{border-color:var(--green);background:var(--green)}
+.option-card.o-wrong .opt-radio{border-color:var(--red);background:var(--red)}
+.opt-text{font-size:13px;line-height:1.45}
+.btn{padding:9px 20px;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;transition:all .15s}
+.btn-primary{background:var(--blue);color:white}
+.btn-secondary{background:var(--gray-100);color:var(--gray-800)}
+.btn-green{background:var(--green);color:white}
+.btn-primary:hover{background:#1d4ed8}
+.btn-primary:disabled{background:var(--gray-400);cursor:not-allowed}
+.btn-secondary:hover{background:var(--gray-200)}
+.btn-green:hover{background:#15803d}
+.btn-group{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:12px}
+.fb-panel{display:none;margin-top:14px;border:2px solid var(--gray-200);border-radius:10px;overflow:hidden}
+.fb-panel.show{display:block}
+.fb-banner{padding:10px 14px;font-size:14px;font-weight:700;display:flex;align-items:center;gap:8px}
+.fb-correct{background:var(--green-lt);color:var(--green);border-bottom:2px solid var(--green)}
+.fb-wrong{background:var(--red-lt);color:var(--red);border-bottom:2px solid var(--red)}
+.fb-body{padding:14px;font-size:13px;line-height:1.6;background:white}
+.think-deeper{background:var(--gold-lt);border:1.5px solid var(--gold-bdr);border-radius:8px;padding:11px 14px;margin-top:10px;font-size:13px;line-height:1.55}
+.think-label{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--amber);margin-bottom:5px}
+.sc-complete{background:var(--green-lt);border:1px solid var(--green-bdr);border-radius:10px;padding:18px;text-align:center;margin-top:16px;display:none}
+.sc-complete h3{color:var(--green);font-size:15px;font-weight:700;margin-bottom:8px}
+.final-box{display:none;text-align:center;padding:24px 12px}
+.final-box.show{display:block}
+.score-row{padding:14px 18px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--gray-100)}
+.score-num{font-size:28px;font-weight:700;color:var(--navy)}
+.score-meta{font-size:12px;color:var(--gray-600);line-height:1.4}
+.score-meta strong{color:var(--gray-800);display:block;font-size:13px}
+.prog-outer{height:5px;background:var(--gray-200);border-radius:3px;overflow:hidden;margin:0 18px 14px}
+.prog-inner{height:100%;background:var(--blue);border-radius:3px;transition:width .4s}
+.tip-box{background:var(--gold-lt);border:1px solid var(--gold-bdr);border-radius:8px;padding:11px 14px;font-size:12px;line-height:1.6;color:var(--gray-800)}
+.tip-box strong{color:var(--navy)}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-badge">SCM 352 · M04</div>
+  <h1>Financial Impact Simulator</h1>
+</header>
+
+<div class="scenario-nav" id="scenarioNav"></div>
+
+<div class="main">
+  <div>
+    <div class="card">
+      <div class="card-header">
+        <h2 id="cardTitle"></h2>
+        <p id="cardSub"></p>
+      </div>
+      <div class="card-body" id="simBody">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+  </div>
+
+  <div style="position:sticky;top:24px;display:flex;flex-direction:column;gap:16px">
+    <div class="card">
+      <div class="card-header"><h2>Score</h2><p>Diagnosis questions</p></div>
+      <div class="score-row">
+        <div class="score-num" id="scoreNum">0</div>
+        <div class="score-meta">
+          <strong id="scoreLabel">correct</strong>
+          <span id="scoreDetail">of 4 scenarios</span>
+        </div>
+      </div>
+      <div class="prog-outer"><div class="prog-inner" id="progBar" style="width:0%"></div></div>
+    </div>
+    <div class="card">
+      <div class="card-header"><h2>Profit Formula</h2><p>Chapter 4 · LO4-6</p></div>
+      <div class="card-body">
+        <div class="tip-box">
+          <strong>Profit = (flow rate × CM) − labor − fixed costs</strong><br><br>
+          Flow rate = min{demand, process capacity}<br><br>
+          Improvement changes profit only if it increases flow rate. If the process is demand-constrained before AND after the improvement, flow rate is unchanged — revenue is unchanged — only costs increase.
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><h2>Three-Question Check</h2><p>Before approving any improvement</p></div>
+      <div class="card-body">
+        <div class="tip-box" style="border-left:3px solid var(--red);background:var(--red-lt)">
+          <strong style="color:var(--red)">In order:</strong><br>
+          Q1. Capacity-constrained now?<br>
+          &nbsp;&nbsp;&nbsp;→ No: STOP. Don't invest.<br>
+          Q2. Still constrained after?<br>
+          &nbsp;&nbsp;&nbsp;→ No: cap gain at demand.<br>
+          Q3. CM justifies cost?<br>
+          &nbsp;&nbsp;&nbsp;→ Δprofit = Δflow × CM − cost
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const SC = [
+  {
+    id:1, title:'Medical Imaging Center', sub:'Scenario 1 of 4 · Capacity-Constrained', diff:'easy',
+    // Given
+    cm:15, laborCost:40, fixedCost:30, curCapacity:8, impCost:10, newCapacity:10,
+    highDemand:12, lowDemand:5,
+    // Computed: before = flow=8 (cap-constrained vs high demand)
+    beforeFlow:8, beforeProfit:50,  // 8×15-70=50
+    // After improvement, high demand: flow=min(12,10)=10, costs=40+30+10=80
+    highAfterFlow:10, highAfterProfit:70, highDelta:20, highConstrained:'capacity',
+    // After improvement, low demand: flow=min(5,10)=5, costs=80
+    lowAfterFlow:5, lowAfterProfit:-5, lowDelta:-55, lowConstrained:'demand',
+    highNote:'New capacity = 10/hr. Demand = 12/hr. Still capacity-constrained after improvement.',
+    lowNote:'New capacity = 10/hr. Demand = 5/hr. Process is demand-constrained — flow stays at 5/hr.',
+    beforeNote:'Current capacity = 8/hr. Demand = 12/hr → capacity-constrained. Flow rate = 8/hr.',
+    q:'The $10/hr improvement raises capacity from 8 to 10 units/hr. Which statement best explains when this investment is worthwhile?',
+    opts:[
+      {v:'a',t:'It is worthwhile only under HIGH demand (12/hr), when the process is capacity-constrained and the additional 2 units/hr × $15 CM = +$30 exceeds the $10/hr cost.'},
+      {v:'b',t:'It is worthwhile under both demand conditions, because higher capacity is always better for future demand.'},
+      {v:'c',t:'It is worthwhile only under LOW demand (5/hr), because utilization is lower and workers have more idle time to handle additional volume.'},
+      {v:'d',t:'It is never worthwhile because the $10/hr lease cost is too close to the $20/hr profit gain.'}
+    ],
+    ans:'a',
+    reveal:'Under HIGH demand (12/hr), the process is capacity-constrained and flow increases from 8 to 10 units/hr. Profit gain = 2 × $15 − $10 = +$30 − $10 = +$20/hr. Under LOW demand (5/hr), the process is demand-constrained before AND after the improvement — flow stays at 5/hr. Revenue is unchanged. The $10/hr lease is pure cost. Profit falls from $5/hr (no improvement, low demand: 5×$15−$70) to −$5/hr. Investment should be conditional on demand growth materializing.',
+    td:'This is the core trade-off for any capacity investment: you are betting that demand will remain above the new capacity level. If demand falls short, the investment becomes a fixed cost drag.'
+  },
+  {
+    id:2, title:'Prescription Processing Center', sub:'Scenario 2 of 4 · Table 4.2 — Demand-Constrained', diff:'hard',
+    cm:12, laborCost:48, fixedCost:20, curCapacity:8, impCost:6, newCapacity:12,
+    highDemand:12, lowDemand:6,
+    // Before: LOW demand = 6/hr is starting condition. flow=6 (demand-constrained, since cap=8>6)
+    beforeFlow:6, beforeProfit:4,  // 6×12-68=72-68=4
+    // After improvement, HIGH demand: flow=min(12,12)=12, costs=48+20+6=74
+    highAfterFlow:12, highAfterProfit:70, highDelta:66, highConstrained:'capacity',
+    // After improvement, LOW demand: flow=min(6,12)=6 (STILL demand-constrained!)
+    lowAfterFlow:6, lowAfterProfit:-2, lowDelta:-6, lowConstrained:'demand',
+    highNote:'Improved capacity = 12/hr. Demand = 12/hr → now capacity-constrained at limit.',
+    lowNote:'Improved capacity = 12/hr. Demand = 6/hr → STILL demand-constrained. Flow rate unchanged at 6/hr.',
+    beforeNote:'Current capacity = 8/hr. Demand = 6/hr → already demand-constrained. Flow rate = 6/hr.',
+    q:'This process starts demand-constrained (capacity = 8/hr, demand = 6/hr). The improvement raises capacity to 12/hr. What explains the profit result when demand stays LOW at 6/hr?',
+    opts:[
+      {v:'a',t:'The process was demand-constrained before AND after the improvement. Flow rate stayed at 6/hr. Revenue was unchanged, but the $6/hr lease added cost. Profit fell by exactly $6/hr.'},
+      {v:'b',t:'The improvement was too small. A larger capacity increase (to 15/hr) would have unlocked enough flow to cover the $6/hr lease.'},
+      {v:'c',t:'Profit fell because labor cost increased — more capacity required hiring more workers.'},
+      {v:'d',t:'The improvement was not financially neutral; it should have increased profit because higher capacity means more flexibility.'}
+    ],
+    ans:'a',
+    reveal:'Notice that profit decreased despite improving capacity. The demand rate (6/hr) was already below process capacity before the improvement (8/hr > 6/hr). The process was demand-constrained — it was not capacity that limited revenue. The improvement raised capacity from 8 to 12/hr, but flow rate stayed at 6/hr, matching demand. Every dollar of the $6/hr lease came straight out of profit with no offsetting revenue gain. This is the Table 4.2 scenario from Chapter 4: when a demand-constrained process receives a capacity investment, profit falls by exactly the investment cost.',
+    td:'The three-question framework catches this: Q1 asks "Is the process currently capacity-constrained?" The answer here is NO (8/hr capacity > 6/hr demand). That alone is sufficient to reject the investment under LOW demand. The analysis stops at Q1.'
+  },
+  {
+    id:3, title:'Fast Food Counter', sub:'Scenario 3 of 4 · Low Contribution Margin Risk', diff:'medium',
+    cm:1.50, laborCost:48, fixedCost:20, curCapacity:60, impCost:10, newCapacity:80,
+    highDemand:80, lowDemand:40,
+    // Before: capacity=60, HIGH demand=80 → flow=60 (cap-constrained)
+    beforeFlow:60, beforeProfit:22,  // 60×1.5-68=90-68=22
+    // After, HIGH: flow=min(80,80)=80, costs=48+20+10=78
+    highAfterFlow:80, highAfterProfit:42, highDelta:20, highConstrained:'capacity',
+    // After, LOW: flow=min(40,80)=40 (demand-constrained), costs=78
+    lowAfterFlow:40, lowAfterProfit:-18, lowDelta:-40, lowConstrained:'demand',
+    highNote:'New capacity = 80/hr. Demand = 80/hr → perfectly matched at capacity limit.',
+    lowNote:'New capacity = 80/hr. Demand = 40/hr → demand-constrained. Flow stays at 40/hr.',
+    beforeNote:'Current capacity = 60/hr. Demand = 80/hr → capacity-constrained. Flow = 60/hr.',
+    q:'Under HIGH demand, the improvement nets +$20/hr profit. Contribution margin is $1.50/order. Which statement best identifies the financial risk of this low CM?',
+    opts:[
+      {v:'a',t:'Low CM means each additional unit adds little profit. The $10/hr improvement cost requires 6.7 extra orders/hr just to break even — small demand drops below 80/hr quickly push the investment into loss territory.'},
+      {v:'b',t:'Low CM is not a concern because the volume (80 orders/hr) is high enough to offset it.'},
+      {v:'c',t:'Low CM means the process should switch to higher-priced items before investing in capacity.'},
+      {v:'d',t:'Low CM is only a risk if demand falls below 60/hr — which is the same risk faced by any capacity investment.'}
+    ],
+    ans:'a',
+    reveal:'Break-even additional flow = improvement cost ÷ CM = $10 ÷ $1.50 = 6.67 orders/hr. Under HIGH demand the improvement adds 20 orders/hr above the break-even point — profitable. But if demand materializes at only 70/hr instead of 80/hr, flow increases by 10 (not 20), generating just $15/hr in additional CM — less than the $10/hr cost. The low margin shrinks the range of demand outcomes that make the investment profitable. High-CM processes (like the medical imaging in Scenario 1, CM=$15) have much larger buffers: break-even requires just 0.67 additional units/hr.',
+    td:'Gross margin = CM ÷ revenue = $1.50 ÷ (price). The lower the gross margin, the more sensitive the investment decision is to demand uncertainty. This is the amplifier principle from Chapter 4 page 89.'
+  },
+  {
+    id:4, title:'Medical Diagnostics Laboratory', sub:'Scenario 4 of 4 · Fixed Cost Reduction', diff:'medium',
+    cm:20, laborCost:75, fixedCost:50, curCapacity:10, impCost:0, newCapacity:10,
+    highDemand:12, lowDemand:6,
+    fixedCostNew:30,  // special: improvement reduces fixed cost, not capacity
+    isFixedCostScenario:true,
+    // Before, HIGH: flow=min(12,10)=10, costs=75+50=125
+    beforeFlow:10, beforeProfit:75,  // 10×20-125=200-125=75
+    // Before, LOW: flow=min(6,10)=6, costs=125
+    beforeLowFlow:6, beforeLowProfit:-5,  // 6×20-125=120-125=-5
+    // After, HIGH: flow=10 (same), fixed cost now 30, costs=75+30=105
+    highAfterFlow:10, highAfterProfit:95, highDelta:20, highConstrained:'capacity',
+    // After, LOW: flow=6 (same), costs=75+30=105
+    lowAfterFlow:6, lowAfterProfit:15, lowDelta:20, lowConstrained:'demand',
+    highNote:'Capacity unchanged at 10/hr. Demand = 12/hr → still capacity-constrained. Fixed cost drops from $50 to $30/hr.',
+    lowNote:'Capacity unchanged at 10/hr. Demand = 6/hr → demand-constrained. Fixed cost drops from $50 to $30/hr.',
+    beforeNote:'Capacity = 10/hr. Equipment maintenance contract renegotiated: fixed cost drops from $50/hr to $30/hr. No change to process capacity.',
+    q:'This improvement reduces fixed cost from $50/hr to $30/hr without changing process capacity. Why does it benefit profitability under BOTH HIGH and LOW demand?',
+    opts:[
+      {v:'a',t:'Fixed costs do not depend on flow rate. The $20/hr savings applies regardless of how many units are processed — it improves profit equally in both demand environments.'},
+      {v:'b',t:'Fixed costs are lower under LOW demand because the process runs fewer hours, spreading the savings over less production.'},
+      {v:'c',t:'Fixed costs only benefit HIGH demand environments because the additional flow rate amplifies the savings per unit.'},
+      {v:'d',t:'The improvement works in both environments because it also increases process capacity as a side effect.'}
+    ],
+    ans:'a',
+    reveal:'Fixed costs are incurred regardless of output level. Reducing fixed cost by $20/hr saves $20/hr whether the process runs at 10 units/hr or 6 units/hr. This is unlike capacity investments, where financial return depends on whether demand is high enough to use the added capacity. Fixed cost reductions — maintenance contracts, lease renegotiations, overhead cuts — are the rare improvement that benefits both demand environments equally. Note that under LOW demand the lab was previously losing $5/hr; after the fixed cost reduction it earns $15/hr — the same +$20 shift seen under HIGH demand.',
+    td:'Compare to Scenario 2: capacity investment under demand-constrained conditions worsens profit. Fixed cost reduction under the same conditions improves profit. The distinction is whether the improvement changes flow rate or only costs — only cost-side improvements help demand-constrained processes.'
+  }
+];
+
+// ── STATE ──────────────────────────────────────────────
+let scIdx = 0;
+let answered = {};   // scIdx → bool
+let correct = {};    // scIdx → bool
+let selOpt = null;
+let demandState = {}; // scIdx → 'high'|'low'|null
+let totalCorrect = 0;
+
+function init() {
+  buildNav();
+  renderScenario(0);
+}
+
+function buildNav() {
+  const nav = document.getElementById('scenarioNav');
+  SC.forEach((sc, i) => {
+    const b = document.createElement('button');
+    b.className = 'scenario-btn' + (i===0?' active':'');
+    b.id = 'scBtn'+i;
+    b.textContent = 'S' + (i+1) + ' — ' + sc.title;
+    b.onclick = () => goScenario(i);
+    nav.appendChild(b);
+  });
+}
+
+function updateNavBtn(i) {
+  const b = document.getElementById('scBtn'+i);
+  if (!b) return;
+  b.className = 'scenario-btn' + (i===scIdx?' active':'') + (correct[i]?' sc-done':'');
+}
+
+function goScenario(i) {
+  scIdx = i;
+  selOpt = null;
+  SC.forEach((_,j) => updateNavBtn(j));
+  renderScenario(i);
+}
+
+function goNextScenario() {
+  if (scIdx < SC.length - 1) goScenario(scIdx + 1);
+  else showFinal();
+}
+
+// ── RENDER ─────────────────────────────────────────────
+function renderScenario(si) {
+  const sc = SC[si];
+  document.getElementById('cardTitle').textContent = sc.title;
+  const dt = document.getElementById('cardSub');
+  dt.innerHTML = `<span class="diff-tag diff-${sc.diff}" style="margin-right:8px">${sc.diff.charAt(0).toUpperCase()+sc.diff.slice(1)}</span>${sc.sub}`;
+
+  const body = document.getElementById('simBody');
+
+  const curDemandState = demandState[si] || null;
+  const isAnswered = answered[si] || false;
+
+  body.innerHTML = `
+    <!-- Process Parameters -->
+    <div class="sim-grid">
+      <div class="sim-panel">
+        <div class="sim-panel-hdr">Process Parameters</div>
+        <div class="sim-row"><span class="sim-key">Contribution Margin</span><span class="sim-val">$${fmt(sc.cm)}/unit</span></div>
+        <div class="sim-row"><span class="sim-key">Labor Cost</span><span class="sim-val">$${fmt(sc.laborCost)}/hr</span></div>
+        <div class="sim-row"><span class="sim-key">Fixed Cost</span><span class="sim-val">$${fmt(sc.fixedCost)}/hr${sc.isFixedCostScenario ? ' → $'+sc.fixedCostNew+'/hr' : ''}</span></div>
+        <div class="sim-row"><span class="sim-key">Process Capacity</span><span class="sim-val">${sc.curCapacity}/hr${sc.isFixedCostScenario ? '' : ' → '+sc.newCapacity+'/hr'}</span></div>
+      </div>
+      <div class="sim-panel">
+        <div class="sim-panel-hdr">Before Improvement</div>
+        <p style="font-size:12px;color:var(--gray-600);margin-bottom:8px">${sc.beforeNote}</p>
+        <div class="sim-row"><span class="sim-key">Flow Rate</span><span class="sim-val">${sc.beforeFlow}/hr</span></div>
+        <div class="sim-row"><span class="sim-key">Revenue/hr</span><span class="sim-val">$${fmt(sc.beforeFlow * sc.cm)}</span></div>
+        <div class="sim-row"><span class="sim-key">Total Cost/hr</span><span class="sim-val">$${fmt(sc.laborCost + sc.fixedCost)}</span></div>
+        <div class="sim-row" style="border-top:1px solid var(--gray-200);padding-top:6px;margin-top:2px">
+          <span class="sim-key">Profit/hr</span>
+          <span class="sim-val" style="color:${sc.beforeProfit >= 0 ? 'var(--green)':'var(--red)'}">
+            $${fmt(sc.beforeProfit)}/hr</span></div>
+      </div>
+      <div class="sim-panel highlight">
+        <div class="sim-panel-hdr">Improvement</div>
+        ${sc.isFixedCostScenario
+          ? `<p style="font-size:13px;line-height:1.6">Contract renegotiation reduces fixed cost from <strong>$${sc.fixedCost}/hr</strong> to <strong>$${sc.fixedCostNew}/hr</strong> (saves <strong>$${sc.fixedCost-sc.fixedCostNew}/hr</strong>).<br><br>No change to process capacity (${sc.curCapacity}/hr).</p>`
+          : `<p style="font-size:13px;line-height:1.6">Equipment upgrade costs <strong>$${sc.impCost}/hr</strong> (lease).<br><br>Raises capacity: <strong>${sc.curCapacity}/hr → ${sc.newCapacity}/hr</strong>.</p>`
+        }
+      </div>
+    </div>
+
+    <!-- Demand Toggle -->
+    <div class="demand-section">
+      <div class="demand-label">Select Demand Scenario — See the Impact</div>
+      <div class="demand-toggle">
+        <button class="demand-btn d-high ${curDemandState==='high'?'active':''}" id="btnHigh" onclick="setDemand('high')">
+          HIGH Demand
+          <span class="d-sub">${sc.highDemand} units/hr</span>
+        </button>
+        <button class="demand-btn d-low ${curDemandState==='low'?'active':''}" id="btnLow" onclick="setDemand('low')">
+          LOW Demand
+          <span class="d-sub">${sc.lowDemand} units/hr</span>
+        </button>
+      </div>
+      <div class="result-panel ${curDemandState==='high'?'res-high':curDemandState==='low'?'res-low':'res-neutral'}" id="resultPanel">
+        ${curDemandState ? renderResult(si, curDemandState) : '<div class="result-placeholder">Select a demand scenario above to see the impact.</div>'}
+      </div>
+    </div>
+
+    <!-- Diagnosis Question -->
+    <div class="diag-section">
+      <div class="diag-label">Diagnosis Question — ${sc.q}</div>
+      <div class="option-grid" id="optGrid">
+        ${sc.opts.map(o=>`
+          <div class="option-card ${isAnswered?'disabled':''}" id="opt_${o.v}" onclick="selectOpt('${o.v}')">
+            <div class="opt-radio"></div>
+            <div class="opt-text">${o.t}</div>
+          </div>`).join('')}
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary" id="submitBtn" onclick="handleSubmit()" ${(!selOpt && !isAnswered)?'disabled':''}>Check Answer</button>
+      </div>
+      <div class="fb-panel" id="fbPanel">
+        <div class="fb-banner" id="fbBanner"></div>
+        <div class="fb-body">
+          <div id="fbReveal"></div>
+          ${sc.td ? `<div class="think-deeper"><div class="think-label">Think Deeper</div><div>${sc.td}</div></div>` : ''}
+        </div>
+      </div>
+    </div>
+
+    <!-- Scenario Complete -->
+    <div class="sc-complete" id="scComplete" style="${isAnswered?'display:block':'display:none'}">
+      <h3 id="completeTitle">Scenario ${si+1} ${correct[si]?'Correct ✓':'Reviewed'}</h3>
+      <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px">${sc.title}</p>
+      <button class="btn btn-green" onclick="goNextScenario()">${si < SC.length-1 ? 'Next Scenario →':'See Final Summary'}</button>
+    </div>
+
+    <div class="final-box" id="finalBox"></div>`;
+
+  if (isAnswered) replayAnswer(si);
+}
+
+function renderResult(si, state) {
+  const sc = SC[si];
+  const isHigh = state === 'high';
+  const afterFlow = isHigh ? sc.highAfterFlow : sc.lowAfterFlow;
+  const afterProfit = isHigh ? sc.highAfterProfit : sc.lowAfterProfit;
+  const delta = isHigh ? sc.highDelta : sc.lowDelta;
+  const constrained = isHigh ? sc.highConstrained : sc.lowConstrained;
+  const note = isHigh ? sc.highNote : sc.lowNote;
+  const demand = isHigh ? sc.highDemand : sc.lowDemand;
+
+  const totalCost = sc.isFixedCostScenario
+    ? sc.laborCost + sc.fixedCostNew
+    : sc.laborCost + sc.fixedCost + sc.impCost;
+  const revenue = afterFlow * sc.cm;
+
+  const profitClass = afterProfit >= 0 ? 'pos' : 'neg';
+  let deltaTag = '';
+  if (delta > 0) deltaTag = `<span class="delta-tag delta-pos">+$${fmt(delta)}/hr vs. before</span>`;
+  else if (delta < 0) deltaTag = `<span class="delta-tag delta-neg">$${fmt(delta)}/hr vs. before</span>`;
+  else deltaTag = `<span class="delta-tag delta-zero">No change vs. before</span>`;
+
+  const ctLabel = constrained === 'capacity' ? 'Capacity-Constrained' : 'Demand-Constrained';
+  const ctClass = constrained === 'capacity' ? 'ct-cap' : 'ct-dem';
+
+  return `
+    <div class="result-hdr ${isHigh?'rh-high':'rh-low'}">
+      After Improvement · ${isHigh?'HIGH':'LOW'} Demand (${demand}/hr)
+    </div>
+    <div class="result-body">
+      <p style="font-size:12px;color:var(--gray-600);margin-bottom:8px">${note}</p>
+      <div class="result-calc">
+        Flow rate: <strong>${afterFlow}/hr</strong><br>
+        Revenue: ${afterFlow} × $${fmt(sc.cm)} = <strong>$${fmt(revenue)}/hr</strong><br>
+        Total cost: $${fmt(totalCost)}/hr (labor + fixed${sc.isFixedCostScenario?'':'+ lease'})<br>
+      </div>
+      <div class="result-profit ${profitClass}">
+        Profit = $${fmt(afterProfit)}/hr ${deltaTag}
+      </div>
+      <span class="constraint-tag ${ctClass}">${ctLabel}</span>
+    </div>`;
+}
+
+function fmt(n) {
+  if (n === undefined || n === null) return '—';
+  const abs = Math.abs(n);
+  let s;
+  if (abs === Math.floor(abs)) s = abs.toFixed(0);
+  else s = abs.toFixed(2);
+  return (n < 0 ? '−' : '') + s;
+}
+
+function setDemand(state) {
+  demandState[scIdx] = state;
+  const sc = SC[scIdx];
+  const btnH = document.getElementById('btnHigh');
+  const btnL = document.getElementById('btnLow');
+  if (btnH) { btnH.className = 'demand-btn d-high' + (state==='high'?' active':''); }
+  if (btnL) { btnL.className = 'demand-btn d-low' + (state==='low'?' active':''); }
+  const panel = document.getElementById('resultPanel');
+  if (panel) {
+    panel.className = 'result-panel ' + (state==='high'?'res-high':'res-low');
+    panel.innerHTML = renderResult(scIdx, state);
+  }
+}
+
+function selectOpt(v) {
+  if (answered[scIdx]) return;
+  selOpt = v;
+  document.querySelectorAll('.option-card').forEach(el => el.classList.remove('selected'));
+  const c = document.getElementById('opt_'+v);
+  if (c) c.classList.add('selected');
+  const sb = document.getElementById('submitBtn');
+  if (sb) sb.disabled = false;
+}
+
+function handleSubmit() {
+  if (!selOpt && !answered[scIdx]) return;
+  const sc = SC[scIdx];
+  const isCorrect = selOpt === sc.ans;
+  answered[scIdx] = true;
+  correct[scIdx] = isCorrect;
+  if (isCorrect) { totalCorrect++; updateScore(); }
+  updateNavBtn(scIdx);
+  markOptions(sc, selOpt, isCorrect);
+  showFeedback(sc, isCorrect ? 'correct':'wrong');
+  const sb = document.getElementById('submitBtn');
+  if (sb) sb.style.display = 'none';
+  const comp = document.getElementById('scComplete');
+  if (comp) {
+    comp.style.display = 'block';
+    document.getElementById('completeTitle').textContent = 'Scenario '+(scIdx+1)+' '+(isCorrect?'Correct ✓':'Reviewed');
+  }
+}
+
+function replayAnswer(si) {
+  const sc = SC[si];
+  if (demandState[si]) setDemand(demandState[si]);
+  markOptions(sc, sc.ans, true);
+  showFeedback(sc, correct[si] ? 'correct':'wrong');
+  const sb = document.getElementById('submitBtn');
+  if (sb) sb.style.display = 'none';
+}
+
+function markOptions(sc, chosen, isCorrect) {
+  document.querySelectorAll('.option-card').forEach(el => {
+    el.classList.add('disabled');
+    const v = el.id.replace('opt_','');
+    if (v === sc.ans) el.classList.add('o-correct');
+    else if (v === chosen && !isCorrect) el.classList.add('o-wrong');
+  });
+}
+
+function showFeedback(sc, status) {
+  const panel = document.getElementById('fbPanel');
+  const banner = document.getElementById('fbBanner');
+  const reveal = document.getElementById('fbReveal');
+  if (!panel) return;
+  banner.className = 'fb-banner fb-' + status;
+  banner.innerHTML = status === 'correct' ? '✓ Correct.' : '✗ Incorrect — see the explanation below.';
+  reveal.innerHTML = sc.reveal || '';
+  panel.classList.add('show');
+}
+
+function updateScore() {
+  document.getElementById('scoreNum').textContent = totalCorrect;
+  document.getElementById('progBar').style.width = ((totalCorrect / SC.length) * 100) + '%';
+}
+
+function showFinal() {
+  const body = document.getElementById('simBody');
+  const pct = Math.round((totalCorrect / SC.length) * 100);
+  body.innerHTML = `
+    <div style="text-align:center;padding:32px 12px">
+      <h3 style="color:var(--green);font-size:20px;margin-bottom:8px">All 4 Scenarios Complete</h3>
+      <p style="font-size:24px;font-weight:700;color:var(--navy);margin:10px 0">${totalCorrect} / ${SC.length} correct</p>
+      <p style="color:var(--gray-600);font-size:13px;margin-bottom:20px">${pct}% correct</p>
+      <div class="tip-box" style="text-align:left;max-width:500px;margin:0 auto 20px">
+        <strong>Gate 2 Q7 and Case Parts 5–6 readiness:</strong><br>
+        Gate 2 Q7 tests two clinics — same improvement, different constraint types. Scenario 2 here is the exact mechanism: demand-constrained before improvement → 0% revenue gain, pure cost added. Case Part 5 asks you to compute before/after profit. Case Part 6 adds the technology lease and asks for the recommendation. Apply the three-question framework in order before calculating.
+      </div>
+      <button class="btn btn-secondary" onclick="goScenario(0)">↩ Restart from Scenario 1</button>
+    </div>`;
+}
+
+init();
+</script>
+</body>
+</html>

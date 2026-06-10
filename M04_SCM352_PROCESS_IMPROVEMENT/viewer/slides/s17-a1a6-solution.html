@@ -1,0 +1,64 @@
+<section class="slide-page" data-title="Line Balancing: A1–A6 Solution" data-lo="LO4-4" data-notes="Solution for s16. Move A3 (3 min) from W1 to W3. Rationale: A3 is the shortest activity in W1; moving it reduces W1 by exactly 3 min (from 9 to 6 = takt). W3 absorbs A3 and A6 (A3 must come before A6 in sequence ✓). New W3 = 6 min = takt. Perfect balance at 3 workers. Process capacity jumps from 6.67/hr to 10/hr = demand.">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">LO4-4</span>
+      <span class="le-course">SCM 352 · Module 04</span>
+    </div>
+    <span class="le-pagenum">17 / 21</span>
+  </div>
+  <div class="le-titleblock">
+    <div class="le-title">Line Balancing <span>A1–A6 Solution</span></div>
+    <div class="le-sub">Move A3 from Worker 1 to Worker 3 — takt = 6 min / shirt</div>
+  </div>
+  <div class="le-body">
+    <div class="two-col">
+      <div>
+        <table class="clean-table">
+          <thead>
+            <tr><th>Worker</th><th>Activities</th><th>Before</th><th>After</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>W1</strong></td>
+              <td>A1, A2 <del style="color:var(--muted)">A3</del></td>
+              <td><span class="neg">9 min ✗</span></td>
+              <td><span class="pos">6 min ✓</span></td>
+            </tr>
+            <tr>
+              <td><strong>W2</strong></td>
+              <td>A4, A5</td>
+              <td><span class="pos">6 min ✓</span></td>
+              <td><span class="pos">6 min ✓</span></td>
+            </tr>
+            <tr>
+              <td><strong>W3</strong></td>
+              <td>A3, A6</td>
+              <td>3 min</td>
+              <td><span class="pos">6 min ✓</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:7px;">
+        <div class="callout teal">
+          <div class="callout-label">Why A3? Why to W3?</div>
+          <p>W1 must shed exactly 3 min to reach takt (9−6=3). A3 = 3 min is the only activity that achieves this precisely.</p>
+          <p style="margin-top:4px;">W3 currently has 3 min available below takt — it can absorb exactly 3 min. Sequence preserved: A3 before A6 ✓</p>
+        </div>
+        <div class="formula-box" style="font-size:calc(12px * var(--slide-scale));">
+          New process capacity = 60 ÷ 6 = <strong class="pos">10 / hr = demand ✓</strong>
+        </div>
+        <div class="callout amber">
+          <div class="callout-label">Result</div>
+          <p>All three workers at exactly 6 min = takt. <strong>Perfect balance.</strong> The bottleneck no longer limits throughput.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="le-footer">
+    <div class="le-lo-pills"><span class="le-lo-pill">LO4-4</span></div>
+    <div><span class="le-gate-note">Gate 2 · Q5 · Case Part 4</span></div>
+  </div>
+</section>

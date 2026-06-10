@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Efficiency Metrics Explorer — SCM 352 M04</title>
+<style>
+:root {
+  --navy:#1a3a5c;--blue:#2563a8;--blue-lt:#dbeafe;--blue-xlt:#eff6ff;
+  --gold:#f59e0b;--gold-lt:#fffbeb;--gold-bdr:#fde68a;
+  --green:#16a34a;--green-lt:#f0fdf4;--green-bdr:#bbf7d0;
+  --red:#dc2626;--red-lt:#fef2f2;--red-bdr:#fecaca;
+  --amber:#d97706;--amber-lt:#fffbeb;--amber-bdr:#fde68a;
+  --teal:#0891b2;--teal-lt:#f0fdfe;--teal-bdr:#a5f3fc;
+  --gray-50:#f9fafb;--gray-100:#f3f4f6;--gray-200:#e5e7eb;
+  --gray-300:#d1d5db;--gray-400:#9ca3af;--gray-600:#4b5563;
+  --gray-700:#374151;--gray-800:#1f2937;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--gray-50);color:var(--gray-800);min-height:100vh}
+header{background:var(--navy);color:white;padding:16px 24px;display:flex;align-items:center;gap:16px}
+.header-badge{background:var(--gold);color:var(--navy);font-weight:700;font-size:11px;padding:3px 8px;border-radius:4px;letter-spacing:.05em;text-transform:uppercase}
+header h1{font-size:18px;font-weight:600}
+.scenario-nav{background:white;border-bottom:2px solid var(--gray-200);padding:0 24px;display:flex;overflow-x:auto}
+.scenario-btn{padding:12px 18px;border:none;background:none;cursor:pointer;font-size:13px;font-weight:500;color:var(--gray-600);border-bottom:3px solid transparent;white-space:nowrap;transition:all .15s}
+.scenario-btn:hover{color:var(--blue)}
+.scenario-btn.active{color:var(--blue);border-bottom-color:var(--blue);font-weight:600}
+.scenario-btn.sc-done{color:var(--green)}
+.scenario-btn.sc-done::after{content:' ✓'}
+.main{max-width:1100px;margin:0 auto;padding:24px;display:grid;grid-template-columns:1fr 300px;gap:24px;align-items:start}
+@media(max-width:820px){.main{grid-template-columns:1fr}}
+.card{background:white;border:1px solid var(--gray-200);border-radius:12px;overflow:hidden}
+.card-header{background:var(--blue-lt);padding:14px 20px;border-bottom:1px solid var(--gray-200)}
+.card-header h2{font-size:15px;font-weight:700;color:var(--navy)}
+.card-header p{font-size:13px;color:var(--gray-600);margin-top:4px}
+.card-body{padding:20px}
+.scenario-desc{font-size:14px;line-height:1.7;background:var(--gray-50);border-left:4px solid var(--blue);padding:14px 16px;border-radius:0 8px 8px 0;margin-bottom:16px}
+.diff-tag{font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:3px 9px;border-radius:100px}
+.diff-easy{background:var(--green-lt);color:var(--green)}
+.diff-medium{background:var(--amber-lt);color:var(--amber)}
+.diff-hard{background:var(--red-lt);color:var(--red)}
+.step-track{display:flex;align-items:center;gap:3px;margin-bottom:16px;flex-wrap:wrap}
+.step-pip{width:28px;height:28px;border-radius:50%;border:2px solid var(--gray-200);background:white;font-size:10px;font-weight:700;color:var(--gray-400);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s}
+.step-pip.s-done{border-color:var(--green);background:var(--green);color:white}
+.step-pip.s-active{border-color:var(--blue);background:var(--blue);color:white}
+.step-pip.s-wrong{border-color:var(--red);background:var(--red);color:white}
+.step-conn{flex:1;height:2px;background:var(--gray-200);min-width:6px}
+.step-conn.c-done{background:var(--green)}
+.step-label{font-size:12px;font-weight:700;color:var(--navy);margin-bottom:8px}
+.step-q{font-size:14px;line-height:1.6;margin-bottom:14px;color:var(--gray-800)}
+.option-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+@media(max-width:600px){.option-grid{grid-template-columns:1fr}}
+.option-card{display:flex;align-items:flex-start;gap:10px;padding:11px 13px;border:2px solid var(--gray-200);border-radius:10px;cursor:pointer;transition:border-color .15s,background .15s;background:white;user-select:none;text-align:left}
+.option-card:hover:not(.disabled){border-color:var(--blue);background:var(--gray-50)}
+.option-card.selected{border-color:var(--blue);background:var(--blue-xlt)}
+.option-card.o-correct{border-color:var(--green);background:var(--green-lt);pointer-events:none}
+.option-card.o-wrong{border-color:var(--red);background:var(--red-lt);pointer-events:none}
+.option-card.disabled{pointer-events:none;opacity:.6}
+.opt-radio{width:16px;height:16px;border-radius:50%;border:2px solid var(--gray-300);flex-shrink:0;margin-top:2px;transition:all .15s}
+.option-card.selected .opt-radio{border-color:var(--blue);background:var(--blue)}
+.option-card.o-correct .opt-radio{border-color:var(--green);background:var(--green)}
+.option-card.o-wrong .opt-radio{border-color:var(--red);background:var(--red)}
+.opt-text{font-size:13px;line-height:1.45}
+.btn{padding:9px 20px;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;transition:all .15s}
+.btn-primary{background:var(--blue);color:white}
+.btn-secondary{background:var(--gray-100);color:var(--gray-800)}
+.btn-green{background:var(--green);color:white}
+.btn-primary:hover{background:#1d4ed8}
+.btn-primary:disabled{background:var(--gray-400);cursor:not-allowed}
+.btn-secondary:hover{background:var(--gray-200)}
+.btn-green:hover{background:#15803d}
+.btn-group{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.fb-panel{display:none;margin-top:14px;border:2px solid var(--gray-200);border-radius:10px;overflow:hidden}
+.fb-panel.show{display:block}
+.fb-banner{padding:10px 14px;font-size:14px;font-weight:700;display:flex;align-items:center;gap:8px}
+.fb-correct{background:var(--green-lt);color:var(--green);border-bottom:2px solid var(--green)}
+.fb-wrong{background:var(--red-lt);color:var(--red);border-bottom:2px solid var(--red)}
+.fb-body{padding:14px;font-size:13px;line-height:1.6;background:white}
+.think-deeper{background:var(--gold-lt);border:1.5px solid var(--gold-bdr);border-radius:8px;padding:11px 14px;margin-top:10px;font-size:13px;line-height:1.55}
+.think-label{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--amber);margin-bottom:5px}
+.sc-complete{background:var(--green-lt);border:1px solid var(--green-bdr);border-radius:10px;padding:18px;text-align:center;margin-top:12px;display:none}
+.sc-complete h3{color:var(--green);font-size:15px;font-weight:700;margin-bottom:8px}
+.final-box{display:none;text-align:center;padding:24px 12px}
+.final-box.show{display:block}
+.score-row{padding:14px 18px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--gray-100)}
+.score-num{font-size:28px;font-weight:700;color:var(--navy)}
+.score-meta{font-size:12px;color:var(--gray-600);line-height:1.4}
+.score-meta strong{color:var(--gray-800);display:block;font-size:13px}
+.prog-outer{height:5px;background:var(--gray-200);border-radius:3px;overflow:hidden;margin:0 18px 14px}
+.prog-inner{height:100%;background:var(--blue);border-radius:3px;transition:width .4s}
+.tip-box{background:var(--gold-lt);border:1px solid var(--gold-bdr);border-radius:8px;padding:11px 14px;font-size:12px;line-height:1.55;color:var(--gray-800)}
+.tip-box strong{color:var(--navy)}
+.chain-tbl{width:100%;border-collapse:collapse;font-size:11px}
+.chain-tbl th{background:var(--blue-lt);padding:5px 7px;text-align:left;font-weight:700;color:var(--navy);border-bottom:1px solid var(--gray-200)}
+.chain-tbl td{padding:5px 7px;border-bottom:1px solid var(--gray-100);vertical-align:middle}
+.chain-tbl tr.ch-done td:first-child{color:var(--green);font-weight:600}
+.chain-tbl tr.ch-active td:first-child{color:var(--blue);font-weight:700}
+.ch-val{color:var(--green);font-weight:700}
+.ch-pend{color:var(--gray-300)}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-badge">SCM 352 · M04</div>
+  <h1>Efficiency Metrics Explorer</h1>
+</header>
+
+<div class="scenario-nav" id="scenarioNav"></div>
+
+<div class="main">
+  <div>
+    <div class="card">
+      <div class="card-header">
+        <h2 id="cardTitle"></h2>
+        <p id="cardSub"></p>
+      </div>
+      <div class="card-body">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap">
+          <span class="diff-tag" id="diffTag"></span>
+          <span style="margin-left:auto;font-size:11px;font-weight:600;color:var(--gray-400)" id="vigNum"></span>
+        </div>
+        <div class="scenario-desc" id="scenDesc"></div>
+        <div class="step-track" id="stepTrack"></div>
+        <div id="stepArea"></div>
+        <div class="sc-complete" id="scComplete">
+          <h3 id="completeTitle"></h3>
+          <p id="completeMsg" style="font-size:13px;color:var(--gray-600);margin-bottom:12px"></p>
+          <button class="btn btn-green" id="nextScBtn" onclick="goNextScenario()"></button>
+        </div>
+        <div class="final-box" id="finalBox"></div>
+      </div>
+    </div>
+  </div>
+
+  <div style="position:sticky;top:24px;display:flex;flex-direction:column;gap:16px">
+    <div class="card">
+      <div class="card-header"><h2>Progress</h2><p>Steps completed</p></div>
+      <div class="score-row">
+        <div class="score-num" id="scoreNum">0</div>
+        <div class="score-meta">
+          <strong id="scoreLabel">steps correct</strong>
+          <span id="scoreDetail">of 28 total</span>
+        </div>
+      </div>
+      <div class="prog-outer"><div class="prog-inner" id="progBar" style="width:0%"></div></div>
+    </div>
+    <div class="card">
+      <div class="card-header"><h2>Metrics Chain</h2><p>Chapter 4 sequence</p></div>
+      <div class="card-body">
+        <div class="tip-box">
+          <strong>7-step sequence:</strong><br>
+          1. Bottleneck (min capacity)<br>
+          2. Process capacity<br>
+          3. Flow rate = min{demand, cap}<br>
+          4. Cycle time = 60 ÷ flow rate<br>
+          5. Labor content = Σ PT<br>
+          6. Avg util = LC ÷ (workers × CT)<br>
+          7. CDL = workers × wage ÷ flow rate
+        </div>
+      </div>
+    </div>
+    <div class="card" id="chainCard">
+      <div class="card-header"><h2>Chain Tracker</h2><p id="chainLbl"></p></div>
+      <div class="card-body" style="padding:10px">
+        <table class="chain-tbl" id="chainTbl"></table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const CHAIN_LABELS = ['Bottleneck','Process Capacity','Flow Rate','Cycle Time','Labor Content','Avg Utilization','CDL'];
+
+const SC = [
+  {
+    id:1, title:'Insurance Claims Processing', sub:'Scenario 1 of 4 · LO4-1 Baseline', diff:'easy',
+    desc:'Three-station insurance claims process: Station 1 reviews completeness (3 min/claim), Station 2 verifies coverage (5 min/claim), Station 3 calculates benefit payment (4 min/claim). One worker per station. Demand is unlimited. Workers earn $18/hr.',
+    chainVals:['S2 — 5 min (cap 12/hr)','12 / hr','12 / hr (= capacity)','5 min','12 min','80%','$4.50 / claim'],
+    steps:[
+      {label:'Step 1 of 7 — Bottleneck',
+       q:'Which station is the bottleneck? The bottleneck has the longest processing time — and therefore the lowest capacity.',
+       opts:[{v:'S1',t:'Station 1 — 3 min/claim → capacity 20/hr'},{v:'S2',t:'Station 2 — 5 min/claim → capacity 12/hr'},{v:'S3',t:'Station 3 — 4 min/claim → capacity 15/hr'},{v:'tie',t:'All stations are equally constraining'}],
+       ans:'S2',reveal:'Station 2 is the bottleneck: 5 min/claim → 60 ÷ 5 = 12/hr, the lowest capacity. The bottleneck is always the station with the longest processing time per unit (equivalently, the lowest capacity). Identify it first — every downstream metric depends on it.',td:null},
+      {label:'Step 2 of 7 — Process Capacity',
+       q:'What is the process capacity — the maximum rate this sequential process can sustain?',
+       opts:[{v:'20',t:'20/hr — Station 1 capacity'},{v:'12',t:'12/hr — bottleneck (Station 2) capacity'},{v:'15',t:'15/hr — Station 3 capacity'},{v:'47',t:'47/hr — sum of all station capacities'}],
+       ans:'12',reveal:'Process capacity = bottleneck capacity = 12/hr. The process is only as fast as its slowest station. Summing capacities is meaningless for a sequential process — the output is bottleneck-limited.',td:null},
+      {label:'Step 3 of 7 — Flow Rate',
+       q:'What is the flow rate — the actual rate at which units complete the process? Demand is unlimited.',
+       opts:[{v:'12',t:'12/hr — equals process capacity (demand is unlimited)'},{v:'8',t:'8/hr — a plausible demand limit if stated'},{v:'47',t:'47/hr — sum of capacities'},{v:'uk',t:'Cannot determine without a stated demand rate'}],
+       ans:'12',reveal:'Flow rate = min{demand, process capacity}. Demand is unlimited → flow rate = process capacity = 12/hr. Always check demand first. If a demand rate is given, compare it to process capacity; if demand < capacity, the process is demand-constrained and flow rate = demand.',
+       td:'Cycle time only equals the bottleneck\'s processing time when the process is capacity-constrained. If demand were given as 10/hr here, flow rate = 10/hr and CT = 6 min — not 5 min.'},
+      {label:'Step 4 of 7 — Cycle Time',
+       q:'What is the cycle time — how much time elapses between consecutive completed units?',
+       opts:[{v:'5',t:'5 min/claim — 60 ÷ flow rate (12/hr)'},{v:'3',t:'3 min/claim — Station 1 processing time'},{v:'4',t:'4 min/claim — Station 3 processing time'},{v:'12',t:'12 min/claim — total labor content'}],
+       ans:'5',reveal:'Cycle time = 60 ÷ flow rate = 60 ÷ 12 = 5 min/claim. It happens to equal the bottleneck\'s processing time here because the process is capacity-constrained. CT is a system-level property derived from flow rate, not from any single station.',td:null},
+      {label:'Step 5 of 7 — Labor Content',
+       q:'What is the labor content — the total worker time required to process one unit?',
+       opts:[{v:'12',t:'12 min/claim — 3 + 5 + 4 (sum of all processing times)'},{v:'5',t:'5 min/claim — bottleneck processing time'},{v:'9',t:'9 min/claim — average processing time × 3 stations'},{v:'15',t:'15 min/claim (incorrect computation)'}],
+       ans:'12',reveal:'Labor content = 3 + 5 + 4 = 12 min. This is simply the sum of all activity times. It is independent of flow rate, cycle time, or bottleneck — it represents the actual work done on each unit.',td:null},
+      {label:'Step 6 of 7 — Average Labor Utilization',
+       q:'What is average labor utilization across all three workers? LC = 12 min, CT = 5 min, 3 workers.',
+       opts:[{v:'80',t:'80% — LC ÷ (workers × CT) = 12 ÷ 15'},{v:'100',t:'100% — the bottleneck is always fully busy'},{v:'67',t:'67% — incorrect demand-constrained formula'},{v:'91',t:'91% — weighted average of two stations only'}],
+       ans:'80',reveal:'Avg util = LC ÷ (workers × CT) = 12 ÷ (3 × 5) = 12 ÷ 15 = 80%. Station 2 runs at 100% (bottleneck); Station 1 at 60% (3÷5); Station 3 at 80% (4÷5). Average = (100+60+80)÷3 = 80%. Workers are idle 20% of the time — paid but waiting.',
+       td:'The bottleneck is 100% utilized when capacity-constrained. Every other station is idle part of each cycle. Average utilization reflects this structural imbalance.'},
+      {label:'Step 7 of 7 — Cost of Direct Labor',
+       q:'What is the cost of direct labor per claim? Workers earn $18/hr. Flow rate = 12/hr.',
+       opts:[{v:'4.50',t:'$4.50/claim — 3 workers × $18 ÷ 12/hr = $54 ÷ 12'},{v:'1.50',t:'$1.50/claim — $18 ÷ 12 (only 1 worker counted)'},{v:'18',t:'$18.00/claim — confuses wage rate with unit cost'},{v:'6',t:'$6.00/claim — uses labor content (minutes) directly'}],
+       ans:'4.50',reveal:'CDL = workers × wage ÷ flow rate = 3 × $18 ÷ 12 = $54 ÷ 12 = $4.50/claim. Critical check: wages are $/hr and flow rate is units/hr — compatible units. Result is $/unit. If flow rate were in units/min (= 0.2), dividing $54/hr ÷ 0.2 units/min gives $270 — off by 60×. Always check units.',td:null}
+    ]
+  },
+  {
+    id:2, title:'Health Claims Review', sub:'Scenario 2 of 4 · Demand-Constrained Process', diff:'medium',
+    desc:'Three-station health claims review: Station 1 checks patient eligibility (4 min/claim), Station 2 verifies medical necessity (6 min/claim), Station 3 processes reimbursement (5 min/claim). One worker per station. Demand arrives at 8 claims/hr. Workers earn $15/hr.',
+    chainVals:['S2 — 6 min (cap 10/hr)','10 / hr','8 / hr ← demand limits','7.5 min','15 min','66.7%','$5.63 / claim'],
+    steps:[
+      {label:'Step 1 of 7 — Bottleneck',
+       q:'Which station has the lowest capacity? Identify the bottleneck by process structure, not by demand.',
+       opts:[{v:'S1',t:'Station 1 — 4 min → capacity 15/hr'},{v:'S2',t:'Station 2 — 6 min → capacity 10/hr'},{v:'S3',t:'Station 3 — 5 min → capacity 12/hr'},{v:'dem',t:'Demand at 8/hr is the bottleneck'}],
+       ans:'S2',reveal:'Station 2 has the lowest process capacity: 60 ÷ 6 = 10/hr. This is the bottleneck by structure. The demand rate (8/hr) is a separate consideration — it may or may not be the binding constraint, but it does not change which station has the lowest capacity.',
+       td:'Distinguishing "bottleneck by capacity" from "binding constraint" is critical. When demand < process capacity, demand limits output — but Station 2 is still structurally the bottleneck.'},
+      {label:'Step 2 of 7 — Process Capacity',
+       q:'What is the process capacity — the maximum rate if demand were unlimited?',
+       opts:[{v:'10',t:'10/hr — bottleneck (Station 2) capacity'},{v:'8',t:'8/hr — the demand rate'},{v:'12',t:'12/hr — Station 3 capacity'},{v:'15',t:'15/hr — Station 1 capacity'}],
+       ans:'10',reveal:'Process capacity = 10/hr, set by the Station 2 bottleneck. Process capacity describes what the process structure can handle — it is independent of actual demand.',td:null},
+      {label:'Step 3 of 7 — Flow Rate',
+       q:'What is the actual flow rate? Demand = 8/hr. Process capacity = 10/hr.',
+       opts:[{v:'10',t:'10/hr — process capacity (ignores demand)'},{v:'8',t:'8/hr — demand rate, since 8 < 10 (demand-constrained)'},{v:'9',t:'9/hr — average of demand and capacity'},{v:'6',t:'6/hr — set by Station 2 processing time'}],
+       ans:'8',reveal:'Flow rate = min{demand, process capacity} = min{8, 10} = 8/hr. Demand (8/hr) is less than capacity (10/hr), so demand is the binding constraint. This process is demand-constrained. Using capacity (10/hr) instead produces wrong values for every downstream metric — this is Error 1 from Segment 1.',
+       td:'Students who skip the demand check and use flow rate = 10/hr compute CT=6min and util=83.3%. The correct values are CT=7.5min and util=66.7%. The entire chain is wrong from step 3 onward if flow rate is wrong.'},
+      {label:'Step 4 of 7 — Cycle Time',
+       q:'What is the cycle time? Use the correct flow rate from Step 3.',
+       opts:[{v:'7.5',t:'7.5 min/claim — 60 ÷ 8 (correct flow rate)'},{v:'6',t:'6 min/claim — 60 ÷ 10 (uses capacity, not flow rate)'},{v:'5',t:'5 min/claim — 60 ÷ 12'},{v:'4',t:'4 min/claim — 60 ÷ 15'}],
+       ans:'7.5',reveal:'Cycle time = 60 ÷ 8 = 7.5 min/claim. Using process capacity (10/hr) instead gives 6 min — a chain error that makes utilization appear 83.3% instead of the correct 66.7%. Every subsequent metric flows from cycle time.',td:null},
+      {label:'Step 5 of 7 — Labor Content',
+       q:'What is the labor content per claim?',
+       opts:[{v:'15',t:'15 min/claim — 4 + 6 + 5'},{v:'6',t:'6 min/claim — bottleneck processing time only'},{v:'8',t:'8 min/claim — demand rate misread as time'},{v:'7.5',t:'7.5 min/claim — cycle time (confuses CT with LC)'}],
+       ans:'15',reveal:'Labor content = 4 + 6 + 5 = 15 min. Always the simple sum of processing times. It is unchanged by whether the process is demand- or capacity-constrained.',td:null},
+      {label:'Step 6 of 7 — Average Labor Utilization',
+       q:'What is average labor utilization? LC = 15 min, CT = 7.5 min, 3 workers.',
+       opts:[{v:'66.7',t:'66.7% — 15 ÷ (3 × 7.5) = 15 ÷ 22.5'},{v:'83.3',t:'83.3% — uses CT = 6 (wrong flow rate from Error 1)'},{v:'100',t:'100% — assumes all workers are at bottleneck pace'},{v:'50',t:'50% — idle ÷ total (wrong formula)'}],
+       ans:'66.7',reveal:'Avg util = 15 ÷ (3 × 7.5) = 15 ÷ 22.5 = 66.7%. Even Station 2 — the capacity bottleneck — has idle time in a demand-constrained process, because units arrive only at the demand rate (8/hr), not at its capacity (10/hr). One-third of all paid labor time is idle.',
+       td:'Compare to Scenario 1 (80% util, capacity-constrained). Demand-constrained conditions produce lower utilization. Adding workers to a demand-constrained process does not help output — it adds idle time.'},
+      {label:'Step 7 of 7 — Cost of Direct Labor',
+       q:'What is CDL per claim? Workers earn $15/hr. Flow rate = 8/hr.',
+       opts:[{v:'5.63',t:'$5.63/claim — 3 × $15 ÷ 8 = $45 ÷ 8'},{v:'4.50',t:'$4.50/claim — uses flow rate 10 (Error 1 chain)'},{v:'338',t:'$338/claim — flow rate in units/min (unit mismatch!)'},{v:'3',t:'$3.00/claim — wrong direction division'}],
+       ans:'5.63',reveal:'CDL = 3 × $15 ÷ 8 = $45 ÷ 8 = $5.625 ≈ $5.63/claim. The $338 trap: 8/hr = 8÷60 = 0.133 units/min → $45 ÷ 0.133 = $338. This is a unit mismatch — wages are $/hr but you divided by units/min, off by exactly 60×. CDL in hundreds of dollars for a service process is always a unit error.',td:null}
+    ]
+  },
+  {
+    id:3, title:'Mortgage Loan Processing', sub:'Scenario 3 of 4 · Multi-Worker Station', diff:'medium',
+    desc:'Three-station mortgage application process: Station 1 collects documents (3 min/application, 1 worker), Station 2 verifies income and credit (10 min/application, 2 workers), Station 3 prepares closing documents (4 min/application, 1 worker). Total: 4 workers. Demand is unlimited. Workers earn $15/hr.',
+    chainVals:['S2 — 10 min, 2 workers (cap 12/hr)','12 / hr','12 / hr (= capacity)','5 min','17 min','85%','$5.00 / application'],
+    steps:[
+      {label:'Step 1 of 7 — Bottleneck',
+       q:'Station 2 has 2 workers. Calculate each station\'s capacity. Which is the bottleneck?',
+       opts:[{v:'S1',t:'Station 1 — 1 worker × 60 ÷ 3 = 20/hr'},{v:'S2',t:'Station 2 — 2 workers × 60 ÷ 10 = 12/hr'},{v:'S3',t:'Station 3 — 1 worker × 60 ÷ 4 = 15/hr'},{v:'none',t:'No bottleneck — 2 workers at S2 eliminate it'}],
+       ans:'S2',reveal:'Station 2 capacity = 2 workers × (60 ÷ 10) = 12/hr. Despite having 2 workers, S2 is still the bottleneck: 12/hr < S3(15/hr) < S1(20/hr). Adding workers increases a station\'s capacity proportionally, but S2\'s long processing time keeps it as the constraint.',td:null},
+      {label:'Step 2 of 7 — Process Capacity',
+       q:'What is process capacity, accounting for the 2 workers at Station 2?',
+       opts:[{v:'12',t:'12/hr — S2 with 2 workers (2 × 60 ÷ 10)'},{v:'6',t:'6/hr — S2 treated as 1 worker (60 ÷ 10)'},{v:'15',t:'15/hr — Station 3 capacity'},{v:'20',t:'20/hr — Station 1 capacity'}],
+       ans:'12',reveal:'Process capacity = 12/hr. The 6/hr error forgets to multiply by the number of workers at S2. With 2 workers: capacity = 2 × (1 ÷ 10 min) × 60 = 12/hr. Always multiply by worker count when a station has more than one resource.',td:null},
+      {label:'Step 3 of 7 — Flow Rate',
+       q:'What is flow rate? Demand is unlimited.',
+       opts:[{v:'12',t:'12/hr — equals process capacity'},{v:'6',t:'6/hr — incorrect S2 capacity (1 worker error)'},{v:'15',t:'15/hr — Station 3 capacity'},{v:'10',t:'10/hr — S2 processing time (not capacity)'}],
+       ans:'12',reveal:'Flow rate = min{unlimited, 12} = 12/hr.',td:null},
+      {label:'Step 4 of 7 — Cycle Time',
+       q:'What is cycle time?',
+       opts:[{v:'5',t:'5 min/application — 60 ÷ 12'},{v:'10',t:'10 min — S2 processing time (not cycle time)'},{v:'4',t:'4 min — Station 3 processing time'},{v:'3',t:'3 min — Station 1 processing time'}],
+       ans:'5',reveal:'CT = 60 ÷ 12 = 5 min. The S2 bottleneck with 2 workers produces one unit every 5 min at the system level (each worker handles alternating units every 10 min). Cycle time reflects system throughput, not individual worker pace.',td:null},
+      {label:'Step 5 of 7 — Labor Content',
+       q:'What is labor content per application? Each application receives one worker\'s attention at each station.',
+       opts:[{v:'17',t:'17 min — 3 + 10 + 4 (work actually done on each unit)'},{v:'27',t:'27 min — counts both S2 workers (3 + 10 + 10 + 4)'},{v:'10',t:'10 min — S2 processing time only'},{v:'5',t:'5 min — cycle time (confuses CT with LC)'}],
+       ans:'17',reveal:'Labor content = 3 + 10 + 4 = 17 min per application. Each application is processed by one worker at each station — Station 2 has 2 workers but each application passes through it once, for 10 min. The two S2 workers process different applications in parallel; 10 min (not 20) is the contribution to each unit\'s labor content.',
+       td:'The 27-min option double-counts by treating both S2 workers as working on the same unit. Labor content is per unit, not per station total.'},
+      {label:'Step 6 of 7 — Average Labor Utilization',
+       q:'What is average labor utilization? LC = 17 min, 4 total workers (1+2+1), CT = 5 min.',
+       opts:[{v:'85',t:'85% — 17 ÷ (4 × 5) = 17 ÷ 20'},{v:'100',t:'100% — both S2 workers run at bottleneck pace'},{v:'75',t:'75% — only 3 workers counted'},{v:'56.7',t:'56.7% — uses labor content 27 (double-counts S2)'}],
+       ans:'85',reveal:'Avg util = 17 ÷ (4 × 5) = 17 ÷ 20 = 85%. Each S2 worker works 10 min processing a unit, and with CT=5 min each gets a new unit every 10 min — so S2 workers are 100% utilized. S1 = 3/5 = 60%, S3 = 4/5 = 80%, S2×2 = 100% each. Avg = (60+100+100+80)÷4 = 85%.',td:null},
+      {label:'Step 7 of 7 — Cost of Direct Labor',
+       q:'What is CDL per application? 4 total workers, wages $15/hr, flow rate 12/hr.',
+       opts:[{v:'5',t:'$5.00/application — 4 × $15 ÷ 12 = $60 ÷ 12'},{v:'3.75',t:'$3.75/application — uses 3 workers (forgets S2 has 2)'},{v:'7.50',t:'$7.50/application — uses wrong flow rate'},{v:'1.25',t:'$1.25/application — divides by workers instead of flow rate'}],
+       ans:'5',reveal:'CDL = 4 × $15 ÷ 12 = $60 ÷ 12 = $5.00/application. Critical: use total worker count = 4 (including both S2 workers). Using 3 workers gives $3.75 — an underestimate that understates true labor cost per unit.',td:null}
+    ]
+  },
+  {
+    id:4, title:'Pharmacy Order Fulfillment', sub:'Scenario 4 of 4 · Unit Mismatch Trap', diff:'hard',
+    desc:'Prescription fulfillment process at Riverside Health: Station 1 receives and enters the order (5 min/order), Station 2 pharmacist verification (8 min/order), Station 3 dispenses and labels (3 min/order). One worker per station. Demand is unlimited. Workers earn $24/hr.',
+    chainVals:['S2 — 8 min (cap 7.5/hr)','7.5 / hr','7.5 / hr (= capacity)','8 min','16 min','66.7%','$9.60 / order'],
+    steps:[
+      {label:'Step 1 of 7 — Bottleneck',
+       q:'Which station is the bottleneck?',
+       opts:[{v:'S1',t:'Station 1 — 5 min/order → 12/hr'},{v:'S2',t:'Station 2 — 8 min/order → 7.5/hr'},{v:'S3',t:'Station 3 — 3 min/order → 20/hr'},{v:'none',t:'No clear bottleneck — all stations differ'}],
+       ans:'S2',reveal:'Station 2 (pharmacist verification) with 8 min/order has the lowest capacity: 60 ÷ 8 = 7.5/hr. This is the bottleneck.',td:null},
+      {label:'Step 2 of 7 — Process Capacity',
+       q:'What is process capacity?',
+       opts:[{v:'7.5',t:'7.5/hr — bottleneck capacity (60 ÷ 8)'},{v:'12',t:'12/hr — Station 1 capacity'},{v:'20',t:'20/hr — Station 3 capacity'},{v:'13.2',t:'13.2/hr — sum of times ÷ 60 (wrong formula)'}],
+       ans:'7.5',reveal:'Process capacity = 60 ÷ 8 = 7.5/hr. The non-integer result is normal — do not round at this step.',td:null},
+      {label:'Step 3 of 7 — Flow Rate',
+       q:'What is flow rate? Demand is unlimited.',
+       opts:[{v:'7.5',t:'7.5/hr — equals capacity (demand unlimited)'},{v:'8',t:'8/hr — S2 processing time misread as rate'},{v:'5',t:'5/hr — S1 processing time'},{v:'7',t:'7/hr — rounded down to nearest integer'}],
+       ans:'7.5',reveal:'Flow rate = 7.5/hr. Do not round process capacity or flow rate at intermediate steps — rounding here will cause CDL to be slightly wrong. Round only at the final reporting step if required.',td:null},
+      {label:'Step 4 of 7 — Cycle Time',
+       q:'What is cycle time?',
+       opts:[{v:'8',t:'8 min/order — 60 ÷ 7.5'},{v:'5',t:'5 min/order — Station 1 processing time'},{v:'7.5',t:'7.5 min/order — flow rate confused with minutes'},{v:'16',t:'16 min/order — labor content (wrong)'}],
+       ans:'8',reveal:'CT = 60 ÷ 7.5 = 8 min/order. A common confusion: students see 7.5/hr and think "7.5 min." These are different quantities. Flow rate in units/hr converts to cycle time in min by dividing 60.',td:null},
+      {label:'Step 5 of 7 — Labor Content',
+       q:'What is labor content per order?',
+       opts:[{v:'16',t:'16 min/order — 5 + 8 + 3'},{v:'8',t:'8 min/order — bottleneck only'},{v:'7.5',t:'7.5 min/order — flow rate (wrong concept)'},{v:'24',t:'24 min/order — sums wages instead of times'}],
+       ans:'16',reveal:'Labor content = 5 + 8 + 3 = 16 min.',td:null},
+      {label:'Step 6 of 7 — Average Labor Utilization',
+       q:'What is average labor utilization? LC = 16 min, CT = 8 min, 3 workers.',
+       opts:[{v:'66.7',t:'66.7% — 16 ÷ (3 × 8) = 16 ÷ 24'},{v:'100',t:'100% — Station 2 is fully utilized'},{v:'93.8',t:'93.8% — average of only 2 stations'},{v:'75',t:'75% — incorrect formula application'}],
+       ans:'66.7',reveal:'Avg util = 16 ÷ (3 × 8) = 16 ÷ 24 = 66.7%. Station utilizations: S1 = 5÷8 = 62.5%, S2 = 8÷8 = 100%, S3 = 3÷8 = 37.5%. Average = (62.5+100+37.5)÷3 = 66.7%.',td:null},
+      {label:'Step 7 of 7 — Cost of Direct Labor',
+       q:'What is CDL per order? Workers earn $24/hr. Flow rate = 7.5/hr. Watch for the unit mismatch trap.',
+       opts:[{v:'9.60',t:'$9.60/order — 3 × $24 ÷ 7.5/hr = $72 ÷ 7.5 (correct units)'},{v:'576',t:'$576/order — $72/hr ÷ 0.125 units/min (unit mismatch!)'},{v:'4.80',t:'$4.80/order — uses only 2 workers'},{v:'32',t:'$32.00/order — uses S2 processing time instead of flow rate'}],
+       ans:'9.60',reveal:'CDL = 3 × $24 ÷ 7.5 = $72 ÷ 7.5 = $9.60/order. The $576 trap: 7.5/hr = 7.5÷60 = 0.125 units/min → $72 ÷ 0.125 = $576, off by 60×. Wages are $/hr; you must divide by units/hr (not units/min). CDL in hundreds for a service process always signals a unit error.',
+       td:'Your cost of direct labor is not in $/unit. Check your flow rate units. The tell: $576 per prescription order is clearly unreasonable for a service process. CDL should be in single digits or low tens of dollars.'}
+    ]
+  }
+];
+
+// ── STATE ──────────────────────────────────────────────
+let scIdx = 0;
+let stIdx = 0;
+let selOpt = null;
+let submitted = false;
+let stDone = [];     // stDone[s][t] = true|false|undefined
+let scDone = [];     // scDone[s] = bool
+let totalCorrect = 0;
+const TOTAL_STEPS = 28;
+
+function init() {
+  SC.forEach((_,i) => { stDone[i] = []; scDone[i] = false; });
+  buildNav();
+  renderScenario(0);
+}
+
+// ── NAV ────────────────────────────────────────────────
+function buildNav() {
+  const nav = document.getElementById('scenarioNav');
+  SC.forEach((sc, i) => {
+    const b = document.createElement('button');
+    b.className = 'scenario-btn' + (i===0?' active':'');
+    b.id = 'scBtn' + i;
+    b.textContent = 'Scenario ' + (i+1) + ' — ' + sc.title;
+    b.onclick = () => goScenario(i);
+    nav.appendChild(b);
+  });
+}
+
+function updateNavBtn(i) {
+  const b = document.getElementById('scBtn'+i);
+  if (!b) return;
+  b.className = 'scenario-btn' + (i===scIdx?' active':'') + (scDone[i]?' sc-done':'');
+}
+
+function goScenario(i) {
+  scIdx = i;
+  stIdx = 0;
+  selOpt = null;
+  submitted = false;
+  SC.forEach((_,j) => updateNavBtn(j));
+  renderScenario(i);
+}
+
+function goNextScenario() {
+  if (scIdx < SC.length - 1) goScenario(scIdx + 1);
+  else showFinal();
+}
+
+// ── RENDER SCENARIO ────────────────────────────────────
+function renderScenario(si) {
+  const sc = SC[si];
+  document.getElementById('cardTitle').textContent = sc.title;
+  document.getElementById('cardSub').textContent = sc.sub;
+  const dt = document.getElementById('diffTag');
+  dt.textContent = sc.diff.charAt(0).toUpperCase()+sc.diff.slice(1);
+  dt.className = 'diff-tag diff-'+sc.diff;
+  document.getElementById('vigNum').textContent = 'Scenario '+(si+1)+' of '+SC.length;
+  document.getElementById('scenDesc').textContent = sc.desc;
+
+  buildStepTrack(si);
+  buildChainTable(si);
+
+  document.getElementById('scComplete').style.display = 'none';
+  document.getElementById('finalBox').classList.remove('show');
+
+  if (scDone[si]) {
+    showScenarioComplete(si, true);
+  } else {
+    const resumeStep = stDone[si].findIndex(v => v===undefined || v===false);
+    stIdx = (resumeStep === -1) ? sc.steps.length - 1 : resumeStep;
+    renderStep(si, stIdx);
+  }
+}
+
+// ── STEP TRACK ─────────────────────────────────────────
+function buildStepTrack(si) {
+  const sc = SC[si];
+  const track = document.getElementById('stepTrack');
+  track.innerHTML = '';
+  sc.steps.forEach((_, t) => {
+    if (t > 0) {
+      const conn = document.createElement('div');
+      conn.className = 'step-conn' + (stDone[si][t-1] ? ' c-done' : '');
+      conn.id = 'conn'+si+'_'+t;
+      track.appendChild(conn);
+    }
+    const pip = document.createElement('div');
+    pip.id = 'pip'+si+'_'+t;
+    let cls = 'step-pip ';
+    if (stDone[si][t]) cls += 's-done';
+    else if (t === stIdx && !scDone[si]) cls += 's-active';
+    else cls += '';
+    pip.className = cls;
+    pip.textContent = t+1;
+    track.appendChild(pip);
+  });
+}
+
+function updateStepTrack(si, ti) {
+  SC[si].steps.forEach((_, t) => {
+    const pip = document.getElementById('pip'+si+'_'+t);
+    if (!pip) return;
+    pip.className = 'step-pip ';
+    if (stDone[si][t]) pip.classList.add('s-done');
+    else if (t === ti) pip.classList.add('s-active');
+    const conn = document.getElementById('conn'+si+'_'+t);
+    if (conn) conn.className = 'step-conn' + (stDone[si][t-1] ? ' c-done':'');
+  });
+}
+
+// ── CHAIN TABLE ────────────────────────────────────────
+function buildChainTable(si) {
+  const sc = SC[si];
+  document.getElementById('chainLbl').textContent = 'Scenario '+(si+1);
+  const tbl = document.getElementById('chainTbl');
+  tbl.innerHTML = '<tr><th>Metric</th><th>Value</th></tr>';
+  CHAIN_LABELS.forEach((lbl, t) => {
+    const tr = document.createElement('tr');
+    let cls = '';
+    if (stDone[si][t]) cls = 'ch-done';
+    else if (t === stIdx && !scDone[si]) cls = 'ch-active';
+    tr.className = cls;
+    tr.id = 'chrow'+si+'_'+t;
+    const done = stDone[si][t];
+    tr.innerHTML = `<td>${lbl}</td><td>${done ? '<span class="ch-val">'+sc.chainVals[t]+'</span>' : '<span class="ch-pend">—</span>'}</td>`;
+    tbl.appendChild(tr);
+  });
+}
+
+function updateChainRow(si, ti) {
+  const sc = SC[si];
+  const row = document.getElementById('chrow'+si+'_'+ti);
+  if (!row) return;
+  const done = stDone[si][ti];
+  row.className = done ? 'ch-done' : (ti===stIdx ? 'ch-active':'');
+  row.innerHTML = `<td>${CHAIN_LABELS[ti]}</td><td>${done ? '<span class="ch-val">'+sc.chainVals[ti]+'</span>' : '<span class="ch-pend">—</span>'}</td>`;
+  if (ti+1 < CHAIN_LABELS.length) {
+    const next = document.getElementById('chrow'+si+'_'+(ti+1));
+    if (next) next.className = done ? 'ch-active' : '';
+  }
+}
+
+// ── RENDER STEP ────────────────────────────────────────
+function renderStep(si, ti) {
+  stIdx = ti;
+  selOpt = null;
+  submitted = false;
+  const sc = SC[si];
+  const step = sc.steps[ti];
+
+  updateStepTrack(si, ti);
+
+  const area = document.getElementById('stepArea');
+  area.innerHTML = `
+    <div class="step-label">${step.label}</div>
+    <div class="step-q">${step.q}</div>
+    <div class="option-grid" id="optGrid">
+      ${step.opts.map(o => `
+        <div class="option-card ${stDone[si][ti] ? 'disabled' : ''}" id="opt_${o.v}" onclick="selectOpt('${o.v}')">
+          <div class="opt-radio"></div>
+          <div class="opt-text">${o.t}</div>
+        </div>`).join('')}
+    </div>
+    <div class="btn-group">
+      <button class="btn btn-primary" id="submitBtn" onclick="handleSubmit()" disabled>Check Answer</button>
+    </div>
+    <div class="fb-panel" id="fbPanel">
+      <div class="fb-banner" id="fbBanner"></div>
+      <div class="fb-body">
+        <div id="fbReveal"></div>
+        ${step.td ? `<div class="think-deeper"><div class="think-label">Think Deeper</div><div>${step.td}</div></div>` : ''}
+      </div>
+    </div>`;
+
+  if (stDone[si][ti]) replayStep(si, ti);
+}
+
+function replayStep(si, ti) {
+  submitted = true;
+  document.getElementById('submitBtn').style.display = 'none';
+  const step = SC[si].steps[ti];
+  showFeedback(step, 'correct', si, ti);
+  if (ti < SC[si].steps.length - 1) addNextStepBtn(si, ti);
+}
+
+// ── SELECTION ──────────────────────────────────────────
+function selectOpt(v) {
+  if (submitted) return;
+  selOpt = v;
+  document.querySelectorAll('.option-card').forEach(el => el.classList.remove('selected'));
+  const card = document.getElementById('opt_'+v);
+  if (card) card.classList.add('selected');
+  document.getElementById('submitBtn').disabled = false;
+}
+
+// ── SUBMIT ─────────────────────────────────────────────
+function handleSubmit() {
+  if (!selOpt || submitted) return;
+  submitted = true;
+  const sc = SC[scIdx];
+  const step = sc.steps[stIdx];
+  const correct = (selOpt === step.ans);
+
+  document.querySelectorAll('.option-card').forEach(el => {
+    el.classList.add('disabled');
+    const v = el.id.replace('opt_','');
+    if (v === step.ans) el.classList.add('o-correct');
+    else if (v === selOpt && !correct) el.classList.add('o-wrong');
+  });
+
+  const status = correct ? 'correct' : 'wrong';
+
+  if (correct && !stDone[scIdx][stIdx]) {
+    stDone[scIdx][stIdx] = true;
+    totalCorrect++;
+    updateScore();
+    updateChainRow(scIdx, stIdx);
+    updateStepTrack(scIdx, stIdx);
+    updateNavBtn(scIdx);
+  }
+
+  showFeedback(step, status, scIdx, stIdx);
+  document.getElementById('submitBtn').style.display = 'none';
+
+  if (correct) {
+    if (stIdx < sc.steps.length - 1) {
+      addNextStepBtn(scIdx, stIdx);
+    } else {
+      scDone[scIdx] = true;
+      updateNavBtn(scIdx);
+      setTimeout(() => showScenarioComplete(scIdx, false), 800);
+    }
+  } else {
+    addRetryBtn();
+  }
+}
+
+function addNextStepBtn(si, ti) {
+  const bg = document.querySelector('.btn-group');
+  if (!bg) return;
+  const b = document.createElement('button');
+  b.className = 'btn btn-green';
+  b.textContent = 'Next Step →';
+  b.onclick = () => { renderStep(si, ti+1); };
+  bg.appendChild(b);
+}
+
+function addRetryBtn() {
+  const bg = document.querySelector('.btn-group');
+  if (!bg) return;
+  const b = document.createElement('button');
+  b.className = 'btn btn-secondary';
+  b.textContent = '↩ Try Again';
+  b.onclick = () => renderStep(scIdx, stIdx);
+  bg.appendChild(b);
+}
+
+// ── FEEDBACK ───────────────────────────────────────────
+function showFeedback(step, status) {
+  const panel = document.getElementById('fbPanel');
+  const banner = document.getElementById('fbBanner');
+  const reveal = document.getElementById('fbReveal');
+  if (!panel) return;
+  banner.className = 'fb-banner fb-' + status;
+  banner.innerHTML = status === 'correct' ? '✓ Correct.' : '✗ Incorrect — see the explanation below.';
+  reveal.innerHTML = step.reveal || '';
+  panel.classList.add('show');
+}
+
+// ── SCENARIO COMPLETE ──────────────────────────────────
+function showScenarioComplete(si, replay) {
+  document.getElementById('stepArea').innerHTML = '';
+  const box = document.getElementById('scComplete');
+  box.style.display = 'block';
+  const sc = SC[si];
+  document.getElementById('completeTitle').textContent = 'Scenario ' + (si+1) + ' Complete ✓';
+  document.getElementById('completeMsg').textContent = 'All 7 steps of the metrics chain completed for ' + sc.title + '.';
+  const btn = document.getElementById('nextScBtn');
+  if (si < SC.length - 1) {
+    btn.textContent = 'Next Scenario →';
+    btn.style.display = 'inline-block';
+  } else {
+    btn.textContent = 'See Final Summary';
+    btn.style.display = 'inline-block';
+  }
+}
+
+// ── SCORE ──────────────────────────────────────────────
+function updateScore() {
+  document.getElementById('scoreNum').textContent = totalCorrect;
+  document.getElementById('progBar').style.width = ((totalCorrect / TOTAL_STEPS) * 100) + '%';
+}
+
+// ── FINAL ──────────────────────────────────────────────
+function showFinal() {
+  document.getElementById('scComplete').style.display = 'none';
+  const box = document.getElementById('finalBox');
+  box.classList.add('show');
+  const pct = Math.round((totalCorrect / TOTAL_STEPS) * 100);
+  box.innerHTML = `
+    <h3 style="color:var(--green);font-size:18px;margin-bottom:8px">All 4 Scenarios Complete</h3>
+    <p style="font-size:22px;font-weight:700;color:var(--navy);margin:10px 0">${totalCorrect} / ${TOTAL_STEPS} steps</p>
+    <p style="color:var(--gray-600);font-size:13px;margin-bottom:16px">${pct}% correct</p>
+    <div class="tip-box" style="text-align:left;max-width:480px;margin:0 auto 16px">
+      <strong>Gate 2 and Case readiness:</strong><br>
+      The 7-step chain appears in Gate 2 Q1 (4 versions) and Case Parts 1–3. Scenario 2 (demand-constrained) is the direct test of Gate 2 Q2 and Case Part 2. Scenario 4 (unit mismatch) is the trap in Gate 2 Q1. Know which step is wrong to diagnose the whole chain.
+    </div>
+    <button class="btn btn-secondary" onclick="goScenario(0)">↩ Restart from Scenario 1</button>`;
+}
+
+init();
+</script>
+</body>
+</html>

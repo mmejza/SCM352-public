@@ -1,0 +1,74 @@
+<section class="slide-page" data-title="Efficiency Metrics Chain" data-lo="LO4-1" data-notes="This is the master formula reference slide. All seven metrics must be computed in sequence — each depends on the one above it. Gate 2 Q1 tests the full chain. Stress that flow rate is the linchpin: it depends on whether the process is capacity- or demand-constrained.">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">LO4-1</span>
+      <span class="le-course">SCM 352 · Module 04</span>
+    </div>
+    <span class="le-pagenum">05 / 21</span>
+  </div>
+  <div class="le-titleblock">
+    <div class="le-title">Efficiency Metrics <span>Chain</span></div>
+    <div class="le-sub">Seven metrics — computed in sequence. Each depends on the metric above it.</div>
+  </div>
+  <div class="le-body">
+    <table class="clean-table">
+      <thead>
+        <tr><th>#</th><th>Metric</th><th>Formula</th><th>Depends On</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>1</strong></td>
+          <td><span class="slide-label">Process capacity (each station)</span></td>
+          <td class="slide-table-text">m<sub>i</sub> / PT<sub>i</sub> &nbsp;→ units per hour</td>
+          <td class="slide-meta">m = # workers at station i</td>
+        </tr>
+        <tr>
+          <td><strong>2</strong></td>
+          <td><span class="slide-label">Bottleneck</span></td>
+          <td class="slide-table-text">Station with the <em>lowest</em> process capacity</td>
+          <td class="slide-meta">Step 1</td>
+        </tr>
+        <tr>
+          <td><strong>3</strong></td>
+          <td><span class="slide-label">Flow rate</span></td>
+          <td class="slide-table-text">min { demand rate, process capacity }</td>
+          <td class="slide-meta">Steps 1–2; demand</td>
+        </tr>
+        <tr>
+          <td><strong>4</strong></td>
+          <td><span class="slide-label">Cycle time</span></td>
+          <td class="slide-table-text">1 / flow rate &nbsp;→ minutes per unit</td>
+          <td class="slide-meta">Step 3</td>
+        </tr>
+        <tr>
+          <td><strong>5</strong></td>
+          <td><span class="slide-label">Labor content</span></td>
+          <td class="slide-table-text">Sum of all PTs across every station</td>
+          <td class="slide-meta">PT inputs only</td>
+        </tr>
+        <tr>
+          <td><strong>6</strong></td>
+          <td><span class="slide-label">Idle time &amp; avg labor utilization</span></td>
+          <td class="slide-table-text">Idle<sub>i</sub> = CT − PT<sub>i</sub> &nbsp;·&nbsp; Util = LC / (CT × N)</td>
+          <td class="slide-meta">Steps 4–5</td>
+        </tr>
+        <tr>
+          <td><strong>7</strong></td>
+          <td><span class="slide-label">Cost of direct labor (CDL)</span></td>
+          <td class="slide-table-text">( N × wage ) / flow rate &nbsp;→ $ per unit</td>
+          <td class="slide-meta">Steps 1–3</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="callout red" style="margin-top:2px;">
+      <div class="callout-label">Critical Sequence Rule</div>
+      <p>Flow rate drives <em>everything</em> downstream. If demand &lt; process capacity, the process is <strong>demand-constrained</strong> — use demand as the flow rate, not process capacity.</p>
+    </div>
+  </div>
+  <div class="le-footer">
+    <div class="le-lo-pills"><span class="le-lo-pill">LO4-1</span></div>
+    <div><span class="le-gate-note">Gate 2 · Q1 tests all seven metrics</span></div>
+  </div>
+</section>

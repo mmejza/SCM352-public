@@ -1,0 +1,50 @@
+<section class="slide-page" data-title="Demand-Constrained: The Flow Rate Trap" data-lo="LO4-1" data-notes="This is the most common error in the module. Students set flow rate = process capacity even when demand < capacity. The error cascades to wrong cycle time, wrong idle times, and wrong CDL. Walk through the same insurance claims process with demand reduced to 2/hr to show the full impact. Do NOT present the profit implication here — that is Gate 1 Q2 territory.">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">LO4-1</span>
+      <span class="le-course">SCM 352 · Module 04</span>
+    </div>
+    <span class="le-pagenum">08 / 21</span>
+  </div>
+  <div class="le-titleblock">
+    <div class="le-title">Demand-Constrained: <span>Flow Rate Trap</span></div>
+    <div class="le-sub">Same process · same stations · demand = 2 claims/hr (not unlimited)</div>
+  </div>
+  <div class="le-body">
+    <div class="two-col">
+      <div class="callout red">
+        <div class="callout-label">Wrong Approach</div>
+        <p>"Process capacity = 3/hr, so flow rate = 3/hr."</p>
+        <p style="margin-top:4px;">→ CT = 20 min &nbsp;·&nbsp; Util = 75%</p>
+        <p style="margin-top:4px;"><strong>These numbers are wrong</strong> because you ignored demand.</p>
+      </div>
+      <div class="callout teal">
+        <div class="callout-label">Correct Approach</div>
+        <p>Flow rate = min{ <strong>demand</strong>, process capacity } = min{ 2, 3 } = <strong>2 claims/hr</strong></p>
+        <p style="margin-top:4px;">CT = 30 min &nbsp;·&nbsp; Util = 50%</p>
+        <p style="margin-top:4px;"><strong>Workers are idle for half the available time.</strong></p>
+      </div>
+    </div>
+    <table class="clean-table" style="margin-top:4px;">
+      <thead>
+        <tr><th>Station</th><th>PT (min)</th><th>Idle if demand=∞</th><th>Idle if demand=2/hr</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>S1</td><td>20</td><td>0 min</td><td class="pos">10 min</td></tr>
+        <tr><td>S2</td><td>10</td><td>10 min</td><td class="pos">20 min</td></tr>
+        <tr><td>S3</td><td>15</td><td>5 min</td><td class="pos">15 min</td></tr>
+        <tr class="total-row"><td colspan="2"><strong>Avg utilization</strong></td><td>75%</td><td><span class="neg">50%</span></td></tr>
+      </tbody>
+    </table>
+    <div class="callout amber">
+      <div class="callout-label">Rule</div>
+      <p>Always determine the constraint <em>before</em> computing flow rate. Demand-constrained: the market is the ceiling, not the process.</p>
+    </div>
+  </div>
+  <div class="le-footer">
+    <div class="le-lo-pills"><span class="le-lo-pill">LO4-1</span><span class="le-lo-pill">LO4-3</span></div>
+    <div><span class="le-gate-note">Gate 2 · Q1(a), Q5, Q7</span></div>
+  </div>
+</section>

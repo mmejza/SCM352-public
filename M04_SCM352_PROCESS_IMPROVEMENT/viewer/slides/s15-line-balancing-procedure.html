@@ -1,0 +1,39 @@
+<section class="slide-page" data-title="Line Balancing Procedure" data-lo="LO4-4" data-notes="Three-step balancing procedure. The key constraint: activities must remain in sequence — you cannot reassign A4 before A3 is done. The step-3 verification check is often skipped; insist students confirm the receiving station stays at or below takt after receiving the reassigned activity. Gate 2 Q5 is a trap: demand = 8/hr, capacity = 10/hr — no balancing needed because the process is already demand-constrained.">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">LO4-4</span>
+      <span class="le-course">SCM 352 · Module 04</span>
+    </div>
+    <span class="le-pagenum">15 / 21</span>
+  </div>
+  <div class="le-titleblock">
+    <div class="le-title">Line Balancing <span>Procedure</span></div>
+    <div class="le-sub">Eliminate the CT &gt; Takt gap by redistributing activities across workers</div>
+  </div>
+  <div class="le-body">
+    <div style="display:flex;flex-direction:column;gap:8px;">
+      <div class="callout teal">
+        <div class="callout-label">Step 1 — Set the Target</div>
+        <p>Calculate takt time and target manpower. This tells you how many workers should handle the total labor content at the demanded pace. Use TM as your target worker count.</p>
+      </div>
+      <div class="callout teal">
+        <div class="callout-label">Step 2 — Identify the Bottleneck Worker</div>
+        <p>Find which worker's total processing time exceeds takt time. That worker is the constraint. Their activities must be redistributed until their total ≤ takt.</p>
+      </div>
+      <div class="callout teal">
+        <div class="callout-label">Step 3 — Reassign and Verify</div>
+        <p>Move the <strong>shortest feasible activity</strong> from the bottleneck worker to an adjacent worker (sequence order must be preserved). Verify: receiving worker's new total ≤ takt. Repeat until no worker exceeds takt.</p>
+      </div>
+    </div>
+    <div class="callout red" style="margin-top:2px;">
+      <div class="callout-label">Before You Balance — Check the Constraint</div>
+      <p>If <strong>demand &lt; process capacity</strong>, the process is demand-constrained. No worker exceeds takt because the process is already slow enough. Balancing here is unnecessary and incorrect.</p>
+    </div>
+  </div>
+  <div class="le-footer">
+    <div class="le-lo-pills"><span class="le-lo-pill">LO4-4</span></div>
+    <div><span class="le-gate-note">Gate 2 · Q5 (read the constraint before balancing)</span></div>
+  </div>
+</section>

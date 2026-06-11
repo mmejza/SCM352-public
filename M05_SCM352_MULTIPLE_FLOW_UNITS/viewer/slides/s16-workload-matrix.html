@@ -1,0 +1,34 @@
+<section class="slide-page" data-title="The Workload Matrix" data-lo="LO5-4" data-notes="Definition slide for the workload matrix. The trigger: processing times differ by flow unit type, so counting units no longer measures burden. Switch to minutes. Available time = workers × 60 — the only place staffing enters the calculation. Segment 2 gives the conceptual framing; slides own the definition and the complete worked example (s17–s19).">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">LO5-4</span>
+      <span class="le-course">SCM 352 · Module 05</span>
+    </div>
+    <span class="le-pagenum">16 / 20</span>
+  </div>
+  <div class="le-titleblock">
+    <div class="le-title">The Workload <span>Matrix</span></div>
+    <div class="le-sub">When types take different amounts of time, count minutes — not units</div>
+  </div>
+  <div class="le-body">
+    <div class="callout teal" style="margin-bottom:6px;">
+      <div class="callout-label">When to Switch</div>
+      <p>Ten fast units and ten slow units are not the same burden. The moment processing times depend on the flow unit type, the demand matrix in units stops measuring load — the workload matrix in <strong>minutes</strong> takes over.</p>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:6px;">
+      <div class="formula-box">Workload (i, j) &nbsp;=&nbsp; demand<sub>j</sub> × processing time (i, j) &nbsp; <span class="slide-meta">min/hr</span></div>
+      <div class="formula-box">Available time (i) &nbsp;=&nbsp; workers at i × 60 &nbsp; <span class="slide-meta">min/hr</span></div>
+      <div class="formula-box">IU (i) &nbsp;=&nbsp; total workload at i ÷ available time at i</div>
+    </div>
+    <div class="callout amber" style="margin-top:6px;">
+      <div class="callout-label">Two Things to Notice</div>
+      <p>1&nbsp; Zeros still mark routing — a type that skips a resource contributes 0 minutes there. &nbsp; 2&nbsp; Staffing enters <strong>only</strong> through available time. After the IU row, Steps 4–5 are identical to the five-step procedure.</p>
+    </div>
+  </div>
+  <div class="le-footer">
+    <div class="le-lo-pills"><span class="le-lo-pill">LO5-4</span></div>
+    <div><span class="le-gate-note">Gate 2 · Q6, Q7, Q8</span></div>
+  </div>
+</section>

@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gate 2 Quiz Instructions — M04 — SCM 352</title>
+<style>
+:root{
+  --navy:#1a3a5c;--blue:#2563a8;--blue-lt:#dbeafe;--blue-xlt:#eff6ff;--blue-bdr:#bfdbfe;
+  --gold:#f59e0b;--gold-lt:#fffbeb;--gold-bdr:#fde68a;--gold-dark:#92400e;
+  --green:#16a34a;--green-lt:#f0fdf4;--green-bdr:#bbf7d0;
+  --red:#dc2626;--red-lt:#fef2f2;--red-bdr:#fecaca;
+  --amber:#d97706;--amber-lt:#fffbeb;--amber-bdr:#fde68a;
+  --purple:#7c3aed;--purple-lt:#faf5ff;--purple-bdr:#ddd6fe;
+  --gray-50:#f9fafb;--gray-100:#f3f4f6;--gray-200:#e5e7eb;
+  --gray-400:#9ca3af;--gray-600:#4b5563;--gray-700:#374151;--gray-800:#1f2937;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--gray-50);color:var(--gray-800);font-size:13.5px;line-height:1.55;}
+
+/* ── HEADER ── */
+.pg-header{background:var(--navy);color:white;padding:18px 28px;display:flex;align-items:center;gap:14px;}
+.badge{background:var(--gold);color:var(--navy);font-weight:700;font-size:10px;padding:3px 8px;border-radius:4px;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;flex-shrink:0;}
+.pg-header h1{font-size:18px;font-weight:700;}
+.pg-header p{font-size:12px;color:rgba(255,255,255,.65);margin-top:2px;}
+.header-pts{margin-left:auto;text-align:right;font-size:13px;color:rgba(255,255,255,.9);line-height:1.4;}
+.header-pts span{display:block;font-size:24px;font-weight:800;color:white;}
+
+/* ── BODY ── */
+.pg-body{max-width:860px;margin:0 auto;padding:28px 20px 60px;display:flex;flex-direction:column;gap:28px;}
+.sec-heading{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--gray-400);padding-bottom:10px;border-bottom:1px solid var(--gray-200);margin-bottom:12px;}
+
+/* ── STATS ROW ── */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+.stat-card{background:white;border:1px solid var(--gray-200);border-radius:10px;padding:13px 15px;text-align:center;}
+.stat-val{font-size:22px;font-weight:800;color:var(--navy);line-height:1.1;}
+.stat-label{font-size:11px;color:var(--gray-600);margin-top:3px;font-weight:500;}
+
+/* ── ALERT ── */
+.alert{border-radius:10px;padding:14px 16px;font-size:13px;line-height:1.6;display:flex;gap:10px;align-items:flex-start;}
+.alert-icon{font-size:17px;flex-shrink:0;margin-top:1px;}
+.alert-body{flex:1;}
+.alert-body strong{display:block;margin-bottom:4px;font-size:13.5px;}
+.alert-amber{background:var(--amber-lt);border:1.5px solid var(--amber-bdr);}
+
+/* ── QUESTION TABLE ── */
+.q-table{width:100%;border-collapse:collapse;font-size:12.5px;background:white;border-radius:10px;overflow:hidden;border:1px solid var(--gray-200);}
+.q-table th{background:var(--navy);color:white;padding:9px 12px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;}
+.q-table td{padding:10px 12px;border-bottom:1px solid var(--gray-100);vertical-align:middle;line-height:1.4;}
+.q-table tr:last-child td{border-bottom:none;}
+.q-table tr:hover td{background:var(--gray-50);}
+.q-num{width:28px;height:28px;border-radius:50%;background:var(--navy);color:white;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0;}
+.q-topic{font-weight:600;color:var(--gray-800);margin-bottom:2px;}
+.q-note{font-size:11.5px;color:var(--gray-600);}
+.type-badge{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:100px;letter-spacing:.03em;white-space:nowrap;}
+.type-calc{background:var(--green-lt);color:var(--green);border:1px solid var(--green-bdr);}
+.type-essay{background:var(--purple-lt);color:var(--purple);border:1px solid var(--purple-bdr);}
+.type-data{background:var(--blue-lt);color:var(--blue);border:1px solid var(--blue-bdr);}
+.badge-versioned{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:100px;background:var(--gold-lt);color:var(--gold-dark);border:1px solid var(--gold-bdr);margin-left:5px;white-space:nowrap;}
+.badge-linked{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:100px;background:var(--blue-xlt);color:var(--blue);border:1px solid var(--blue-bdr);margin-left:5px;white-space:nowrap;}
+.pts{font-weight:800;color:var(--navy);font-size:14px;}
+
+/* ── INSTRUCTIONS GRID ── */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.instr-card{background:white;border:1px solid var(--gray-200);border-radius:10px;overflow:hidden;}
+.instr-hd{background:var(--navy);color:white;padding:10px 16px;font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;}
+.instr-bd{padding:14px 16px;}
+.instr-list{list-style:none;display:flex;flex-direction:column;gap:9px;}
+.instr-list li{padding-left:18px;position:relative;font-size:13px;line-height:1.5;color:var(--gray-700);}
+.instr-list li::before{content:"→";position:absolute;left:0;color:var(--gray-400);}
+.instr-list li strong{color:var(--navy);}
+
+/* ── TYPE GUIDE ── */
+.type-row{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid var(--gray-100);}
+.type-row:last-child{border-bottom:none;}
+.type-label{display:flex;align-items:center;gap:6px;min-width:130px;flex-shrink:0;}
+.type-desc{font-size:12.5px;color:var(--gray-700);line-height:1.45;}
+
+/* ── GRADING NOTE ── */
+.grading-box{background:white;border:1px solid var(--gray-200);border-radius:10px;padding:16px 20px;font-size:13px;color:var(--gray-700);line-height:1.6;}
+.grading-box strong{color:var(--navy);}
+
+/* ── FOOTER ── */
+.integrity-footer{background:var(--navy);border-radius:10px;padding:16px 20px;color:rgba(255,255,255,.9);font-size:12.5px;line-height:1.65;display:flex;gap:12px;align-items:flex-start;}
+.integrity-footer .lock{font-size:20px;flex-shrink:0;margin-top:1px;}
+.integrity-footer strong{color:white;}
+</style>
+</head>
+<body>
+
+<div class="pg-header">
+  <div class="badge">SCM 352 · M04</div>
+  <div>
+    <h1>Gate 2 Quiz — Process Improvement</h1>
+    <p>Open-book · Chapter 4, lecture videos, slide deck, and apps · Due Day 6 · 11:59 PM</p>
+  </div>
+  <div class="header-pts"><span>100</span>points</div>
+</div>
+
+<div class="pg-body">
+
+  <!-- STATS -->
+  <div>
+    <div class="sec-heading">At a Glance</div>
+    <div class="stats-row">
+      <div class="stat-card"><div class="stat-val">1</div><div class="stat-label">Attempt</div></div>
+      <div class="stat-card"><div class="stat-val">90</div><div class="stat-label">Minutes</div></div>
+      <div class="stat-card"><div class="stat-val">8</div><div class="stat-label">Questions</div></div>
+      <div class="stat-card"><div class="stat-val">7 + 1</div><div class="stat-label">Calculation + Essay</div></div>
+    </div>
+  </div>
+
+  <!-- VERSION ASSIGNMENT CALLOUT -->
+  <div class="alert alert-amber">
+    <div class="alert-icon">⚠</div>
+    <div class="alert-body">
+      <strong>Version Assignment — Question 1 is parameterized.</strong>
+      Question 1 will display a scenario and data table specific to your version. Canvas assigns your version automatically when the quiz loads — you do not need to look anything up. <strong>Question 6 returns to your Question 1 scenario</strong>, so keep your Q1 data visible when you reach Q6.
+    </div>
+  </div>
+
+  <!-- QUESTION BREAKDOWN -->
+  <div>
+    <div class="sec-heading">Question Breakdown</div>
+    <table class="q-table">
+      <thead>
+        <tr>
+          <th style="width:4%">#</th>
+          <th style="width:44%">Topic</th>
+          <th style="width:18%">Type</th>
+          <th style="width:12%;text-align:right">Points</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><div class="q-num">1</div></td>
+          <td>
+            <div class="q-topic">Full Efficiency Metrics Chain <span class="badge-versioned">VERSIONED</span></div>
+            <div class="q-note">Bottleneck, process capacity, cycle time, labor content, idle time, average labor utilization, and cost of direct labor</div>
+          </td>
+          <td><span class="type-badge type-calc">Calculation</span></td>
+          <td class="pts" style="text-align:right">20</td>
+        </tr>
+        <tr>
+          <td><div class="q-num">2</div></td>
+          <td>
+            <div class="q-topic">Takt Time — Rate Form</div>
+            <div class="q-note">Takt time using demand rate; target manpower; staffing comparison</div>
+          </td>
+          <td><span class="type-badge type-calc">Calculation</span></td>
+          <td class="pts" style="text-align:right">12</td>
+        </tr>
+        <tr>
+          <td><div class="q-num">3</div></td>
+          <td>
+            <div class="q-topic">Takt Time — Available-Time Form</div>
+            <div class="q-note">Takt time using available time ÷ required quantity; target manpower with demand increase</div>
+          </td>
+          <td><span class="type-badge type-calc">Calculation</span></td>
+          <td class="pts" style="text-align:right">12</td>
+        </tr>
+        <tr>
+          <td><div class="q-num">4</div></td>
+          <td>
+            <div class="q-topic">Takt Time vs. Cycle Time</div>
+            <div class="q-note">Compare takt time to cycle time; interpret the gap and identify the corrective action</div>
+          </td>
+          <td><span class="type-badge type-calc">Calculation</span></td>
+          <td class="pts" style="text-align:right">10</td>
+        </tr>
+        <tr>
+          <td><div class="q-num">5</div></td>
+          <td>
+            <div class="q-topic">Line Balancing</div>
+            <div class="q-note">Worker processing times, bottleneck, takt time; determine whether rebalancing is warranted given the demand rate</div>
+          </td>
+          <td><span class="type-badge type-calc">Calculation</span></td>
+          <td class="pts" style="text-align:right">15</td>
+        </tr>
+        <tr>
+          <td><div class="q-num">6</div></td>
+          <td>
+            <div class="q-topic">Cost of Direct Labor — Before and After Improvement <span class="badge-linked">USES Q1 DATA</span></div>
+            <div class="q-note">Apply a 20% bottleneck reduction to your Q1 scenario; recalculate process capacity and CDL; explain the cost change</div>
+          </td>
+          <td><span class="type-badge type-calc">Calculation</span></td>
+          <td class="pts" style="text-align:right">8</td>
+        </tr>
+        <tr>
+          <td><div class="q-num">7</div></td>
+          <td>
+            <div class="q-topic">Financial Impact of Process Improvement</div>
+            <div class="q-note">Compare profit impact of a bottleneck improvement on a demand-constrained vs. a capacity-constrained clinic</div>
+          </td>
+          <td><span class="type-badge type-calc">Calculation</span></td>
+          <td class="pts" style="text-align:right">15</td>
+        </tr>
+        <tr>
+          <td><div class="q-num">8</div></td>
+          <td>
+            <div class="q-topic">Specialization Trade-Off Classification</div>
+            <div class="q-note">Identify the correct Chapter 4 term (benefit or drawback) for four outcomes of switching from generalists to specialists; explain each</div>
+          </td>
+          <td><span class="type-badge type-essay">Essay</span></td>
+          <td class="pts" style="text-align:right">8</td>
+        </tr>
+        <tr style="background:var(--gray-50);">
+          <td colspan="3" style="text-align:right;padding:10px 12px;font-size:12px;font-weight:700;color:var(--gray-600);text-transform:uppercase;letter-spacing:.05em;">Total</td>
+          <td class="pts" style="text-align:right;font-size:16px;">100</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- INSTRUCTIONS GRID -->
+  <div>
+    <div class="sec-heading">Instructions</div>
+    <div class="two-col">
+      <div class="instr-card">
+        <div class="instr-hd">Before You Begin</div>
+        <div class="instr-bd">
+          <ul class="instr-list">
+            <li>Have your <strong>chapter notes and slides</strong> ready — this quiz is open-book.</li>
+            <li>Have <strong>scratch paper</strong> ready before you click Begin. Many questions require written work you will transcribe into Canvas.</li>
+            <li>The timer <strong>starts immediately</strong> when you click Begin. It does not pause.</li>
+            <li><strong>Do not refresh</strong> the page or navigate away — Canvas will not save your answer if you leave a question field mid-entry.</li>
+            <li>Question 6 returns to your <strong>Question 1 scenario</strong>. Keep your Q1 data accessible — you will need those numbers again.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="instr-card">
+        <div class="instr-hd">Answering Each Question Type</div>
+        <div class="instr-bd">
+          <div class="type-row">
+            <div class="type-label"><span class="type-badge type-calc">Calculation</span></div>
+            <div class="type-desc"><strong>Show your work.</strong> A correct final answer without shown work earns 50% maximum. Show the formula setup, the units at each step, and the final value with units.</div>
+          </div>
+          <div class="type-row">
+            <div class="type-label"><span class="type-badge type-essay">Essay</span></div>
+            <div class="type-desc"><strong>Answer all sub-parts.</strong> Identify the correct course term first, then explain in one sentence why that outcome follows. Vague or term-only answers receive partial or no credit.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GRADING NOTE -->
+  <div class="grading-box">
+    <strong>Grading and Turnaround.</strong> Gate 2 is manually graded. You will receive your score and written feedback within <strong>5 business days</strong> of the due date. If you experience a Canvas technical issue during the quiz (frozen timer, lost connection), email your instructor <em>before</em> the quiz closes — attach a screenshot of the error. Issues reported after closing will not be considered for time extensions.
+  </div>
+
+  <!-- ACADEMIC INTEGRITY FOOTER -->
+  <div class="integrity-footer">
+    <div class="lock">🔒</div>
+    <div>
+      <strong>Academic Integrity.</strong> This quiz is open-book and open-notes. You may use your personal notes, slides, and textbook. You may <strong>not</strong> communicate with other students, share question content, or use AI tools to generate answers. Violations are subject to university academic dishonesty policy.
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

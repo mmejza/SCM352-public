@@ -1,0 +1,51 @@
+<section class="slide-page" data-title="Worked Example: Attrition Loss Solution" data-lo="LO5-3" data-notes="Backward chain: D4 = 1/0.80 = 1.25; D3 = 1.25/1.00 = 1.25; D2 = 1.25/0.85 = 1.471; D1 = 1.471/0.95 = 1.548. Capacities 0.333/0.200/0.500/0.250 per min. IU: 4.64 / 7.35 / 2.50 / 5.00 — Bake is the bottleneck. Process capacity = 1/7.35 = 0.136 good/min ≈ 8.2 good cakes/hr. Process yield = 0.95 × 0.85 × 1.00 × 0.80 = 0.646. Note the reveal: lowest-yield phase (Pack, 80%) is NOT the bottleneck.">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">LO5-3</span>
+      <span class="le-course">SCM 352 · Module 05</span>
+    </div>
+    <span class="le-pagenum">14 / 20</span>
+  </div>
+  <div class="le-titleblock">
+    <div class="le-title">Attrition Loss <span>Solution</span></div>
+    <div class="le-sub">Backward from one good cake · then capacities · then IU</div>
+  </div>
+  <div class="le-body">
+    <div class="two-col">
+      <div>
+        <table class="clean-table">
+          <thead>
+            <tr><th>Phase</th><th>D (per good unit)</th><th>Capacity (/min)</th><th>IU</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>P1</strong> Mix</td><td>1.471 ÷ 0.95 = 1.548</td><td>0.333</td><td>4.64</td></tr>
+            <tr><td><strong>P2</strong> Bake</td><td>1.25 ÷ 0.85 = 1.471</td><td>0.200</td><td><span class="neg">7.35 ←</span></td></tr>
+            <tr><td><strong>P3</strong> Decorate</td><td>1.25 ÷ 1.00 = 1.25</td><td>0.500</td><td>2.50</td></tr>
+            <tr><td><strong>P4</strong> Pack</td><td>1 ÷ 0.80 = 1.25</td><td>0.250</td><td>5.00</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px;">
+        <div class="formula-box" style="font-size:calc(11px * var(--slide-scale));">
+          Bottleneck = <strong>P2 Bake</strong> (highest IU, 7.35)
+        </div>
+        <div class="formula-box" style="font-size:calc(11px * var(--slide-scale));">
+          Process capacity = 1 ÷ 7.35 = 0.136 good/min = <strong>8.2 good cakes/hr</strong>
+        </div>
+        <div class="formula-box" style="font-size:calc(11px * var(--slide-scale));border-left-color:var(--amber);">
+          Check: process yield = 0.95 × 0.85 × 1.00 × 0.80 = <strong>0.646</strong>
+        </div>
+      </div>
+    </div>
+    <div class="callout teal" style="margin-top:2px;">
+      <div class="callout-label">Key Reveal</div>
+      <p><strong>Pack has the worst yield (80%) — but Bake is the bottleneck.</strong> The bottleneck depends on demand AND capacity, not on yield alone. Same rule as the product mix: highest IU wins.</p>
+    </div>
+  </div>
+  <div class="le-footer">
+    <div class="le-lo-pills"><span class="le-lo-pill">LO5-3</span></div>
+    <div><span class="le-gate-note">Gate 2 · Q5 — work backward, always</span></div>
+  </div>
+</section>

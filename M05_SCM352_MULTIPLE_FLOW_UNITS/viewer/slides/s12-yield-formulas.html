@@ -1,0 +1,34 @@
+<section class="slide-page" data-title="Yield and Process Yield" data-lo="LO5-3" data-notes="All yield formulas live on this slide per the architecture. Resource yield, process yield as product of yields, and the backward demand-per-good-unit chain. Segment 2 shows the yield/demand-matrix inverse relationship on its own example — this slide owns the formal definitions.">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">LO5-3</span>
+      <span class="le-course">SCM 352 · Module 05</span>
+    </div>
+    <span class="le-pagenum">12 / 20</span>
+  </div>
+  <div class="le-titleblock">
+    <div class="le-title">Yield &amp; <span>Process Yield</span></div>
+    <div class="le-sub">When units drop out, count what survives — then work backward</div>
+  </div>
+  <div class="le-body">
+    <div style="display:flex;flex-direction:column;gap:6px;">
+      <div class="formula-box">Yield (resource i) &nbsp;=&nbsp; good output at i ÷ input at i</div>
+      <div class="formula-box">Process yield &nbsp;=&nbsp; y<sub>1</sub> × y<sub>2</sub> × … × y<sub>n</sub></div>
+      <div class="formula-box">Demand per good unit (backward): &nbsp; D(last) = 1 ÷ y<sub>last</sub> , &nbsp; D(i) = D(i+1) ÷ y<sub>i</sub></div>
+    </div>
+    <div class="callout teal" style="margin-top:6px;">
+      <div class="callout-label">Two Things to Notice</div>
+      <p>1&nbsp; A phase with 100% yield still appears in the backward chain — dividing by 1.0 changes nothing, but skipping the phase scrambles the order. &nbsp; 2&nbsp; Yields multiply as <strong>decimals</strong>: 95% × 85% is 0.95 × 0.85, never 95 × 85.</p>
+    </div>
+    <div class="callout amber" style="margin-top:6px;">
+      <div class="callout-label">Why Work Backward</div>
+      <p>The backward chain answers: <strong>"to deliver 1 good unit at the end, how many must each phase start?"</strong> Those D values are the demand matrix of an attrition process — and they find its bottleneck.</p>
+    </div>
+  </div>
+  <div class="le-footer">
+    <div class="le-lo-pills"><span class="le-lo-pill">LO5-3</span></div>
+    <div><span class="le-gate-note">Gate 2 · Q4 and Q5</span></div>
+  </div>
+</section>

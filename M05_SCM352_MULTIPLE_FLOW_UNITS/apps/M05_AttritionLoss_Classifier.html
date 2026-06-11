@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Attrition Loss Calculator — SCM 352 M05</title>
+<style>
+:root {
+  --navy:#1a3a5c;--blue:#2563a8;--blue-lt:#dbeafe;--blue-xlt:#eff6ff;
+  --gold:#f59e0b;--gold-lt:#fffbeb;--gold-bdr:#fde68a;
+  --green:#16a34a;--green-lt:#f0fdf4;--green-bdr:#bbf7d0;
+  --red:#dc2626;--red-lt:#fef2f2;--red-bdr:#fecaca;
+  --amber:#d97706;--amber-lt:#fffbeb;--amber-bdr:#fde68a;
+  --teal:#0891b2;--teal-lt:#f0fdfe;--teal-bdr:#a5f3fc;
+  --gray-50:#f9fafb;--gray-100:#f3f4f6;--gray-200:#e5e7eb;
+  --gray-300:#d1d5db;--gray-400:#9ca3af;--gray-600:#4b5563;
+  --gray-700:#374151;--gray-800:#1f2937;
+  --blue-hover:#1d4ed8;--green-hover:#15803d;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--gray-50);color:var(--gray-800);min-height:100vh}
+header{background:var(--navy);color:white;padding:16px 24px;display:flex;align-items:center;gap:16px}
+.header-badge{background:var(--gold);color:var(--navy);font-weight:700;font-size:11px;padding:3px 8px;border-radius:4px;letter-spacing:.05em;text-transform:uppercase}
+header h1{font-size:18px;font-weight:600}
+.scenario-nav{background:white;border-bottom:2px solid var(--gray-200);padding:0 24px;display:flex;overflow-x:auto}
+.scenario-btn{padding:12px 18px;border:none;background:none;cursor:pointer;font-size:13px;font-weight:500;color:var(--gray-600);border-bottom:3px solid transparent;white-space:nowrap;transition:all .15s}
+.scenario-btn:hover{color:var(--blue)}
+.scenario-btn.active{color:var(--blue);border-bottom-color:var(--blue);font-weight:600}
+.scenario-btn.sc-done{color:var(--green)}
+.scenario-btn.sc-done::after{content:' ✓'}
+.main{max-width:1100px;margin:0 auto;padding:24px;display:grid;grid-template-columns:1fr 300px;gap:24px;align-items:start}
+@media(max-width:820px){.main{grid-template-columns:1fr}}
+.card{background:white;border:1px solid var(--gray-200);border-radius:12px;overflow:hidden}
+.card-header{background:var(--blue-lt);padding:14px 20px;border-bottom:1px solid var(--gray-200)}
+.card-header h2{font-size:15px;font-weight:700;color:var(--navy)}
+.card-header p{font-size:13px;color:var(--gray-600);margin-top:4px}
+.card-body{padding:20px}
+.scenario-desc{font-size:14px;line-height:1.7;background:var(--gray-50);border-left:4px solid var(--blue);padding:14px 16px;border-radius:0 8px 8px 0;margin-bottom:14px}
+.diff-tag{font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:3px 9px;border-radius:100px}
+.diff-easy{background:var(--green-lt);color:var(--green)}
+.diff-medium{background:var(--amber-lt);color:var(--amber)}
+.diff-hard{background:var(--red-lt);color:var(--red)}
+.ph-tbl{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:14px}
+.ph-tbl th{background:var(--navy);color:white;padding:7px 12px;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;text-align:left}
+.ph-tbl td{padding:7px 12px;border-bottom:1px solid var(--gray-100)}
+.ph-tbl td:first-child{font-weight:700;color:var(--navy)}
+.ph-tbl td.ch-cell{text-align:center;font-weight:700}
+.ph-tbl td.ch-cell .got{color:var(--green)}
+.ph-tbl td.ch-cell .pend{color:var(--gray-300)}
+.step-label{font-size:12px;font-weight:700;color:var(--navy);margin-bottom:8px}
+.step-q{font-size:14px;line-height:1.6;margin-bottom:14px;color:var(--gray-800)}
+.fr-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+.fr-label{font-size:13px;font-weight:600;color:var(--gray-700);min-width:210px}
+.mx-input{width:84px;padding:7px 8px;border:2px solid var(--gray-300);border-radius:7px;font-size:13px;font-weight:600;color:var(--gray-800);text-align:center;transition:border-color .15s}
+.mx-input:focus{outline:none;border-color:var(--blue)}
+.mx-input.in-correct{border-color:var(--green);background:var(--green-lt)}
+.mx-input.in-wrong{border-color:var(--red);background:var(--red-lt)}
+.mx-input:disabled{opacity:.75}
+.option-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+@media(max-width:600px){.option-grid{grid-template-columns:1fr}}
+.option-card{display:flex;align-items:flex-start;gap:10px;padding:11px 13px;border:2px solid var(--gray-200);border-radius:10px;cursor:pointer;transition:border-color .15s,background .15s;background:white;user-select:none;text-align:left}
+.option-card:hover:not(.disabled){border-color:var(--blue);background:var(--gray-50)}
+.option-card.selected{border-color:var(--blue);background:var(--blue-xlt)}
+.option-card.o-correct{border-color:var(--green);background:var(--green-lt);pointer-events:none}
+.option-card.o-wrong{border-color:var(--red);background:var(--red-lt);pointer-events:none}
+.option-card.disabled{pointer-events:none;opacity:.6}
+.opt-radio{width:16px;height:16px;border-radius:50%;border:2px solid var(--gray-300);flex-shrink:0;margin-top:2px;transition:all .15s}
+.option-card.selected .opt-radio{border-color:var(--blue);background:var(--blue)}
+.option-card.o-correct .opt-radio{border-color:var(--green);background:var(--green)}
+.option-card.o-wrong .opt-radio{border-color:var(--red);background:var(--red)}
+.opt-text{font-size:13px;line-height:1.45}
+.btn{padding:9px 20px;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;transition:all .15s}
+.btn-primary{background:var(--blue);color:white}
+.btn-secondary{background:var(--gray-100);color:var(--gray-800)}
+.btn-green{background:var(--green);color:white}
+.btn-primary:hover{background:var(--blue-hover)}
+.btn-primary:disabled{background:var(--gray-400);cursor:not-allowed}
+.btn-secondary:hover{background:var(--gray-200)}
+.btn-green:hover{background:var(--green-hover)}
+.btn-group{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.fb-panel{display:none;margin-top:14px;border:2px solid var(--gray-200);border-radius:10px;overflow:hidden}
+.fb-panel.show{display:block}
+.fb-banner{padding:10px 14px;font-size:14px;font-weight:700;display:flex;align-items:center;gap:8px}
+.fb-correct{background:var(--green-lt);color:var(--green);border-bottom:2px solid var(--green)}
+.fb-partial{background:var(--amber-lt);color:var(--amber);border-bottom:2px solid var(--amber)}
+.fb-wrong{background:var(--red-lt);color:var(--red);border-bottom:2px solid var(--red)}
+.fb-body{padding:14px;font-size:13px;line-height:1.6;background:white}
+.think-deeper{background:var(--gold-lt);border:1.5px solid var(--gold-bdr);border-radius:8px;padding:11px 14px;margin-top:10px;font-size:13px;line-height:1.55}
+.think-label{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--amber);margin-bottom:5px}
+.sc-complete{background:var(--green-lt);border:1px solid var(--green-bdr);border-radius:10px;padding:18px;text-align:center;margin-top:12px;display:none}
+.sc-complete h3{color:var(--green);font-size:15px;font-weight:700;margin-bottom:8px}
+.final-box{display:none;text-align:center;padding:24px 12px}
+.final-box.show{display:block}
+.final-tbl{width:100%;max-width:430px;margin:0 auto 16px;border-collapse:collapse;font-size:12.5px}
+.final-tbl th{background:var(--navy);color:white;padding:6px 10px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase}
+.final-tbl td{padding:6px 10px;border-bottom:1px solid var(--gray-100);text-align:left}
+.score-row{padding:14px 18px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--gray-100)}
+.score-num{font-size:28px;font-weight:700;color:var(--navy)}
+.score-meta{font-size:12px;color:var(--gray-600);line-height:1.4}
+.score-meta strong{color:var(--gray-800);display:block;font-size:13px}
+.prog-outer{height:5px;background:var(--gray-200);border-radius:3px;overflow:hidden;margin:0 18px 14px}
+.prog-inner{height:100%;background:var(--blue);border-radius:3px;transition:width .4s}
+.tip-box{background:var(--gold-lt);border:1px solid var(--gold-bdr);border-radius:8px;padding:11px 14px;font-size:12px;line-height:1.55;color:var(--gray-800)}
+.tip-box strong{color:var(--navy)}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-badge">SCM 352 · M05</div>
+  <h1>Attrition Loss Calculator</h1>
+</header>
+
+<div class="scenario-nav" id="scenarioNav"></div>
+
+<div class="main">
+  <div>
+    <div class="card">
+      <div class="card-header">
+        <h2 id="cardTitle"></h2>
+        <p id="cardSub"></p>
+      </div>
+      <div class="card-body">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap">
+          <span class="diff-tag" id="diffTag"></span>
+          <span style="margin-left:auto;font-size:11px;font-weight:600;color:var(--gray-400)" id="vigNum"></span>
+        </div>
+        <div class="scenario-desc" id="scenDesc"></div>
+        <div id="phaseTblWrap"></div>
+        <div id="stepArea"></div>
+        <div class="sc-complete" id="scComplete">
+          <h3 id="completeTitle"></h3>
+          <p id="completeMsg" style="font-size:13px;color:var(--gray-600);margin-bottom:12px"></p>
+          <button class="btn btn-green" id="nextScBtn" onclick="goNextScenario()"></button>
+        </div>
+        <div class="final-box" id="finalBox"></div>
+      </div>
+    </div>
+  </div>
+
+  <div style="position:sticky;top:24px;display:flex;flex-direction:column;gap:16px">
+    <div class="card">
+      <div class="card-header"><h2>Your Score</h2><p>First-try correct steps</p></div>
+      <div class="score-row">
+        <div class="score-num" id="scoreNum">0</div>
+        <div class="score-meta">
+          <strong>first-try correct</strong>
+          <span id="scoreDetail">of 35 steps</span>
+        </div>
+      </div>
+      <div class="prog-outer"><div class="prog-inner" id="progBar" style="width:0%"></div></div>
+    </div>
+    <div class="card">
+      <div class="card-header"><h2>Backward Chain Rules</h2><p>Chapter 5 — attrition loss</p></div>
+      <div class="card-body">
+        <div class="tip-box">
+          <strong>Work downstream → upstream:</strong><br>
+          D(last) = 1 ÷ y<sub>last</sub><br>
+          D(i) = D(i+1) ÷ y<sub>i</sub><br><br>
+          <strong>Then:</strong><br>
+          Capacity = 1 ÷ PT (units/min)<br>
+          IU = D ÷ capacity · bottleneck = max IU<br>
+          Process capacity = 1 ÷ max IU (good/min) × 60<br>
+          Inputs needed = Q ÷ process yield (decimal!)
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════
+// DATA — scenarios from M05_Architecture.md Section 7, App 2
+// Phases listed upstream → downstream. D chain computed at runtime.
+// ═══════════════════════════════════════════════════════
+const SC = [
+  {
+    id:1, title:'Custom T-Shirt Printer', sub:'Scenario 1 of 4 · Baseline backward calculation', diff:'easy',
+    desc:'A custom T-shirt studio runs three phases, one worker each: Print (2 min/shirt, 90% yield), Cure (4 min, 85%), Fold & Pack (3 min, 95%). Defective shirts are scrapped at the phase where the defect occurs. Work from the downstream end backward.',
+    phases:[{n:'P1 — Print',pt:2,y:0.90},{n:'P2 — Cure',pt:4,y:0.85},{n:'P3 — Fold & Pack',pt:3,y:0.95}],
+    Q:60, ext:null,
+    td:'The backward chain prices attrition in inputs: 1.376 shirts must enter Print for every good shirt shipped. That 37.6% surcharge is what the yields cost you.'
+  },
+  {
+    id:2, title:'Ceramic Mug Studio', sub:'Scenario 2 of 4 · A 100% phase stays in the chain', diff:'medium',
+    desc:'A ceramic studio runs four phases, one worker each: Form (3 min/mug, 85% yield), Dry (1 min, 100%), Glaze (2 min, 90%), Kiln Fire (4 min, 80%). Drying never fails — but it is still a phase. Work backward from one good mug.',
+    phases:[{n:'P1 — Form',pt:3,y:0.85},{n:'P2 — Dry',pt:1,y:1.00},{n:'P3 — Glaze',pt:2,y:0.90},{n:'P4 — Kiln Fire',pt:4,y:0.80}],
+    Q:45, ext:null,
+    td:'D(P2) = D(P3) ÷ 1.00 = 1.389 — dividing by 1.0 changes nothing, but the phase stays in the chain. Skip it and your indices shift one position: every upstream value lands on the wrong phase.'
+  },
+  {
+    id:3, title:'Candle Workshop', sub:'Scenario 3 of 4 · Yield improvement at the bottleneck', diff:'medium',
+    desc:'A candle workshop runs three phases, one worker each: Pour (5 min/candle, 75% yield), Trim (2 min, 95%), Package (3 min, 90%). After the baseline analysis, the owner funds a mold upgrade that raises Pour\'s yield from 75% to 90% — you will recompute the chain to see what that buys.',
+    phases:[{n:'P1 — Pour',pt:5,y:0.75},{n:'P2 — Trim',pt:2,y:0.95},{n:'P3 — Package',pt:3,y:0.90}],
+    Q:50,
+    ext:{phase:0,newY:0.90,
+      reveal:'Raising Pour\'s yield from 75% to 90% cuts the demand Pour must handle per good candle: D(P1) falls from 1.559 to 1.300. Pour is still the bottleneck, but its implied utilization drops from 7.80 to 6.50 — and process capacity rises from 7.7 to 9.2 good candles/hr, a 20% gain without hiring anyone. Improving yield at the bottleneck phase is a capacity investment.'},
+    extQNote:'Use the improved yields (Pour = 90%) for this final question.',
+    td:'Yield improvement at the bottleneck does double duty: fewer defects AND more bottleneck capacity per good unit. The same improvement at Trim (95% already, low IU) would buy almost nothing — target the constraint.'
+  },
+  {
+    id:4, title:'Artisan Chocolate Line', sub:'Scenario 4 of 4 · Bottleneck ≠ lowest-yield phase', diff:'hard',
+    desc:'A chocolate maker runs four phases, one worker each: Temper (2 min/box, 95% yield), Mold (3 min, 88%), Cool (1 min, 100%), Wrap (5 min, 92%). Before you compute: Mold has the worst yield. Is it the bottleneck? Work the chain and find out.',
+    phases:[{n:'P1 — Temper',pt:2,y:0.95},{n:'P2 — Mold',pt:3,y:0.88},{n:'P3 — Cool',pt:1,y:1.00},{n:'P4 — Wrap',pt:5,y:0.92}],
+    Q:80, ext:null,
+    td:'Mold has the lowest yield (88%) — and is NOT the bottleneck. Wrap is (IU 5.43): a long processing time on near-full demand beats a bad yield on a fast phase. Bottleneck = highest IU, which weighs demand AND capacity. Same rule as the demand matrix, same trap as Gate 2 Q5.'
+  }
+];
+
+// runtime computations
+function chainD(ph){           // D per good unit, index-aligned with phases
+  const n=ph.length, D=new Array(n);
+  D[n-1]=1/ph[n-1].y;
+  for(let i=n-2;i>=0;i--) D[i]=D[i+1]/ph[i].y;
+  return D;
+}
+function caps(ph){ return ph.map(p=>1/p.pt); }
+function ius(sc){ const D=chainD(sc.phases), C=caps(sc.phases); return D.map((d,i)=>d/C[i]); }
+function bnIdx(sc){ const u=ius(sc); return u.indexOf(Math.max(...u)); }
+function procCap(sc){ return 60/Math.max(...ius(sc)); }                 // good units/hr
+function py(ph){ return ph.reduce((a,p)=>a*p.y,1); }
+function extD1(sc){ const D=chainD(sc.phases); return D[1]/sc.ext.newY; }
+function extCap(sc){
+  const D=chainD(sc.phases), C=caps(sc.phases);
+  const u=D.map((d,i)=>d/C[i]); u[sc.ext.phase]=extD1(sc)/C[sc.ext.phase];
+  return 60/Math.max(...u);
+}
+function extPY(sc){ return sc.phases.reduce((a,p,i)=>a*(i===sc.ext.phase?sc.ext.newY:p.y),1); }
+
+// step plan per scenario: ['D',i] for each phase backward, then caps, iu, bn, pcap, [improve], inputs
+function stepPlan(sc){
+  const plan=[];
+  for(let i=sc.phases.length-1;i>=0;i--) plan.push({t:'D',i});
+  plan.push({t:'caps'},{t:'iu'},{t:'bn'},{t:'pcap'});
+  if(sc.ext) plan.push({t:'improve'});
+  plan.push({t:'inputs'});
+  return plan;
+}
+const PLANS = SC.map(stepPlan);
+const TOTAL_STEPS = PLANS.reduce((a,p)=>a+p.length,0);
+
+// ═══════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════
+let scIdx=0, stIdx=0, submitted=false, selOpt=null;
+let stDone=[], firstTry=[], attempted=[], scDone=[];
+let firstTryCorrect=0;
+
+function init(){
+  SC.forEach((_,i)=>{ stDone[i]=[]; firstTry[i]=[]; attempted[i]=[]; scDone[i]=false; });
+  buildNav();
+  renderScenario(0);
+}
+
+// ═══════════════════════════════════════════════════════
+// NAV
+// ═══════════════════════════════════════════════════════
+function buildNav(){
+  const nav=document.getElementById('scenarioNav');
+  SC.forEach((sc,i)=>{
+    const b=document.createElement('button');
+    b.className='scenario-btn'+(i===0?' active':'');
+    b.id='scBtn'+i;
+    b.textContent='Scenario '+(i+1)+' — '+sc.title;
+    b.onclick=()=>goScenario(i);
+    nav.appendChild(b);
+  });
+}
+function updateNavBtn(i){
+  const b=document.getElementById('scBtn'+i);
+  if(b) b.className='scenario-btn'+(i===scIdx?' active':'')+(scDone[i]?' sc-done':'');
+}
+function goScenario(i){
+  scIdx=i; stIdx=0; submitted=false; selOpt=null;
+  SC.forEach((_,j)=>updateNavBtn(j));
+  renderScenario(i);
+}
+function goNextScenario(){
+  if(scIdx<SC.length-1) goScenario(scIdx+1);
+  else showFinal();
+}
+
+// ═══════════════════════════════════════════════════════
+// PHASE TABLE (running tracker)
+// ═══════════════════════════════════════════════════════
+function fmt(v,d){ return Number(v.toFixed(d)); }
+function renderPhaseTbl(si){
+  const sc=SC[si], D=chainD(sc.phases), plan=PLANS[si];
+  const dDone=i=>plan.findIndex(p=>p.t==='D'&&p.i===i)<firstDoneBoundary(si);
+  let html='<table class="ph-tbl"><tr><th>Phase</th><th>PT (min)</th><th>Yield</th><th>D per good unit</th></tr>';
+  sc.phases.forEach((p,i)=>{
+    const idx=plan.findIndex(q=>q.t==='D'&&q.i===i);
+    const done=stDone[si][idx];
+    html+=`<tr><td>${p.n}</td><td>${p.pt}</td><td>${Math.round(p.y*100)}%</td><td class="ch-cell">${done?'<span class="got">'+fmt(D[i],3)+'</span>':'<span class="pend">—</span>'}</td></tr>`;
+  });
+  html+='</table>';
+  document.getElementById('phaseTblWrap').innerHTML=html;
+}
+function firstDoneBoundary(si){
+  for(let t=0;t<PLANS[si].length;t++) if(!stDone[si][t]) return t;
+  return PLANS[si].length;
+}
+
+// ═══════════════════════════════════════════════════════
+// RENDER
+// ═══════════════════════════════════════════════════════
+function renderScenario(si){
+  const sc=SC[si];
+  document.getElementById('cardTitle').textContent=sc.title;
+  document.getElementById('cardSub').textContent=sc.sub;
+  const dt=document.getElementById('diffTag');
+  dt.textContent=sc.diff.charAt(0).toUpperCase()+sc.diff.slice(1);
+  dt.className='diff-tag diff-'+sc.diff;
+  document.getElementById('vigNum').textContent='Scenario '+(si+1)+' of '+SC.length;
+  document.getElementById('scenDesc').textContent=sc.desc;
+  renderPhaseTbl(si);
+  document.getElementById('scComplete').style.display='none';
+  document.getElementById('finalBox').classList.remove('show');
+  if(scDone[si]){ showScenarioComplete(si); return; }
+  renderStep(si, firstDoneBoundary(si));
+}
+
+function renderStep(si,ti){
+  stIdx=ti; submitted=false; selOpt=null;
+  const sc=SC[si], plan=PLANS[si], step=plan[ti], n=sc.phases.length;
+  const stepNum=ti+1, stepTotal=plan.length;
+  renderPhaseTbl(si);
+  let label='', q='', inner='';
+
+  if(step.t==='D'){
+    const i=step.i, p=sc.phases[i];
+    const isLast=i===n-1;
+    label=`Step ${stepNum} of ${stepTotal} — Demand at ${p.n}`;
+    q=isLast
+      ? `Start at the downstream end. For every 1 good unit delivered, how many units must ${p.n} (yield ${Math.round(p.y*100)}%) handle? Enter to 3 decimals.`
+      : `Continue upstream. Using the validated value for the next phase downstream, how many units must ${p.n} (yield ${Math.round(p.y*100)}%) handle per good unit? Enter to 3 decimals.`;
+    inner=`<div class="fr-row"><span class="fr-label">D(${p.n.split(' — ')[0]}) =</span><input class="mx-input" type="number" step="any" id="num_0" oninput="numReady(1)"></div>`;
+  } else if(step.t==='caps'){
+    label=`Step ${stepNum} of ${stepTotal} — Phase Capacities`;
+    q='Compute each phase\'s capacity in units per minute: capacity = 1 ÷ processing time. Enter to 2–3 decimals (e.g., 0.333).';
+    inner=sc.phases.map((p,i)=>`<div class="fr-row"><span class="fr-label">Capacity — ${p.n.split(' — ')[0]} (PT ${p.pt} min):</span><input class="mx-input" type="number" step="any" id="num_${i}" oninput="numReady(${n})"> <span style="font-size:12px;color:var(--gray-400)">units/min</span></div>`).join('');
+  } else if(step.t==='iu'){
+    const D=chainD(sc.phases);
+    label=`Step ${stepNum} of ${stepTotal} — Implied Utilization`;
+    q='IU = D ÷ capacity for each phase. Enter to 2 decimals.';
+    inner=sc.phases.map((p,i)=>`<div class="fr-row"><span class="fr-label">IU — ${p.n.split(' — ')[0]} (D = ${fmt(D[i],3)}):</span><input class="mx-input" type="number" step="any" id="num_${i}" oninput="numReady(${n})"></div>`).join('');
+  } else if(step.t==='bn'){
+    label=`Step ${stepNum} of ${stepTotal} — Identify the Bottleneck`;
+    q='Which phase is the bottleneck?';
+    inner=`<div class="option-grid">${sc.phases.map((p,i)=>`
+      <div class="option-card" id="opt_${i}" onclick="selectOpt(${i})">
+        <div class="opt-radio"></div><div class="opt-text">${p.n} — IU ${fmt(ius(sc)[i],2)}</div>
+      </div>`).join('')}</div>`;
+  } else if(step.t==='pcap'){
+    label=`Step ${stepNum} of ${stepTotal} — Process Capacity in Good Units`;
+    q='Process capacity = (1 ÷ max IU) good units per minute. Convert to good units per hour, to 1 decimal.';
+    inner=`<div class="fr-row"><span class="fr-label">Process capacity =</span><input class="mx-input" type="number" step="any" id="num_0" oninput="numReady(1)"> <span style="font-size:12px;color:var(--gray-400)">good units/hr</span></div>`;
+  } else if(step.t==='improve'){
+    const p=sc.phases[sc.ext.phase];
+    label=`Step ${stepNum} of ${stepTotal} — Yield Improvement at the Bottleneck`;
+    q=`The upgrade raises ${p.n}'s yield from ${Math.round(p.y*100)}% to ${Math.round(sc.ext.newY*100)}%. Recompute D(${p.n.split(' — ')[0]}) and the new process capacity. (Downstream D values are unchanged.)`;
+    inner=`<div class="fr-row"><span class="fr-label">New D(${p.n.split(' — ')[0]}) =</span><input class="mx-input" type="number" step="any" id="num_0" oninput="numReady(2)"></div>
+           <div class="fr-row"><span class="fr-label">New process capacity =</span><input class="mx-input" type="number" step="any" id="num_1" oninput="numReady(2)"> <span style="font-size:12px;color:var(--gray-400)">good units/hr</span></div>`;
+  } else { // inputs
+    label=`Step ${stepNum} of ${stepTotal} — Inputs Needed for a Target`;
+    const note=sc.ext?(' '+sc.extQNote):'';
+    q=`The owner wants ${sc.Q} good units per hour.${note} How many units must be started at Phase 1 each hour? Use the decimal form of the process yield. Enter to 1 decimal.`;
+    inner=`<div class="fr-row"><span class="fr-label">Inputs needed =</span><input class="mx-input" type="number" step="any" id="num_0" oninput="numReady(1)"> <span style="font-size:12px;color:var(--gray-400)">units/hr</span></div>`;
+  }
+
+  document.getElementById('stepArea').innerHTML=`
+    <div class="step-label">${label}</div>
+    <div class="step-q">${q}</div>
+    ${inner}
+    <div class="btn-group">
+      <button class="btn btn-primary" id="submitBtn" onclick="handleSubmit()" disabled>Check Answer</button>
+    </div>
+    <div class="fb-panel" id="fbPanel">
+      <div class="fb-banner" id="fbBanner"></div>
+      <div class="fb-body"><div id="fbReveal"></div><div id="fbThink"></div></div>
+    </div>`;
+}
+
+function numReady(count){
+  if(submitted) return;
+  let ok=true;
+  for(let i=0;i<count;i++){ const el=document.getElementById('num_'+i); if(!el||el.value==='') ok=false; }
+  document.getElementById('submitBtn').disabled=!ok;
+}
+function selectOpt(v){
+  if(submitted) return;
+  selOpt=v;
+  document.querySelectorAll('.option-card').forEach(el=>el.classList.remove('selected'));
+  document.getElementById('opt_'+v).classList.add('selected');
+  document.getElementById('submitBtn').disabled=false;
+}
+
+// ═══════════════════════════════════════════════════════
+// GRADING
+// ═══════════════════════════════════════════════════════
+function near(a,b,tol){ return Math.abs(a-b)<=tol; }
+function markNum(id,ok){ const el=document.getElementById(id); el.disabled=true; el.classList.add(ok?'in-correct':'in-wrong'); }
+
+function handleSubmit(){
+  if(submitted) return;
+  const sc=SC[scIdx], plan=PLANS[scIdx], step=plan[stIdx], n=sc.phases.length;
+  if(step.t==='bn'&&selOpt===null) return;
+  submitted=true;
+
+  const D=chainD(sc.phases), C=caps(sc.phases), U=ius(sc);
+  let status, body='', think='';
+
+  if(step.t==='D'){
+    const i=step.i, p=sc.phases[i];
+    const v=parseFloat(document.getElementById('num_0').value);
+    const ok=near(v,D[i],0.011);
+    markNum('num_0',ok);
+    status=ok?'correct':'wrong';
+    const short=p.n.split(' — ')[0];
+    if(ok){
+      body=(i===n-1)
+        ? `D(${short}) = 1 ÷ ${p.y} = <strong>${fmt(D[i],3)}</strong>. The last phase must handle more than one unit per good unit delivered whenever its yield is below 100%.`
+        : `D(${short}) = ${fmt(D[i+1],3)} ÷ ${p.y} = <strong>${fmt(D[i],3)}</strong>. Each upstream phase inherits the downstream demand and divides by its own yield.`;
+    } else {
+      body=(i===n-1)
+        ? `✗ Start from the OUTPUT side: to deliver 1 good unit, ${short} must handle 1 ÷ ${p.y} = <strong>${fmt(D[i],3)}</strong> units. Working forward from Phase 1 is the classic error here — the chain is anchored at the downstream end.`
+        : `✗ D(${short}) = D(next phase downstream) ÷ y(${short}) = ${fmt(D[i+1],3)} ÷ ${p.y} = <strong>${fmt(D[i],3)}</strong>. Take the validated downstream value and divide by THIS phase's yield.`;
+    }
+  } else if(step.t==='caps'){
+    let right=0, msgs=[];
+    sc.phases.forEach((p,i)=>{
+      const ok=near(parseFloat(document.getElementById('num_'+i).value),C[i],0.006);
+      markNum('num_'+i,ok);
+      if(ok) right++; else msgs.push(`${p.n.split(' — ')[0]}: capacity = 1 ÷ ${p.pt} = ${fmt(C[i],3)} units/min.`);
+    });
+    status=right===n?'correct':(right>0?'partial':'wrong');
+    body=status==='correct'?'Capacities confirmed — note these are in units per minute; the final conversion to good units/hr comes later.':msgs.map(m=>'✗ '+m).join('<br>');
+  } else if(step.t==='iu'){
+    let right=0, msgs=[];
+    sc.phases.forEach((p,i)=>{
+      const ok=near(parseFloat(document.getElementById('num_'+i).value),U[i],0.06);
+      markNum('num_'+i,ok);
+      if(ok) right++; else msgs.push(`${p.n.split(' — ')[0]}: IU = ${fmt(D[i],3)} ÷ ${fmt(C[i],3)} = ${fmt(U[i],2)}.`);
+    });
+    status=right===n?'correct':(right>0?'partial':'wrong');
+    body=status==='correct'?('Implied utilizations confirmed: '+sc.phases.map((p,i)=>`${p.n.split(' — ')[0]} = ${fmt(U[i],2)}`).join(' · ')+'.'):msgs.map(m=>'✗ '+m).join('<br>');
+  } else if(step.t==='bn'){
+    const ans=bnIdx(sc);
+    const correct=selOpt===ans;
+    document.querySelectorAll('.option-card').forEach(el=>{
+      el.classList.add('disabled');
+      const v=parseInt(el.id.replace('opt_',''));
+      if(v===ans) el.classList.add('o-correct');
+      else if(v===selOpt&&!correct) el.classList.add('o-wrong');
+    });
+    status=correct?'correct':'wrong';
+    body=`${sc.phases[ans].n} has the highest implied utilization (${fmt(U[ans],2)}) — it is the bottleneck. The bottleneck depends on demand AND capacity, not on yield alone.`;
+    if(!correct&&selOpt!==null){
+      const lowY=sc.phases.reduce((m,p,i)=>p.y<sc.phases[m].y?i:m,0);
+      if(selOpt===lowY&&lowY!==ans) body='✗ '+sc.phases[lowY].n+' has the worst yield — but the bottleneck is the highest IU, and that is '+sc.phases[ans].n+` (${fmt(U[ans],2)}). A bad yield on a fast phase can load the process less than a long processing time on near-full demand.`;
+      else body='✗ '+body;
+    }
+  } else if(step.t==='pcap'){
+    const ans=procCap(sc);
+    const v=parseFloat(document.getElementById('num_0').value);
+    const ok=near(v,ans,0.25);
+    markNum('num_0',ok);
+    status=ok?'correct':'wrong';
+    body=ok
+      ? `Process capacity = 1 ÷ ${fmt(Math.max(...U),2)} = ${fmt(1/Math.max(...U),3)} good units/min × 60 = <strong>${fmt(ans,1)} good units/hr</strong>.`
+      : `✗ Process capacity = (1 ÷ max IU) good units per minute, then × 60. Max IU = ${fmt(Math.max(...U),2)} → 1 ÷ ${fmt(Math.max(...U),2)} = ${fmt(1/Math.max(...U),3)}/min → <strong>${fmt(ans,1)} good units/hr</strong>.`;
+  } else if(step.t==='improve'){
+    const d1=extD1(sc), cap2=extCap(sc);
+    const ok1=near(parseFloat(document.getElementById('num_0').value),d1,0.011);
+    const ok2=near(parseFloat(document.getElementById('num_1').value),cap2,0.25);
+    markNum('num_0',ok1); markNum('num_1',ok2);
+    status=(ok1&&ok2)?'correct':((ok1||ok2)?'partial':'wrong');
+    body=status==='correct'?sc.ext.reveal:
+      ('✗ New D = '+fmt(D[1],3)+' ÷ '+sc.ext.newY+' = <strong>'+fmt(d1,3)+'</strong> (downstream values are unchanged — only this phase\'s own yield changed). New max IU = '+fmt(d1/C[sc.ext.phase],2)+' → new capacity = <strong>'+fmt(cap2,1)+' good units/hr</strong>.');
+  } else { // inputs
+    const PY=sc.ext?extPY(sc):py(sc.phases);
+    const ans=sc.Q/PY;
+    const v=parseFloat(document.getElementById('num_0').value);
+    const ok=near(v,ans,0.6);
+    markNum('num_0',ok);
+    status=ok?'correct':'wrong';
+    if(ok){
+      body=`Inputs needed = ${sc.Q} ÷ ${fmt(PY,4)} = <strong>${fmt(ans,1)} units/hr</strong>. The answer exceeds the target — always.`;
+    } else if(!isNaN(v)&&v<sc.Q){
+      body=`✗ Your answer (${v}) is LESS than your target output (${sc.Q}). That's impossible — yield destroys units, so you always start more than you finish. You divided by the percentage (${fmt(PY*100,2)}) instead of the decimal (${fmt(PY,4)}). Recompute using ${fmt(PY,4)}.`;
+    } else {
+      body=`✗ Inputs needed = Q ÷ process yield (decimal form) = ${sc.Q} ÷ ${fmt(PY,4)} = <strong>${fmt(ans,1)} units/hr</strong>. Process yield = ${sc.phases.map((p,i)=>sc.ext&&i===sc.ext.phase?sc.ext.newY:p.y).join(' × ')} = ${fmt(PY,4)}.`;
+    }
+  }
+
+  // first-try tracking
+  if(!attempted[scIdx][stIdx]){
+    attempted[scIdx][stIdx]=true;
+    firstTry[scIdx][stIdx]=(status==='correct');
+    if(status==='correct'){ firstTryCorrect++; updateScore(); }
+  }
+
+  const banner=document.getElementById('fbBanner');
+  banner.className='fb-banner fb-'+status;
+  banner.innerHTML=status==='correct'?'✓ Correct.':(status==='partial'?'◑ Partially correct — fix the highlighted entries.':'✗ Incorrect — see the explanation below.');
+  document.getElementById('fbReveal').innerHTML=body;
+  const thinkEl=document.getElementById('fbThink');
+  thinkEl.innerHTML='';
+  if(status==='correct'&&step.t==='inputs'&&sc.td) thinkEl.innerHTML=`<div class="think-deeper"><div class="think-label">Think Deeper</div><div>${sc.td}</div></div>`;
+  document.getElementById('fbPanel').classList.add('show');
+  document.getElementById('submitBtn').style.display='none';
+
+  if(status==='correct'){
+    stDone[scIdx][stIdx]=true;
+    renderPhaseTbl(scIdx);
+    if(stIdx<plan.length-1) addBtn('Next Step →','btn-green',()=>renderStep(scIdx,stIdx+1));
+    else{
+      scDone[scIdx]=true;
+      updateNavBtn(scIdx);
+      setTimeout(()=>showScenarioComplete(scIdx),800);
+    }
+  } else {
+    addBtn('↩ Try Again','btn-secondary',()=>renderStep(scIdx,stIdx));
+  }
+}
+
+function addBtn(txt,cls,fn){
+  const bg=document.querySelector('.btn-group');
+  const b=document.createElement('button');
+  b.className='btn '+cls; b.textContent=txt; b.onclick=fn;
+  bg.appendChild(b);
+}
+
+// ═══════════════════════════════════════════════════════
+// COMPLETE / SCORE / FINAL
+// ═══════════════════════════════════════════════════════
+function showScenarioComplete(si){
+  document.getElementById('stepArea').innerHTML='';
+  renderPhaseTbl(si);
+  const box=document.getElementById('scComplete');
+  box.style.display='block';
+  document.getElementById('completeTitle').textContent='Scenario '+(si+1)+' Complete ✓';
+  document.getElementById('completeMsg').textContent='Full backward chain validated for '+SC[si].title+'.';
+  document.getElementById('nextScBtn').textContent=si<SC.length-1?'Next Scenario →':'See Final Summary';
+}
+function updateScore(){
+  document.getElementById('scoreNum').textContent=firstTryCorrect;
+  document.getElementById('progBar').style.width=((firstTryCorrect/TOTAL_STEPS)*100)+'%';
+}
+function showFinal(){
+  document.getElementById('scComplete').style.display='none';
+  document.getElementById('phaseTblWrap').innerHTML='';
+  const box=document.getElementById('finalBox');
+  box.classList.add('show');
+  const pct=Math.round((firstTryCorrect/TOTAL_STEPS)*100);
+  box.innerHTML=`
+    <h3 style="color:var(--green);font-size:18px;margin-bottom:8px">All 4 Scenarios Complete</h3>
+    <p style="font-size:22px;font-weight:700;color:var(--navy);margin:10px 0">${firstTryCorrect} / ${TOTAL_STEPS}</p>
+    <p style="color:var(--gray-600);font-size:13px;margin-bottom:14px">${pct}% first-try correct</p>
+    <table class="final-tbl"><tr><th>Scenario</th><th>First-try</th></tr>
+      ${SC.map((sc,i)=>`<tr><td>${i+1} — ${sc.title}</td><td>${firstTry[i].filter(Boolean).length} / ${PLANS[i].length}</td></tr>`).join('')}
+    </table>
+    <div class="tip-box" style="text-align:left;max-width:480px;margin:0 auto 16px">
+      <strong>Gate 2 and Case readiness:</strong><br>
+      Gate 2 Q5 is this exact backward chain — auto-assigned versions, graded step by step. Gate 2 Q4 and Case Part 4 use the inputs-needed division, where the decimal trap (Scenario 1's final step) costs the most points. If you triggered the "answer less than target" message anywhere, re-run that scenario before quiz day.
+    </div>
+    <button class="btn btn-secondary" onclick="goScenario(0)">↩ Restart from Scenario 1</button>`;
+}
+
+init();
+</script>
+</body>
+</html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module M05 Overview — SCM 352</title>
+<style>
+:root {
+  --navy:#1a3a5c;--blue:#2563a8;--blue-lt:#dbeafe;--blue-xlt:#eff6ff;
+  --gold:#f59e0b;--gold-lt:#fffbeb;--gold-bdr:#fde68a;--gold-dark:#92400e;
+  --green:#16a34a;--green-lt:#f0fdf4;--green-bdr:#bbf7d0;
+  --gray-50:#f9fafb;--gray-100:#f3f4f6;--gray-200:#e5e7eb;
+  --gray-400:#9ca3af;--gray-600:#4b5563;--gray-700:#374151;--gray-800:#1f2937;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:white;color:var(--gray-800);line-height:1.7;font-size:14.5px;}
+.hero{background:linear-gradient(135deg,var(--navy) 0%,var(--blue) 100%);color:white;padding:36px 32px 32px;}
+.hero-eyebrow{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;}
+.hero h1{font-size:26px;font-weight:700;letter-spacing:-.02em;line-height:1.2;margin-bottom:10px;}
+.hero-sub{font-size:14px;color:rgba(255,255,255,.72);line-height:1.55;max-width:620px;}
+.meta-strip{display:flex;gap:0;border-bottom:2px solid var(--gray-200);overflow-x:auto;background:white;}
+.meta-item{padding:12px 20px;border-right:1px solid var(--gray-200);min-width:0;flex-shrink:0;}
+.meta-item:last-child{border-right:none;}
+.meta-label{font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--gray-400);margin-bottom:3px;}
+.meta-value{font-size:13px;font-weight:700;color:var(--navy);}
+.pg-body{max-width:780px;margin:0 auto;padding:36px 28px 60px;display:flex;flex-direction:column;gap:32px;}
+.section-h{font-size:18px;font-weight:700;color:var(--navy);letter-spacing:-.01em;margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid var(--blue-lt);}
+.gate-callout{background:var(--blue-xlt);border:1.5px solid var(--blue-lt);border-left:4px solid var(--blue);border-radius:0 10px 10px 0;padding:14px 18px;font-size:13.5px;color:var(--gray-700);line-height:1.6;}
+.gate-callout strong{color:var(--navy);}
+.agenda{display:flex;flex-direction:column;gap:0;border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;}
+.agenda-item{display:flex;align-items:flex-start;gap:14px;padding:13px 18px;border-bottom:1px solid var(--gray-100);font-size:13.5px;color:var(--gray-700);line-height:1.5;}
+.agenda-item:last-child{border-bottom:none;}
+.agenda-item:hover{background:var(--gray-50);}
+.agenda-icon{font-size:16px;flex-shrink:0;margin-top:1px;}
+.agenda-time{font-size:11px;font-weight:600;color:var(--gray-400);white-space:nowrap;align-self:center;}
+.lo-table{width:100%;border-collapse:collapse;font-size:13px;}
+.lo-table th{background:var(--navy);color:white;padding:9px 13px;text-align:left;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;}
+.lo-table td{padding:9px 13px;border-bottom:1px solid var(--gray-100);vertical-align:top;line-height:1.5;color:var(--gray-700);}
+.lo-table tr:last-child td{border-bottom:none;}
+.lo-table tr:hover td{background:var(--blue-xlt);}
+.lo-num{font-weight:800;color:var(--navy);white-space:nowrap;}
+.bloom-pill{font-size:10px;font-weight:700;padding:2px 7px;border-radius:100px;white-space:nowrap;display:inline-block;}
+.bl-apply{background:var(--blue-lt);color:var(--navy);}
+.bl-analyze{background:var(--gold-lt);color:var(--gold-dark);}
+.bl-evaluate{background:var(--green-lt);color:var(--green);}
+.bl-understand{background:var(--gray-100);color:var(--gray-600);}
+.workload-box{background:var(--gold-lt);border:1.5px solid var(--gold-bdr);border-radius:12px;padding:18px 22px;display:flex;align-items:center;gap:16px;}
+.workload-icon{font-size:28px;flex-shrink:0;}
+.workload-text h3{font-size:15px;font-weight:700;color:var(--navy);margin-bottom:4px;}
+.workload-text p{font-size:13px;color:var(--gray-700);line-height:1.5;}
+.grade-table{width:100%;border-collapse:collapse;font-size:13px;}
+.grade-table th{background:var(--navy);color:white;padding:9px 13px;text-align:left;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;}
+.grade-table td{padding:9px 13px;border-bottom:1px solid var(--gray-100);}
+.grade-table tr.total-row td{font-weight:700;background:var(--blue-xlt);color:var(--navy);font-size:14px;}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-eyebrow">SCM 352 · Module M05 · Summer 2026</div>
+  <h1>Process Analysis with Multiple Flow Units</h1>
+  <p class="hero-sub">Every module so far has assumed a single type of flow unit flowing through a single path. That assumption held for three-station pharmacy processes and single-product assembly lines. It breaks down the moment your operation handles more than one kind of customer, product, or case.</p>
+</div>
+
+<div class="meta-strip">
+  <div class="meta-item"><div class="meta-label">Workload</div><div class="meta-value">4.5–6 hrs</div></div>
+  <div class="meta-item"><div class="meta-label">Gate 1 due</div><div class="meta-value">Day 2</div></div>
+  <div class="meta-item"><div class="meta-label">Gate 2 due</div><div class="meta-value">Day 6 · 11:59 PM</div></div>
+  <div class="meta-item"><div class="meta-label">Case due</div><div class="meta-value">Day 6 · 11:59 PM</div></div>
+  <div class="meta-item"><div class="meta-label">Module points</div><div class="meta-value">230 pts</div></div>
+</div>
+
+<div class="pg-body">
+
+  <!-- Context paragraphs from Architecture Section 1 -->
+  <div style="font-size:14px;line-height:1.75;color:var(--gray-700);">
+    <p>A loan approval office rejects half its applications before they even reach quality assurance. An urgent care clinic routes some patients to imaging, some to labs, and others to the doctor only. A prescription fulfillment center now fills both standard prescriptions and pre-packaged unit-dose medications — and those two types don't visit the same stations.</p>
+    <p style="margin-top:12px;">This module gives you the tools to handle these realities: a demand matrix to map who goes where, implied utilization to find the true bottleneck when flow units take different paths, process yield to account for defects and attrition, and a workload matrix to handle different processing times for different types. These tools don't replace what you learned in Modules 3 and 4 — they extend it.</p>
+  </div>
+
+  <!-- Gate lock callout — required on every overview page -->
+  <div class="gate-callout">
+    <strong>Important — module is gated.</strong> All lecture videos, apps, the discussion, Gate 2, and the Case are locked until you pass Gate 1 with an 80% or higher score. Gate 1 draws exclusively on Chapter 5 of the textbook — Section 5.5 (Rework) appears nowhere in the slides, so read the full chapter. Gate 1 is due Day 2.
+  </div>
+
+  <!-- Agenda -->
+  <div>
+    <div class="section-h">What You Will Do This Module</div>
+    <div class="agenda">
+      <div class="agenda-item"><div class="agenda-icon">📖</div><div style="flex:1"><strong>Read Chapter 5</strong> — multiple flow unit types, the demand matrix, process yield, the workload matrix, and rework (§5.5 is chapter-exclusive).</div><div class="agenda-time">90–120 min</div></div>
+      <div class="agenda-item"><div class="agenda-icon">🔓</div><div style="flex:1"><strong>Complete Gate 1</strong> — reading check. Score 80% or above to unlock all remaining content.</div><div class="agenda-time">10–15 min</div></div>
+      <div class="agenda-item"><div class="agenda-icon">🎬</div><div style="flex:1"><strong>Watch two lecture video segments</strong> — "Reading the Demand Side" and "From Inputs to Good Outputs."</div><div class="agenda-time">~36 min</div></div>
+      <div class="agenda-item"><div class="agenda-icon">📊</div><div style="flex:1"><strong>Work through the slide deck.</strong> 20 slides covering the demand matrix, the five-step procedure, implied utilization, yield, and the workload matrix.</div><div class="agenda-time">40–50 min</div></div>
+      <div class="agenda-item"><div class="agenda-icon">⚡</div><div style="flex:1"><strong>Complete three interactive apps</strong> — Demand Matrix Builder, Attrition Loss Calculator, and Workload Matrix Analyzer.</div><div class="agenda-time">35–45 min</div></div>
+      <div class="agenda-item"><div class="agenda-icon">💬</div><div style="flex:1"><strong>Participate in the Discussion.</strong> Find a real product-mix process you used this week and analyze its routing. Initial post only — no reply required. Deadline extends to the close of the following module.</div><div class="agenda-time">30–40 min</div></div>
+      <div class="agenda-item"><div class="agenda-icon">📝</div><div style="flex:1"><strong>Complete Gate 2</strong> — 8 questions, 100 points, 90-minute timer, one attempt. Due Day 6 at 11:59 PM.</div><div class="agenda-time">60–90 min</div></div>
+      <div class="agenda-item"><div class="agenda-icon">📋</div><div style="flex:1"><strong>Submit the Case Analysis.</strong> Riverside Health now fills two prescription types — and the bottleneck moved. Your version is in the Case assignment. Due Day 6 at 11:59 PM.</div><div class="agenda-time">45–75 min</div></div>
+    </div>
+  </div>
+
+  <div class="workload-box">
+    <div class="workload-icon">⏱️</div>
+    <div class="workload-text">
+      <h3>Estimated total workload: 4.5–6 hours</h3>
+      <p>Plan three sessions: (1) chapter + Gate 1 early in the week, (2) lectures + slides + apps mid-week, (3) Gate 2 + Case before Day 6. The apps directly rehearse Gate 2 Questions 2, 5, 6, and 7 — do them before opening the quiz.</p>
+    </div>
+  </div>
+
+  <!-- Learning Objectives — from Architecture Section 2 -->
+  <div>
+    <div class="section-h">Learning Objectives</div>
+    <div style="border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;">
+      <table class="lo-table">
+        <thead><tr><th style="width:7%">LO</th><th style="width:60%">You will be able to…</th><th style="width:13%">Bloom's Level</th><th style="width:20%">Assessed in</th></tr></thead>
+        <tbody>
+          <tr><td class="lo-num">LO5-1</td><td>Construct a demand matrix for a process with multiple flow unit types and compute the total demand rate for each resource</td><td><span class="bloom-pill bl-apply">Apply</span></td><td>Gate 2 Q1, Q2 · Case Parts 1–2</td></tr>
+          <tr><td class="lo-num">LO5-2</td><td>Compute implied utilization for each resource and identify the bottleneck in a general process flow with a product mix; determine flow rates for all flow unit types</td><td><span class="bloom-pill bl-analyze">Analyze</span></td><td>Gate 2 Q2, Q3 · Case Part 3</td></tr>
+          <tr><td class="lo-num">LO5-3</td><td>Compute the yield of a process and determine the number of inputs required to produce a target quantity of good output</td><td><span class="bloom-pill bl-apply">Apply</span></td><td>Gate 2 Q4, Q5 · Case Part 4</td></tr>
+          <tr><td class="lo-num">LO5-4</td><td>Construct a workload matrix for a process with flow-unit-dependent processing times and compute implied utilization and flow rates</td><td><span class="bloom-pill bl-analyze">Analyze</span></td><td>Gate 2 Q6, Q7 · Case Part 5</td></tr>
+          <tr><td class="lo-num">LO5-5</td><td>Explain why rework at a bottleneck resource destroys process capacity, and identify where in a process defect detection is most valuable</td><td><span class="bloom-pill bl-evaluate">Evaluate</span></td><td>Gate 1 Q1, Q2, Q4 · Case Part 6b</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Grading — from Architecture Section 8 -->
+  <div>
+    <div class="section-h">Module M05 Grading</div>
+    <div style="border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;">
+      <table class="grade-table">
+        <thead><tr><th>Component</th><th style="text-align:right;">Points</th><th style="text-align:right;">% of Module</th><th>Due</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Gate 1 Quiz</strong> — reading verification (access control only)</td><td style="text-align:right;">0</td><td style="text-align:right;color:var(--gray-400);">—</td><td>Day 2</td></tr>
+          <tr><td><strong>Gate 2 Quiz</strong> — chapter + lecture + app synthesis</td><td style="text-align:right;font-weight:700;">100</td><td style="text-align:right;">44%</td><td>Day 6</td></tr>
+          <tr><td><strong>Discussion</strong> — Product Mix in the Wild</td><td style="text-align:right;font-weight:700;">30</td><td style="text-align:right;">13%</td><td>Close of following module</td></tr>
+          <tr><td><strong>Case Analysis M05</strong> — Riverside Health with two prescription types</td><td style="text-align:right;font-weight:700;">100</td><td style="text-align:right;">43%</td><td>Day 6</td></tr>
+          <tr class="total-row"><td><strong>Module Total</strong></td><td style="text-align:right;font-weight:800;font-size:15px;">230</td><td style="text-align:right;font-weight:700;">100%</td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

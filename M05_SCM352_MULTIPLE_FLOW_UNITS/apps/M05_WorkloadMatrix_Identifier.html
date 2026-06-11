@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Workload Matrix Analyzer — SCM 352 M05</title>
+<style>
+:root {
+  --navy:#1a3a5c;--blue:#2563a8;--blue-lt:#dbeafe;--blue-xlt:#eff6ff;
+  --gold:#f59e0b;--gold-lt:#fffbeb;--gold-bdr:#fde68a;
+  --green:#16a34a;--green-lt:#f0fdf4;--green-bdr:#bbf7d0;
+  --red:#dc2626;--red-lt:#fef2f2;--red-bdr:#fecaca;
+  --amber:#d97706;--amber-lt:#fffbeb;--amber-bdr:#fde68a;
+  --teal:#0891b2;--teal-lt:#f0fdfe;--teal-bdr:#a5f3fc;
+  --gray-50:#f9fafb;--gray-100:#f3f4f6;--gray-200:#e5e7eb;
+  --gray-300:#d1d5db;--gray-400:#9ca3af;--gray-600:#4b5563;
+  --gray-700:#374151;--gray-800:#1f2937;
+  --blue-hover:#1d4ed8;--green-hover:#15803d;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--gray-50);color:var(--gray-800);min-height:100vh}
+header{background:var(--navy);color:white;padding:16px 24px;display:flex;align-items:center;gap:16px}
+.header-badge{background:var(--gold);color:var(--navy);font-weight:700;font-size:11px;padding:3px 8px;border-radius:4px;letter-spacing:.05em;text-transform:uppercase}
+header h1{font-size:18px;font-weight:600}
+.scenario-nav{background:white;border-bottom:2px solid var(--gray-200);padding:0 24px;display:flex;overflow-x:auto}
+.scenario-btn{padding:12px 18px;border:none;background:none;cursor:pointer;font-size:13px;font-weight:500;color:var(--gray-600);border-bottom:3px solid transparent;white-space:nowrap;transition:all .15s}
+.scenario-btn:hover{color:var(--blue)}
+.scenario-btn.active{color:var(--blue);border-bottom-color:var(--blue);font-weight:600}
+.scenario-btn.sc-done{color:var(--green)}
+.scenario-btn.sc-done::after{content:' ✓'}
+.main{max-width:1100px;margin:0 auto;padding:24px;display:grid;grid-template-columns:1fr 300px;gap:24px;align-items:start}
+@media(max-width:820px){.main{grid-template-columns:1fr}}
+.card{background:white;border:1px solid var(--gray-200);border-radius:12px;overflow:hidden}
+.card-header{background:var(--blue-lt);padding:14px 20px;border-bottom:1px solid var(--gray-200)}
+.card-header h2{font-size:15px;font-weight:700;color:var(--navy)}
+.card-header p{font-size:13px;color:var(--gray-600);margin-top:4px}
+.card-body{padding:20px}
+.scenario-desc{font-size:14px;line-height:1.7;background:var(--gray-50);border-left:4px solid var(--blue);padding:14px 16px;border-radius:0 8px 8px 0;margin-bottom:14px}
+.diff-tag{font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:3px 9px;border-radius:100px}
+.diff-easy{background:var(--green-lt);color:var(--green)}
+.diff-medium{background:var(--amber-lt);color:var(--amber)}
+.diff-hard{background:var(--red-lt);color:var(--red)}
+.mx-wrap{overflow-x:auto;margin-bottom:14px}
+.mx-tbl{border-collapse:collapse;font-size:13px;width:100%}
+.mx-tbl th{background:var(--navy);color:white;padding:7px 10px;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;text-align:left}
+.mx-tbl td{padding:6px 8px;border-bottom:1px solid var(--gray-100)}
+.mx-tbl td.mx-rowname{font-weight:700;color:var(--navy);white-space:nowrap;padding-right:12px}
+.mx-tbl td.mx-given{font-weight:600;color:var(--gray-700);text-align:center}
+.mx-input{width:78px;padding:7px 8px;border:2px solid var(--gray-300);border-radius:7px;font-size:13px;font-weight:600;color:var(--gray-800);text-align:center;transition:border-color .15s}
+.mx-input:focus{outline:none;border-color:var(--blue)}
+.mx-input.in-correct{border-color:var(--green);background:var(--green-lt)}
+.mx-input.in-wrong{border-color:var(--red);background:var(--red-lt)}
+.mx-input:disabled{opacity:.75}
+.sel-input{padding:8px 10px;border:2px solid var(--gray-300);border-radius:7px;font-size:13px;font-weight:600;color:var(--gray-800);background:white;max-width:100%}
+.sel-input:focus{outline:none;border-color:var(--blue)}
+.sel-input.in-correct{border-color:var(--green);background:var(--green-lt)}
+.sel-input.in-wrong{border-color:var(--red);background:var(--red-lt)}
+.step-label{font-size:12px;font-weight:700;color:var(--navy);margin-bottom:8px}
+.step-q{font-size:14px;line-height:1.6;margin-bottom:14px;color:var(--gray-800)}
+.fr-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+.fr-label{font-size:13px;font-weight:600;color:var(--gray-700);min-width:230px}
+.option-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+@media(max-width:600px){.option-grid{grid-template-columns:1fr}}
+.option-card{display:flex;align-items:flex-start;gap:10px;padding:11px 13px;border:2px solid var(--gray-200);border-radius:10px;cursor:pointer;transition:border-color .15s,background .15s;background:white;user-select:none;text-align:left}
+.option-card:hover:not(.disabled){border-color:var(--blue);background:var(--gray-50)}
+.option-card.selected{border-color:var(--blue);background:var(--blue-xlt)}
+.option-card.o-correct{border-color:var(--green);background:var(--green-lt);pointer-events:none}
+.option-card.o-wrong{border-color:var(--red);background:var(--red-lt);pointer-events:none}
+.option-card.disabled{pointer-events:none;opacity:.6}
+.opt-radio{width:16px;height:16px;border-radius:50%;border:2px solid var(--gray-300);flex-shrink:0;margin-top:2px;transition:all .15s}
+.option-card.selected .opt-radio{border-color:var(--blue);background:var(--blue)}
+.option-card.o-correct .opt-radio{border-color:var(--green);background:var(--green)}
+.option-card.o-wrong .opt-radio{border-color:var(--red);background:var(--red)}
+.opt-text{font-size:13px;line-height:1.45}
+.btn{padding:9px 20px;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;transition:all .15s}
+.btn-primary{background:var(--blue);color:white}
+.btn-secondary{background:var(--gray-100);color:var(--gray-800)}
+.btn-green{background:var(--green);color:white}
+.btn-primary:hover{background:var(--blue-hover)}
+.btn-primary:disabled{background:var(--gray-400);cursor:not-allowed}
+.btn-secondary:hover{background:var(--gray-200)}
+.btn-green:hover{background:var(--green-hover)}
+.btn-group{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.fb-panel{display:none;margin-top:14px;border:2px solid var(--gray-200);border-radius:10px;overflow:hidden}
+.fb-panel.show{display:block}
+.fb-banner{padding:10px 14px;font-size:14px;font-weight:700;display:flex;align-items:center;gap:8px}
+.fb-correct{background:var(--green-lt);color:var(--green);border-bottom:2px solid var(--green)}
+.fb-partial{background:var(--amber-lt);color:var(--amber);border-bottom:2px solid var(--amber)}
+.fb-wrong{background:var(--red-lt);color:var(--red);border-bottom:2px solid var(--red)}
+.fb-body{padding:14px;font-size:13px;line-height:1.6;background:white}
+.think-deeper{background:var(--gold-lt);border:1.5px solid var(--gold-bdr);border-radius:8px;padding:11px 14px;margin-top:10px;font-size:13px;line-height:1.55}
+.think-label{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--amber);margin-bottom:5px}
+.ext-banner{background:var(--blue-xlt);border:1.5px solid var(--blue-lt);border-left:4px solid var(--blue);border-radius:0 8px 8px 0;padding:11px 14px;font-size:13px;line-height:1.55;margin-bottom:14px}
+.ext-banner strong{color:var(--navy)}
+.sc-complete{background:var(--green-lt);border:1px solid var(--green-bdr);border-radius:10px;padding:18px;text-align:center;margin-top:12px;display:none}
+.sc-complete h3{color:var(--green);font-size:15px;font-weight:700;margin-bottom:8px}
+.final-box{display:none;text-align:center;padding:24px 12px}
+.final-box.show{display:block}
+.final-tbl{width:100%;max-width:430px;margin:0 auto 16px;border-collapse:collapse;font-size:12.5px}
+.final-tbl th{background:var(--navy);color:white;padding:6px 10px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase}
+.final-tbl td{padding:6px 10px;border-bottom:1px solid var(--gray-100);text-align:left}
+.score-row{padding:14px 18px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--gray-100)}
+.score-num{font-size:28px;font-weight:700;color:var(--navy)}
+.score-meta{font-size:12px;color:var(--gray-600);line-height:1.4}
+.score-meta strong{color:var(--gray-800);display:block;font-size:13px}
+.prog-outer{height:5px;background:var(--gray-200);border-radius:3px;overflow:hidden;margin:0 18px 14px}
+.prog-inner{height:100%;background:var(--blue);border-radius:3px;transition:width .4s}
+.tip-box{background:var(--gold-lt);border:1px solid var(--gold-bdr);border-radius:8px;padding:11px 14px;font-size:12px;line-height:1.55;color:var(--gray-800)}
+.tip-box strong{color:var(--navy)}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-badge">SCM 352 · M05</div>
+  <h1>Workload Matrix Analyzer</h1>
+</header>
+
+<div class="scenario-nav" id="scenarioNav"></div>
+
+<div class="main">
+  <div>
+    <div class="card">
+      <div class="card-header">
+        <h2 id="cardTitle"></h2>
+        <p id="cardSub"></p>
+      </div>
+      <div class="card-body">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap">
+          <span class="diff-tag" id="diffTag"></span>
+          <span style="margin-left:auto;font-size:11px;font-weight:600;color:var(--gray-400)" id="vigNum"></span>
+        </div>
+        <div class="scenario-desc" id="scenDesc"></div>
+        <div id="setupTblWrap"></div>
+        <div id="stepArea"></div>
+        <div class="sc-complete" id="scComplete">
+          <h3 id="completeTitle"></h3>
+          <p id="completeMsg" style="font-size:13px;color:var(--gray-600);margin-bottom:12px"></p>
+          <button class="btn btn-green" id="nextScBtn" onclick="goNextScenario()"></button>
+        </div>
+        <div class="final-box" id="finalBox"></div>
+      </div>
+    </div>
+  </div>
+
+  <div style="position:sticky;top:24px;display:flex;flex-direction:column;gap:16px">
+    <div class="card">
+      <div class="card-header"><h2>Your Score</h2><p>First-try correct steps</p></div>
+      <div class="score-row">
+        <div class="score-num" id="scoreNum">0</div>
+        <div class="score-meta">
+          <strong>first-try correct</strong>
+          <span id="scoreDetail">of 25 steps</span>
+        </div>
+      </div>
+      <div class="prog-outer"><div class="prog-inner" id="progBar" style="width:0%"></div></div>
+    </div>
+    <div class="card">
+      <div class="card-header"><h2>Workload Rules</h2><p>Chapter 5 — minutes, not units</p></div>
+      <div class="card-body">
+        <div class="tip-box">
+          <strong>The sequence:</strong><br>
+          Workload(i, j) = demand<sub>j</sub> × PT(i, j)<br>
+          Total workload = row sum (min/hr)<br>
+          Available time = workers × 60<br>
+          IU = workload ÷ available time<br>
+          Max IU &gt; 100% → flow = demand ÷ max IU<br><br>
+          <strong>Staffing changes available time.<br>Demand changes workload.<br>Never trade places.</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════
+// DATA — scenarios from M05_Architecture.md Section 7, App 3
+// pt[i][j] = processing time of type j at resource i; null = type skips resource
+// ═══════════════════════════════════════════════════════
+const SC = [
+  {
+    id:1, title:'Dog Grooming Salon', sub:'Scenario 1 of 4 · Zeros in the workload matrix', diff:'easy',
+    desc:'A grooming salon runs three resources, one groomer each. Full grooms (4/hr) visit Check-in (6 min), Bath & Dry (10 min), and Trim & Style (9 min). Trim-only appointments (5/hr) visit Check-in (4 min) and Trim & Style (8 min) — they skip Bath & Dry.',
+    res:[{n:'R1 — Check-in',w:1},{n:'R2 — Bath & Dry',w:1},{n:'R3 — Trim & Style',w:1}],
+    types:[{n:'Full grooms',d:4},{n:'Trim-only',d:5}],
+    pt:[[6,4],[10,null],[9,8]],
+    ext:null,
+    td:'The zero at Bath & Dry / Trim-only is a routing statement in minutes: that type contributes no work there. Same zero logic as the demand matrix — only the units changed.'
+  },
+  {
+    id:2, title:'Tax Preparation Office', sub:'Scenario 2 of 4 · Available time ≠ 60 everywhere', diff:'medium',
+    desc:'A tax office runs three resources: Intake (1 staff), Preparation (2 preparers), Review & File (1 reviewer). Individual returns (6/hr) take 5 / 16 / 6 minutes at the three resources. Small-business returns (3/hr) take 8 / 24 / 10 minutes. Both types visit all three resources.',
+    res:[{n:'R1 — Intake',w:1},{n:'R2 — Preparation',w:2},{n:'R3 — Review & File',w:1}],
+    types:[{n:'Individual',d:6},{n:'Small-business',d:3}],
+    pt:[[5,8],[16,24],[6,10]],
+    ext:null,
+    td:'Two resources sit above 100% (R2 at 1.40, R3 at 1.10) — but the process has exactly one bottleneck: the max IU. And note R2 is the bottleneck WITH two preparers. Staffing raises available time; it does not grant immunity.'
+  },
+  {
+    id:3, title:'Phone Repair Kiosk', sub:'Scenario 3 of 4 · Add-a-worker extension', diff:'medium',
+    desc:'A phone repair kiosk runs three resources, one technician each. Screen swaps (5/hr) take 4 / 9 / 3 minutes at Diagnose, Repair, and Test & Return. Battery jobs (4/hr) take 4 / 6 / 3 minutes at the same three resources. After the baseline analysis, the owner hires a second repair technician — the extension panel asks what changes.',
+    res:[{n:'R1 — Diagnose',w:1},{n:'R2 — Repair',w:1},{n:'R3 — Test & Return',w:1}],
+    types:[{n:'Screen swaps',d:5},{n:'Battery jobs',d:4}],
+    pt:[[4,4],[9,6],[3,3]],
+    ext:{res:1},
+    td:'Before the hire: capacity-constrained, flow rationed to 4.35 and 3.48 per hour. After: demand-constrained, every job served. The workload matrix never moved — the M04 Table 4.2 lesson in workload form: capacity helps exactly until demand becomes the constraint.'
+  },
+  {
+    id:4, title:'Translation Bureau', sub:'Scenario 4 of 4 · Zeros at both ends', diff:'hard',
+    desc:'A translation bureau runs three resources, one specialist each. Standard documents (6/hr) visit Document Prep (5 min) and Translation (7 min) — no certification needed. Certified documents (4/hr) skip Document Prep (clients submit print-ready files) and visit Translation (8 min) and Certification (12 min).',
+    res:[{n:'R1 — Document Prep',w:1},{n:'R2 — Translation',w:1},{n:'R3 — Certification',w:1}],
+    types:[{n:'Standard',d:6},{n:'Certified',d:4}],
+    pt:[[5,null],[7,8],[null,12]],
+    ext:null,
+    td:'Each type skips a different resource — R1 and R3 each carry a zero. Only Translation sees both types, and that shared demand is exactly why it is the bottleneck. Shared resources in a product mix are where constraints concentrate.'
+  }
+];
+
+// runtime computations
+function wl(sc,i,j){ const p=sc.pt[i][j]; return p===null?0:sc.types[j].d*p; }
+function rowWL(sc,i){ return sc.types.reduce((a,_,j)=>a+wl(sc,i,j),0); }
+function at(sc,i){ return sc.res[i].w*60; }
+function iu(sc,i){ return rowWL(sc,i)/at(sc,i); }
+function maxIU(sc){ return Math.max(...sc.res.map((_,i)=>iu(sc,i))); }
+function bnIdx(sc){ const u=sc.res.map((_,i)=>iu(sc,i)); const m=Math.max(...u); return m<=1?-1:u.indexOf(m); }
+function frs(sc){ const m=maxIU(sc); return sc.types.map(t=>m>1?t.d/m:t.d); }
+function extIU(sc){ return rowWL(sc,sc.ext.res)/((sc.res[sc.ext.res].w+1)*60); }
+function extMaxIU(sc){ const u=sc.res.map((_,i)=>i===sc.ext.res?extIU(sc):iu(sc,i)); return Math.max(...u); }
+function extFRs(sc){ const m=extMaxIU(sc); return sc.types.map(t=>m>1?t.d/m:t.d); }
+
+// step plan: wl-cells, totals, at, iu, bn, fr, [ext]
+function stepPlan(sc){
+  const plan=[{t:'wl'},{t:'tot'},{t:'at'},{t:'iu'},{t:'bn'},{t:'fr'}];
+  if(sc.ext) plan.push({t:'ext'});
+  return plan;
+}
+const PLANS=SC.map(stepPlan);
+const TOTAL_STEPS=PLANS.reduce((a,p)=>a+p.length,0);
+
+// ═══════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════
+let scIdx=0, stIdx=0, submitted=false, selOpt=null;
+let stDone=[], firstTry=[], attempted=[], scDone=[];
+let firstTryCorrect=0;
+
+function init(){
+  SC.forEach((_,i)=>{ stDone[i]=[]; firstTry[i]=[]; attempted[i]=[]; scDone[i]=false; });
+  buildNav();
+  renderScenario(0);
+}
+
+// ═══════════════════════════════════════════════════════
+// NAV
+// ═══════════════════════════════════════════════════════
+function buildNav(){
+  const nav=document.getElementById('scenarioNav');
+  SC.forEach((sc,i)=>{
+    const b=document.createElement('button');
+    b.className='scenario-btn'+(i===0?' active':'');
+    b.id='scBtn'+i;
+    b.textContent='Scenario '+(i+1)+' — '+sc.title;
+    b.onclick=()=>goScenario(i);
+    nav.appendChild(b);
+  });
+}
+function updateNavBtn(i){
+  const b=document.getElementById('scBtn'+i);
+  if(b) b.className='scenario-btn'+(i===scIdx?' active':'')+(scDone[i]?' sc-done':'');
+}
+function goScenario(i){
+  scIdx=i; stIdx=0; submitted=false; selOpt=null;
+  SC.forEach((_,j)=>updateNavBtn(j));
+  renderScenario(i);
+}
+function goNextScenario(){
+  if(scIdx<SC.length-1) goScenario(scIdx+1);
+  else showFinal();
+}
+
+// ═══════════════════════════════════════════════════════
+// SETUP TABLE
+// ═══════════════════════════════════════════════════════
+function fmt(v,d){ return Number(v.toFixed(d)); }
+function renderSetupTbl(si){
+  const sc=SC[si];
+  let html='<table class="mx-tbl"><tr><th>Resource</th><th>Workers</th>'+sc.types.map(t=>`<th>${t.n} (${t.d}/hr) — PT</th>`).join('')+'</tr>';
+  sc.res.forEach((r,i)=>{
+    html+=`<tr><td class="mx-rowname">${r.n}</td><td class="mx-given">${r.w}</td>${sc.types.map((_,j)=>`<td class="mx-given">${sc.pt[i][j]===null?'— skips —':sc.pt[i][j]+' min'}</td>`).join('')}</tr>`;
+  });
+  html+='</table>';
+  document.getElementById('setupTblWrap').innerHTML='<div class="mx-wrap">'+html+'</div>';
+}
+
+// ═══════════════════════════════════════════════════════
+// RENDER
+// ═══════════════════════════════════════════════════════
+function renderScenario(si){
+  const sc=SC[si];
+  document.getElementById('cardTitle').textContent=sc.title;
+  document.getElementById('cardSub').textContent=sc.sub;
+  const dt=document.getElementById('diffTag');
+  dt.textContent=sc.diff.charAt(0).toUpperCase()+sc.diff.slice(1);
+  dt.className='diff-tag diff-'+sc.diff;
+  document.getElementById('vigNum').textContent='Scenario '+(si+1)+' of '+SC.length;
+  document.getElementById('scenDesc').textContent=sc.desc;
+  renderSetupTbl(si);
+  document.getElementById('scComplete').style.display='none';
+  document.getElementById('finalBox').classList.remove('show');
+  if(scDone[si]){ showScenarioComplete(si); return; }
+  const resume=(()=>{for(let t=0;t<PLANS[si].length;t++) if(!stDone[si][t]) return t; return PLANS[si].length-1;})();
+  renderStep(si,resume);
+}
+
+function renderStep(si,ti){
+  stIdx=ti; submitted=false; selOpt=null;
+  const sc=SC[si], plan=PLANS[si], step=plan[ti], nR=sc.res.length, nT=sc.types.length;
+  const sn=ti+1, stt=plan.length;
+  let label='',q='',inner='';
+
+  if(step.t==='wl'){
+    label=`Step ${sn} of ${stt} — Workload Matrix (min/hr)`;
+    q='Fill in every cell: workload = demand × processing time, in minutes of work arriving per hour. Enter 0 where a type skips a resource.';
+    inner=`<div class="mx-wrap"><table class="mx-tbl">
+      <tr><th>Resource</th>${sc.types.map(t=>`<th>${t.n}</th>`).join('')}</tr>
+      ${sc.res.map((r,i)=>`<tr><td class="mx-rowname">${r.n}</td>${sc.types.map((_,j)=>`<td><input class="mx-input" type="number" step="any" id="in_${i}_${j}" oninput="gridReady(${nR},${nT})"></td>`).join('')}</tr>`).join('')}
+    </table></div>`;
+  } else if(step.t==='tot'){
+    label=`Step ${sn} of ${stt} — Total Workload per Resource`;
+    q='Sum each row: the total minutes of work arriving at each resource per hour.';
+    inner=`<div class="mx-wrap"><table class="mx-tbl">
+      <tr><th>Resource</th>${sc.types.map(t=>`<th>${t.n}</th>`).join('')}<th>Total (min/hr)</th></tr>
+      ${sc.res.map((r,i)=>`<tr><td class="mx-rowname">${r.n}</td>${sc.types.map((_,j)=>`<td class="mx-given">${wl(sc,i,j)}</td>`).join('')}<td><input class="mx-input" type="number" step="any" id="in_${i}" oninput="rowReady(${nR})"></td></tr>`).join('')}
+    </table></div>`;
+  } else if(step.t==='at'){
+    label=`Step ${sn} of ${stt} — Available Time per Resource`;
+    q='Available time = workers × 60 minutes per hour. Careful — not every resource has one worker.';
+    inner=sc.res.map((r,i)=>`<div class="fr-row"><span class="fr-label">${r.n} (${r.w} worker${r.w>1?'s':''}):</span><input class="mx-input" type="number" step="any" id="in_${i}" oninput="rowReady(${nR})"> <span style="font-size:12px;color:var(--gray-400)">min/hr</span></div>`).join('');
+  } else if(step.t==='iu'){
+    label=`Step ${sn} of ${stt} — Implied Utilization`;
+    q='IU = total workload ÷ available time, for each resource. Enter to 2–3 decimals.';
+    inner=sc.res.map((r,i)=>`<div class="fr-row"><span class="fr-label">${r.n} (${rowWL(sc,i)} ÷ ${at(sc,i)}):</span><input class="mx-input" type="number" step="any" id="in_${i}" oninput="rowReady(${nR})"></div>`).join('');
+  } else if(step.t==='bn'){
+    label=`Step ${sn} of ${stt} — Identify the Bottleneck`;
+    q='Which resource is the bottleneck?';
+    const opts=sc.res.map((r,i)=>({v:i,t:`${r.n} — IU ${fmt(iu(sc,i),3)}`}));
+    opts.push({v:-1,t:'No binding bottleneck — every IU is at or below 100%'});
+    inner=`<div class="option-grid">${opts.map(o=>`
+      <div class="option-card" id="opt_${o.v}" onclick="selectOpt(${o.v})">
+        <div class="opt-radio"></div><div class="opt-text">${o.t}</div>
+      </div>`).join('')}</div>`;
+  } else if(step.t==='fr'){
+    label=`Step ${sn} of ${stt} — Constraint Type and Flow Rates`;
+    q='Classify the process, then compute each type\'s flow rate (units/hr, up to two decimals).';
+    inner=`<div class="fr-row"><span class="fr-label">This process is:</span>
+      <select class="sel-input" id="sel_0" onchange="frReady(${nT})">
+        <option value="">— select —</option>
+        <option value="cap">Capacity-constrained (max IU &gt; 100%)</option>
+        <option value="dem">Demand-constrained (max IU ≤ 100%)</option>
+      </select></div>
+      ${sc.types.map((t,j)=>`<div class="fr-row"><span class="fr-label">Flow rate — ${t.n} (demand ${t.d}/hr):</span><input class="mx-input" type="number" step="any" id="in_${j}" oninput="frReady(${nT})"> <span style="font-size:12px;color:var(--gray-400)">units/hr</span></div>`).join('')}`;
+  } else { // ext
+    const r=sc.res[sc.ext.res];
+    label=`Step ${sn} of ${stt} — Extension: Add One Worker to ${r.n.split(' — ')[1]}`;
+    q='';
+    inner=`<div class="ext-banner"><strong>What if we add 1 worker to ${r.n}?</strong> Answer the question below, then recompute — re-entering only what actually changes.</div>
+      <div class="fr-row"><span class="fr-label">After the hire, the workload matrix:</span>
+        <select class="sel-input" id="sel_0" onchange="extReady(${sc.types.length})">
+          <option value="">— select —</option>
+          <option value="same">Stays exactly the same</option>
+          <option value="recalc">Must be recalculated with the new staffing</option>
+        </select></div>
+      <div class="fr-row"><span class="fr-label">New available time at ${r.n.split(' — ')[0]}:</span><input class="mx-input" type="number" step="any" id="in_at" oninput="extReady(${sc.types.length})"> <span style="font-size:12px;color:var(--gray-400)">min/hr</span></div>
+      <div class="fr-row"><span class="fr-label">New IU at ${r.n.split(' — ')[0]} (workload ${rowWL(sc,sc.ext.res)}):</span><input class="mx-input" type="number" step="any" id="in_iu" oninput="extReady(${sc.types.length})"></div>
+      ${sc.types.map((t,j)=>`<div class="fr-row"><span class="fr-label">New flow rate — ${t.n}:</span><input class="mx-input" type="number" step="any" id="in_${j}" oninput="extReady(${sc.types.length})"> <span style="font-size:12px;color:var(--gray-400)">units/hr</span></div>`).join('')}`;
+  }
+
+  document.getElementById('stepArea').innerHTML=`
+    <div class="step-label">${label}</div>
+    ${q?`<div class="step-q">${q}</div>`:''}
+    ${inner}
+    <div class="btn-group">
+      <button class="btn btn-primary" id="submitBtn" onclick="handleSubmit()" disabled>Check Answer</button>
+    </div>
+    <div class="fb-panel" id="fbPanel">
+      <div class="fb-banner" id="fbBanner"></div>
+      <div class="fb-body"><div id="fbReveal"></div><div id="fbThink"></div></div>
+    </div>`;
+}
+
+function gridReady(nR,nT){
+  if(submitted) return;
+  let ok=true;
+  for(let i=0;i<nR;i++) for(let j=0;j<nT;j++){ if(document.getElementById(`in_${i}_${j}`).value==='') ok=false; }
+  document.getElementById('submitBtn').disabled=!ok;
+}
+function rowReady(n){
+  if(submitted) return;
+  let ok=true;
+  for(let i=0;i<n;i++){ if(document.getElementById('in_'+i).value==='') ok=false; }
+  document.getElementById('submitBtn').disabled=!ok;
+}
+function frReady(nT){
+  if(submitted) return;
+  let ok=document.getElementById('sel_0').value!=='';
+  for(let j=0;j<nT;j++){ if(document.getElementById('in_'+j).value==='') ok=false; }
+  document.getElementById('submitBtn').disabled=!ok;
+}
+function extReady(nT){
+  if(submitted) return;
+  let ok=document.getElementById('sel_0').value!==''&&document.getElementById('in_at').value!==''&&document.getElementById('in_iu').value!=='';
+  for(let j=0;j<nT;j++){ if(document.getElementById('in_'+j).value==='') ok=false; }
+  document.getElementById('submitBtn').disabled=!ok;
+}
+function selectOpt(v){
+  if(submitted) return;
+  selOpt=v;
+  document.querySelectorAll('.option-card').forEach(el=>el.classList.remove('selected'));
+  document.getElementById('opt_'+v).classList.add('selected');
+  document.getElementById('submitBtn').disabled=false;
+}
+
+// ═══════════════════════════════════════════════════════
+// GRADING
+// ═══════════════════════════════════════════════════════
+function near(a,b,tol){ return Math.abs(a-b)<=tol; }
+function markNum(id,ok){ const el=document.getElementById(id); el.disabled=true; el.classList.add(ok?'in-correct':'in-wrong'); }
+function markSel(id,ok){ const el=document.getElementById(id); el.disabled=true; el.classList.add(ok?'in-correct':'in-wrong'); }
+
+function handleSubmit(){
+  if(submitted) return;
+  const sc=SC[scIdx], plan=PLANS[scIdx], step=plan[stIdx], nR=sc.res.length, nT=sc.types.length;
+  if(step.t==='bn'&&selOpt===null) return;
+  submitted=true;
+
+  let status, body='', msgs=[];
+
+  if(step.t==='wl'){
+    let right=0,total=0;
+    sc.res.forEach((r,i)=>sc.types.forEach((t,j)=>{
+      total++;
+      const el=document.getElementById(`in_${i}_${j}`);
+      const ans=wl(sc,i,j), v=parseFloat(el.value);
+      const ok=near(v,ans,0.01);
+      markNum(`in_${i}_${j}`,ok);
+      if(ok) right++;
+      else if(sc.pt[i][j]===null) msgs.push(`${t.n} do not visit ${r.n.split(' — ')[1]} — that cell carries 0 minutes of work, not ${el.value}.`);
+      else msgs.push(`${r.n.split(' — ')[0]} / ${t.n}: workload = ${t.d}/hr × ${sc.pt[i][j]} min = ${ans} min/hr.`);
+    }));
+    status=right===total?'correct':(right>0?'partial':'wrong');
+    body=status==='correct'?'Workload matrix complete — every cell is minutes of work per hour: demand × processing time, with 0 where a type skips.':msgs.map(m=>'✗ '+m).join('<br>');
+  } else if(step.t==='tot'){
+    let right=0;
+    sc.res.forEach((r,i)=>{
+      const ok=near(parseFloat(document.getElementById('in_'+i).value),rowWL(sc,i),0.01);
+      markNum('in_'+i,ok);
+      if(ok) right++; else msgs.push(`${r.n.split(' — ')[0]}: total = ${sc.types.map((_,j)=>wl(sc,i,j)).join(' + ')} = ${rowWL(sc,i)} min/hr.`);
+    });
+    status=right===nR?'correct':(right>0?'partial':'wrong');
+    body=status==='correct'?'Row totals confirmed — these are the minutes demanded of each resource every hour.':msgs.map(m=>'✗ '+m).join('<br>');
+  } else if(step.t==='at'){
+    let right=0;
+    sc.res.forEach((r,i)=>{
+      const ok=near(parseFloat(document.getElementById('in_'+i).value),at(sc,i),0.01);
+      markNum('in_'+i,ok);
+      if(ok) right++; else msgs.push(`${r.n.split(' — ')[0]}: available time = ${r.w} × 60 = ${at(sc,i)} min/hr.`);
+    });
+    status=right===nR?'correct':(right>0?'partial':'wrong');
+    body=status==='correct'?'Available time confirmed. This is the only place staffing enters the analysis.':msgs.map(m=>'✗ '+m).join('<br>');
+  } else if(step.t==='iu'){
+    let right=0;
+    sc.res.forEach((r,i)=>{
+      const ok=near(parseFloat(document.getElementById('in_'+i).value),iu(sc,i),0.011);
+      markNum('in_'+i,ok);
+      if(ok) right++; else msgs.push(`${r.n.split(' — ')[0]}: IU = ${rowWL(sc,i)} ÷ ${at(sc,i)} = ${fmt(iu(sc,i),3)}.`);
+    });
+    status=right===nR?'correct':(right>0?'partial':'wrong');
+    body=status==='correct'?('Implied utilizations confirmed: '+sc.res.map((r,i)=>`${r.n.split(' — ')[0]} = ${fmt(iu(sc,i),3)}`).join(' · ')+'.'):msgs.map(m=>'✗ '+m).join('<br>');
+  } else if(step.t==='bn'){
+    const ans=bnIdx(sc);
+    const correct=selOpt===ans;
+    document.querySelectorAll('.option-card').forEach(el=>{
+      el.classList.add('disabled');
+      const v=parseInt(el.id.replace('opt_',''));
+      if(v===ans) el.classList.add('o-correct');
+      else if(v===selOpt&&!correct) el.classList.add('o-wrong');
+    });
+    status=correct?'correct':'wrong';
+    body=ans===-1
+      ? 'No binding bottleneck — every IU is at or below 100%.'
+      : `${sc.res[ans].n} is the bottleneck — highest IU (${fmt(iu(sc,ans),3)}).`;
+    if(correct&&scIdx===1) body+=' Note that it is the bottleneck even with 2 workers: 168 minutes of demanded work against 120 available. And R3 is also above 100% — but the max IU rations the process, so there is exactly one bottleneck.';
+    if(!correct) body='✗ '+body+' Compare IU values — the bottleneck is the highest, not the first above 100% and not the busiest-looking resource.';
+  } else if(step.t==='fr'){
+    const consAns=maxIU(sc)>1?'cap':'dem';
+    const consOk=document.getElementById('sel_0').value===consAns;
+    markSel('sel_0',consOk);
+    const FR=frs(sc);
+    let right=0;
+    sc.types.forEach((t,j)=>{
+      const ok=near(parseFloat(document.getElementById('in_'+j).value),FR[j],0.05);
+      markNum('in_'+j,ok);
+      if(ok) right++;
+    });
+    status=(consOk&&right===nT)?'correct':((consOk||right>0)?'partial':'wrong');
+    const frTxt=sc.types.map((t,j)=>`${t.n} = ${maxIU(sc)>1?t.d+' ÷ '+fmt(maxIU(sc),3)+' = ':''}${fmt(FR[j],2)}/hr`).join(' · ');
+    body=status==='correct'
+      ? `Max IU = ${fmt(maxIU(sc),3)} → ${consAns==='cap'?'capacity-constrained; every type divides by the max IU':'demand-constrained; flow = demand'}. ${frTxt}.`
+      : `✗ Max IU = ${fmt(maxIU(sc),3)} → ${consAns==='cap'?'capacity-constrained: flow rate = demand ÷ max IU for every type':'demand-constrained: flow rate = demand rate — no division'}. ${frTxt}.`;
+  } else { // ext
+    const r=sc.res[sc.ext.res];
+    const selOk=document.getElementById('sel_0').value==='same';
+    markSel('sel_0',selOk);
+    const atAns=(r.w+1)*60, iuAns=extIU(sc), FR=extFRs(sc);
+    const atOk=near(parseFloat(document.getElementById('in_at').value),atAns,0.01);
+    const iuOk=near(parseFloat(document.getElementById('in_iu').value),iuAns,0.011);
+    markNum('in_at',atOk); markNum('in_iu',iuOk);
+    let frRight=0;
+    sc.types.forEach((t,j)=>{
+      const ok=near(parseFloat(document.getElementById('in_'+j).value),FR[j],0.05);
+      markNum('in_'+j,ok);
+      if(ok) frRight++;
+    });
+    const allOk=selOk&&atOk&&iuOk&&frRight===nT;
+    status=allOk?'correct':((selOk||atOk||iuOk||frRight>0)?'partial':'wrong');
+    if(!selOk) msgs.push('The workload matrix values should not change when workers are added. The workload depends on how many units arrive and how long each type takes — neither of which changes with staffing. Only the available time changes.');
+    if(!atOk) msgs.push(`New available time = ${r.w+1} × 60 = ${atAns} min/hr.`);
+    if(!iuOk) msgs.push(`New IU at ${r.n.split(' — ')[0]} = ${rowWL(sc,sc.ext.res)} ÷ ${atAns} = ${fmt(iuAns,3)}.`);
+    if(frRight<nT) msgs.push(`All IU are now ≤ 100% → demand-constrained → flow rates = demand rates: ${sc.types.map(t=>t.n+' = '+t.d+'/hr').join(' · ')}.`);
+    body=allOk
+      ? `Available time ${at(sc,sc.ext.res)} → ${atAns} min/hr; IU ${fmt(iu(sc,sc.ext.res),2)} → ${fmt(iuAns,3)}; the process is now demand-constrained and every arriving job is served (${sc.types.map(t=>t.n+' = '+t.d+'/hr').join(', ')}). The workload matrix did not move.`
+      : msgs.map(m=>'✗ '+m).join('<br><br>');
+  }
+
+  if(!attempted[scIdx][stIdx]){
+    attempted[scIdx][stIdx]=true;
+    firstTry[scIdx][stIdx]=(status==='correct');
+    if(status==='correct'){ firstTryCorrect++; updateScore(); }
+  }
+
+  const banner=document.getElementById('fbBanner');
+  banner.className='fb-banner fb-'+status;
+  banner.innerHTML=status==='correct'?'✓ Correct.':(status==='partial'?'◑ Partially correct — fix the highlighted entries.':'✗ Incorrect — see the explanation below.');
+  document.getElementById('fbReveal').innerHTML=body;
+  const thinkEl=document.getElementById('fbThink');
+  thinkEl.innerHTML='';
+  const lastT=PLANS[scIdx][PLANS[scIdx].length-1].t;
+  if(status==='correct'&&step.t===lastT&&sc.td) thinkEl.innerHTML=`<div class="think-deeper"><div class="think-label">Think Deeper</div><div>${sc.td}</div></div>`;
+  document.getElementById('fbPanel').classList.add('show');
+  document.getElementById('submitBtn').style.display='none';
+
+  if(status==='correct'){
+    stDone[scIdx][stIdx]=true;
+    if(stIdx<plan.length-1) addBtn('Next Step →','btn-green',()=>renderStep(scIdx,stIdx+1));
+    else{
+      scDone[scIdx]=true;
+      updateNavBtn(scIdx);
+      setTimeout(()=>showScenarioComplete(scIdx),800);
+    }
+  } else {
+    addBtn('↩ Try Again','btn-secondary',()=>renderStep(scIdx,stIdx));
+  }
+}
+
+function addBtn(txt,cls,fn){
+  const bg=document.querySelector('.btn-group');
+  const b=document.createElement('button');
+  b.className='btn '+cls; b.textContent=txt; b.onclick=fn;
+  bg.appendChild(b);
+}
+
+// ═══════════════════════════════════════════════════════
+// COMPLETE / SCORE / FINAL
+// ═══════════════════════════════════════════════════════
+function showScenarioComplete(si){
+  document.getElementById('stepArea').innerHTML='';
+  const box=document.getElementById('scComplete');
+  box.style.display='block';
+  document.getElementById('completeTitle').textContent='Scenario '+(si+1)+' Complete ✓';
+  document.getElementById('completeMsg').textContent='Full workload analysis validated for '+SC[si].title+'.';
+  document.getElementById('nextScBtn').textContent=si<SC.length-1?'Next Scenario →':'See Final Summary';
+}
+function updateScore(){
+  document.getElementById('scoreNum').textContent=firstTryCorrect;
+  document.getElementById('progBar').style.width=((firstTryCorrect/TOTAL_STEPS)*100)+'%';
+}
+function showFinal(){
+  document.getElementById('scComplete').style.display='none';
+  document.getElementById('setupTblWrap').innerHTML='';
+  const box=document.getElementById('finalBox');
+  box.classList.add('show');
+  const pct=Math.round((firstTryCorrect/TOTAL_STEPS)*100);
+  box.innerHTML=`
+    <h3 style="color:var(--green);font-size:18px;margin-bottom:8px">All 4 Scenarios Complete</h3>
+    <p style="font-size:22px;font-weight:700;color:var(--navy);margin:10px 0">${firstTryCorrect} / ${TOTAL_STEPS}</p>
+    <p style="color:var(--gray-600);font-size:13px;margin-bottom:14px">${pct}% first-try correct</p>
+    <table class="final-tbl"><tr><th>Scenario</th><th>First-try</th></tr>
+      ${SC.map((sc,i)=>`<tr><td>${i+1} — ${sc.title}</td><td>${firstTry[i].filter(Boolean).length} / ${PLANS[i].length}</td></tr>`).join('')}
+    </table>
+    <div class="tip-box" style="text-align:left;max-width:490px;margin:0 auto 16px">
+      <strong>Gate 2 and Case readiness:</strong><br>
+      Gate 2 Q6 is this full analysis, and Q7 is Scenario 3's extension verbatim: add a worker, and only available time moves — explaining WHY is worth 3 points on its own. Q8 hands you a staffing budget and watches whether you chase the longest processing time instead of the highest IU. Case Part 5 runs the same add-a-worker move on Riverside. If the extension select tripped you, reread the sidebar's last three lines until they're a reflex.
+    </div>
+    <button class="btn btn-secondary" onclick="goScenario(0)">↩ Restart from Scenario 1</button>`;
+}
+
+init();
+</script>
+</body>
+</html>

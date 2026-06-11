@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Discussion: Product Mix in the Wild — SCM 352 M05</title>
+<style>
+:root {
+  --navy:#1a3a5c;--blue:#2563a8;--blue-lt:#dbeafe;--blue-xlt:#eff6ff;
+  --gold:#f59e0b;--gold-lt:#fffbeb;--gold-bdr:#fde68a;--gold-dark:#92400e;--blue-bdr:#bfdbfe;
+  --green:#16a34a;--green-lt:#f0fdf4;--green-bdr:#bbf7d0;
+  --red:#dc2626;--red-lt:#fef2f2;--red-bdr:#fecaca;
+  --purple:#7c3aed;--purple-lt:#faf5ff;--purple-bdr:#ddd6fe;
+  --teal:#0891b2;--teal-lt:#f0fdfe;--teal-bdr:#a5f3fc;
+  --gray-50:#f9fafb;--gray-100:#f3f4f6;--gray-200:#e5e7eb;
+  --gray-400:#9ca3af;--gray-600:#4b5563;--gray-700:#374151;--gray-800:#1f2937;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--gray-50);color:var(--gray-800);line-height:1.6;}
+.page-header{background:var(--navy);color:white;padding:20px 28px;display:flex;align-items:flex-start;gap:16px;}
+.header-badge{background:var(--gold);color:var(--navy);font-weight:700;font-size:11px;padding:3px 9px;border-radius:4px;letter-spacing:.05em;text-transform:uppercase;white-space:nowrap;flex-shrink:0;}
+.header-text h1{font-size:20px;font-weight:700;margin-bottom:4px;}
+.header-text p{font-size:13px;color:rgba(255,255,255,.7);}
+.meta-strip{display:flex;gap:0;flex-wrap:wrap;border-bottom:2px solid var(--gray-200);background:white;}
+.meta-pill{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;padding:9px 16px;border-right:1px solid var(--gray-200);color:var(--gray-700);}
+.pip{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.pg-body{max-width:860px;margin:0 auto;padding:28px 24px 48px;display:flex;flex-direction:column;gap:24px;}
+.sec-div{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--gray-400);padding-bottom:10px;border-bottom:1px solid var(--gray-200);margin-bottom:-4px;}
+.card{background:white;border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;}
+.card-hd{padding:14px 20px;border-bottom:1px solid var(--gray-200);display:flex;align-items:center;gap:10px;}
+.card-hd h2{font-size:15px;font-weight:700;color:var(--navy);}
+.card-hd p{font-size:12px;color:var(--gray-600);margin-top:2px;}
+.card-bd{padding:20px;}
+.alert{border-radius:10px;padding:13px 16px;font-size:13.5px;line-height:1.6;display:flex;gap:11px;align-items:flex-start;}
+.alert-icon{font-size:17px;flex-shrink:0;margin-top:1px;}
+.alert-body{flex:1;}
+.alert-body strong{display:block;margin-bottom:3px;}
+.alert-red{background:var(--red-lt);border:1.5px solid var(--red-bdr);}
+.alert-gold{background:var(--gold-lt);border:1.5px solid var(--gold-bdr);}
+.alert-blue{background:var(--blue-xlt);border:1.5px solid var(--blue-bdr);}
+.part{border:1.5px solid var(--gray-200);border-radius:10px;overflow:hidden;margin-bottom:14px;}
+.part:last-child{margin-bottom:0;}
+.part-header{padding:12px 16px;display:flex;align-items:center;gap:12px;border-bottom:1.5px solid var(--gray-200);}
+.part-num{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;flex-shrink:0;color:white;}
+.part-title{flex:1;font-size:14px;font-weight:700;color:var(--gray-800);}
+.part-pts{font-size:12px;font-weight:700;padding:3px 9px;border-radius:100px;white-space:nowrap;}
+.part-body{padding:14px 16px;font-size:13.5px;line-height:1.65;color:var(--gray-700);}
+.part-body p+p{margin-top:8px;}
+.part-1 .part-header{background:var(--blue-xlt);border-color:var(--blue-bdr);} .part-1 .part-num{background:var(--blue);} .part-1 .part-pts{background:var(--blue-lt);color:var(--navy);}
+.part-2 .part-header{background:var(--purple-lt);border-color:var(--purple-bdr);} .part-2 .part-num{background:var(--purple);} .part-2 .part-pts{background:var(--purple-bdr);color:var(--purple);}
+.part-3 .part-header{background:var(--teal-lt);border-color:var(--teal-bdr);} .part-3 .part-num{background:var(--teal);} .part-3 .part-pts{background:var(--teal-bdr);color:var(--teal);}
+.part-4 .part-header{background:var(--green-lt);border-color:var(--green-bdr);} .part-4 .part-num{background:var(--green);} .part-4 .part-pts{background:var(--green-bdr);color:var(--green);}
+.pts-table{width:100%;border-collapse:collapse;font-size:13.5px;}
+.pts-table th{background:var(--navy);color:white;padding:9px 14px;text-align:left;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;}
+.pts-table td{padding:9px 14px;border-bottom:1px solid var(--gray-100);vertical-align:top;}
+.pts-table tr:last-child td{border-bottom:none;}
+.pts-table tr.total-row td{font-weight:700;background:var(--gray-50);font-size:14px;border-top:2px solid var(--gray-200);}
+.pts-num{font-weight:700;font-size:15px;color:var(--navy);text-align:right;white-space:nowrap;}
+.tip-list{list-style:none;padding:0;display:flex;flex-direction:column;gap:8px;}
+.tip-list li{display:flex;gap:10px;font-size:13.5px;line-height:1.55;color:var(--gray-700);}
+.tip-list li::before{content:'→';color:var(--gold);font-weight:700;flex-shrink:0;margin-top:1px;}
+.prohibited-list{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;}
+.prohibited-tag{font-size:12px;font-weight:600;padding:3px 10px;border-radius:100px;background:var(--red-lt);color:var(--red);border:1px solid var(--red-bdr);}
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div class="header-badge">SCM 352 · M05</div>
+  <div class="header-text">
+    <h1>Discussion: Product Mix in the Wild</h1>
+    <p>Module M05 Discussion · 30 points · Item 10 of 12</p>
+  </div>
+</div>
+
+<div class="meta-strip">
+  <div class="meta-pill"><div class="pip" style="background:var(--blue)"></div> Initial post due by close of the following module</div>
+  <div class="meta-pill"><div class="pip" style="background:var(--green)"></div> 30 points total</div>
+  <div class="meta-pill"><div class="pip" style="background:var(--gold)"></div> 30–40 minutes</div>
+  <div class="meta-pill"><div class="pip" style="background:var(--teal)"></div> LO5-1 · LO5-2 · LO5-3</div>
+</div>
+
+<div class="pg-body">
+
+  <!-- Overview -->
+  <div class="card">
+    <div class="card-hd" style="background:var(--blue-xlt);">
+      <div><h2>What You Are Doing</h2><p>Find a real product-mix process and analyze its routing — no calculations required</p></div>
+    </div>
+    <div class="card-bd">
+      <p style="font-size:13.5px;line-height:1.65;color:var(--gray-700);">Identify a business or service you interacted with <strong>this week</strong> that clearly handles <strong>more than one type</strong> of customer, case, or product through a shared set of resources. Do not use any example from the textbook, slides, or lecture narration. Write an initial post that covers the four parts below. There is no peer reply requirement — your initial post is the entire assignment.</p>
+    </div>
+  </div>
+
+  <!-- Rules — 3 alerts: naming, prohibited businesses, this-week rule -->
+  <div style="display:flex;flex-direction:column;gap:12px;">
+    <div class="alert alert-red">
+      <div class="alert-icon">🚫</div>
+      <div class="alert-body">
+        <strong>Do not name your business in your initial post.</strong>
+        Describe it generically ("a regional sandwich shop," "a campus health clinic"). Naming the business carries a 10-point deduction — the analysis should stand on the process, not the brand.
+      </div>
+    </div>
+    <div class="alert alert-red">
+      <div class="alert-icon">🚫</div>
+      <div class="alert-body">
+        <strong>Do not use examples from the chapter, slides, or lectures — including these:</strong>
+        <div class="prohibited-list">
+          <span class="prohibited-tag">loan / mortgage processing</span>
+          <span class="prohibited-tag">urgent care clinic</span>
+          <span class="prohibited-tag">pharmacy / prescription fulfillment</span>
+          <span class="prohibited-tag">insurance claims office</span>
+          <span class="prohibited-tag">TV / streaming network</span>
+          <span class="prohibited-tag">medical testing lab</span>
+        </div>
+      </div>
+    </div>
+    <div class="alert alert-gold">
+      <div class="alert-icon">📅</div>
+      <div class="alert-body">
+        <strong>The business must be one you interacted with this week.</strong>
+        Your post must rest on what you personally observed — who was being served, which steps different customers went through, where lines formed. Generic descriptions that could be written without visiting earn minimal credit.
+      </div>
+    </div>
+  </div>
+
+  <!-- Initial Post -->
+  <div>
+    <div class="sec-div">Initial Post &nbsp;·&nbsp; Due by close of the following module &nbsp;·&nbsp; 30 points</div>
+    <div class="card" style="margin-top:16px;">
+      <div class="card-bd" style="padding:16px;">
+
+        <div class="part part-1">
+          <div class="part-header">
+            <div class="part-num">1</div>
+            <div class="part-title">Flow Unit Identification</div>
+            <div class="part-pts">6 pts</div>
+          </div>
+          <div class="part-body">
+            <p>Name the process and identify at least <strong>two distinct types of flow units</strong>. Explain what makes them different — specifically, which resources or steps do they visit differently? Remember: types are defined by the path they take, not by what they look like.</p>
+          </div>
+        </div>
+
+        <div class="part part-2">
+          <div class="part-header">
+            <div class="part-num">2</div>
+            <div class="part-title">Demand Matrix Sketch</div>
+            <div class="part-pts">9 pts</div>
+          </div>
+          <div class="part-body">
+            <p>Without actual numbers, sketch the <strong>structure</strong> of the demand matrix for this process. Which cells would be zero? Which resources see demand from all types? Which see demand from only some types? A simple table or a clearly written description both work.</p>
+          </div>
+        </div>
+
+        <div class="part part-3">
+          <div class="part-header">
+            <div class="part-num">3</div>
+            <div class="part-title">Bottleneck Hypothesis</div>
+            <div class="part-pts">9 pts</div>
+          </div>
+          <div class="part-body">
+            <p>Based on your observation (not calculation), which resource do you believe is the bottleneck in this process? Is it the "slowest" resource — or does the product-mix routing push demand disproportionately onto a different resource? Explain your reasoning using the demand-relative-to-capacity logic from this module.</p>
+          </div>
+        </div>
+
+        <div class="part part-4">
+          <div class="part-header">
+            <div class="part-num">4</div>
+            <div class="part-title">Attrition or Yield Observation</div>
+            <div class="part-pts">6 pts</div>
+          </div>
+          <div class="part-body">
+            <p>Is there any point in this process where some flow units <strong>exit before completing all steps</strong> (attrition loss)? Or where some outputs <strong>fail quality standards</strong> (scrap / yield loss)? Describe what you observed — even "I saw no losses, and here is why that makes sense for this process" can earn full credit if reasoned.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Points Summary -->
+  <div class="card">
+    <div class="card-hd" style="background:var(--blue-xlt);">
+      <div><h2>Points Summary</h2><p>30 points total · 13% of module grade</p></div>
+    </div>
+    <table class="pts-table">
+      <thead><tr><th>Component</th><th>Criteria</th><th style="text-align:right;">Points</th></tr></thead>
+      <tbody>
+        <tr><td rowspan="4" style="font-weight:600;color:var(--navy);vertical-align:top;padding-top:12px;">Initial Post<br><span style="font-weight:400;font-size:12px;color:var(--gray-600);">No reply required</span></td>
+          <td>1 — Flow Unit Identification</td><td class="pts-num">6</td></tr>
+        <tr><td>2 — Demand Matrix Sketch</td><td class="pts-num">9</td></tr>
+        <tr><td>3 — Bottleneck Hypothesis</td><td class="pts-num">9</td></tr>
+        <tr><td>4 — Attrition or Yield Observation</td><td class="pts-num">6</td></tr>
+        <tr class="total-row"><td colspan="2">Total</td><td class="pts-num">30</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Tips -->
+  <div class="card">
+    <div class="card-hd" style="background:var(--gold-lt);border-color:var(--gold-bdr);">
+      <div><h2 style="color:var(--gold-dark);">Tips for Full Credit</h2></div>
+    </div>
+    <div class="card-bd">
+      <ul class="tip-list">
+        <li>Pick a business where the routing difference is visible — a place with an express lane, a skip-a-step option, or a "members only" path makes Parts 1 and 2 almost write themselves.</li>
+        <li>Single-path businesses don't work here. If every customer goes through every step identically, you have one flow unit type and nothing to sketch — choose a different business.</li>
+        <li>In Part 2, say where the zeros are and why. A zero is a routing statement ("online-order pickups never visit the fitting rooms") — that sentence is what earns the points.</li>
+        <li>In Part 3, "the slowest step" is the trap answer. Full credit goes to posts that weigh how much demand each resource receives, not just how long it takes — exactly the print-shop reveal from the slides.</li>
+        <li>Anchor everything in what you saw this week: the time, the line, who got routed where. Posts that read like a textbook example rather than a visit earn minimal credit.</li>
+        <li>Your Case Analysis runs this same analysis on Riverside with real numbers — treat your post as a dry run for Case Parts 1–3, and the Case will go faster.</li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

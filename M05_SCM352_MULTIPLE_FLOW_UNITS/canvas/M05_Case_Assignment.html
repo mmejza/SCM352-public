@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Case Analysis M05 — Riverside Health System (Multiple Flow Units) — SCM 352</title>
+<style>
+:root{--navy:#1a3a5c;--blue:#2563a8;--blue-lt:#dbeafe;--blue-xlt:#eff6ff;--blue-bdr:#bfdbfe;--gold:#f59e0b;--gold-lt:#fffbeb;--gold-bdr:#fde68a;--gold-dark:#92400e;--green:#16a34a;--green-lt:#f0fdf4;--green-bdr:#bbf7d0;--red:#dc2626;--red-lt:#fef2f2;--red-bdr:#fecaca;--amber:#d97706;--amber-lt:#fffbeb;--amber-bdr:#fde68a;--purple:#7c3aed;--purple-lt:#faf5ff;--purple-bdr:#ddd6fe;--teal:#0891b2;--teal-lt:#f0fdfe;--teal-bdr:#a5f3fc;--ver-a-bg:#dcfce7;--ver-a-txt:#166534;--ver-b-txt:#1e40af;--ver-c-txt:#6b21a8;--ver-d-bg:#fef9c3;--ver-d-txt:#854d0e;--gray-50:#f9fafb;--gray-100:#f3f4f6;--gray-200:#e5e7eb;--gray-300:#d1d5db;--gray-400:#9ca3af;--gray-600:#4b5563;--gray-700:#374151;--gray-800:#1f2937;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--gray-50);color:var(--gray-800);line-height:1.65;font-size:14px;}
+.pg-header{background:var(--navy);color:white;padding:24px 28px;}
+.pg-header-eyebrow{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
+.pg-header h1{font-size:22px;font-weight:700;letter-spacing:-.01em;margin-bottom:6px;}
+.pg-header p{font-size:13px;color:rgba(255,255,255,.68);}
+.meta-strip{background:white;border-bottom:2px solid var(--gray-200);display:flex;gap:0;overflow-x:auto;}
+.meta-cell{padding:11px 20px;border-right:1px solid var(--gray-200);flex-shrink:0;}
+.meta-cell:last-child{border-right:none;}
+.meta-lbl{font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--gray-400);margin-bottom:2px;}
+.meta-val{font-size:13px;font-weight:700;color:var(--navy);}
+.pg-body{max-width:860px;margin:0 auto;padding:28px 22px 60px;display:flex;flex-direction:column;gap:28px;}
+.version-banner{background:var(--navy);border-radius:12px;overflow:hidden;border:2px solid var(--navy);}
+.version-banner-hd{padding:13px 20px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,255,255,.15);}
+.version-banner-hd h2{font-size:14px;font-weight:700;color:white;}
+.version-banner-hd p{font-size:12px;color:rgba(255,255,255,.6);margin-top:2px;}
+.version-table{width:100%;border-collapse:collapse;font-size:13px;}
+.version-table th{padding:9px 16px;text-align:left;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:rgba(255,255,255,.55);border-bottom:1px solid rgba(255,255,255,.1);}
+.version-table td{padding:10px 16px;border-bottom:1px solid rgba(255,255,255,.07);color:rgba(255,255,255,.85);}
+.version-table tr:last-child td{border-bottom:none;}
+.ver-badge{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:6px;font-size:13px;font-weight:800;}
+.ver-a{background:var(--ver-a-bg);color:var(--ver-a-txt);} .ver-b{background:var(--blue-lt);color:var(--ver-b-txt);} .ver-c{background:var(--purple-lt);color:var(--ver-c-txt);} .ver-d{background:var(--ver-d-bg);color:var(--ver-d-txt);}
+.alert{border-radius:10px;padding:13px 16px;font-size:13.5px;line-height:1.6;display:flex;gap:11px;align-items:flex-start;}
+.alert-icon{font-size:17px;flex-shrink:0;margin-top:1px;}
+.alert-body{flex:1;}
+.alert-body strong{display:block;margin-bottom:3px;}
+.alert-red{background:var(--red-lt);border:1.5px solid var(--red-bdr);}
+.alert-gold{background:var(--gold-lt);border:1.5px solid var(--gold-bdr);}
+.alert-blue{background:var(--blue-xlt);border:1.5px solid var(--blue-bdr);}
+.sec-div{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--gray-400);padding-bottom:10px;border-bottom:1px solid var(--gray-200);margin-bottom:-4px;}
+.section-card{background:white;border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;}
+.section-hd{padding:14px 20px;border-bottom:1px solid var(--gray-200);display:flex;align-items:center;gap:12px;}
+.part-badge{display:flex;align-items:center;justify-content:center;min-width:36px;height:36px;border-radius:8px;font-size:12px;font-weight:800;flex-shrink:0;}
+.section-hd-text h2{font-size:15px;font-weight:700;color:var(--navy);}
+.section-hd-text p{font-size:12px;color:var(--gray-600);margin-top:2px;}
+.pts-badge{margin-left:auto;flex-shrink:0;font-size:13px;font-weight:700;padding:4px 12px;border-radius:100px;}
+.section-bd{padding:20px;}
+.part1 .section-hd{background:var(--blue-xlt);} .part1 .part-badge{background:var(--blue);color:white;} .part1 .pts-badge{background:var(--blue-lt);color:var(--navy);}
+.part2 .section-hd{background:var(--green-lt);} .part2 .part-badge{background:var(--green);color:white;} .part2 .pts-badge{background:var(--green-bdr);color:var(--green);}
+.part3 .section-hd{background:var(--purple-lt);} .part3 .part-badge{background:var(--purple);color:white;} .part3 .pts-badge{background:var(--purple-bdr);color:var(--purple);}
+.part4 .section-hd{background:var(--teal-lt);} .part4 .part-badge{background:var(--teal);color:white;} .part4 .pts-badge{background:var(--teal-bdr);color:var(--teal);}
+.part5 .section-hd{background:var(--gold-lt);} .part5 .part-badge{background:var(--gold);color:var(--navy);} .part5 .pts-badge{background:var(--gold-bdr);color:var(--gold-dark);}
+.part6 .section-hd{background:var(--gray-100);} .part6 .part-badge{background:var(--navy);color:white;} .part6 .pts-badge{background:var(--gray-200);color:var(--navy);}
+.ver-tabs{border:1.5px solid var(--gray-200);border-radius:10px;overflow:hidden;margin:16px 0;}
+.ver-tab-hd{display:flex;border-bottom:1.5px solid var(--gray-200);background:var(--gray-50);}
+.ver-tab-btn{flex:1;padding:10px 0;border:none;background:none;cursor:pointer;font-size:13px;font-weight:700;color:var(--gray-400);border-right:1px solid var(--gray-200);transition:all 0.15s;display:flex;align-items:center;justify-content:center;gap:6px;}
+.ver-tab-btn:last-child{border-right:none;}
+.ver-tab-btn:hover{color:var(--navy);background:white;}
+.ver-tab-btn.active{color:var(--navy);background:white;box-shadow:inset 0 -2px 0 var(--blue);}
+.ver-tab-btn .vb{width:20px;height:20px;border-radius:4px;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;}
+.ver-tab-panel{display:none;padding:16px;}
+.ver-tab-panel.active{display:block;}
+.data-table{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px;}
+.data-table th{background:var(--navy);color:white;padding:9px 13px;text-align:left;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;}
+.data-table td{padding:9px 13px;border-bottom:1px solid var(--gray-100);}
+.data-table tr:last-child td{border-bottom:none;}
+.data-table td:first-child{font-weight:700;}
+.q-block{margin-bottom:16px;padding:14px 16px;border:1.5px solid var(--gray-200);border-radius:8px;background:var(--gray-50);}
+.q-block:last-child{margin-bottom:0;}
+.q-num{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--gray-400);margin-bottom:5px;}
+.q-text{font-size:13.5px;line-height:1.65;color:var(--gray-700);}
+.q-pts{display:inline-block;margin-top:7px;font-size:11px;font-weight:700;padding:2px 9px;border-radius:100px;background:var(--blue-lt);color:var(--navy);}
+.submit-list{display:flex;flex-direction:column;gap:6px;}
+.submit-item{display:flex;gap:10px;align-items:flex-start;padding:9px 13px;background:var(--gray-50);border:1px solid var(--gray-200);border-radius:7px;font-size:13px;line-height:1.5;color:var(--gray-700);}
+.submit-item::before{content:'☐';font-size:16px;flex-shrink:0;color:var(--gray-400);margin-top:-1px;}
+.grade-table{width:100%;border-collapse:collapse;font-size:13px;}
+.grade-table th{background:var(--navy);color:white;padding:9px 13px;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;text-align:left;}
+.grade-table td{padding:9px 13px;border-bottom:1px solid var(--gray-100);}
+.grade-table tr:last-child td{border-bottom:none;}
+.grade-table tr.total td{font-weight:700;background:var(--blue-xlt);color:var(--navy);font-size:14px;}
+.pts-right{text-align:right;font-weight:700;font-size:15px;color:var(--navy);}
+</style>
+</head>
+<body>
+
+<div class="pg-header">
+  <div class="pg-header-eyebrow">SCM 352 · Module M05 · Case Analysis</div>
+  <h1>Riverside Health System Prescription Fulfillment Center (Multiple Flow Units)</h1>
+  <p>Parameterized case — 4 versions · 100 points · Due Day 6 at 11:59 PM</p>
+</div>
+
+<div class="meta-strip">
+  <div class="meta-cell"><div class="meta-lbl">Points</div><div class="meta-val">100</div></div>
+  <div class="meta-cell"><div class="meta-lbl">Due</div><div class="meta-val">Day 6 · 11:59 PM</div></div>
+  <div class="meta-cell"><div class="meta-lbl">Format</div><div class="meta-val">PDF or Word</div></div>
+  <div class="meta-cell"><div class="meta-lbl">Attempts</div><div class="meta-val">1</div></div>
+  <div class="meta-cell"><div class="meta-lbl">Allowed resources</div><div class="meta-val">Ch. 5 · Lectures · Apps · Slides</div></div>
+</div>
+
+<div class="pg-body">
+
+  <!-- VERSION ASSIGNMENT — always first -->
+  <div class="version-banner">
+    <div class="version-banner-hd">
+      <div><h2>Find Your Assigned Version</h2><p>Use the last digit of your student ID. Submit only your assigned version, and write the version letter at the top of your document.</p></div>
+    </div>
+    <table class="version-table">
+      <thead><tr><th>Last digit of student ID</th><th>Your version</th><th>Your demand rates (Type 1 / Type 2)</th></tr></thead>
+      <tbody>
+        <tr><td>0, 1, or 2</td><td><span class="ver-badge ver-a">A</span></td><td>10 / 12 rx per hour</td></tr>
+        <tr><td>3, 4, or 5</td><td><span class="ver-badge ver-b">B</span></td><td>8 / 15 rx per hour</td></tr>
+        <tr><td>6 or 7</td><td><span class="ver-badge ver-c">C</span></td><td>9 / 8 rx per hour</td></tr>
+        <tr><td>8 or 9</td><td><span class="ver-badge ver-d">D</span></td><td>7 / 9 rx per hour</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- RULES — always these 3 alerts -->
+  <div style="display:flex;flex-direction:column;gap:10px;">
+    <div class="alert alert-red">
+      <div class="alert-icon">🚫</div>
+      <div class="alert-body"><strong>Do not collaborate on version-specific calculations.</strong>Parts 2 through 6 use data unique to your version. Submitting another version's numbers constitutes academic dishonesty.</div>
+    </div>
+    <div class="alert alert-gold">
+      <div class="alert-icon">📋</div>
+      <div class="alert-body"><strong>Show all calculation steps with labeled intermediate values.</strong>Answers without supporting work will not receive full credit, even if numerically correct. Yield calculations must use the decimal form of the process yield.</div>
+    </div>
+    <div class="alert alert-blue">
+      <div class="alert-icon">ℹ️</div>
+      <div class="alert-body">Part 1 (the process flow diagram) and Part 6b (the rework principle) are conceptual and shared across versions. You may discuss concepts with classmates, but your written responses must be your own.</div>
+    </div>
+  </div>
+
+  <!-- BACKGROUND -->
+  <div>
+    <div class="sec-div">Background — All Versions</div>
+    <div class="section-card" style="margin-top:14px;">
+      <div class="section-bd">
+        <p>Riverside Health System has recently added pre-filled unit-dose medications from specialty manufacturers to its outpatient formulary. These prescriptions — called <strong>Type 2 (Unit-Dose)</strong> — arrive from the manufacturer already measured, prepared, and sealed. They require only verification by a pharmacist and a final QC/packaging check before delivery. <strong>They skip the Drug Selection and Preparation station entirely.</strong> Standard prescriptions remain <strong>Type 1</strong> and visit all three stations as before.</p>
+        <p style="margin-top:10px;">The center operates the same three-station sequential process from Modules 3 and 4, one worker per station:</p>
+        <ul style="margin:10px 0 0 20px;font-size:13.5px;line-height:1.7;color:var(--gray-700);">
+          <li><strong>Station 1 — Prescription Verification:</strong> pharmacist reviews completeness, drug interactions, identity. <em>Both types visit.</em></li>
+          <li><strong>Station 2 — Drug Selection and Preparation:</strong> technician retrieves and prepares medication. <em>Type 2 skips this station.</em></li>
+          <li><strong>Station 3 — QC and Packaging:</strong> final safety check and packaging for delivery. <em>Both types visit.</em></li>
+        </ul>
+        <p style="margin-top:10px;font-size:13px;color:var(--gray-600);"><em>Continuity note: this case extends the Riverside scenario from Modules 2–4. You do not need your prior module results — all relevant data is below.</em></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- VERSION DATA — tabs -->
+  <div>
+    <div class="sec-div">Your Version's Data &nbsp;·&nbsp; Used in Parts 2–6</div>
+    <div class="section-card" style="margin-top:14px;">
+      <div class="section-bd">
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:4px;">Click your assigned version. Use only this data for every calculation.</p>
+        <div class="ver-tabs">
+          <div class="ver-tab-hd">
+            <button class="ver-tab-btn" onclick="switchTab('pv','a')" id="pv-tab-a"><span class="vb ver-a">A</span> Version A</button>
+            <button class="ver-tab-btn" onclick="switchTab('pv','b')" id="pv-tab-b"><span class="vb ver-b">B</span> Version B</button>
+            <button class="ver-tab-btn" onclick="switchTab('pv','c')" id="pv-tab-c"><span class="vb ver-c">C</span> Version C</button>
+            <button class="ver-tab-btn" onclick="switchTab('pv','d')" id="pv-tab-d"><span class="vb ver-d">D</span> Version D</button>
+          </div>
+          <div class="ver-tab-panel" id="pv-panel-a">
+            <table class="data-table">
+              <thead><tr><th>Parameter — Version A</th><th>Station 1</th><th>Station 2</th><th>Station 3</th></tr></thead>
+              <tbody>
+                <tr><td>Capacity (rx/hr)</td><td>25</td><td>15</td><td>20</td></tr>
+                <tr><td>Yield — Type 1</td><td>100%</td><td>96%</td><td>92%</td></tr>
+              </tbody>
+            </table>
+            <table class="data-table">
+              <tbody>
+                <tr><td>Type 1 demand</td><td>10 rx/hr</td><td>Type 2 demand</td><td>12 rx/hr</td></tr>
+                <tr><td>Target Type 1 good output</td><td>100 rx/hr</td><td>Type 2 yield</td><td>100% (pre-inspected)</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="ver-tab-panel" id="pv-panel-b">
+            <table class="data-table">
+              <thead><tr><th>Parameter — Version B</th><th>Station 1</th><th>Station 2</th><th>Station 3</th></tr></thead>
+              <tbody>
+                <tr><td>Capacity (rx/hr)</td><td>30</td><td>12</td><td>18</td></tr>
+                <tr><td>Yield — Type 1</td><td>98%</td><td>90%</td><td>95%</td></tr>
+              </tbody>
+            </table>
+            <table class="data-table">
+              <tbody>
+                <tr><td>Type 1 demand</td><td>8 rx/hr</td><td>Type 2 demand</td><td>15 rx/hr</td></tr>
+                <tr><td>Target Type 1 good output</td><td>80 rx/hr</td><td>Type 2 yield</td><td>100% (pre-inspected)</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="ver-tab-panel" id="pv-panel-c">
+            <table class="data-table">
+              <thead><tr><th>Parameter — Version C</th><th>Station 1</th><th>Station 2</th><th>Station 3</th></tr></thead>
+              <tbody>
+                <tr><td>Capacity (rx/hr)</td><td>20</td><td>16</td><td>25</td></tr>
+                <tr><td>Yield — Type 1</td><td>90%</td><td>95%</td><td>85%</td></tr>
+              </tbody>
+            </table>
+            <table class="data-table">
+              <tbody>
+                <tr><td>Type 1 demand</td><td>9 rx/hr</td><td>Type 2 demand</td><td>8 rx/hr</td></tr>
+                <tr><td>Target Type 1 good output</td><td>50 rx/hr</td><td>Type 2 yield</td><td>100% (pre-inspected)</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="ver-tab-panel" id="pv-panel-d">
+            <table class="data-table">
+              <thead><tr><th>Parameter — Version D</th><th>Station 1</th><th>Station 2</th><th>Station 3</th></tr></thead>
+              <tbody>
+                <tr><td>Capacity (rx/hr)</td><td>22</td><td>10</td><td>15</td></tr>
+                <tr><td>Yield — Type 1</td><td>97%</td><td>85%</td><td>93%</td></tr>
+              </tbody>
+            </table>
+            <table class="data-table">
+              <tbody>
+                <tr><td>Type 1 demand</td><td>7 rx/hr</td><td>Type 2 demand</td><td>9 rx/hr</td></tr>
+                <tr><td>Target Type 1 good output</td><td>75 rx/hr</td><td>Type 2 yield</td><td>100% (pre-inspected)</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PART 1 -->
+  <div>
+    <div class="sec-div">Part 1 — Process Flow Diagram for a Product Mix &nbsp;·&nbsp; Same for all versions</div>
+    <div class="section-card part1" style="margin-top:14px;">
+      <div class="section-hd">
+        <div class="part-badge">1</div>
+        <div class="section-hd-text"><h2>Process Flow Diagram</h2><p>Both flow unit types, both paths</p></div>
+        <div class="pts-badge">10 pts</div>
+      </div>
+      <div class="section-bd">
+        <div class="q-block">
+          <div class="q-num">Question 1a</div>
+          <div class="q-text">Draw or describe in words a process flow diagram for the Riverside center that shows BOTH flow unit types and their respective paths. Label: flow unit types, resources, inventory locations, and use different arrow styles or labels to distinguish Type 1 and Type 2 routing.</div>
+          <span class="q-pts">7 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Question 1b</div>
+          <div class="q-text">Explain in one sentence why the process flow diagram looks different from the single-flow-unit version used in Module 3.</div>
+          <span class="q-pts">3 pts</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PART 2 -->
+  <div>
+    <div class="sec-div">Part 2 — Demand Matrix and Total Demand Rates &nbsp;·&nbsp; Version-specific data</div>
+    <div class="section-card part2" style="margin-top:14px;">
+      <div class="section-hd">
+        <div class="part-badge">2</div>
+        <div class="section-hd-text"><h2>Demand Matrix</h2><p>Use your version's demand rates · watch the zero</p></div>
+        <div class="pts-badge">15 pts</div>
+      </div>
+      <div class="section-bd">
+        <div class="q-block">
+          <div class="q-num">Question 2a</div>
+          <div class="q-text">Construct the demand matrix for the Riverside center using your version's Type 1 and Type 2 demand rates. Rows = Stations 1–3; Columns = Type 1, Type 2. Place a zero where a flow unit type does not visit a station.</div>
+          <span class="q-pts">8 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Question 2b</div>
+          <div class="q-text">Compute the total demand rate for each station (sum each row of the demand matrix).</div>
+          <span class="q-pts">7 pts</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PART 3 -->
+  <div>
+    <div class="sec-div">Part 3 — Implied Utilization, Bottleneck, and Flow Rates &nbsp;·&nbsp; Version-specific data</div>
+    <div class="section-card part3" style="margin-top:14px;">
+      <div class="section-hd">
+        <div class="part-badge">3</div>
+        <div class="section-hd-text"><h2>Implied Utilization and Flow Rates</h2><p>Show the formula setup for every station</p></div>
+        <div class="pts-badge">25 pts</div>
+      </div>
+      <div class="section-bd">
+        <div class="q-block">
+          <div class="q-num">Question 3a</div>
+          <div class="q-text">Compute the implied utilization for each station. Show the formula setup (total demand ÷ capacity) for each.</div>
+          <span class="q-pts">9 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Question 3b</div>
+          <div class="q-text">Identify the bottleneck station. Explain in one sentence why this station — and not Station 2 (which has the lowest capacity in some versions) — is or is not the bottleneck.</div>
+          <span class="q-pts">6 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Question 3c</div>
+          <div class="q-text">Is the center capacity-constrained or demand-constrained? State the rule you used to determine this.</div>
+          <span class="q-pts">4 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Question 3d</div>
+          <div class="q-text">Compute the flow rate for each flow unit type.</div>
+          <span class="q-pts">6 pts</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PART 4 -->
+  <div>
+    <div class="sec-div">Part 4 — Yield Analysis for Type 1 Prescriptions &nbsp;·&nbsp; Version-specific data</div>
+    <div class="section-card part4" style="margin-top:14px;">
+      <div class="section-hd">
+        <div class="part-badge">4</div>
+        <div class="section-hd-text"><h2>Yield Analysis</h2><p>Type 2 unit-dose prescriptions have 100% yield — they arrive pre-inspected</p></div>
+        <div class="pts-badge">20 pts</div>
+      </div>
+      <div class="section-bd">
+        <div class="q-block">
+          <div class="q-num">Question 4a</div>
+          <div class="q-text">Calculate the process yield for Type 1 prescriptions using your version's yield rates. Show the formula: process yield = y₁ × y₂ × y₃.</div>
+          <span class="q-pts">6 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Question 4b</div>
+          <div class="q-text">The fulfillment director wants to produce your version's target number of <strong>good</strong> Type 1 prescriptions per hour. How many Type 1 prescriptions must be started at Station 1 each hour? Show your calculation using the decimal form of the process yield.</div>
+          <span class="q-pts">8 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Question 4c</div>
+          <div class="q-text">Identify which station has the greatest single negative impact on Type 1 process yield. Based on Chapter 5's early detection principle, explain in 2 sentences where in the process the director should focus quality improvement efforts first and why.</div>
+          <span class="q-pts">6 pts</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PART 5 -->
+  <div>
+    <div class="sec-div">Part 5 — Adding Capacity to the Bottleneck &nbsp;·&nbsp; Version-specific data</div>
+    <div class="section-card part5" style="margin-top:14px;">
+      <div class="section-hd">
+        <div class="part-badge">5</div>
+        <div class="section-hd-text"><h2>Adding a Worker</h2><p>Adding one worker doubles a station's capacity (1 → 2 workers)</p></div>
+        <div class="pts-badge">15 pts</div>
+      </div>
+      <div class="section-bd">
+        <div class="q-block">
+          <div class="q-num">Question 5a</div>
+          <div class="q-text">If one worker is added to the bottleneck station identified in Part 3, recalculate the implied utilization at that station. Show the new capacity calculation. <em>(Version C: your center has no binding bottleneck — add the worker to Station 3, which was the bottleneck in Modules 3 and 4 for your version.)</em></div>
+          <span class="q-pts">6 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Question 5b</div>
+          <div class="q-text">After the addition, is the center still capacity-constrained? Recalculate flow rates for both flow unit types under the new staffing.</div>
+          <span class="q-pts">6 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Question 5c</div>
+          <div class="q-text">If the center is now demand-constrained after adding the worker, identify whether there is a new bottleneck or no binding bottleneck. Explain in one sentence what this means for the center's ability to serve additional demand.</div>
+          <span class="q-pts">3 pts</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PART 6 -->
+  <div>
+    <div class="sec-div">Part 6 — Managerial Recommendation &nbsp;·&nbsp; 6a version-specific · 6b same for all versions</div>
+    <div class="section-card part6" style="margin-top:14px;">
+      <div class="section-hd">
+        <div class="part-badge">6</div>
+        <div class="section-hd-text"><h2>Managerial Recommendation</h2><p>Two options, one budget — and the rework principle</p></div>
+        <div class="pts-badge">15 pts</div>
+      </div>
+      <div class="section-bd">
+        <div class="q-block">
+          <div class="q-num">Question 6a</div>
+          <div class="q-text">The Riverside operations director is evaluating two options to increase throughput:<br><br>
+          <strong>Option A</strong>: Add one worker to the current bottleneck station.<br>
+          <strong>Option B</strong>: Implement a quality improvement program at the highest-yield-loss station that would raise that station's yield from its current rate to 100%.<br><br>
+          Using your version's numbers, calculate the flow rate of Type 1 prescriptions under Option A and the required inputs (for your version's target good output) under Option B. Which option is more impactful and why?</div>
+          <span class="q-pts">10 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Question 6b</div>
+          <div class="q-text">Applying the Chapter 5 rework principle (Gate 1 material): if Station 1 is NOT the bottleneck, why is it still strategically important to detect and remove any defective prescriptions at Station 1 before they proceed to Station 2 or Station 3? Write a 2–3 sentence answer using the terms <strong>"rework," "bottleneck capacity,"</strong> and <strong>"upstream detection."</strong></div>
+          <span class="q-pts">5 pts</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUBMISSION CHECKLIST -->
+  <div>
+    <div class="sec-div">Submission Requirements</div>
+    <div class="section-card" style="margin-top:14px;">
+      <div class="section-hd" style="background:var(--gray-50);padding:13px 20px;border-bottom:1px solid var(--gray-200);">
+        <h2 style="font-size:14px;font-weight:700;color:var(--navy);">Before you submit, verify the following</h2>
+      </div>
+      <div class="section-bd">
+        <div class="submit-list">
+          <div class="submit-item">Your file is saved as <strong>PDF or Word (.docx)</strong>.</div>
+          <div class="submit-item">Your <strong>assigned version (A, B, C, or D)</strong> is written at the top of your document.</div>
+          <div class="submit-item">Every part is labeled (1a, 1b, 2a, … 6b) and answered.</div>
+          <div class="submit-item">Your Part 2 demand matrix has a <strong>zero in the Station 2 / Type 2 cell</strong> — Type 2 skips that station.</div>
+          <div class="submit-item">Part 3 states the constraint rule you used (max IU vs. 100%) before any flow rate calculation.</div>
+          <div class="submit-item">Part 4b divides by the <strong>decimal form</strong> of the process yield — your answer must be larger than the target.</div>
+          <div class="submit-item">All calculation steps are shown with labeled intermediate values.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GRADING SUMMARY -->
+  <div class="section-card">
+    <div style="background:var(--blue-xlt);padding:13px 20px;border-bottom:1px solid var(--gray-200);">
+      <h2 style="font-size:14px;font-weight:700;color:var(--navy);">Grading Summary · 100 points total</h2>
+    </div>
+    <table class="grade-table">
+      <thead><tr><th>Part</th><th>Content</th><th style="text-align:right;">Points</th><th>Primary LO</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Part 1</strong></td><td>Process flow diagram for a product mix</td><td class="pts-right">10</td><td>LO5-1</td></tr>
+        <tr><td><strong>Part 2</strong></td><td>Demand matrix and total demand rates</td><td class="pts-right">15</td><td>LO5-1</td></tr>
+        <tr><td><strong>Part 3</strong></td><td>Implied utilization, bottleneck, flow rates</td><td class="pts-right">25</td><td>LO5-2</td></tr>
+        <tr><td><strong>Part 4</strong></td><td>Yield analysis for Type 1 prescriptions</td><td class="pts-right">20</td><td>LO5-3</td></tr>
+        <tr><td><strong>Part 5</strong></td><td>Adding capacity to the bottleneck</td><td class="pts-right">15</td><td>LO5-4</td></tr>
+        <tr><td><strong>Part 6</strong></td><td>Managerial recommendation + rework principle</td><td class="pts-right">15</td><td>LO5-2 · LO5-5</td></tr>
+        <tr class="total"><td colspan="2"><strong>Total</strong></td><td class="pts-right">100</td><td></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<script>
+function switchTab(part, ver) {
+  ['a','b','c','d'].forEach(v => {
+    const btn   = document.getElementById(part + '-tab-' + v);
+    const panel = document.getElementById(part + '-panel-' + v);
+    if (btn)   btn.classList.toggle('active', v === ver);
+    if (panel) panel.classList.toggle('active', v === ver);
+  });
+}
+</script>
+</body>
+</html>

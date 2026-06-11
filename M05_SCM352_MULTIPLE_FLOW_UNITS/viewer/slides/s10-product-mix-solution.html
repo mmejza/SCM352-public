@@ -1,0 +1,53 @@
+<section class="slide-page" data-title="Worked Example: Product Mix Solution" data-lo="LO5-2" data-notes="Full five-step solution. Matrix: R1 6,8; R2 6,0; R3 6,8. Totals 14/6/14. IU: 0.875 / 0.75 / 1.167 — R3 is the bottleneck. Capacity-constrained: flow rates 6/1.167 = 5.14 and 8/1.167 = 6.86. Verify students notice R2 (lowest capacity) is NOT the bottleneck — that reveal is named as a trap on the next slide.">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">LO5-2</span>
+      <span class="le-course">SCM 352 · Module 05</span>
+    </div>
+    <span class="le-pagenum">10 / 20</span>
+  </div>
+  <div class="le-titleblock">
+    <div class="le-title">Product Mix <span>Solution</span></div>
+    <div class="le-sub">Print shop · five steps in order</div>
+  </div>
+  <div class="le-body">
+    <div class="two-col">
+      <div>
+        <table class="clean-table">
+          <thead>
+            <tr><th>Resource</th><th>Custom</th><th>Reorder</th><th>Total</th><th>IU</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>R1</strong> · cap 16</td><td>6</td><td>8</td><td>14</td><td>0.875</td></tr>
+            <tr><td><strong>R2</strong> · cap 8</td><td>6</td><td><span class="neg">0</span></td><td>6</td><td>0.750</td></tr>
+            <tr><td><strong>R3</strong> · cap 12</td><td>6</td><td>8</td><td>14</td><td><span class="neg">1.167 ←</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px;">
+        <div class="formula-box" style="font-size:calc(11px * var(--slide-scale));">
+          Max IU = 1.167 &gt; 100% → <strong>capacity-constrained</strong>
+        </div>
+        <div class="formula-box" style="font-size:calc(11px * var(--slide-scale));">
+          Flow rate (Custom) = 6 ÷ 1.167 = <strong>5.14 / hr</strong>
+        </div>
+        <div class="formula-box" style="font-size:calc(11px * var(--slide-scale));">
+          Flow rate (Reorder) = 8 ÷ 1.167 = <strong>6.86 / hr</strong>
+        </div>
+        <div class="formula-box" style="font-size:calc(11px * var(--slide-scale));border-left-color:var(--amber);">
+          Served: 12 of 14 arriving jobs/hr — <strong class="neg">2 jobs/hr unserved</strong>
+        </div>
+      </div>
+    </div>
+    <div class="callout teal" style="margin-top:2px;">
+      <div class="callout-label">Key Reveal</div>
+      <p><strong>R3 is the bottleneck — not R2,</strong> even though R2 has the lowest capacity (8/hr). R2 sees only Custom demand (IU 0.75); R3 absorbs both types (14/hr against 12/hr of capacity).</p>
+    </div>
+  </div>
+  <div class="le-footer">
+    <div class="le-lo-pills"><span class="le-lo-pill">LO5-1</span><span class="le-lo-pill">LO5-2</span></div>
+    <div><span class="le-gate-note">Gate 2 · Q2 and Q3</span></div>
+  </div>
+</section>

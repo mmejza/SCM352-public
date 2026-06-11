@@ -1,0 +1,50 @@
+<section class="slide-page" data-title="Worked Example: Workload Matrix Solution" data-lo="LO5-4" data-notes="Workload: Check-in 30+15 = 45; Exam 90+60 = 150; Lab 0+45 = 45 min/hr. Available time: 60 / 120 / 60. IU: 0.75 / 1.25 / 0.75 — Exam is the bottleneck despite having 2 vets. Capacity-constrained: flow rates 6/1.25 = 4.8 and 3/1.25 = 2.4 visits/hr. The add-workers extension continues on s19.">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">LO5-4</span>
+      <span class="le-course">SCM 352 · Module 05</span>
+    </div>
+    <span class="le-pagenum">18 / 20</span>
+  </div>
+  <div class="le-titleblock">
+    <div class="le-title">Workload Matrix <span>Solution</span></div>
+    <div class="le-sub">Minutes demanded vs. minutes available</div>
+  </div>
+  <div class="le-body">
+    <div class="two-col">
+      <div>
+        <table class="clean-table">
+          <thead>
+            <tr><th>Resource</th><th>Routine</th><th>Diagnostic</th><th>Total (min/hr)</th><th>Avail.</th><th>IU</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Check-in</strong></td><td>6×5=30</td><td>3×5=15</td><td>45</td><td>60</td><td>0.75</td></tr>
+            <tr><td><strong>Exam</strong></td><td>6×15=90</td><td>3×20=60</td><td>150</td><td>120</td><td><span class="neg">1.25 ←</span></td></tr>
+            <tr><td><strong>Lab</strong></td><td><span class="neg">0</span></td><td>3×15=45</td><td>45</td><td>60</td><td>0.75</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px;">
+        <div class="formula-box" style="font-size:calc(11px * var(--slide-scale));">
+          Max IU = 1.25 &gt; 100% → <strong>capacity-constrained</strong>
+        </div>
+        <div class="formula-box" style="font-size:calc(11px * var(--slide-scale));">
+          Flow rate (Routine) = 6 ÷ 1.25 = <strong>4.8 / hr</strong>
+        </div>
+        <div class="formula-box" style="font-size:calc(11px * var(--slide-scale));">
+          Flow rate (Diagnostic) = 3 ÷ 1.25 = <strong>2.4 / hr</strong>
+        </div>
+      </div>
+    </div>
+    <div class="callout teal" style="margin-top:2px;">
+      <div class="callout-label">Read-Off Logic</div>
+      <p>Exam is the bottleneck <strong>even with two vets</strong> — 150 minutes of demanded work against 120 minutes available. Available time scaled with staffing; workload did not.</p>
+    </div>
+  </div>
+  <div class="le-footer">
+    <div class="le-lo-pills"><span class="le-lo-pill">LO5-4</span></div>
+    <div><span class="le-gate-note">Gate 2 · Q6</span></div>
+  </div>
+</section>

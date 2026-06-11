@@ -1,0 +1,39 @@
+<section class="slide-page" data-title="Flow Unit Types and the Demand Matrix" data-lo="LO5-1" data-notes="Definition layer only — the lecture (Segment 1) models the judgment calls of building a matrix on a messy scenario. Key definition: types are defined by PATH, not physical characteristics. The matrix cell (i,j) = demand of type j at resource i; zero = type j never visits resource i.">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">LO5-1</span>
+      <span class="le-course">SCM 352 · Module 05</span>
+    </div>
+    <span class="le-pagenum">05 / 20</span>
+  </div>
+  <div class="le-titleblock">
+    <div class="le-title">Flow Unit Types &amp; the <span>Demand Matrix</span></div>
+    <div class="le-sub">Types are defined by the path they take — not by what they look like</div>
+  </div>
+  <div class="le-body">
+    <div class="callout teal" style="margin-bottom:6px;">
+      <div class="callout-label">Definition</div>
+      <p>A <strong>flow unit type</strong> is a group of units that follow the same routing. The <strong>demand matrix</strong> records the demand each type places on each resource: rows = resources, columns = types.</p>
+    </div>
+    <table class="clean-table">
+      <thead>
+        <tr><th>Demand matrix</th><th>Type 1</th><th>Type 2</th><th>…</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Resource 1</strong></td><td>demand of Type 1 at R1</td><td>demand of Type 2 at R1</td><td>…</td></tr>
+        <tr><td><strong>Resource 2</strong></td><td>demand of Type 1 at R2</td><td><span class="neg">0 — never visits</span></td><td>…</td></tr>
+        <tr><td><strong>Resource 3</strong></td><td>demand of Type 1 at R3</td><td>demand of Type 2 at R3</td><td>…</td></tr>
+      </tbody>
+    </table>
+    <div class="callout amber" style="margin-top:6px;">
+      <div class="callout-label">Why the Zeros Matter</div>
+      <p>A zero is a routing statement: <strong>type j never visits resource i.</strong> A wrong non-zero adds phantom demand — and every calculation after it inherits the error.</p>
+    </div>
+  </div>
+  <div class="le-footer">
+    <div class="le-lo-pills"><span class="le-lo-pill">LO5-1</span></div>
+    <div><span class="le-gate-note">Gate 2 · Q1 and Q2</span></div>
+  </div>
+</section>

@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Demand Matrix Builder — SCM 352 M05</title>
+<style>
+:root {
+  --navy:#1a3a5c;--blue:#2563a8;--blue-lt:#dbeafe;--blue-xlt:#eff6ff;
+  --gold:#f59e0b;--gold-lt:#fffbeb;--gold-bdr:#fde68a;
+  --green:#16a34a;--green-lt:#f0fdf4;--green-bdr:#bbf7d0;
+  --red:#dc2626;--red-lt:#fef2f2;--red-bdr:#fecaca;
+  --amber:#d97706;--amber-lt:#fffbeb;--amber-bdr:#fde68a;
+  --teal:#0891b2;--teal-lt:#f0fdfe;--teal-bdr:#a5f3fc;
+  --gray-50:#f9fafb;--gray-100:#f3f4f6;--gray-200:#e5e7eb;
+  --gray-300:#d1d5db;--gray-400:#9ca3af;--gray-600:#4b5563;
+  --gray-700:#374151;--gray-800:#1f2937;
+  --blue-hover:#1d4ed8;--green-hover:#15803d;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--gray-50);color:var(--gray-800);min-height:100vh}
+header{background:var(--navy);color:white;padding:16px 24px;display:flex;align-items:center;gap:16px}
+.header-badge{background:var(--gold);color:var(--navy);font-weight:700;font-size:11px;padding:3px 8px;border-radius:4px;letter-spacing:.05em;text-transform:uppercase}
+header h1{font-size:18px;font-weight:600}
+.scenario-nav{background:white;border-bottom:2px solid var(--gray-200);padding:0 24px;display:flex;overflow-x:auto}
+.scenario-btn{padding:12px 18px;border:none;background:none;cursor:pointer;font-size:13px;font-weight:500;color:var(--gray-600);border-bottom:3px solid transparent;white-space:nowrap;transition:all .15s}
+.scenario-btn:hover{color:var(--blue)}
+.scenario-btn.active{color:var(--blue);border-bottom-color:var(--blue);font-weight:600}
+.scenario-btn.sc-done{color:var(--green)}
+.scenario-btn.sc-done::after{content:' ✓'}
+.main{max-width:1100px;margin:0 auto;padding:24px;display:grid;grid-template-columns:1fr 300px;gap:24px;align-items:start}
+@media(max-width:820px){.main{grid-template-columns:1fr}}
+.card{background:white;border:1px solid var(--gray-200);border-radius:12px;overflow:hidden}
+.card-header{background:var(--blue-lt);padding:14px 20px;border-bottom:1px solid var(--gray-200)}
+.card-header h2{font-size:15px;font-weight:700;color:var(--navy)}
+.card-header p{font-size:13px;color:var(--gray-600);margin-top:4px}
+.card-body{padding:20px}
+.scenario-desc{font-size:14px;line-height:1.7;background:var(--gray-50);border-left:4px solid var(--blue);padding:14px 16px;border-radius:0 8px 8px 0;margin-bottom:16px}
+.diff-tag{font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:3px 9px;border-radius:100px}
+.diff-easy{background:var(--green-lt);color:var(--green)}
+.diff-medium{background:var(--amber-lt);color:var(--amber)}
+.diff-hard{background:var(--red-lt);color:var(--red)}
+.step-track{display:flex;align-items:center;gap:3px;margin-bottom:16px;flex-wrap:wrap}
+.step-pip{width:28px;height:28px;border-radius:50%;border:2px solid var(--gray-200);background:white;font-size:10px;font-weight:700;color:var(--gray-400);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s}
+.step-pip.s-done{border-color:var(--green);background:var(--green);color:white}
+.step-pip.s-active{border-color:var(--blue);background:var(--blue);color:white}
+.step-conn{flex:1;height:2px;background:var(--gray-200);min-width:6px}
+.step-conn.c-done{background:var(--green)}
+.step-label{font-size:12px;font-weight:700;color:var(--navy);margin-bottom:8px}
+.step-q{font-size:14px;line-height:1.6;margin-bottom:14px;color:var(--gray-800)}
+.mx-wrap{overflow-x:auto;margin-bottom:14px}
+.mx-tbl{border-collapse:collapse;font-size:13px}
+.mx-tbl th{background:var(--navy);color:white;padding:7px 12px;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;text-align:left}
+.mx-tbl td{padding:6px 8px;border-bottom:1px solid var(--gray-100)}
+.mx-tbl td.mx-rowname{font-weight:700;color:var(--navy);white-space:nowrap;padding-right:14px}
+.mx-tbl td.mx-given{font-weight:600;color:var(--gray-700);text-align:center}
+.mx-input{width:74px;padding:7px 8px;border:2px solid var(--gray-300);border-radius:7px;font-size:13px;font-weight:600;color:var(--gray-800);text-align:center;transition:border-color .15s}
+.mx-input:focus{outline:none;border-color:var(--blue)}
+.mx-input.in-correct{border-color:var(--green);background:var(--green-lt)}
+.mx-input.in-wrong{border-color:var(--red);background:var(--red-lt)}
+.mx-input:disabled{opacity:.75}
+.sel-input{padding:8px 10px;border:2px solid var(--gray-300);border-radius:7px;font-size:13px;font-weight:600;color:var(--gray-800);background:white}
+.sel-input:focus{outline:none;border-color:var(--blue)}
+.sel-input.in-correct{border-color:var(--green);background:var(--green-lt)}
+.sel-input.in-wrong{border-color:var(--red);background:var(--red-lt)}
+.option-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+@media(max-width:600px){.option-grid{grid-template-columns:1fr}}
+.option-card{display:flex;align-items:flex-start;gap:10px;padding:11px 13px;border:2px solid var(--gray-200);border-radius:10px;cursor:pointer;transition:border-color .15s,background .15s;background:white;user-select:none;text-align:left}
+.option-card:hover:not(.disabled){border-color:var(--blue);background:var(--gray-50)}
+.option-card.selected{border-color:var(--blue);background:var(--blue-xlt)}
+.option-card.o-correct{border-color:var(--green);background:var(--green-lt);pointer-events:none}
+.option-card.o-wrong{border-color:var(--red);background:var(--red-lt);pointer-events:none}
+.option-card.disabled{pointer-events:none;opacity:.6}
+.opt-radio{width:16px;height:16px;border-radius:50%;border:2px solid var(--gray-300);flex-shrink:0;margin-top:2px;transition:all .15s}
+.option-card.selected .opt-radio{border-color:var(--blue);background:var(--blue)}
+.option-card.o-correct .opt-radio{border-color:var(--green);background:var(--green)}
+.option-card.o-wrong .opt-radio{border-color:var(--red);background:var(--red)}
+.opt-text{font-size:13px;line-height:1.45}
+.fr-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+.fr-label{font-size:13px;font-weight:600;color:var(--gray-700);min-width:190px}
+.btn{padding:9px 20px;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;transition:all .15s}
+.btn-primary{background:var(--blue);color:white}
+.btn-secondary{background:var(--gray-100);color:var(--gray-800)}
+.btn-green{background:var(--green);color:white}
+.btn-primary:hover{background:var(--blue-hover)}
+.btn-primary:disabled{background:var(--gray-400);cursor:not-allowed}
+.btn-secondary:hover{background:var(--gray-200)}
+.btn-green:hover{background:var(--green-hover)}
+.btn-group{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.fb-panel{display:none;margin-top:14px;border:2px solid var(--gray-200);border-radius:10px;overflow:hidden}
+.fb-panel.show{display:block}
+.fb-banner{padding:10px 14px;font-size:14px;font-weight:700;display:flex;align-items:center;gap:8px}
+.fb-correct{background:var(--green-lt);color:var(--green);border-bottom:2px solid var(--green)}
+.fb-partial{background:var(--amber-lt);color:var(--amber);border-bottom:2px solid var(--amber)}
+.fb-wrong{background:var(--red-lt);color:var(--red);border-bottom:2px solid var(--red)}
+.fb-body{padding:14px;font-size:13px;line-height:1.6;background:white}
+.think-deeper{background:var(--gold-lt);border:1.5px solid var(--gold-bdr);border-radius:8px;padding:11px 14px;margin-top:10px;font-size:13px;line-height:1.55}
+.think-label{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--amber);margin-bottom:5px}
+.sc-complete{background:var(--green-lt);border:1px solid var(--green-bdr);border-radius:10px;padding:18px;text-align:center;margin-top:12px;display:none}
+.sc-complete h3{color:var(--green);font-size:15px;font-weight:700;margin-bottom:8px}
+.final-box{display:none;text-align:center;padding:24px 12px}
+.final-box.show{display:block}
+.final-tbl{width:100%;max-width:430px;margin:0 auto 16px;border-collapse:collapse;font-size:12.5px}
+.final-tbl th{background:var(--navy);color:white;padding:6px 10px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase}
+.final-tbl td{padding:6px 10px;border-bottom:1px solid var(--gray-100);text-align:left}
+.score-row{padding:14px 18px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--gray-100)}
+.score-num{font-size:28px;font-weight:700;color:var(--navy)}
+.score-meta{font-size:12px;color:var(--gray-600);line-height:1.4}
+.score-meta strong{color:var(--gray-800);display:block;font-size:13px}
+.prog-outer{height:5px;background:var(--gray-200);border-radius:3px;overflow:hidden;margin:0 18px 14px}
+.prog-inner{height:100%;background:var(--blue);border-radius:3px;transition:width .4s}
+.tip-box{background:var(--gold-lt);border:1px solid var(--gold-bdr);border-radius:8px;padding:11px 14px;font-size:12px;line-height:1.55;color:var(--gray-800)}
+.tip-box strong{color:var(--navy)}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-badge">SCM 352 · M05</div>
+  <h1>Demand Matrix Builder</h1>
+</header>
+
+<div class="scenario-nav" id="scenarioNav"></div>
+
+<div class="main">
+  <div>
+    <div class="card">
+      <div class="card-header">
+        <h2 id="cardTitle"></h2>
+        <p id="cardSub"></p>
+      </div>
+      <div class="card-body">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap">
+          <span class="diff-tag" id="diffTag"></span>
+          <span style="margin-left:auto;font-size:11px;font-weight:600;color:var(--gray-400)" id="vigNum"></span>
+        </div>
+        <div class="scenario-desc" id="scenDesc"></div>
+        <div class="step-track" id="stepTrack"></div>
+        <div id="stepArea"></div>
+        <div class="sc-complete" id="scComplete">
+          <h3 id="completeTitle"></h3>
+          <p id="completeMsg" style="font-size:13px;color:var(--gray-600);margin-bottom:12px"></p>
+          <button class="btn btn-green" id="nextScBtn" onclick="goNextScenario()"></button>
+        </div>
+        <div class="final-box" id="finalBox"></div>
+      </div>
+    </div>
+  </div>
+
+  <div style="position:sticky;top:24px;display:flex;flex-direction:column;gap:16px">
+    <div class="card">
+      <div class="card-header"><h2>Your Score</h2><p>First-try correct steps</p></div>
+      <div class="score-row">
+        <div class="score-num" id="scoreNum">0</div>
+        <div class="score-meta">
+          <strong id="scoreLabel">first-try correct</strong>
+          <span id="scoreDetail">of 25 steps</span>
+        </div>
+      </div>
+      <div class="prog-outer"><div class="prog-inner" id="progBar" style="width:0%"></div></div>
+    </div>
+    <div class="card">
+      <div class="card-header"><h2>Five-Step Procedure</h2><p>Chapter 5 sequence</p></div>
+      <div class="card-body">
+        <div class="tip-box">
+          <strong>Same five steps, every time:</strong><br>
+          1. Demand matrix (zeros = routing)<br>
+          2. Total demand = row sums<br>
+          3. IU = total demand ÷ capacity<br>
+          4. Bottleneck = highest IU<br>
+          5. Max IU &gt; 100% → flow = demand ÷ max IU<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;Max IU ≤ 100% → flow = demand
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════
+// DATA — scenarios from M05_Architecture.md Section 7, App 1
+// ═══════════════════════════════════════════════════════
+const SC = [
+  {
+    id:1, title:'Campus Coffee Cart', sub:'Scenario 1 of 5 · Baseline — no zeros', diff:'easy',
+    desc:'A campus coffee cart runs two resources: an Order Counter (capacity 40 drinks/hr) and a Brew Station (capacity 24 drinks/hr). Hot drinks (20/hr) and iced drinks (10/hr) both visit both resources in sequence.',
+    res:[{n:'R1 — Order Counter',cap:40},{n:'R2 — Brew Station',cap:24}],
+    types:[{n:'Hot drinks',d:20},{n:'Iced drinks',d:10}],
+    mx:[[20,10],[20,10]],
+    iuD:['0.75','1.25'],
+    bn:'R2', bnOpts:null,
+    bnReveal:'R2 — Brew Station has the highest implied utilization (1.25). Both drink types route through both resources, so this baseline case behaves like Module 3: the lower-capacity resource carries the higher IU.',
+    cons:'cap',
+    fr:[16,8], frD:['20 ÷ 1.25 = 16/hr','10 ÷ 1.25 = 8/hr'],
+    consReveal:'Max IU = 1.25 > 100% → capacity-constrained. Both types are rationed by the same divisor: Hot = 20 ÷ 1.25 = 16/hr, Iced = 10 ÷ 1.25 = 8/hr. The cart serves 24 of the 30 arriving drinks per hour.',
+    td5:'Notice the rationing is proportional: both types lose exactly 20% of their demand. One bottleneck divisor applies to every type that exists in the process — you never ration types one at a time.'
+  },
+  {
+    id:2, title:'Same-Day Dry Cleaner', sub:'Scenario 2 of 5 · Zeros placement', diff:'medium',
+    desc:'A dry cleaner has three resources: Drop-off Desk (capacity 30 items/hr), Cleaning Line (capacity 15 items/hr), and Pressing & Pickup (capacity 15 items/hr). Full-service items (12/hr) visit all three. Press-only items (6/hr) arrive already cleaned — they visit Drop-off and Pressing & Pickup only, skipping the Cleaning Line.',
+    res:[{n:'R1 — Drop-off Desk',cap:30},{n:'R2 — Cleaning Line',cap:15},{n:'R3 — Pressing & Pickup',cap:15}],
+    types:[{n:'Full-service',d:12},{n:'Press-only',d:6}],
+    mx:[[12,6],[12,0],[12,6]],
+    iuD:['0.60','0.80','1.20'],
+    bn:'R3', bnOpts:null,
+    bnReveal:'R3 — Pressing & Pickup (IU 1.20). The Cleaning Line has the same capacity (15/hr) but sees only full-service demand (IU 0.80) because press-only items skip it. The zero you placed at R2 is exactly why the bottleneck lands at R3.',
+    cons:'cap',
+    fr:[10,5], frD:['12 ÷ 1.20 = 10/hr','6 ÷ 1.20 = 5/hr'],
+    consReveal:'Max IU = 1.20 > 100% → capacity-constrained. Full-service = 12 ÷ 1.20 = 10/hr; Press-only = 6 ÷ 1.20 = 5/hr.',
+    td5:null
+  },
+  {
+    id:3, title:'Fresh Juice Bar', sub:'Scenario 3 of 5 · Demand-constrained outcome', diff:'medium',
+    desc:'A juice bar has three resources: Prep Counter (capacity 20 orders/hr), Blend Station (capacity 15 orders/hr), and Service Window (capacity 24 orders/hr). Smoothies (10/hr) visit all three. Fresh-pressed juices (7/hr) skip the Blend Station — they visit Prep and Service only.',
+    res:[{n:'R1 — Prep Counter',cap:20},{n:'R2 — Blend Station',cap:15},{n:'R3 — Service Window',cap:24}],
+    types:[{n:'Smoothies',d:10},{n:'Fresh juices',d:7}],
+    mx:[[10,7],[10,0],[10,7]],
+    iuD:['0.85','0.667','0.708'],
+    bn:'none', bnOpts:null,
+    bnReveal:'No binding bottleneck. The Prep Counter has the highest implied utilization (0.85), but every IU is at or below 100% — no resource is being asked to do more than it can. Identifying the highest-IU resource still matters: it is where a demand increase would bite first.',
+    cons:'dem',
+    fr:[10,7], frD:['= demand = 10/hr','= demand = 7/hr'],
+    consReveal:'The highest implied utilization is 0.85, which is less than 100%. When max IU ≤ 100%, the process is demand-constrained and flow rate = demand rate. You do not divide by the implied utilization. Smoothies flow at 10/hr and juices at 7/hr — every arriving order is served.',
+    td5:'This is the same logic as Case Version C and one version of Gate 2 Q2: when demand is the binding constraint, adding capacity anywhere changes nothing. Check the 100% threshold before you ever divide.'
+  },
+  {
+    id:4, title:'Passport Processing Office', sub:'Scenario 4 of 5 · Complex zero placement', diff:'hard',
+    desc:'A passport office runs four resources: Document Check (capacity 30 apps/hr), Biometrics (capacity 12/hr), Background Verification (capacity 20/hr), and Issuance (capacity 14/hr). New applications (9/hr) visit all four. Renewals (12/hr) need only Document Check and Issuance. Corrections (6/hr) visit Document Check and Background Verification only.',
+    res:[{n:'R1 — Document Check',cap:30},{n:'R2 — Biometrics',cap:12},{n:'R3 — Background Verif.',cap:20},{n:'R4 — Issuance',cap:14}],
+    types:[{n:'New',d:9},{n:'Renewal',d:12},{n:'Correction',d:6}],
+    mx:[[9,12,6],[9,0,0],[9,0,6],[9,12,0]],
+    iuD:['0.90','0.75','0.75','1.50'],
+    bn:'R4', bnOpts:null,
+    bnReveal:'R4 — Issuance (IU 1.50). Biometrics has the lowest capacity in the office (12/hr) but only new applications visit it (IU 0.75). Issuance serves both new applications and the large renewal stream — 21 apps/hr against 14/hr of capacity. Three different routings, and the zeros decide everything.',
+    cons:'cap',
+    fr:[6,8,4], frD:['9 ÷ 1.50 = 6/hr','12 ÷ 1.50 = 8/hr','6 ÷ 1.50 = 4/hr'],
+    consReveal:'Max IU = 1.50 > 100% → capacity-constrained. All three types divide by the same 1.50: New = 6/hr, Renewals = 8/hr, Corrections = 4/hr. The office serves 18 of 27 arriving applications per hour.',
+    td5:null
+  },
+  {
+    id:5, title:'Bike Repair Shop', sub:'Scenario 5 of 5 · Multiple IU above 100% — one bottleneck', diff:'hard',
+    desc:'A bike shop has three resources: Intake & Diagnosis (capacity 20 jobs/hr), Mechanical Repair (capacity 8/hr), and Wheel & Tire Station (capacity 14/hr). Full tune-ups (9/hr) visit all three. Flat fixes (12/hr) visit Intake and the Wheel & Tire Station only.',
+    res:[{n:'R1 — Intake & Diagnosis',cap:20},{n:'R2 — Mechanical Repair',cap:8},{n:'R3 — Wheel & Tire',cap:14}],
+    types:[{n:'Tune-ups',d:9},{n:'Flat fixes',d:12}],
+    mx:[[9,12],[9,0],[9,12]],
+    iuD:['1.05','1.125','1.50'],
+    bn:'R3', bnOpts:null,
+    bnReveal:'R3 — Wheel & Tire (IU 1.50). All three resources are above 100% — but a process has exactly one bottleneck: the resource with the HIGHEST implied utilization. Not the first one you find above 100%, and not the lowest-capacity resource (that is R2 at 1.125). Fixing R1 or R2 first would change nothing: R3 would still ration the flow.',
+    cons:'cap',
+    fr:[6,8], frD:['9 ÷ 1.50 = 6/hr','12 ÷ 1.50 = 8/hr'],
+    consReveal:'Max IU = 1.50 > 100% → capacity-constrained. Divide every demand by the MAX implied utilization (1.50), not by each resource\'s own IU: Tune-ups = 9 ÷ 1.50 = 6/hr, Flat fixes = 12 ÷ 1.50 = 8/hr.',
+    td5:'With three resources above 100%, relieving the bottleneck at R3 (IU 1.50) makes R2 (1.125) the next constraint — flow rises but stays rationed. Capacity additions in a product mix are sequential: always re-run the five steps after each change.'
+  }
+];
+
+// ═══════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════
+const STEPS_PER = 5;
+const TOTAL_STEPS = SC.length * STEPS_PER;
+let scIdx = 0, stIdx = 0, submitted = false;
+let selOpt = null;
+let stDone = [], firstTry = [], attempted = [], scDone = [];
+let firstTryCorrect = 0;
+
+function init(){
+  SC.forEach((_,i)=>{ stDone[i]=[]; firstTry[i]=[]; attempted[i]=[]; scDone[i]=false; });
+  buildNav();
+  renderScenario(0);
+}
+
+// ═══════════════════════════════════════════════════════
+// NAV
+// ═══════════════════════════════════════════════════════
+function buildNav(){
+  const nav=document.getElementById('scenarioNav');
+  SC.forEach((sc,i)=>{
+    const b=document.createElement('button');
+    b.className='scenario-btn'+(i===0?' active':'');
+    b.id='scBtn'+i;
+    b.textContent='Scenario '+(i+1)+' — '+sc.title;
+    b.onclick=()=>goScenario(i);
+    nav.appendChild(b);
+  });
+}
+function updateNavBtn(i){
+  const b=document.getElementById('scBtn'+i);
+  if(b) b.className='scenario-btn'+(i===scIdx?' active':'')+(scDone[i]?' sc-done':'');
+}
+function goScenario(i){
+  scIdx=i; stIdx=0; submitted=false; selOpt=null;
+  SC.forEach((_,j)=>updateNavBtn(j));
+  renderScenario(i);
+}
+function goNextScenario(){
+  if(scIdx<SC.length-1) goScenario(scIdx+1);
+  else showFinal();
+}
+
+// ═══════════════════════════════════════════════════════
+// RENDER SCENARIO
+// ═══════════════════════════════════════════════════════
+function renderScenario(si){
+  const sc=SC[si];
+  document.getElementById('cardTitle').textContent=sc.title;
+  document.getElementById('cardSub').textContent=sc.sub;
+  const dt=document.getElementById('diffTag');
+  dt.textContent=sc.diff.charAt(0).toUpperCase()+sc.diff.slice(1);
+  dt.className='diff-tag diff-'+sc.diff;
+  document.getElementById('vigNum').textContent='Scenario '+(si+1)+' of '+SC.length;
+  document.getElementById('scenDesc').textContent=sc.desc;
+  buildStepTrack(si);
+  document.getElementById('scComplete').style.display='none';
+  document.getElementById('finalBox').classList.remove('show');
+  if(scDone[si]){ showScenarioComplete(si); return; }
+  const resume=(()=>{for(let t=0;t<STEPS_PER;t++) if(!stDone[si][t]) return t; return STEPS_PER-1;})();
+  renderStep(si,resume);
+}
+
+// ═══════════════════════════════════════════════════════
+// STEP TRACK
+// ═══════════════════════════════════════════════════════
+function buildStepTrack(si){
+  const track=document.getElementById('stepTrack');
+  track.innerHTML='';
+  for(let t=0;t<STEPS_PER;t++){
+    if(t>0){
+      const c=document.createElement('div');
+      c.className='step-conn'+(stDone[si][t-1]?' c-done':'');
+      c.id='conn'+si+'_'+t;
+      track.appendChild(c);
+    }
+    const p=document.createElement('div');
+    p.id='pip'+si+'_'+t;
+    p.className='step-pip'+(stDone[si][t]?' s-done':(t===stIdx&&!scDone[si]?' s-active':''));
+    p.textContent=t+1;
+    track.appendChild(p);
+  }
+}
+function updateStepTrack(si,ti){
+  for(let t=0;t<STEPS_PER;t++){
+    const p=document.getElementById('pip'+si+'_'+t);
+    if(p) p.className='step-pip'+(stDone[si][t]?' s-done':(t===ti?' s-active':''));
+    const c=document.getElementById('conn'+si+'_'+t);
+    if(c) c.className='step-conn'+(stDone[si][t-1]?' c-done':'');
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+// STEP RENDERERS
+// ═══════════════════════════════════════════════════════
+const STEP_META=[
+  {label:'Step 1 of 5 — Construct the Demand Matrix',
+   q:'Fill in every cell: the demand each flow unit type places on each resource. Enter 0 where a type does not visit a resource.'},
+  {label:'Step 2 of 5 — Total Demand per Resource',
+   q:'Sum each row of your demand matrix: the total demand rate arriving at each resource (units/hr).'},
+  {label:'Step 3 of 5 — Implied Utilization',
+   q:'Compute IU = total demand ÷ capacity for each resource. Enter as a decimal, rounded to two or three places (e.g., 0.85 or 1.25).'},
+  {label:'Step 4 of 5 — Identify the Bottleneck',
+   q:'Which resource is the bottleneck?'},
+  {label:'Step 5 of 5 — Constraint Type and Flow Rates',
+   q:'Classify the process, then compute the flow rate for each flow unit type (units/hr, up to two decimals).'}
+];
+
+function renderStep(si,ti){
+  stIdx=ti; submitted=false; selOpt=null;
+  const sc=SC[si];
+  updateStepTrack(si,ti);
+  const area=document.getElementById('stepArea');
+  let inner='';
+
+  if(ti===0){
+    inner=`<div class="mx-wrap"><table class="mx-tbl">
+      <tr><th>Resource (capacity)</th>${sc.types.map(t=>`<th>${t.n} (${t.d}/hr)</th>`).join('')}</tr>
+      ${sc.res.map((r,i)=>`<tr><td class="mx-rowname">${r.n} (${r.cap}/hr)</td>${sc.types.map((_,j)=>`<td><input class="mx-input" type="number" step="any" id="mx_${i}_${j}" oninput="checkFilled()"></td>`).join('')}</tr>`).join('')}
+    </table></div>`;
+  } else if(ti===1){
+    inner=`<div class="mx-wrap"><table class="mx-tbl">
+      <tr><th>Resource</th>${sc.types.map(t=>`<th>${t.n}</th>`).join('')}<th>Total demand</th></tr>
+      ${sc.res.map((r,i)=>`<tr><td class="mx-rowname">${r.n}</td>${sc.mx[i].map(v=>`<td class="mx-given">${v}</td>`).join('')}<td><input class="mx-input" type="number" step="any" id="tot_${i}" oninput="checkFilled()"></td></tr>`).join('')}
+    </table></div>`;
+  } else if(ti===2){
+    inner=`<div class="mx-wrap"><table class="mx-tbl">
+      <tr><th>Resource</th><th>Total demand</th><th>Capacity</th><th>Implied utilization</th></tr>
+      ${sc.res.map((r,i)=>`<tr><td class="mx-rowname">${r.n}</td><td class="mx-given">${rowTotal(sc,i)}/hr</td><td class="mx-given">${r.cap}/hr</td><td><input class="mx-input" type="number" step="any" id="iu_${i}" oninput="checkFilled()"></td></tr>`).join('')}
+    </table></div>`;
+  } else if(ti===3){
+    const opts=sc.res.map((r,i)=>({v:'R'+(i+1),t:r.n+' — IU '+sc.iuD[i]}));
+    opts.push({v:'none',t:'No binding bottleneck — every IU is at or below 100%'});
+    inner=`<div class="option-grid" id="optGrid">${opts.map(o=>`
+      <div class="option-card" id="opt_${o.v}" onclick="selectOpt('${o.v}')">
+        <div class="opt-radio"></div><div class="opt-text">${o.t}</div>
+      </div>`).join('')}</div>`;
+  } else {
+    inner=`<div class="fr-row"><span class="fr-label">This process is:</span>
+      <select class="sel-input" id="consSel" onchange="checkFilled()">
+        <option value="">— select —</option>
+        <option value="cap">Capacity-constrained (max IU &gt; 100%)</option>
+        <option value="dem">Demand-constrained (max IU ≤ 100%)</option>
+      </select></div>
+      ${sc.types.map((t,j)=>`<div class="fr-row"><span class="fr-label">Flow rate — ${t.n} (demand ${t.d}/hr):</span><input class="mx-input" type="number" step="any" id="fr_${j}" oninput="checkFilled()"> <span style="font-size:12px;color:var(--gray-400)">units/hr</span></div>`).join('')}`;
+  }
+
+  area.innerHTML=`
+    <div class="step-label">${STEP_META[ti].label}</div>
+    <div class="step-q">${STEP_META[ti].q}</div>
+    ${inner}
+    <div class="btn-group">
+      <button class="btn btn-primary" id="submitBtn" onclick="handleSubmit()" disabled>Check Answer</button>
+    </div>
+    <div class="fb-panel" id="fbPanel">
+      <div class="fb-banner" id="fbBanner"></div>
+      <div class="fb-body"><div id="fbReveal"></div><div id="fbThink"></div></div>
+    </div>`;
+}
+
+function rowTotal(sc,i){ return sc.mx[i].reduce((a,b)=>a+b,0); }
+function iuVal(sc,i){ return rowTotal(sc,i)/sc.res[i].cap; }
+function maxIU(sc){ return Math.max(...sc.res.map((_,i)=>iuVal(sc,i))); }
+
+// ═══════════════════════════════════════════════════════
+// INPUT READINESS
+// ═══════════════════════════════════════════════════════
+function checkFilled(){
+  if(submitted) return;
+  const sc=SC[scIdx];
+  let ready=true;
+  if(stIdx===0){ sc.res.forEach((_,i)=>sc.types.forEach((_,j)=>{ if(document.getElementById(`mx_${i}_${j}`).value==='') ready=false; })); }
+  else if(stIdx===1){ sc.res.forEach((_,i)=>{ if(document.getElementById(`tot_${i}`).value==='') ready=false; }); }
+  else if(stIdx===2){ sc.res.forEach((_,i)=>{ if(document.getElementById(`iu_${i}`).value==='') ready=false; }); }
+  else if(stIdx===4){
+    if(document.getElementById('consSel').value==='') ready=false;
+    sc.types.forEach((_,j)=>{ if(document.getElementById(`fr_${j}`).value==='') ready=false; });
+  }
+  document.getElementById('submitBtn').disabled=!ready;
+}
+function selectOpt(v){
+  if(submitted) return;
+  selOpt=v;
+  document.querySelectorAll('.option-card').forEach(el=>el.classList.remove('selected'));
+  const c=document.getElementById('opt_'+v);
+  if(c) c.classList.add('selected');
+  document.getElementById('submitBtn').disabled=false;
+}
+
+// ═══════════════════════════════════════════════════════
+// GRADING
+// ═══════════════════════════════════════════════════════
+function near(a,b,tol){ return Math.abs(a-b)<=tol; }
+
+function handleSubmit(){
+  if(submitted) return;
+  const sc=SC[scIdx], ti=stIdx;
+  if(ti===3&&!selOpt) return;
+  submitted=true;
+
+  let status, msgs=[];
+  if(ti===0){
+    let right=0,total=0;
+    sc.res.forEach((r,i)=>sc.types.forEach((t,j)=>{
+      total++;
+      const el=document.getElementById(`mx_${i}_${j}`);
+      const v=parseFloat(el.value), ans=sc.mx[i][j];
+      el.disabled=true;
+      if(near(v,ans,0.001)){ el.classList.add('in-correct'); right++; }
+      else{
+        el.classList.add('in-wrong');
+        if(ans===0) msgs.push(`${t.n} units do not visit ${r.n.split(' — ')[1]} — check the routing in the scenario. The demand from ${t.n} at ${r.n.split(' — ')[0]} should be 0, not ${el.value}.`);
+        else msgs.push(`${r.n.split(' — ')[0]} / ${t.n}: this type DOES visit this resource — the cell should carry its full demand rate (${ans}/hr), not ${el.value}.`);
+      }
+    }));
+    status=right===total?'correct':(right>0?'partial':'wrong');
+  } else if(ti===1){
+    let right=0;
+    sc.res.forEach((r,i)=>{
+      const el=document.getElementById(`tot_${i}`);
+      el.disabled=true;
+      if(near(parseFloat(el.value),rowTotal(sc,i),0.001)){ el.classList.add('in-correct'); right++; }
+      else{ el.classList.add('in-wrong'); msgs.push(`${r.n.split(' — ')[0]} total should be ${rowTotal(sc,i)}/hr — sum every cell in the row, including zeros.`); }
+    });
+    status=right===sc.res.length?'correct':(right>0?'partial':'wrong');
+  } else if(ti===2){
+    let right=0;
+    sc.res.forEach((r,i)=>{
+      const el=document.getElementById(`iu_${i}`);
+      el.disabled=true;
+      if(near(parseFloat(el.value),iuVal(sc,i),0.011)){ el.classList.add('in-correct'); right++; }
+      else{ el.classList.add('in-wrong'); msgs.push(`${r.n.split(' — ')[0]}: IU = ${rowTotal(sc,i)} ÷ ${r.cap} = ${sc.iuD[i]}. Total demand divided by capacity — demand on top.`); }
+    });
+    status=right===sc.res.length?'correct':(right>0?'partial':'wrong');
+  } else if(ti===3){
+    const correct=selOpt===sc.bn;
+    document.querySelectorAll('.option-card').forEach(el=>{
+      el.classList.add('disabled');
+      const v=el.id.replace('opt_','');
+      if(v===sc.bn) el.classList.add('o-correct');
+      else if(v===selOpt&&!correct) el.classList.add('o-wrong');
+    });
+    status=correct?'correct':'wrong';
+    if(!correct) msgs.push(sc.bnReveal);
+  } else {
+    const consEl=document.getElementById('consSel');
+    const consOk=consEl.value===sc.cons;
+    consEl.disabled=true;
+    consEl.classList.add(consOk?'in-correct':'in-wrong');
+    let frRight=0;
+    sc.types.forEach((t,j)=>{
+      const el=document.getElementById(`fr_${j}`);
+      el.disabled=true;
+      if(near(parseFloat(el.value),sc.fr[j],0.05)){ el.classList.add('in-correct'); frRight++; }
+      else el.classList.add('in-wrong');
+    });
+    const allOk=consOk&&frRight===sc.types.length;
+    status=allOk?'correct':((consOk||frRight>0)?'partial':'wrong');
+    if(!consOk&&sc.cons==='dem') msgs.push('The highest implied utilization is '+sc.iuD[sc.res.map((_,i)=>iuVal(sc,i)).indexOf(maxIU(sc))]+', which is less than 100%. When max IU ≤ 100%, the process is demand-constrained and flow rate = demand rate. You do not divide by the implied utilization.');
+    else if(!consOk) msgs.push('Max IU = '+maxIU(sc).toFixed(2)+' is greater than 100% — the process cannot serve all arriving demand, so it is capacity-constrained.');
+    if(frRight<sc.types.length) msgs.push('Flow rates: '+sc.types.map((t,j)=>`${t.n} ${sc.frD[j]}`).join(' · ')+'.');
+  }
+
+  // first-try tracking
+  if(!attempted[scIdx][ti]){
+    attempted[scIdx][ti]=true;
+    firstTry[scIdx][ti]=(status==='correct');
+    if(status==='correct'){ firstTryCorrect++; updateScore(); }
+  }
+
+  showFeedback(sc,ti,status,msgs);
+  document.getElementById('submitBtn').style.display='none';
+
+  if(status==='correct'){
+    stDone[scIdx][ti]=true;
+    updateStepTrack(scIdx,ti);
+    if(ti<STEPS_PER-1) addBtn('Next Step →','btn-green',()=>renderStep(scIdx,ti+1));
+    else{
+      scDone[scIdx]=true;
+      updateNavBtn(scIdx);
+      setTimeout(()=>showScenarioComplete(scIdx),800);
+    }
+  } else {
+    addBtn('↩ Try Again','btn-secondary',()=>renderStep(scIdx,ti));
+  }
+}
+
+function addBtn(txt,cls,fn){
+  const bg=document.querySelector('.btn-group');
+  const b=document.createElement('button');
+  b.className='btn '+cls; b.textContent=txt; b.onclick=fn;
+  bg.appendChild(b);
+}
+
+// ═══════════════════════════════════════════════════════
+// FEEDBACK
+// ═══════════════════════════════════════════════════════
+function showFeedback(sc,ti,status,msgs){
+  const panel=document.getElementById('fbPanel');
+  const banner=document.getElementById('fbBanner');
+  const reveal=document.getElementById('fbReveal');
+  const think=document.getElementById('fbThink');
+  banner.className='fb-banner fb-'+status;
+  banner.innerHTML=status==='correct'?'✓ Correct.':(status==='partial'?'◑ Partially correct — fix the highlighted entries.':'✗ Incorrect — see the explanation below.');
+
+  let body='';
+  if(status==='correct'){
+    if(ti===0) body='Matrix complete. Every zero you placed is a routing statement — it is what makes the rest of the analysis correct.';
+    else if(ti===1) body='Row totals confirmed. These are the demand rates you will compare against capacity.';
+    else if(ti===2) body='Implied utilizations confirmed: '+sc.res.map((r,i)=>`${r.n.split(' — ')[0]} = ${sc.iuD[i]}`).join(' · ')+'.';
+    else if(ti===3) body=sc.bnReveal;
+    else body=sc.consReveal;
+  } else {
+    body=msgs.map(m=>'✗ '+m).join('<br><br>');
+  }
+  reveal.innerHTML=body;
+
+  think.innerHTML='';
+  if(status==='correct'&&ti===4&&sc.td5) think.innerHTML=`<div class="think-deeper"><div class="think-label">Think Deeper</div><div>${sc.td5}</div></div>`;
+  if(status==='correct'&&ti===3&&sc.bn==='none') think.innerHTML=`<div class="think-deeper"><div class="think-label">Think Deeper</div><div>"Highest IU" and "bottleneck" are only the same thing when that IU exceeds 100%. Below the threshold, the highest-IU resource is a watch item, not a constraint.</div></div>`;
+  panel.classList.add('show');
+}
+
+// ═══════════════════════════════════════════════════════
+// SCENARIO COMPLETE / SCORE / FINAL
+// ═══════════════════════════════════════════════════════
+function showScenarioComplete(si){
+  document.getElementById('stepArea').innerHTML='';
+  updateStepTrack(si,-1);
+  const box=document.getElementById('scComplete');
+  box.style.display='block';
+  document.getElementById('completeTitle').textContent='Scenario '+(si+1)+' Complete ✓';
+  document.getElementById('completeMsg').textContent='All five steps validated for '+SC[si].title+'.';
+  document.getElementById('nextScBtn').textContent=si<SC.length-1?'Next Scenario →':'See Final Summary';
+}
+function updateScore(){
+  document.getElementById('scoreNum').textContent=firstTryCorrect;
+  document.getElementById('progBar').style.width=((firstTryCorrect/TOTAL_STEPS)*100)+'%';
+}
+function showFinal(){
+  document.getElementById('scComplete').style.display='none';
+  const box=document.getElementById('finalBox');
+  box.classList.add('show');
+  const pct=Math.round((firstTryCorrect/TOTAL_STEPS)*100);
+  box.innerHTML=`
+    <h3 style="color:var(--green);font-size:18px;margin-bottom:8px">All 5 Scenarios Complete</h3>
+    <p style="font-size:22px;font-weight:700;color:var(--navy);margin:10px 0">${firstTryCorrect} / ${TOTAL_STEPS}</p>
+    <p style="color:var(--gray-600);font-size:13px;margin-bottom:14px">${pct}% first-try correct</p>
+    <table class="final-tbl"><tr><th>Scenario</th><th>First-try</th></tr>
+      ${SC.map((sc,i)=>`<tr><td>${i+1} — ${sc.title}</td><td>${firstTry[i].filter(Boolean).length} / ${STEPS_PER}</td></tr>`).join('')}
+    </table>
+    <div class="tip-box" style="text-align:left;max-width:480px;margin:0 auto 16px">
+      <strong>Gate 2 and Case readiness:</strong><br>
+      The five-step procedure is Gate 2 Q2 — and one of its versions is demand-constrained, exactly like Scenario 3 here. Case Part 2 is the Riverside demand matrix (the Station 2 zero is the graded trap), and Part 3 is the IU → bottleneck → flow rate chain. If you needed retries on Steps 1 or 5, re-run Scenarios 2 and 3 before attempting Gate 2.
+    </div>
+    <button class="btn btn-secondary" onclick="goScenario(0)">↩ Restart from Scenario 1</button>`;
+}
+
+init();
+</script>
+</body>
+</html>

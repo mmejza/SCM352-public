@@ -1,0 +1,39 @@
+<section class="slide-page" data-title="Worked Example: Workload Matrix Setup" data-lo="LO5-4" data-notes="Veterinary clinic, two visit types, type-dependent exam times, mixed staffing (Exam has 2 vets). Designed teaching moments: Exam's available time is 120 not 60; Lab has a zero for routine visits; bottleneck is Exam (IU 1.25). The add-workers extension on s19 reuses these numbers. Students attempt the full chain before advancing.">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">LO5-4</span>
+      <span class="le-course">SCM 352 · Module 05</span>
+    </div>
+    <span class="le-pagenum">17 / 20</span>
+  </div>
+  <div class="le-titleblock">
+    <div class="le-title">Worked Example — <span>Workload Matrix</span></div>
+    <div class="le-sub">Veterinary clinic · attempt the full chain before the next slide</div>
+  </div>
+  <div class="le-body">
+    <div class="callout teal" style="margin-bottom:6px;">
+      <div class="callout-label">Process Setup</div>
+      <p><strong>Routine visits</strong> (6/hr): Check-in → Exam. &nbsp; <strong>Diagnostic visits</strong> (3/hr): Check-in → Exam → Lab. Exam time depends on visit type.</p>
+    </div>
+    <table class="clean-table">
+      <thead>
+        <tr><th>Resource</th><th>Staff</th><th>Routine (min/visit)</th><th>Diagnostic (min/visit)</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Check-in</strong></td><td>1</td><td>5</td><td>5</td></tr>
+        <tr><td><strong>Exam</strong></td><td>2 vets</td><td>15</td><td>20</td></tr>
+        <tr><td><strong>Lab</strong></td><td>1</td><td>— (skips)</td><td>15</td></tr>
+      </tbody>
+    </table>
+    <div class="callout amber" style="margin-top:6px;">
+      <div class="callout-label">Attempt Before Advancing</div>
+      <p>1. Fill in each workload cell (demand × time) — where is the zero? &nbsp; 2. Total workload per resource? &nbsp; 3. Available time per resource — careful with Exam. &nbsp; 4. IU and bottleneck? &nbsp; 5. Flow rate per visit type?</p>
+    </div>
+  </div>
+  <div class="le-footer">
+    <div class="le-lo-pills"><span class="le-lo-pill">LO5-4</span></div>
+    <div><span class="le-gate-note">Gate 2 · Q6 parallel structure</span></div>
+  </div>
+</section>

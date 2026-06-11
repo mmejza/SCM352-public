@@ -1,0 +1,33 @@
+<section class="slide-page" data-title="Trap: The Slowest Resource Is the Bottleneck" data-lo="LO5-2" data-notes="Misconception slide. In M03's single-flow world, lowest capacity = bottleneck was always true. With a product mix it fails because demand differs by resource. Uses the s09/s10 print shop numbers — no new example. Segment 1 models a second counterintuitive case in lecture; this slide states the corrected rule.">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">LO5-2</span>
+      <span class="le-course">SCM 352 · Module 05</span>
+    </div>
+    <span class="le-pagenum">11 / 20</span>
+  </div>
+  <div class="le-titleblock">
+    <div class="le-title">Trap — "The Slowest Resource <span>Is the Bottleneck"</span></div>
+    <div class="le-sub">True in Module 03. False the moment flow units take different paths.</div>
+  </div>
+  <div class="le-body">
+    <div class="callout red" style="margin-bottom:6px;">
+      <div class="callout-label">Why It Seems Correct</div>
+      <p>In a single-flow process, every unit visits every resource — so the lowest-capacity resource is always the most loaded. M03 trained you to look for it.</p>
+    </div>
+    <div class="callout amber" style="margin-bottom:6px;">
+      <div class="callout-label">Why It Is Wrong Here</div>
+      <p>With a product mix, resources face <strong>different demand</strong>. In the print shop: R2 has the lowest capacity (8/hr) but only 6 jobs/hr arrive (IU 0.75). R3 has 50% more capacity — and is overwhelmed (IU 1.167), because both types route through it.</p>
+    </div>
+    <div class="callout teal">
+      <div class="callout-label">Correct Rule</div>
+      <p>Bottleneck = the resource with the <strong>highest implied utilization</strong>. Capacity alone tells you nothing until you know who routes through the resource.</p>
+    </div>
+  </div>
+  <div class="le-footer">
+    <div class="le-lo-pills"><span class="le-lo-pill">LO5-2</span></div>
+    <div><span class="le-gate-note">Gate 2 · Q8 tests exactly this trap</span></div>
+  </div>
+</section>

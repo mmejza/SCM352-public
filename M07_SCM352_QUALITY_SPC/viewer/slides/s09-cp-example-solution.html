@@ -1,0 +1,52 @@
+<section class="slide-page" data-title="Pharmaceutical Fill — Cp Solution" data-lo="LO7-2" data-notes="Solution for Cp example. Cp = 60/48 = 1.250 → uncertain capability. To reach Cp = 1.33 without changing spec: 1.33 = 60/(6σ̂) → 6σ̂ = 60/1.33 = 45.1 → σ̂_max = 7.52 mg. Case Analysis versions A–D use the same structure: A=1.333 (surely meets), B=1.250 (uncertain), C=1.111 (uncertain), D=1.667 (surely meets). The uncertain classification means: not clearly failing but not robustly capable — process improvement needed.">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">LO7-2</span>
+      <span class="le-course">SCM 352 · Module 07</span>
+    </div>
+    <span class="le-pagenum">9 / 21</span>
+  </div>
+  <div class="le-titleblock">
+    <div class="le-title">Pharmaceutical Fill — <span>Cp Solution</span></div>
+    <div class="le-sub">LSL = 470 mg · USL = 530 mg · σ̂ = 8 mg</div>
+  </div>
+  <div class="le-body">
+    <div class="two-col">
+      <div style="display:flex;flex-direction:column;gap:calc(7px * var(--slide-scale));">
+        <div class="callout teal">
+          <div class="callout-label">Q1 — Cp Calculation</div>
+          <div class="formula-box" style="font-size:calc(13px * var(--slide-scale));margin:calc(5px * var(--slide-scale)) 0;">
+            Cp = (530 − 470) / (6 × 8) = 60 / 48 = <strong class="pos">1.250</strong>
+          </div>
+        </div>
+        <div class="callout amber">
+          <div class="callout-label">Q2 — Classification</div>
+          <p>1.00 &lt; Cp = 1.250 &lt; 1.33 → <strong>Uncertain capability</strong></p>
+          <p style="margin-top:4px;">The fill process is tighter than the absolute minimum (Cp &gt; 1.00) but does not meet the traditional standard (Cp &lt; 1.33). The company cannot be confident the process will consistently meet the ±30 mg specification.</p>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:calc(7px * var(--slide-scale));">
+        <div class="callout blue">
+          <div class="callout-label">Q3 — Target σ̂</div>
+          <p>Target: Cp = 1.33</p>
+          <div class="formula-box" style="font-size:calc(12px * var(--slide-scale));margin:calc(5px * var(--slide-scale)) 0;">
+            1.33 = 60 / (6σ̂)<br>
+            6σ̂ = 60 / 1.33 = 45.1<br>
+            σ̂<sub>max</sub> = <strong class="pos">7.52 mg</strong>
+          </div>
+          <p style="margin-top:3px;font-size:calc(11px * var(--slide-scale));">Reduce σ̂ from 8 mg to below 7.52 mg to reach the traditional standard.</p>
+        </div>
+        <div class="callout navy">
+          <div class="callout-label" style="color:var(--teal);">Key Takeaway</div>
+          <p style="color:rgba(255,255,255,.78);">Uncertain capability = the process is borderline. Not clearly producing defects, but not robustly capable. The correct response is process improvement — not deploying a control chart on a marginally capable process.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="le-footer">
+    <div class="le-lo-pills"><span class="le-lo-pill">LO7-2</span></div>
+    <div><span class="le-gate-note">Gate 2 · Q1 · Case Part 1</span></div>
+  </div>
+</section>

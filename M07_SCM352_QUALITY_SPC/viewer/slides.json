@@ -1,0 +1,27 @@
+{
+  "title": "Quality and Statistical Process Control",
+  "moduleLabel": "SCM 352 · M07 Lecture Slides",
+  "slides": [
+    "slides/s01-title.html",
+    "slides/s02-learning-objectives.html",
+    "slides/s03-gate-content.html",
+    "slides/s04-two-questions-spc.html",
+    "slides/s05-variable-classification.html",
+    "slides/s06-cp-formula.html",
+    "slides/s07-cp-thresholds.html",
+    "slides/s08-cp-example-setup.html",
+    "slides/s09-cp-example-solution.html",
+    "slides/s10-xbar-formula.html",
+    "slides/s11-xbar-example-setup.html",
+    "slides/s12-xbar-example-solution.html",
+    "slides/s13-pchart-formula.html",
+    "slides/s14-pchart-example-setup.html",
+    "slides/s15-pchart-example-solution.html",
+    "slides/s16-control-vs-spec.html",
+    "slides/s17-fishbone-structure.html",
+    "slides/s18-pareto-example-setup.html",
+    "slides/s19-pareto-example-solution.html",
+    "slides/s20-spc-cycle.html",
+    "slides/s21-bridge.html"
+  ]
+}

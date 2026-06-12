@@ -1,0 +1,58 @@
+<section class="slide-page" data-title="Pareto Analysis — Setup" data-lo="LO7-6" data-notes="Pareto example setup. 6 root causes for prescription fulfillment errors. Total 120 incidents. Operator setup error (45), Software entry (25), Label print failure (18), Wrong bin placement (15), Shift handover gap (10), Equipment misalignment (7). Pareto 80/20: top causes should account for ~80% of total. Students rank causes by frequency, compute cumulative percentages, identify the 80% cutoff. Case Part 5 is the Pareto + recommendation question. Gate 2 Q6 tests the insurance claims Pareto (different data set — this slide uses a prescription example matching the case context).">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">LO7-6</span>
+      <span class="le-course">SCM 352 · Module 07</span>
+    </div>
+    <span class="le-pagenum">18 / 21</span>
+  </div>
+  <div class="le-titleblock">
+    <div class="le-title">Pareto Analysis — <span>Setup</span></div>
+    <div class="le-sub">Rank by frequency · identify the vital few · focus corrective action</div>
+  </div>
+  <div class="le-body">
+    <div class="two-col">
+      <div style="display:flex;flex-direction:column;gap:calc(7px * var(--slide-scale));">
+        <div class="callout blue">
+          <div class="callout-label">Prescription Fulfillment Error Data</div>
+          <table class="clean-table" style="width:100%;font-size:calc(11px * var(--slide-scale));margin-top:calc(5px * var(--slide-scale));">
+            <thead><tr><th>Root Cause</th><th>Count</th><th>%</th><th>Cum %</th></tr></thead>
+            <tbody>
+              <tr><td class="table-cell label">Operator setup error</td><td class="table-cell">45</td><td class="table-cell">?</td><td class="table-cell">?</td></tr>
+              <tr><td class="table-cell label">Software entry error</td><td class="table-cell">25</td><td class="table-cell">?</td><td class="table-cell">?</td></tr>
+              <tr><td class="table-cell label">Label print failure</td><td class="table-cell">18</td><td class="table-cell">?</td><td class="table-cell">?</td></tr>
+              <tr><td class="table-cell label">Wrong bin placement</td><td class="table-cell">15</td><td class="table-cell">?</td><td class="table-cell">?</td></tr>
+              <tr><td class="table-cell label">Shift handover gap</td><td class="table-cell">10</td><td class="table-cell">?</td><td class="table-cell">?</td></tr>
+              <tr><td class="table-cell label">Equipment misalignment</td><td class="table-cell">7</td><td class="table-cell">?</td><td class="table-cell">?</td></tr>
+              <tr style="font-weight:600;"><td class="table-cell label">Total</td><td class="table-cell">120</td><td class="table-cell">100%</td><td class="table-cell">—</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:calc(7px * var(--slide-scale));">
+        <div class="callout teal">
+          <div class="callout-label">Q1 — Compute % for each cause</div>
+          <p style="font-size:calc(11px * var(--slide-scale));">Divide each count by 120 × 100. They are already ranked — confirm the ordering is correct.</p>
+        </div>
+        <div class="callout teal">
+          <div class="callout-label">Q2 — Cumulative percentages</div>
+          <p style="font-size:calc(11px * var(--slide-scale));">Running total, cause by cause. Which causes together account for ≥ 80%?</p>
+        </div>
+        <div class="callout teal">
+          <div class="callout-label">Q3 — Recommendation</div>
+          <p style="font-size:calc(11px * var(--slide-scale));">Name the causes above the 80% line. Where should the quality team focus first?</p>
+        </div>
+        <div class="callout amber">
+          <div class="callout-label">Pareto Principle</div>
+          <p style="font-size:calc(11px * var(--slide-scale));">Roughly 20% of causes account for roughly 80% of defects. This is an empirical pattern — not an exact rule. The practical implication: fix the top causes first; don't spread effort equally across all six.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="le-footer">
+    <div class="le-lo-pills"><span class="le-lo-pill">LO7-6</span></div>
+    <div><span class="le-gate-note">Case Part 5 · Gate 2 Q6</span></div>
+  </div>
+</section>

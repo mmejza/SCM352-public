@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SCM 352 · M07 — Process Capability Analyzer</title>
+<style>
+  :root {
+    --navy: #0d1b2a;
+    --blue: #1a6fc4;
+    --teal: #0fb5ae;
+    --amber: #f5a623;
+    --red: #e74c3c;
+    --green: #27ae60;
+    --surface: #f4f6f9;
+    --border: #dde2ea;
+    --text: #1a1d23;
+    --text-muted: #6b7280;
+    --white: #ffffff;
+    --radius: 10px;
+    --shadow: 0 2px 12px rgba(13,27,42,.10);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--surface); color: var(--text); font-size: 15px; line-height: 1.5; }
+
+  .app-header { background: var(--navy); color: var(--white); padding: 18px 28px; display: flex; align-items: center; gap: 14px; }
+  .app-badge { background: var(--blue); color: var(--white); font-size: 11px; font-weight: 700; letter-spacing: .05em; padding: 3px 10px; border-radius: 20px; white-space: nowrap; }
+  .app-header h1 { font-size: 18px; font-weight: 600; color: var(--white); }
+  .app-header .lo-badge { background: rgba(255,255,255,.12); font-size: 11px; padding: 2px 9px; border-radius: 12px; color: rgba(255,255,255,.8); }
+
+  .app-body { max-width: 860px; margin: 28px auto; padding: 0 20px 40px; }
+
+  .card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px 24px; margin-bottom: 18px; box-shadow: var(--shadow); }
+  .card-title { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--text-muted); margin-bottom: 12px; }
+
+  .scenario-selector { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+  .scenario-btn { padding: 7px 16px; border: 2px solid var(--border); background: var(--white); border-radius: 20px; cursor: pointer; font-size: 13px; font-weight: 500; color: var(--text); transition: all .15s; }
+  .scenario-btn:hover { border-color: var(--blue); color: var(--blue); }
+  .scenario-btn.active { background: var(--blue); border-color: var(--blue); color: var(--white); }
+
+  .scenario-panel { background: var(--navy); color: var(--white); border-radius: var(--radius); padding: 18px 20px; margin-bottom: 20px; }
+  .scenario-panel .sp-title { font-size: 13px; color: rgba(255,255,255,.55); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 10px; }
+  .scenario-panel .sp-context { font-size: 15px; color: rgba(255,255,255,.9); margin-bottom: 14px; line-height: 1.6; }
+  .sp-params { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; }
+  .sp-param { background: rgba(255,255,255,.07); border-radius: 8px; padding: 10px 12px; }
+  .sp-param .label { font-size: 11px; color: rgba(255,255,255,.5); margin-bottom: 3px; }
+  .sp-param .value { font-size: 18px; font-weight: 700; color: var(--teal); }
+  .sp-param .unit { font-size: 11px; color: rgba(255,255,255,.5); }
+
+  .step-block { border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 20px; margin-bottom: 14px; opacity: .45; pointer-events: none; transition: opacity .2s; }
+  .step-block.unlocked { opacity: 1; pointer-events: auto; }
+  .step-block.completed { border-color: var(--green); background: rgba(39,174,96,.04); }
+  .step-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+  .step-num { width: 28px; height: 28px; border-radius: 50%; background: var(--blue); color: var(--white); font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .step-block.completed .step-num { background: var(--green); }
+  .step-title { font-size: 15px; font-weight: 600; }
+  .step-prompt { font-size: 14px; color: var(--text-muted); margin-bottom: 14px; line-height: 1.6; }
+
+  .formula-display { background: #f8f9fb; border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; font-family: "Courier New", monospace; font-size: 14px; color: var(--navy); margin-bottom: 14px; }
+
+  .input-row { display: flex; gap: 10px; align-items: center; margin-bottom: 10px; }
+  .input-row label { font-size: 13px; color: var(--text-muted); min-width: 80px; }
+  .input-row input[type=number] { width: 120px; padding: 8px 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; }
+  .input-row input:focus { outline: none; border-color: var(--blue); }
+
+  select { padding: 8px 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; cursor: pointer; background: var(--white); }
+  select:focus { outline: none; border-color: var(--blue); }
+
+  .textarea-field { width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; font-family: inherit; resize: vertical; min-height: 72px; }
+  .textarea-field:focus { outline: none; border-color: var(--blue); }
+
+  .btn-primary { background: var(--blue); color: var(--white); padding: 9px 22px; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; transition: background .15s; }
+  .btn-primary:hover { background: #1559a8; }
+
+  .feedback-box { border-radius: 8px; padding: 12px 16px; font-size: 14px; margin-top: 12px; display: none; }
+  .feedback-box.correct { background: rgba(39,174,96,.08); border: 1px solid rgba(39,174,96,.3); color: #1a5c38; }
+  .feedback-box.incorrect { background: rgba(231,76,60,.07); border: 1px solid rgba(231,76,60,.25); color: #7b1d12; }
+  .feedback-box.info { background: rgba(26,111,196,.07); border: 1px solid rgba(26,111,196,.25); color: #0d3e72; }
+  .feedback-box.visible { display: block; }
+
+  .progress-bar-wrap { background: var(--border); border-radius: 20px; height: 6px; margin-bottom: 20px; }
+  .progress-bar-fill { background: var(--blue); height: 6px; border-radius: 20px; transition: width .35s ease; }
+
+  .result-card { background: var(--navy); color: var(--white); border-radius: var(--radius); padding: 22px 24px; display: none; }
+  .result-card.visible { display: block; }
+  .result-card .rc-title { font-size: 13px; color: rgba(255,255,255,.5); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 14px; }
+  .result-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,.07); font-size: 14px; }
+  .result-row:last-child { border-bottom: none; }
+  .result-row .label { color: rgba(255,255,255,.65); }
+  .result-row .value { font-weight: 600; color: var(--teal); }
+  .result-row .value.red { color: #ff7a6b; }
+  .result-row .value.amber { color: var(--amber); }
+
+  .scenario-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 16px; }
+  .btn-ghost { background: transparent; border: 1px solid var(--border); color: var(--text); padding: 8px 18px; border-radius: 8px; font-size: 13px; cursor: pointer; }
+  .btn-ghost:hover { border-color: var(--blue); color: var(--blue); }
+</style>
+</head>
+<body>
+
+<div class="app-header">
+  <span class="app-badge">SCM 352 · M07</span>
+  <h1>Process Capability Analyzer</h1>
+  <span class="lo-badge">LO7-2</span>
+</div>
+
+<!-- INSTRUCTION BLOCK -->
+<div style="background:#fffbeb;border-left:4px solid #f59e0b;padding:12px 24px;font-size:13px;line-height:1.65;color:#374151;">
+  <p style="margin:0 0 5px 0;"><strong style="color:#1a3a5c;">Do this:</strong> Work through all 5 scenarios — for each process, compute Cp, classify it against the three-threshold rule (≥1.33 / 1.00–1.33 / &lt;1.00), and interpret what the result means for how the process should be managed.</p>
+  <p style="margin:0 0 5px 0;"><strong style="color:#1a3a5c;">Gate 2 connection:</strong> Gate 2 Q1 is a version-specific Cp problem — this app practices the full three-step sequence (compute → classify → interpret) across five industries so the calculation and threshold language are automatic by quiz day.</p>
+  <p style="margin:0;"><strong style="color:#1a3a5c;">Watch for:</strong> Cp measures how well the specification fits the process spread, not whether the process is in control — a process can be perfectly in control (all points inside control limits) and still fail the Cp test if the specification limits are too tight relative to natural variation.</p>
+</div>
+
+<div class="app-body">
+
+  <div class="card">
+    <div class="card-title">Select Scenario</div>
+    <div class="scenario-selector">
+      <button class="scenario-btn active" onclick="loadScenario(0)">1 — Food Packaging</button>
+      <button class="scenario-btn" onclick="loadScenario(1)">2 — Pharmaceutical Fill</button>
+      <button class="scenario-btn" onclick="loadScenario(2)">3 — Auto Part</button>
+      <button class="scenario-btn" onclick="loadScenario(3)">4 — Medical Device</button>
+      <button class="scenario-btn" onclick="loadScenario(4)">5 — Chemical Concentration</button>
+    </div>
+    <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progress-bar" style="width:0%"></div></div>
+    <div class="scenario-panel" id="scenario-panel">
+      <!-- populated by JS -->
+    </div>
+  </div>
+
+  <!-- Step 1 -->
+  <div class="step-block unlocked" id="step1">
+    <div class="step-header">
+      <div class="step-num">1</div>
+      <div class="step-title">Identify Formula Components</div>
+    </div>
+    <div class="step-prompt">The Cp formula is: <strong>Cp = (USL − LSL) / (6σ̂)</strong>. Enter the numerator and denominator using the scenario values above.</div>
+    <div class="formula-display">Cp = (USL − LSL) / (6 × σ̂)</div>
+    <div class="input-row">
+      <label>USL − LSL =</label>
+      <input type="number" id="s1-numerator" step="any" placeholder="numerator">
+    </div>
+    <div class="input-row">
+      <label>6 × σ̂ =</label>
+      <input type="number" id="s1-denominator" step="any" placeholder="denominator">
+    </div>
+    <button class="btn-primary" onclick="checkStep1()">Check</button>
+    <div class="feedback-box" id="fb-step1"></div>
+  </div>
+
+  <!-- Step 2 -->
+  <div class="step-block" id="step2">
+    <div class="step-header">
+      <div class="step-num">2</div>
+      <div class="step-title">Calculate Cp</div>
+    </div>
+    <div class="step-prompt">Using the numerator and denominator from Step 1, compute Cp. Round to three decimal places.</div>
+    <div class="input-row">
+      <label>Cp =</label>
+      <input type="number" id="s2-cp" step="any" placeholder="e.g. 1.333">
+    </div>
+    <button class="btn-primary" onclick="checkStep2()">Check</button>
+    <div class="feedback-box" id="fb-step2"></div>
+  </div>
+
+  <!-- Step 3 -->
+  <div class="step-block" id="step3">
+    <div class="step-header">
+      <div class="step-num">3</div>
+      <div class="step-title">Apply the Three-Threshold Rule</div>
+    </div>
+    <div class="step-prompt">Based on your Cp value, select the correct classification and write a one-sentence interpretation specific to this scenario.</div>
+    <select id="s3-classification" style="margin-bottom:12px;">
+      <option value="">— Select classification —</option>
+      <option value="meets">Cp ≥ 1.33 — Meets the traditional capability standard</option>
+      <option value="uncertain">1.00 ≤ Cp &lt; 1.33 — Uncertain capability</option>
+      <option value="fails">Cp &lt; 1.00 — Does not meet the standard; producing defects</option>
+    </select>
+    <div style="margin-bottom:8px;font-size:13px;color:var(--text-muted);">Write one sentence interpreting what this Cp means for this specific process:</div>
+    <textarea class="textarea-field" id="s3-interp" placeholder="Example: The fill process is capable but only at the boundary — further variation reduction is recommended before deployment."></textarea>
+    <button class="btn-primary" style="margin-top:10px;" onclick="checkStep3()">Submit</button>
+    <div class="feedback-box" id="fb-step3"></div>
+  </div>
+
+  <!-- Summary -->
+  <div class="result-card" id="result-card">
+    <div class="rc-title">Scenario Complete — Summary</div>
+    <div id="result-rows"></div>
+    <div style="margin-top:16px;padding-top:16px;border-top:1px solid rgba(255,255,255,.1);">
+      <div style="font-size:13px;color:rgba(255,255,255,.5);margin-bottom:10px;">Next Scenario</div>
+      <div class="scenario-nav">
+        <button class="btn-ghost" id="btn-prev" onclick="prevScenario()" style="color:rgba(255,255,255,.7);border-color:rgba(255,255,255,.2);">← Previous</button>
+        <span id="scenario-count" style="font-size:13px;color:rgba(255,255,255,.5);"></span>
+        <button class="btn-ghost" id="btn-next" onclick="nextScenario()" style="color:rgba(255,255,255,.7);border-color:rgba(255,255,255,.2);">Next →</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const scenarios = [
+  {
+    id: 1,
+    title: "Food Packaging — Cereal Weight",
+    context: "A cereal manufacturer fills boxes with a target of 500 g. Engineering specifications allow ±5 g tolerance. Quality audits have estimated the fill standard deviation at 1.0 g.",
+    usl: 505, lsl: 495, sigma: 1.0, cp: 1.667,
+    classification: "meets",
+    industry: "Food Packaging",
+    teaching: "When Cp = 1.667, the process produces output well within specification. Six standard deviations fit comfortably inside the tolerance interval. This is a baseline 'clearly meets' scenario.",
+  },
+  {
+    id: 2,
+    title: "Pharmaceutical Fill — Tablet Dosage",
+    context: "A pharmaceutical plant produces tablets with a target of 500 mg. The specification allows ±20 mg (480–520 mg). Process standard deviation is estimated at 5.0 mg.",
+    usl: 520, lsl: 480, sigma: 5.0, cp: 1.333,
+    classification: "meets",
+    industry: "Pharmaceutical Fill",
+    teaching: "Cp = 1.333 is exactly at the traditional standard. This process just meets the requirement. Any increase in process variation would push Cp below 1.33 and into the uncertain zone.",
+  },
+  {
+    id: 3,
+    title: "Auto Part — Shaft Diameter",
+    context: "An automotive plant machines shafts to 15.00 mm. The tolerance band is ±0.10 mm (14.90 to 15.10 mm). The machining process has a standard deviation of 0.05 mm.",
+    usl: 15.10, lsl: 14.90, sigma: 0.05, cp: 0.667,
+    classification: "fails",
+    industry: "Auto Part Machining",
+    teaching: "Cp = 0.667 means the process spread (6σ = 0.30 mm) is nearly 50% wider than the specification band (0.20 mm). A significant fraction of output will be outside tolerance. Deploying a control chart here would be premature — the process needs capability improvement first.",
+  },
+  {
+    id: 4,
+    title: "Medical Device — Catheter Length",
+    context: "A medical device manufacturer produces catheters specified at 50.00 cm ±0.15 cm. Quality sampling estimates the process standard deviation at 0.04 cm.",
+    usl: 50.15, lsl: 49.85, sigma: 0.04, cp: 1.250,
+    classification: "uncertain",
+    industry: "Medical Device",
+    teaching: "Cp = 1.250 falls in the uncertain zone (1.00–1.33). The process is not producing defects in high volume, but it cannot be confidently certified as robust. For a medical device, the uncertain classification is particularly concerning — the operations team should target Cp ≥ 1.33 before full production.",
+  },
+  {
+    id: 5,
+    title: "Chemical Concentration — Lab Reagent",
+    context: "A laboratory prepares a reagent solution specified at 1.00 mol/L ±0.05 mol/L. The automated mixing process has an estimated standard deviation of 0.012 mol/L.",
+    usl: 1.05, lsl: 0.95, sigma: 0.012, cp: 1.389,
+    classification: "meets",
+    industry: "Chemical Processing",
+    teaching: "Cp = 1.389 is just above the 1.33 threshold. The process meets the traditional standard, but only with modest margin. This is a 'just above' scenario — contrast with Scenario 1 (1.667) to reinforce that 'meets the standard' does not mean all processes are equally robust.",
+  }
+];
+
+let currentScenario = 0;
+let stepsCompleted = [false, false, false];
+
+function loadScenario(idx) {
+  currentScenario = idx;
+  stepsCompleted = [false, false, false];
+
+  // Update buttons
+  document.querySelectorAll('.scenario-btn').forEach((b, i) => b.classList.toggle('active', i === idx));
+
+  const s = scenarios[idx];
+  document.getElementById('scenario-panel').innerHTML = `
+    <div class="sp-title">Scenario ${s.id} — ${s.industry}</div>
+    <div class="sp-context">${s.context}</div>
+    <div class="sp-params">
+      <div class="sp-param"><div class="label">USL</div><div class="value">${s.usl}</div></div>
+      <div class="sp-param"><div class="label">LSL</div><div class="value">${s.lsl}</div></div>
+      <div class="sp-param"><div class="label">σ̂</div><div class="value">${s.sigma}</div></div>
+      <div class="sp-param"><div class="label">Target</div><div class="value">${((s.usl + s.lsl) / 2).toFixed(2)}</div></div>
+    </div>
+  `;
+
+  // Reset steps
+  ['step1','step2','step3'].forEach((id, i) => {
+    const el = document.getElementById(id);
+    el.className = 'step-block' + (i === 0 ? ' unlocked' : '');
+  });
+  ['fb-step1','fb-step2','fb-step3'].forEach(id => {
+    const el = document.getElementById(id);
+    el.className = 'feedback-box';
+    el.textContent = '';
+  });
+  ['s1-numerator','s1-denominator','s2-cp'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+  document.getElementById('s3-classification').value = '';
+  document.getElementById('s3-interp').value = '';
+  document.getElementById('result-card').className = 'result-card';
+  updateProgress();
+}
+
+function updateProgress() {
+  const pct = (stepsCompleted.filter(Boolean).length / 3) * 100;
+  document.getElementById('progress-bar').style.width = pct + '%';
+}
+
+function showFeedback(id, type, html) {
+  const el = document.getElementById(id);
+  el.className = 'feedback-box ' + type + ' visible';
+  el.innerHTML = html;
+}
+
+function checkStep1() {
+  const s = scenarios[currentScenario];
+  const num = parseFloat(document.getElementById('s1-numerator').value);
+  const den = parseFloat(document.getElementById('s1-denominator').value);
+  const expectedNum = s.usl - s.lsl;
+  const expectedDen = 6 * s.sigma;
+
+  if (isNaN(num) || isNaN(den)) {
+    showFeedback('fb-step1','incorrect','Enter values for both fields.');
+    return;
+  }
+  if (Math.abs(num - expectedNum) < 0.001 && Math.abs(den - expectedDen) < 0.001) {
+    showFeedback('fb-step1','correct',`✓ Correct. USL − LSL = ${expectedNum}; 6 × σ̂ = 6 × ${s.sigma} = ${expectedDen}. Proceed to Step 2.`);
+    document.getElementById('step1').classList.add('completed');
+    document.getElementById('step2').classList.add('unlocked');
+    stepsCompleted[0] = true;
+    updateProgress();
+  } else {
+    let hint = '';
+    if (Math.abs(num - s.sigma) < 0.01) hint = ' It looks like you entered σ̂ as the numerator. The numerator is USL minus LSL — the width of the specification band.';
+    if (Math.abs(den - s.sigma) < 0.01) hint = ' The denominator is 6 multiplied by σ̂, not σ̂ alone.';
+    showFeedback('fb-step1','incorrect',`✗ Check your values. The numerator should be USL − LSL = ${expectedNum}. The denominator should be 6 × σ̂ = ${expectedDen}.${hint}`);
+  }
+}
+
+function checkStep2() {
+  const s = scenarios[currentScenario];
+  const val = parseFloat(document.getElementById('s2-cp').value);
+  if (isNaN(val)) { showFeedback('fb-step2','incorrect','Enter a numeric value for Cp.'); return; }
+  if (Math.abs(val - s.cp) < 0.005) {
+    showFeedback('fb-step2','correct',`✓ Cp = ${s.cp.toFixed(3)}. Proceed to Step 3 to classify this result.`);
+    document.getElementById('step2').classList.add('completed');
+    document.getElementById('step3').classList.add('unlocked');
+    stepsCompleted[1] = true;
+    updateProgress();
+  } else {
+    const expectedNum = s.usl - s.lsl;
+    const expectedDen = 6 * s.sigma;
+    showFeedback('fb-step2','incorrect',`✗ Check your calculation. Cp = ${expectedNum} / ${expectedDen} = ${s.cp.toFixed(3)}. Round to three decimal places.`);
+  }
+}
+
+function checkStep3() {
+  const s = scenarios[currentScenario];
+  const cls = document.getElementById('s3-classification').value;
+  const interp = document.getElementById('s3-interp').value.trim();
+
+  if (!cls) { showFeedback('fb-step3','incorrect','Select a classification from the dropdown.'); return; }
+  if (interp.length < 20) { showFeedback('fb-step3','incorrect','Write a complete sentence interpreting the Cp value in context (at least 20 characters).'); return; }
+
+  if (cls === s.classification) {
+    showFeedback('fb-step3','correct',`✓ Correct classification. ${s.teaching}`);
+    document.getElementById('step3').classList.add('completed');
+    stepsCompleted[2] = true;
+    updateProgress();
+    showResult();
+  } else {
+    const correct = s.classification === 'meets' ? 'Cp ≥ 1.33 — Meets the traditional capability standard'
+      : s.classification === 'uncertain' ? '1.00 ≤ Cp < 1.33 — Uncertain capability'
+      : 'Cp < 1.00 — Does not meet the standard';
+    showFeedback('fb-step3','incorrect',`✗ Cp = ${s.cp.toFixed(3)} falls in a different threshold. Re-check: Is Cp above 1.33? Above 1.00? Or below 1.00? The correct classification is: ${correct}.`);
+  }
+}
+
+function showResult() {
+  const s = scenarios[currentScenario];
+  const clsLabel = s.classification === 'meets' ? 'Meets standard (Cp ≥ 1.33)'
+    : s.classification === 'uncertain' ? 'Uncertain capability (1.00–1.33)'
+    : 'Does not meet standard (Cp < 1.00)';
+  const clsClass = s.classification === 'meets' ? '' : s.classification === 'uncertain' ? 'amber' : 'red';
+
+  document.getElementById('result-rows').innerHTML = `
+    <div class="result-row"><span class="label">Scenario</span><span class="value">${s.id} — ${s.industry}</span></div>
+    <div class="result-row"><span class="label">USL − LSL</span><span class="value">${s.usl - s.lsl}</span></div>
+    <div class="result-row"><span class="label">6 × σ̂</span><span class="value">${(6 * s.sigma).toFixed(4)}</span></div>
+    <div class="result-row"><span class="label">Cp</span><span class="value">${s.cp.toFixed(3)}</span></div>
+    <div class="result-row"><span class="label">Classification</span><span class="value ${clsClass}">${clsLabel}</span></div>
+  `;
+  document.getElementById('scenario-count').textContent = `${currentScenario + 1} of ${scenarios.length} complete`;
+  document.getElementById('result-card').classList.add('visible');
+  document.getElementById('btn-prev').style.opacity = currentScenario === 0 ? '0.3' : '1';
+  document.getElementById('btn-next').style.opacity = currentScenario === scenarios.length - 1 ? '0.3' : '1';
+}
+
+function nextScenario() {
+  if (currentScenario < scenarios.length - 1) loadScenario(currentScenario + 1);
+}
+function prevScenario() {
+  if (currentScenario > 0) loadScenario(currentScenario - 1);
+}
+
+// Initialize
+loadScenario(0);
+</script>
+</body>
+</html>

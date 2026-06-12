@@ -1,0 +1,52 @@
+<section class="slide-page" data-title="Pharmaceutical Fill — Cp Calculation" data-lo="LO7-2" data-notes="Setup slide for Cp example. The 0.500 cm example referenced in architecture: ±30 mg tolerance (this is the 'pm 0.500 cm equivalent' framing from architecture). Cp = 60/48 = 1.250 → uncertain. Q3 requires algebra: target σ̂ for Cp = 1.33. Students must show the formula before solving. The most common setup error: computing 6σ̂ = 6×8 = 48 but then computing Cp = 60/8 (forgetting the 6 in the denominator).">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">LO7-2</span>
+      <span class="le-course">SCM 352 · Module 07</span>
+    </div>
+    <span class="le-pagenum">8 / 21</span>
+  </div>
+  <div class="le-titleblock">
+    <div class="le-title">Pharmaceutical Fill — <span>Cp Calculation</span></div>
+    <div class="le-sub">Attempt before the next slide</div>
+  </div>
+  <div class="le-body">
+    <div class="two-col">
+      <div style="display:flex;flex-direction:column;gap:calc(7px * var(--slide-scale));">
+        <div class="callout blue">
+          <div class="callout-label">Problem Setup</div>
+          <p>A pharmaceutical company fills capsules that must contain exactly <strong>500 mg</strong> of active ingredient.</p>
+          <p style="margin-top:5px;"><strong>Specification:</strong> Tolerance of ±30 mg</p>
+          <p style="margin-top:3px;">LSL = 470 mg &nbsp;·&nbsp; USL = 530 mg</p>
+          <p style="margin-top:5px;"><strong>Process:</strong> Estimated standard deviation σ̂ = 8 mg</p>
+        </div>
+        <div class="formula-box">
+          Cp = (USL − LSL) / (6σ̂)
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:calc(7px * var(--slide-scale));">
+        <div class="callout teal">
+          <div class="callout-label">Q1 — Calculate Cp</div>
+          <p>Show the formula, plug-in values, and result.</p>
+        </div>
+        <div class="callout teal">
+          <div class="callout-label">Q2 — Classify the Process</div>
+          <p>Using the three-threshold rule, classify this process. State the threshold and what it means for the pharmaceutical company.</p>
+        </div>
+        <div class="callout teal">
+          <div class="callout-label">Q3 — Target Standard Deviation</div>
+          <p>Management wants to reach Cp = 1.33 without changing the specification. What maximum σ̂ is allowable? Show the algebra.</p>
+        </div>
+      </div>
+    </div>
+    <div class="callout amber" style="margin-top:calc(6px * var(--slide-scale));padding:calc(6px * var(--slide-scale)) calc(12px * var(--slide-scale));">
+      <p style="font-size:calc(11px * var(--slide-scale));">Common setup error: computing Cp = 60/8 instead of 60/48. The denominator is 6σ̂, not σ̂ alone. Write out 6 × 8 = 48 before dividing.</p>
+    </div>
+  </div>
+  <div class="le-footer">
+    <div class="le-lo-pills"><span class="le-lo-pill">LO7-2</span></div>
+    <div><span class="le-gate-note">Gate 2 · Q1 · Case Part 1</span></div>
+  </div>
+</section>

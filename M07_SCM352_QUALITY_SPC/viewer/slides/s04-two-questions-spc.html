@@ -1,0 +1,47 @@
+<section class="slide-page" data-title="Two Tools — Two Questions" data-lo="LO7-2, LO7-5" data-notes="The conceptual foundation slide. Two separate tools, two separate questions. Cp asks: is this process capable of meeting specs? X-bar/p-chart asks: is this process behaving consistently right now? These are independent questions with independent answers. A process can be in control AND incapable (Cp < 1 but all points within control limits). A process can be capable AND temporarily out of control (Cp > 1.33 but one point breaches UCL). Gate 2 Q4 directly tests this distinction.">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">LO7-2</span>
+      <span class="le-course">SCM 352 · Module 07</span>
+    </div>
+    <span class="le-pagenum">4 / 21</span>
+  </div>
+  <div class="le-titleblock">
+    <div class="le-title">Two Tools — <span>Two Questions</span></div>
+    <div class="le-sub">Cp and the control chart answer fundamentally different questions — both are required</div>
+  </div>
+  <div class="le-body">
+    <div class="two-col">
+      <div class="callout blue" style="display:flex;flex-direction:column;gap:calc(6px * var(--slide-scale));">
+        <div class="callout-label">PROCESS CAPABILITY — Cp</div>
+        <p><strong>Question:</strong> Is this process <em>capable</em> of meeting its specifications?</p>
+        <p><strong>When:</strong> Run once before deploying control charts</p>
+        <p><strong>Computes:</strong> Cp = (USL − LSL) / (6σ̂)</p>
+        <p><strong>Answers:</strong> "Surely meets" / "Uncertain" / "Surely does not meet"</p>
+        <div style="margin-top:calc(6px * var(--slide-scale));padding:calc(6px * var(--slide-scale)) calc(10px * var(--slide-scale));background:rgba(255,255,255,.12);border-radius:6px;">
+          <p style="font-size:calc(11px * var(--slide-scale));color:rgba(255,255,255,.7);">If Cp &lt; 1.00 → stop here; redesign the process. Do not deploy a control chart on an incapable process.</p>
+        </div>
+      </div>
+      <div class="callout teal" style="display:flex;flex-direction:column;gap:calc(6px * var(--slide-scale));">
+        <div class="callout-label">CONTROL CHART — X-bar or p-chart</div>
+        <p><strong>Question:</strong> Is this process <em>behaving consistently</em> right now?</p>
+        <p><strong>When:</strong> Ongoing; one sample per period</p>
+        <p><strong>Computes:</strong> UCL, LCL, sample statistics</p>
+        <p><strong>Answers:</strong> "In control" or "Out of control — investigate"</p>
+        <div style="margin-top:calc(6px * var(--slide-scale));padding:calc(6px * var(--slide-scale)) calc(10px * var(--slide-scale));background:rgba(255,255,255,.12);border-radius:6px;">
+          <p style="font-size:calc(11px * var(--slide-scale));color:rgba(255,255,255,.7);">Deploy only after Cp ≥ 1.00. "In control" does not mean the process is acceptable — it means it is consistent.</p>
+        </div>
+      </div>
+    </div>
+    <div class="callout amber" style="margin-top:calc(6px * var(--slide-scale));">
+      <div class="callout-label">Gate 2 Q4 — The Critical Distinction</div>
+      <p>A process with a clean control chart (all points within UCL/LCL) and Cp = 0.83 is simultaneously: <strong>in control</strong> (consistent behavior) and <strong>incapable</strong> (producing defects from common cause variation alone). The conclusion "the process is performing well" is wrong — the control chart only confirms consistency, not acceptability.</p>
+    </div>
+  </div>
+  <div class="le-footer">
+    <div class="le-lo-pills"><span class="le-lo-pill">LO7-2</span><span class="le-lo-pill">LO7-5</span></div>
+    <div><span class="le-gate-note">Gate 2 · Q4 · Segment 1 narration</span></div>
+  </div>
+</section>

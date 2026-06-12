@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gate 2 Quiz Instructions — M07 — SCM 352</title>
+<style>
+:root{--navy:#1a3a5c;--blue:#2563a8;--blue-lt:#dbeafe;--blue-xlt:#eff6ff;--gold:#f59e0b;--gold-lt:#fffbeb;--gold-bdr:#fde68a;--green:#16a34a;--green-lt:#f0fdf4;--green-bdr:#bbf7d0;--red:#dc2626;--red-lt:#fef2f2;--red-bdr:#fecaca;--purple:#7c3aed;--purple-lt:#faf5ff;--purple-bdr:#ddd6fe;--teal:#0891b2;--teal-lt:#f0fdfe;--teal-bdr:#a5f3fc;--gray-50:#f9fafb;--gray-100:#f3f4f6;--gray-200:#e5e7eb;--gray-400:#9ca3af;--gray-600:#4b5563;--gray-700:#374151;--gray-800:#1f2937;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--gray-50);color:var(--gray-800);line-height:1.6;font-size:14px;}
+.header{background:var(--navy);padding:22px 28px;}
+.header-eyebrow{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
+.header h1{font-size:22px;font-weight:700;color:white;letter-spacing:-.01em;margin-bottom:4px;}
+.header p{font-size:13px;color:rgba(255,255,255,.65);}
+.stats-row{background:white;border-bottom:2px solid var(--gray-200);display:flex;flex-wrap:wrap;gap:0;}
+.stat{padding:12px 22px;border-right:1px solid var(--gray-200);flex-shrink:0;}
+.stat:last-child{border-right:none;}
+.stat-lbl{font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--gray-400);margin-bottom:3px;}
+.stat-val{font-size:15px;font-weight:800;color:var(--navy);}
+.pg-body{max-width:860px;margin:0 auto;padding:28px 22px 60px;display:flex;flex-direction:column;gap:26px;}
+.version-callout{background:var(--gold-lt);border:2px solid var(--gold);border-radius:12px;padding:16px 20px;display:flex;gap:13px;align-items:flex-start;}
+.version-callout-icon{font-size:22px;flex-shrink:0;margin-top:1px;}
+.version-callout-body{flex:1;}
+.version-callout-body strong{font-size:15px;font-weight:800;color:var(--navy);display:block;margin-bottom:6px;}
+.version-callout-body p{font-size:13.5px;color:var(--gray-700);line-height:1.6;}
+.sec-label{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--gray-400);padding-bottom:10px;border-bottom:1px solid var(--gray-200);margin-bottom:4px;}
+.q-table{width:100%;border-collapse:collapse;font-size:13px;}
+.q-table th{background:var(--navy);color:white;padding:10px 13px;text-align:left;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;}
+.q-table td{padding:11px 13px;border-bottom:1px solid var(--gray-100);vertical-align:middle;}
+.q-table tr:last-child td{border-bottom:none;}
+.q-table tr:hover td{background:var(--gray-50);}
+.q-num{font-weight:800;font-size:14px;color:var(--navy);white-space:nowrap;}
+.q-topic{font-weight:600;color:var(--gray-800);}
+.q-topic-sub{font-size:12px;color:var(--gray-400);margin-top:2px;}
+.type-badge{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;padding:3px 10px;border-radius:100px;white-space:nowrap;}
+.tb-calc{background:#dbeafe;color:#1e40af;}
+.tb-essay{background:var(--purple-lt);color:var(--purple);border:1px solid var(--purple-bdr);}
+.tb-classify{background:var(--teal-lt);color:var(--teal);border:1px solid var(--teal-bdr);}
+.versioned-badge{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:800;padding:2px 8px;border-radius:100px;background:var(--gold-lt);color:#92400e;border:1.5px solid var(--gold);white-space:nowrap;margin-left:6px;}
+.pts-cell{font-weight:800;font-size:15px;color:var(--navy);text-align:right;white-space:nowrap;}
+.total-row td{background:var(--blue-xlt);font-weight:700;}
+.total-row .pts-cell{font-size:17px;}
+.inst-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.inst-card{background:white;border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;}
+.inst-hd{padding:12px 18px;border-bottom:1px solid var(--gray-200);}
+.inst-hd h2{font-size:14px;font-weight:700;color:var(--navy);}
+.inst-bd{padding:16px 18px;}
+.inst-list{list-style:none;display:flex;flex-direction:column;gap:9px;}
+.inst-list li{display:flex;gap:10px;font-size:13.5px;line-height:1.55;color:var(--gray-700);}
+.inst-list li::before{content:'•';color:var(--gold);font-weight:900;flex-shrink:0;font-size:15px;line-height:1.3;}
+.grading-card{background:white;border:1px solid var(--gray-200);border-radius:12px;padding:18px 20px;font-size:13.5px;color:var(--gray-700);line-height:1.7;}
+.grading-card p+p{margin-top:10px;}
+.grading-card strong{color:var(--navy);}
+.integrity-footer{background:var(--navy);border-radius:12px;padding:20px 24px;display:flex;gap:14px;align-items:flex-start;}
+.integrity-icon{font-size:22px;flex-shrink:0;margin-top:2px;}
+.integrity-body strong{font-size:14px;color:white;display:block;margin-bottom:8px;}
+.integrity-body p{font-size:13px;color:rgba(255,255,255,.75);line-height:1.65;}
+@media(max-width:640px){.inst-grid{grid-template-columns:1fr;}.stats-row{flex-wrap:wrap;}.stat{border-bottom:1px solid var(--gray-200);}}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-eyebrow">SCM 352 · M07 · Gate 2</div>
+  <h1>Gate 2 Quiz — Quality and Statistical Process Control</h1>
+  <p>Read this page carefully before beginning. You have one attempt and 90 minutes.</p>
+</div>
+
+<div class="stats-row">
+  <div class="stat"><div class="stat-lbl">Attempts</div><div class="stat-val">1 only</div></div>
+  <div class="stat"><div class="stat-lbl">Time limit</div><div class="stat-val">90 minutes</div></div>
+  <div class="stat"><div class="stat-lbl">Questions</div><div class="stat-val">8</div></div>
+  <div class="stat"><div class="stat-lbl">Total points</div><div class="stat-val">100</div></div>
+  <div class="stat"><div class="stat-lbl">Question types</div><div class="stat-val">Calculation · Essay · Classification</div></div>
+  <div class="stat"><div class="stat-lbl">Format</div><div class="stat-val">Open-book, open-notes</div></div>
+</div>
+
+<div class="pg-body">
+
+  <div class="version-callout">
+    <div class="version-callout-icon">⚠️</div>
+    <div class="version-callout-body">
+      <strong>Version Assignment — Questions 1 and 7 are parameterized.</strong>
+      <p>Both questions will display a scenario and data values specific to your version. Canvas assigns your version automatically when the quiz loads — you will not see a version label (V1, V2, V3, or V4). Questions 1 and 7 will simply display your scenario with your data values already inserted. Work only with the data shown in your quiz.</p>
+    </div>
+  </div>
+
+  <div>
+    <div class="sec-label">Question Breakdown · 100 points total</div>
+    <div style="border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;margin-top:14px;background:white;">
+      <table class="q-table">
+        <thead>
+          <tr>
+            <th style="width:6%">Q #</th>
+            <th style="width:44%">Topic</th>
+            <th style="width:18%">Type</th>
+            <th style="width:10%;text-align:right;">Points</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="q-num">Q1</td>
+            <td>
+              <div class="q-topic">Process Capability Index (Cp) <span class="versioned-badge">⚡ VERSIONED</span></div>
+              <div class="q-topic-sub">Calculate Cp · Apply three-threshold interpretation · Determine required sigma reduction</div>
+            </td>
+            <td><span class="type-badge tb-calc">Calculation</span></td>
+            <td class="pts-cell">12</td>
+          </tr>
+          <tr>
+            <td class="q-num">Q2</td>
+            <td>
+              <div class="q-topic">X-bar Control Chart Construction</div>
+              <div class="q-topic-sub">Compute sample means · Grand mean · ESD(X-bar) · UCL and LCL · Interpret new sample</div>
+            </td>
+            <td><span class="type-badge tb-calc">Calculation</span></td>
+            <td class="pts-cell">18</td>
+          </tr>
+          <tr>
+            <td class="q-num">Q3</td>
+            <td>
+              <div class="q-topic">p-Chart Construction</div>
+              <div class="q-topic-sub">Compute per-period proportions · p̄ · ESD(p) · UCL and LCL · Interpret new sample</div>
+            </td>
+            <td><span class="type-badge tb-calc">Calculation</span></td>
+            <td class="pts-cell">18</td>
+          </tr>
+          <tr>
+            <td class="q-num">Q4</td>
+            <td>
+              <div class="q-topic">Control Limits vs. Specification Limits</div>
+              <div class="q-topic-sub">Distinguish in-control from capable · Apply the SPC framework · Recommend next steps</div>
+            </td>
+            <td><span class="type-badge tb-essay">Essay</span></td>
+            <td class="pts-cell">10</td>
+          </tr>
+          <tr>
+            <td class="q-num">Q5</td>
+            <td>
+              <div class="q-topic">Variable Classification Applied</div>
+              <div class="q-topic-sub">Classify eight process variables as input, environmental, or outcome · Justify each</div>
+            </td>
+            <td><span class="type-badge tb-classify">Classification</span></td>
+            <td class="pts-cell">10</td>
+          </tr>
+          <tr>
+            <td class="q-num">Q6</td>
+            <td>
+              <div class="q-topic">Pareto Analysis</div>
+              <div class="q-topic-sub">Sort root causes · Compute cumulative percentages · Apply 80-20 principle · Recommend priority</div>
+            </td>
+            <td><span class="type-badge tb-calc">Calculation</span></td>
+            <td class="pts-cell">12</td>
+          </tr>
+          <tr>
+            <td class="q-num">Q7</td>
+            <td>
+              <div class="q-topic">Event Tree — Defect Probability <span class="versioned-badge">⚡ VERSIONED</span></div>
+              <div class="q-topic-sub">Identify AND-logic or OR/robust-logic · Compute P(Good) and P(Defective) · Explain process robustness</div>
+            </td>
+            <td><span class="type-badge tb-calc">Calculation</span></td>
+            <td class="pts-cell">12</td>
+          </tr>
+          <tr>
+            <td class="q-num">Q8</td>
+            <td>
+              <div class="q-topic">Identifying Out-of-Control Signals</div>
+              <div class="q-topic-sub">UCL/LCL violation · Eight-consecutive-points rule · Statistical reasoning for early investigation</div>
+            </td>
+            <td><span class="type-badge tb-essay">Essay</span></td>
+            <td class="pts-cell">8</td>
+          </tr>
+          <tr class="total-row">
+            <td colspan="3" style="font-size:13px;font-weight:700;color:var(--navy);">Total</td>
+            <td class="pts-cell">100</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div>
+    <div class="sec-label">Instructions Before You Begin</div>
+    <div class="inst-grid">
+      <div class="inst-card">
+        <div class="inst-hd"><h2>What to Prepare</h2></div>
+        <div class="inst-bd">
+          <ul class="inst-list">
+            <li>Have your lecture notes and slide deck available — this is open-book.</li>
+            <li>Have a calculator ready. Questions 1–3 require multi-step arithmetic; verify each step before moving on.</li>
+            <li>For Q2 and Q3, the key formula errors are in the ESD step — check which σ you're using.</li>
+            <li>For Q7, identify whether the scenario is AND-logic or OR/robust-logic before computing any probabilities.</li>
+            <li>Q4 requires you to explain the difference between a process being <em>in control</em> and being <em>capable</em> — this distinction is the central conceptual point of the module.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="inst-card">
+        <div class="inst-hd"><h2>Time Management</h2></div>
+        <div class="inst-bd">
+          <ul class="inst-list">
+            <li><strong>Q1 (12 pts):</strong> 8–10 min — three-part Cp calculation</li>
+            <li><strong>Q2 (18 pts):</strong> 15–18 min — most calculation-intensive question</li>
+            <li><strong>Q3 (18 pts):</strong> 12–15 min — p-chart construction with defect data</li>
+            <li><strong>Q4 (10 pts):</strong> 8–10 min — short essay; two parts</li>
+            <li><strong>Q5 (10 pts):</strong> 8–10 min — eight variables to classify</li>
+            <li><strong>Q6 (12 pts):</strong> 8–10 min — Pareto table and interpretation</li>
+            <li><strong>Q7 (12 pts):</strong> 8–10 min — event tree logic and computation</li>
+            <li><strong>Q8 (8 pts):</strong> 5–7 min — chart signal identification</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="sec-label">Key Formula Reminders</div>
+    <div class="grading-card">
+      <p><strong>Process Capability:</strong> Cp = (USL − LSL) / (6σ̂) — the denominator is 6 times sigma, not sigma alone.</p>
+      <p><strong>X-bar ESD:</strong> ESD(X̄) = σ(all parts) / √n — use the standard deviation of all individual measurements, NOT the standard deviation of the computed sample means. The n is the sample size within each period, not the number of periods.</p>
+      <p><strong>p-chart ESD:</strong> ESD = √(p̄ × (1 − p̄) / n) — the entire expression p̄(1−p̄)/n is under the square root. Divide by n before taking the square root.</p>
+      <p><strong>p̄ (centerline):</strong> p̄ = (total defects across all periods) / (total items inspected across all periods). Do NOT average the per-period proportions.</p>
+      <p><strong>Event trees:</strong> AND-logic → P(Good) = multiply P(each step succeeds); OR/robust-logic → P(defect reaches output) = multiply P(each check misses).</p>
+    </div>
+  </div>
+
+  <div>
+    <div class="sec-label">Grading and Partial Credit</div>
+    <div class="grading-card">
+      <p><strong>Show all work on calculation questions.</strong> Partial credit is available on Q1–Q3 and Q6–Q7 when the setup is correct but an arithmetic error produces a wrong final answer. Work that shows correct formula use with a calculation error earns significant partial credit. Work that shows wrong formula use earns minimal or no credit.</p>
+      <p><strong>For Q4 and Q8 (essay questions):</strong> Use Chapter 9 terminology explicitly — the grading rubric checks for the specific terms "in control," "capable," "Cp," "assignable cause," "common cause," and "eight-consecutive-points rule" where relevant.</p>
+      <p><strong>For Q5 (variable classification):</strong> The key distinction is management control. An input variable is one management can set or change. An environmental variable is outside management's control. An outcome variable measures the quality of the process output. Defensible alternative classifications with strong reasoning receive full credit.</p>
+    </div>
+  </div>
+
+  <div class="integrity-footer">
+    <div class="integrity-icon">🔒</div>
+    <div class="integrity-body">
+      <strong>Academic Integrity</strong>
+      <p>This quiz is open-book and open-notes. You may use your course materials, the textbook, lecture videos, and apps. You may not collaborate with other students, share quiz content, or use AI tools to generate answers. All work submitted must represent your own independent reasoning. Suspected violations will be reported to the Dean of Students in accordance with university policy. By beginning this quiz, you confirm that your submission will be your own.</p>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

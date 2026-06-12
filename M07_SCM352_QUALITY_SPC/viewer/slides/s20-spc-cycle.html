@@ -1,0 +1,57 @@
+<section class="slide-page" data-title="The SPC 4-Step Framework" data-lo="LO7-5" data-notes="SPC integrative framework slide. Four steps in sequence: 1. Capability (Cp — is the process capable of meeting spec?) 2. Conformance (X-bar or p-chart — is the process in control?) 3. Investigate (assignable cause — what drove the out-of-control signal?) 4. Eliminate (process improvement — remove root cause, prevent recurrence). The cycle is not a loop in the traditional PDCA sense — it is a decision tree: start at Cp; if not capable, fix first; if capable, then deploy control chart; if chart signals, investigate; if root cause found, eliminate. This integrative framework is tested through Case Parts 1–5 collectively.">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">LO7-5</span>
+      <span class="le-course">SCM 352 · Module 07</span>
+    </div>
+    <span class="le-pagenum">20 / 21</span>
+  </div>
+  <div class="le-titleblock">
+    <div class="le-title">The SPC <span>4-Step Framework</span></div>
+    <div class="le-sub">Capability → Conformance → Investigate → Eliminate · in that order</div>
+  </div>
+  <div class="le-body">
+    <div style="display:flex;flex-direction:column;gap:calc(7px * var(--slide-scale));">
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:calc(7px * var(--slide-scale));">
+        <div class="callout blue" style="text-align:center;">
+          <div style="font-size:calc(22px * var(--slide-scale));font-weight:700;color:var(--blue);margin-bottom:4px;">1</div>
+          <div class="callout-label">Capability</div>
+          <p style="font-size:calc(11px * var(--slide-scale));">Compute Cp. Is the process capable of meeting the specification in principle?</p>
+          <p style="font-size:calc(11px * var(--slide-scale));margin-top:4px;"><strong>Tool:</strong> Cp index</p>
+          <p style="font-size:calc(10px * var(--slide-scale));margin-top:4px;color:rgba(255,255,255,.6);">If Cp &lt; 1.00: fix the process before deploying a control chart</p>
+        </div>
+        <div class="callout teal" style="text-align:center;">
+          <div style="font-size:calc(22px * var(--slide-scale));font-weight:700;color:var(--teal);margin-bottom:4px;">2</div>
+          <div class="callout-label">Conformance</div>
+          <p style="font-size:calc(11px * var(--slide-scale));">Deploy a control chart. Is the capable process behaving consistently over time?</p>
+          <p style="font-size:calc(11px * var(--slide-scale));margin-top:4px;"><strong>Tools:</strong> X-bar chart, p-chart</p>
+          <p style="font-size:calc(10px * var(--slide-scale));margin-top:4px;color:rgba(255,255,255,.6);">If in control: continue monitoring. If out of control: go to Step 3.</p>
+        </div>
+        <div class="callout amber" style="text-align:center;">
+          <div style="font-size:calc(22px * var(--slide-scale));font-weight:700;color:var(--amber);margin-bottom:4px;">3</div>
+          <div class="callout-label">Investigate</div>
+          <p style="font-size:calc(11px * var(--slide-scale));">Find the assignable cause that triggered the out-of-control signal. Do not ignore it.</p>
+          <p style="font-size:calc(11px * var(--slide-scale));margin-top:4px;"><strong>Tools:</strong> Fishbone diagram, process interviews</p>
+          <p style="font-size:calc(10px * var(--slide-scale));margin-top:4px;color:rgba(255,255,255,.6);">If cause found: go to Step 4. If not found: monitor more closely.</p>
+        </div>
+        <div class="callout red" style="text-align:center;">
+          <div style="font-size:calc(22px * var(--slide-scale));font-weight:700;color:var(--red);margin-bottom:4px;">4</div>
+          <div class="callout-label">Eliminate</div>
+          <p style="font-size:calc(11px * var(--slide-scale));">Remove the root cause. Implement process change. Return to Step 2 monitoring.</p>
+          <p style="font-size:calc(11px * var(--slide-scale));margin-top:4px;"><strong>Tools:</strong> Pareto chart, process redesign</p>
+          <p style="font-size:calc(10px * var(--slide-scale));margin-top:4px;color:rgba(255,255,255,.6);">Document the change. Update control chart baseline if the process has improved.</p>
+        </div>
+      </div>
+      <div class="callout navy">
+        <div class="callout-label" style="color:var(--teal);">The Ordering Matters</div>
+        <p style="color:rgba(255,255,255,.78);">Do not deploy a control chart on an incapable process — it generates false urgency. Capability check (Cp) always comes first. Control charts only make sense once capability is confirmed. The Case Analysis works through Steps 1–4 sequentially across its five parts.</p>
+      </div>
+    </div>
+  </div>
+  <div class="le-footer">
+    <div class="le-lo-pills"><span class="le-lo-pill">LO7-1</span><span class="le-lo-pill">LO7-5</span></div>
+    <div><span class="le-gate-note">Case Parts 1–5 · Integrative</span></div>
+  </div>
+</section>

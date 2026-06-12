@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SCM 352 · M07 — Event Tree Constructor</title>
+<style>
+  :root {
+    --navy: #0d1b2a;
+    --blue: #1a6fc4;
+    --teal: #0fb5ae;
+    --amber: #f5a623;
+    --red: #e74c3c;
+    --green: #27ae60;
+    --surface: #f4f6f9;
+    --border: #dde2ea;
+    --text: #1a1d23;
+    --text-muted: #6b7280;
+    --white: #ffffff;
+    --radius: 10px;
+    --shadow: 0 2px 12px rgba(13,27,42,.10);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--surface); color: var(--text); font-size: 15px; line-height: 1.5; }
+
+  .app-header { background: var(--navy); color: var(--white); padding: 18px 28px; display: flex; align-items: center; gap: 14px; }
+  .app-badge { background: var(--blue); font-size: 11px; font-weight: 700; letter-spacing: .05em; padding: 3px 10px; border-radius: 20px; }
+  .app-header h1 { font-size: 18px; font-weight: 600; }
+  .lo-badge { background: rgba(255,255,255,.12); font-size: 11px; padding: 2px 9px; border-radius: 12px; color: rgba(255,255,255,.8); }
+
+  .app-body { max-width: 860px; margin: 28px auto; padding: 0 20px 50px; }
+
+  .scenario-selector { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px; }
+  .scen-btn { padding: 7px 15px; border: 2px solid var(--border); background: var(--white); border-radius: 20px; cursor: pointer; font-size: 12px; font-weight: 500; color: var(--text); transition: all .15s; }
+  .scen-btn:hover { border-color: var(--blue); }
+  .scen-btn.active { background: var(--blue); border-color: var(--blue); color: var(--white); }
+  .scen-btn.and-logic { border-color: rgba(231,76,60,.35); }
+  .scen-btn.and-logic.active { background: var(--red); border-color: var(--red); }
+  .scen-btn.or-logic { border-color: rgba(15,181,174,.35); }
+  .scen-btn.or-logic.active { background: var(--teal); border-color: var(--teal); }
+  .scen-btn.compare { border-color: rgba(245,166,35,.35); }
+  .scen-btn.compare.active { background: var(--amber); border-color: var(--amber); color: var(--navy); }
+
+  .legend { display: flex; gap: 12px; margin-bottom: 16px; font-size: 12px; }
+  .legend-item { display: flex; align-items: center; gap: 6px; }
+  .legend-dot { width: 10px; height: 10px; border-radius: 50%; }
+
+  .card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px 24px; margin-bottom: 18px; box-shadow: var(--shadow); }
+  .card-title { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--text-muted); margin-bottom: 12px; }
+
+  .scenario-panel { background: var(--navy); color: var(--white); border-radius: var(--radius); padding: 18px 20px; margin-bottom: 18px; }
+  .sp-title { font-size: 13px; color: rgba(255,255,255,.5); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 8px; }
+  .sp-context { font-size: 15px; color: rgba(255,255,255,.9); margin-bottom: 14px; line-height: 1.65; }
+  .sp-rates { display: flex; gap: 10px; flex-wrap: wrap; }
+  .sp-rate { background: rgba(255,255,255,.07); border-radius: 8px; padding: 8px 14px; }
+  .sp-rate .rl { font-size: 11px; color: rgba(255,255,255,.5); }
+  .sp-rate .rv { font-size: 17px; font-weight: 700; color: var(--teal); }
+
+  .step-block { border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 20px; margin-bottom: 14px; }
+  .step-block.locked { opacity: .4; pointer-events: none; }
+  .step-block.done { border-color: var(--green); background: rgba(39,174,96,.04); }
+  .step-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .step-num { width: 28px; height: 28px; border-radius: 50%; background: var(--blue); color: var(--white); font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .step-block.done .step-num { background: var(--green); }
+  .step-title { font-size: 15px; font-weight: 600; }
+  .step-prompt { font-size: 14px; color: var(--text-muted); margin-bottom: 12px; line-height: 1.6; }
+
+  .logic-choice { display: flex; gap: 12px; margin-bottom: 12px; }
+  .logic-btn { flex: 1; padding: 14px 18px; border: 2px solid var(--border); background: var(--white); border-radius: var(--radius); cursor: pointer; text-align: center; transition: all .15s; }
+  .logic-btn:hover { border-color: var(--blue); }
+  .logic-btn.selected-and { border-color: var(--red); background: rgba(231,76,60,.06); }
+  .logic-btn.selected-or { border-color: var(--teal); background: rgba(15,181,174,.06); }
+  .logic-btn .lb-title { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+  .logic-btn .lb-desc { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
+
+  .logic-explain { padding: 10px 14px; border-radius: 8px; font-size: 13px; margin-bottom: 12px; display: none; line-height: 1.6; }
+  .logic-explain.and { background: rgba(231,76,60,.07); border: 1px solid rgba(231,76,60,.2); color: #7b1d12; display: block; }
+  .logic-explain.or { background: rgba(15,181,174,.07); border: 1px solid rgba(15,181,174,.2); color: #0a4340; display: block; }
+
+  .formula-display { background: #f8f9fb; border: 1px solid var(--border); border-radius: 8px; padding: 9px 14px; font-family: "Courier New", monospace; font-size: 13px; color: var(--navy); margin-bottom: 12px; }
+
+  .input-row { display: flex; gap: 10px; align-items: center; margin-bottom: 10px; flex-wrap: wrap; }
+  .input-row label { font-size: 13px; color: var(--text-muted); min-width: 200px; }
+  .input-row input[type=number] { width: 130px; padding: 8px 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; }
+  .input-row input:focus { outline: none; border-color: var(--blue); }
+
+  .btn-primary { background: var(--blue); color: var(--white); padding: 9px 22px; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; transition: background .15s; }
+  .btn-primary:hover { background: #1559a8; }
+
+  .feedback-box { border-radius: 8px; padding: 12px 16px; font-size: 14px; margin-top: 10px; display: none; line-height: 1.6; }
+  .feedback-box.correct { background: rgba(39,174,96,.08); border: 1px solid rgba(39,174,96,.3); color: #1a5c38; display: block; }
+  .feedback-box.incorrect { background: rgba(231,76,60,.07); border: 1px solid rgba(231,76,60,.25); color: #7b1d12; display: block; }
+  .feedback-box.info { background: rgba(26,111,196,.07); border: 1px solid rgba(26,111,196,.25); color: #0d3e72; display: block; }
+
+  .compare-panel { background: #fffbf0; border: 1px solid rgba(245,166,35,.3); border-radius: var(--radius); padding: 18px 20px; margin-top: 14px; display: none; }
+  .compare-panel.visible { display: block; }
+  .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 12px; }
+  .compare-col { background: var(--white); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; }
+  .compare-col.and { border-color: rgba(231,76,60,.35); }
+  .compare-col.or { border-color: rgba(15,181,174,.35); }
+  .compare-col .cc-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 8px; }
+  .compare-col.and .cc-title { color: var(--red); }
+  .compare-col.or .cc-title { color: var(--teal); }
+</style>
+</head>
+<body>
+
+<div class="app-header">
+  <span class="app-badge">SCM 352 · M07</span>
+  <h1>Event Tree Constructor</h1>
+  <span class="lo-badge">LO7-7</span>
+</div>
+
+<!-- INSTRUCTION BLOCK -->
+<div style="background:#fffbeb;border-left:4px solid #f59e0b;padding:12px 24px;font-size:13px;line-height:1.65;color:#374151;">
+  <p style="margin:0 0 5px 0;"><strong style="color:#1a3a5c;">Do this:</strong> Work through all 6 scenarios — for each multi-stage process, identify whether AND-logic or OR/robust-logic applies, then compute P(Good) and P(Defect) using the correct multiplication chain.</p>
+  <p style="margin:0 0 5px 0;"><strong style="color:#1a3a5c;">Gate 2 connection:</strong> Gate 2 Q7 is a version-specific event tree problem — this app trains you to recognize AND vs. OR logic before attempting the calculation, which is the step that determines whether your answer is correct.</p>
+  <p style="margin:0;"><strong style="color:#1a3a5c;">Watch for:</strong> Not every multi-stage process uses AND-logic — before multiplying all stage defect rates together, determine whether stages are sequential requirements (AND: each must succeed) or redundant safeguards (OR: any one catching the defect is enough); the two structures produce very different P(Defect) values.</p>
+</div>
+
+<div class="app-body">
+
+  <div class="card">
+    <div class="card-title">Select Scenario</div>
+    <div class="legend">
+      <span class="legend-item"><span class="legend-dot" style="background:var(--red);"></span> AND logic (fragile)</span>
+      <span class="legend-item"><span class="legend-dot" style="background:var(--teal);"></span> OR / Robust logic</span>
+      <span class="legend-item"><span class="legend-dot" style="background:var(--amber);"></span> Comparison</span>
+    </div>
+    <div class="scenario-selector">
+      <button class="scen-btn and-logic active" onclick="loadScenario(0)">1 — Manufacturing (AND)</button>
+      <button class="scen-btn and-logic" onclick="loadScenario(1)">2 — Assembly (AND)</button>
+      <button class="scen-btn and-logic" onclick="loadScenario(2)">3 — Lab Tests (AND)</button>
+      <button class="scen-btn or-logic" onclick="loadScenario(3)">4 — Quality Checks (OR)</button>
+      <button class="scen-btn or-logic" onclick="loadScenario(4)">5 — Call Center (OR)</button>
+      <button class="scen-btn compare" onclick="loadScenario(5)">6 — AND vs. OR Comparison</button>
+    </div>
+    <div class="scenario-panel" id="scenario-panel"></div>
+  </div>
+
+  <!-- Step 1: Identify Logic -->
+  <div class="step-block" id="step1">
+    <div class="step-header"><div class="step-num">1</div><div class="step-title">Identify the Logic Type</div></div>
+    <div class="step-prompt">Read the scenario carefully. Does a defect occur when <strong>any single stage fails (AND-logic)</strong>, or only when <strong>all checks fail to catch it (OR-logic / robust)</strong>?</div>
+    <div class="logic-choice">
+      <div class="logic-btn" id="btn-and" onclick="selectLogic('and')">
+        <div class="lb-title" style="color:var(--red);">AND Logic — Fragile</div>
+        <div class="lb-desc">A defect reaches output if ANY stage fails. Each stage must succeed independently. Failure rates multiply against good output.</div>
+      </div>
+      <div class="logic-btn" id="btn-or" onclick="selectLogic('or')">
+        <div class="lb-title" style="color:var(--teal);">OR Logic — Robust</div>
+        <div class="lb-desc">A defect reaches output only if ALL checks miss it. Each check is a safety net. Miss rates multiply to find P(defect).</div>
+      </div>
+    </div>
+    <button class="btn-primary" onclick="checkStep1()">Confirm Logic Type</button>
+    <div class="feedback-box" id="fb-step1"></div>
+  </div>
+
+  <!-- Step 2: Write expression -->
+  <div class="step-block locked" id="step2">
+    <div class="step-header"><div class="step-num">2</div><div class="step-title">Write the Probability Expression</div></div>
+    <div class="step-prompt" id="step2-prompt"></div>
+    <div class="formula-display" id="step2-formula"></div>
+    <div id="step2-inputs"></div>
+    <button class="btn-primary" onclick="checkStep2()">Check Expression</button>
+    <div class="feedback-box" id="fb-step2"></div>
+  </div>
+
+  <!-- Step 3: P(Good) -->
+  <div class="step-block locked" id="step3">
+    <div class="step-header"><div class="step-num">3</div><div class="step-title">Compute P(Good Unit)</div></div>
+    <div class="step-prompt" id="step3-prompt"></div>
+    <div class="input-row"><label>P(Good Unit) =</label><input type="number" id="s3-good" step="0.00001" placeholder="e.g. 0.926"></div>
+    <button class="btn-primary" onclick="checkStep3()">Check</button>
+    <div class="feedback-box" id="fb-step3"></div>
+  </div>
+
+  <!-- Step 4: P(Defective) -->
+  <div class="step-block locked" id="step4">
+    <div class="step-header"><div class="step-num">4</div><div class="step-title">Compute P(Defective Unit)</div></div>
+    <div class="step-prompt">P(Defective) = 1 − P(Good). Compute and enter the result.</div>
+    <div class="input-row"><label>P(Defective) =</label><input type="number" id="s4-defective" step="0.00001" placeholder="e.g. 0.074"></div>
+    <button class="btn-primary" onclick="checkStep4()">Check</button>
+    <div class="feedback-box" id="fb-step4"></div>
+    <div class="compare-panel" id="compare-panel">
+      <div style="font-size:14px;font-weight:600;color:var(--navy);margin-bottom:4px;">Logic Type Comparison</div>
+      <div style="font-size:13px;color:var(--text-muted);">See how the answer changes if the logic type were reversed:</div>
+      <div class="compare-grid" id="compare-grid"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const scenarios = [
+  {
+    id: 1,
+    title: "2-Stage Manufacturing",
+    context: "A factory produces electronic components through a 2-stage assembly process. Stage 1 has a 5% failure rate. Stage 2 has an 8% failure rate. A unit is defective if ANY stage produces a defect. What fraction of units will be defective?",
+    logic: "and",
+    stages: [
+      { label: "Stage 1 — success rate", value: 0.95 },
+      { label: "Stage 2 — success rate", value: 0.92 },
+    ],
+    rates: [{ label: "Stage 1 failure", value: "5%" }, { label: "Stage 2 failure", value: "8%" }],
+    teaching: "AND-logic: P(Good) = 0.95 × 0.92 = 0.874. Each stage must succeed. Even small individual failure rates combine to create a meaningful overall defect rate.",
+  },
+  {
+    id: 2,
+    title: "4-Stage Assembly",
+    context: "An assembly line has 4 sequential stages with failure rates of 2%, 3%, 1%, and 4%. A unit is defective if ANY stage fails. How does the overall defect rate compare to the individual rates?",
+    logic: "and",
+    stages: [
+      { label: "Stage 1 — success rate", value: 0.98 },
+      { label: "Stage 2 — success rate", value: 0.97 },
+      { label: "Stage 3 — success rate", value: 0.99 },
+      { label: "Stage 4 — success rate", value: 0.96 },
+    ],
+    rates: [{ label: "Stage 1", value: "2%" }, { label: "Stage 2", value: "3%" }, { label: "Stage 3", value: "1%" }, { label: "Stage 4", value: "4%" }],
+    teaching: "AND-logic across 4 stages: P(Good) = 0.98 × 0.97 × 0.99 × 0.96 ≈ 0.9034. P(Defective) ≈ 9.7%. The individual rates seem small, but the cumulative defect rate is nearly 10%.",
+  },
+  {
+    id: 3,
+    title: "3-Step Lab Test Process",
+    context: "A laboratory processes samples through 3 sequential steps: specimen prep (3% error rate), reagent dispensing (5% error rate), and instrument reading (2% error rate). A test result is erroneous if ANY step introduces an error.",
+    logic: "and",
+    stages: [
+      { label: "Specimen prep — success rate", value: 0.97 },
+      { label: "Reagent dispensing — success rate", value: 0.95 },
+      { label: "Instrument reading — success rate", value: 0.98 },
+    ],
+    rates: [{ label: "Specimen prep error", value: "3%" }, { label: "Reagent dispensing error", value: "5%" }, { label: "Instrument reading error", value: "2%" }],
+    teaching: "AND-logic: P(Good) = 0.97 × 0.95 × 0.98 ≈ 0.9027. Approximately 9.7% of test results will contain at least one processing error.",
+  },
+  {
+    id: 4,
+    title: "2-Stage Quality Inspection",
+    context: "A defective unit enters a 2-stage inspection process. Inspector A has a 30% miss rate (catches 70% of defects). Inspector B has a 40% miss rate. A defect reaches the customer ONLY if BOTH inspectors miss it. What fraction of defects escape to customers?",
+    logic: "or",
+    stages: [
+      { label: "Inspector A — miss rate", value: 0.30 },
+      { label: "Inspector B — miss rate", value: 0.40 },
+    ],
+    rates: [{ label: "Inspector A miss rate", value: "30%" }, { label: "Inspector B miss rate", value: "40%" }],
+    teaching: "OR/robust logic: P(defect escapes) = P(A misses) × P(B misses) = 0.30 × 0.40 = 0.12. Only 12% of defects reach the customer because each inspector is an independent safety net.",
+  },
+  {
+    id: 5,
+    title: "Call Center — 3-Layer Quality Net",
+    context: "A call center processes customer requests through 3 quality checks: automated validation (15% miss rate), supervisor review (25% miss rate), and quality audit (10% miss rate). An error reaches the customer only if ALL THREE checks miss it.",
+    logic: "or",
+    stages: [
+      { label: "Automated validation — miss rate", value: 0.15 },
+      { label: "Supervisor review — miss rate", value: 0.25 },
+      { label: "Quality audit — miss rate", value: 0.10 },
+    ],
+    rates: [{ label: "Auto validation miss", value: "15%" }, { label: "Supervisor miss", value: "25%" }, { label: "Audit miss", value: "10%" }],
+    teaching: "OR/robust logic: P(escape) = 0.15 × 0.25 × 0.10 = 0.00375. Only 0.375% of errors reach the customer. This demonstrates the power of layered quality safeguards — even mediocre individual checks combine to create strong overall protection.",
+  },
+  {
+    id: 6,
+    title: "AND vs. OR Comparison — Same 3-Step Process",
+    context: "A process has 3 steps, each with a 20% problem rate. Calculate P(defective) under both logic types: (A) AND-logic — defect occurs if ANY step fails. (B) OR/robust-logic — defect reaches output only if ALL steps fail to catch it. Compare the results to see how logic type affects robustness.",
+    logic: "both",
+    stages: [
+      { label: "Step 1 — rate", value: 0.20 },
+      { label: "Step 2 — rate", value: 0.20 },
+      { label: "Step 3 — rate", value: 0.20 },
+    ],
+    rates: [{ label: "Each step rate", value: "20%" }],
+    teaching: "AND-logic: P(good) = 0.80³ = 0.512; P(defective) = 48.8%. OR/robust: P(defect escapes) = 0.20³ = 0.008 = 0.8%. The same 20% per-step rate produces dramatically different outcomes depending on logic type.",
+  },
+];
+
+let currentScenario = 0;
+let selectedLogic = null;
+
+function loadScenario(idx) {
+  currentScenario = idx;
+  selectedLogic = null;
+  const s = scenarios[idx];
+
+  document.querySelectorAll('.scen-btn').forEach((b, i) => b.classList.toggle('active', i === idx));
+
+  // Scenario panel
+  const ratesHtml = s.rates.map(r => `<div class="sp-rate"><div class="rl">${r.label}</div><div class="rv">${r.value}</div></div>`).join('');
+  document.getElementById('scenario-panel').innerHTML = `
+    <div class="sp-title">Scenario ${s.id} — ${s.title}</div>
+    <div class="sp-context">${s.context}</div>
+    <div class="sp-rates">${ratesHtml}</div>
+  `;
+
+  // Reset all steps
+  ['step1','step2','step3','step4'].forEach((id, i) => {
+    document.getElementById(id).className = 'step-block' + (i === 0 ? '' : ' locked');
+  });
+  ['fb-step1','fb-step2','fb-step3','fb-step4'].forEach(id => {
+    const el = document.getElementById(id); el.className = 'feedback-box'; el.innerHTML = '';
+  });
+  ['btn-and','btn-or'].forEach(id => { document.getElementById(id).className = 'logic-btn'; });
+  ['s3-good','s4-defective'].forEach(id => { const el = document.getElementById(id); if(el) el.value=''; });
+  document.getElementById('compare-panel').className = 'compare-panel';
+  document.getElementById('step2-inputs').innerHTML = '';
+}
+
+function selectLogic(type) {
+  selectedLogic = type;
+  document.getElementById('btn-and').className = 'logic-btn' + (type === 'and' ? ' selected-and' : '');
+  document.getElementById('btn-or').className = 'logic-btn' + (type === 'or' ? ' selected-or' : '');
+}
+
+function round(v, d) { return Math.round(v * Math.pow(10, d)) / Math.pow(10, d); }
+function close(a, b, tol=0.001) { return Math.abs(a-b) <= tol; }
+
+function checkStep1() {
+  const s = scenarios[currentScenario];
+  if (!selectedLogic) { showFb('fb-step1','incorrect','Select AND or OR logic first.'); return; }
+
+  const correct = s.logic === 'both' ? null : s.logic;
+
+  if (s.logic === 'both') {
+    // Comparison scenario — both needed, user picks first one to analyze
+    showFb('fb-step1','info','This is the comparison scenario. You will compute BOTH. Start with AND-logic — select AND and we will walk through that calculation first. After completion, the OR calculation will be shown.');
+    selectedLogic = 'and';
+    document.getElementById('btn-and').className = 'logic-btn selected-and';
+    document.getElementById('btn-or').className = 'logic-btn';
+    buildStep2('and');
+    document.getElementById('step1').className = 'step-block done';
+    document.getElementById('step2').className = 'step-block';
+    return;
+  }
+
+  if (selectedLogic === correct) {
+    const logicExplain = correct === 'and'
+      ? `Correct — AND logic. A defect occurs if any stage fails. P(Good) = product of all stage success rates.`
+      : `Correct — OR/robust logic. A defect reaches output only if all checks miss it. P(Defect escapes) = product of all miss rates.`;
+    showFb('fb-step1','correct','✓ ' + logicExplain);
+    buildStep2(correct);
+    document.getElementById('step1').className = 'step-block done';
+    document.getElementById('step2').className = 'step-block';
+  } else {
+    const hint = correct === 'and'
+      ? `This scenario describes a production process where defects occur if any individual stage fails — that is AND-logic (fragile). The question asks what fraction of units are defective.`
+      : `This scenario describes a quality inspection system where defects escape only if every inspector misses them — that is OR/robust logic. The question asks what fraction of defects escape.`;
+    showFb('fb-step1','incorrect',`✗ Re-read the scenario. ${hint}`);
+  }
+}
+
+function buildStep2(logic) {
+  const s = scenarios[currentScenario];
+  const logicToUse = s.logic === 'both' ? 'and' : logic;
+
+  let prompt, formula, inputsHtml;
+  if (logicToUse === 'and') {
+    prompt = 'For AND-logic: multiply all stage success rates together. P(Good) = success rate stage 1 × success rate stage 2 × ... × success rate stage n.';
+    const successRates = s.stages.map(st => logicToUse === 'and' ? (1 - st.value) : st.value);
+    const trueSuccessRates = s.stages.map(st => 1 - st.value);
+    formula = `P(Good Unit) = ${trueSuccessRates.map(r => r.toFixed(2)).join(' × ')}`;
+    inputsHtml = `<div class="input-row"><label>P(Good Unit) =</label><input type="number" id="step2-val" step="0.00001" placeholder=""></div>`;
+  } else {
+    prompt = 'For OR/robust logic: multiply all miss rates together. P(Defect escapes) = miss rate check 1 × miss rate check 2 × ... × miss rate check n. This is P(Defective) directly.';
+    formula = `P(Defect escapes) = ${s.stages.map(st => st.value.toFixed(2)).join(' × ')}`;
+    inputsHtml = `<div class="input-row"><label>P(Defect escapes) =</label><input type="number" id="step2-val" step="0.00001" placeholder=""></div>`;
+  }
+
+  document.getElementById('step2-prompt').innerHTML = prompt;
+  document.getElementById('step2-formula').textContent = formula;
+  document.getElementById('step2-inputs').innerHTML = inputsHtml;
+
+  // Adjust step 3 prompt
+  if (logicToUse === 'and') {
+    document.getElementById('step3-prompt').textContent = 'From Step 2, you have P(Good Unit). This is the probability a unit passes all stages without defect.';
+  } else {
+    document.getElementById('step3-prompt').textContent = 'For OR/robust logic, P(Defect escapes) from Step 2 is the probability a defect reaches output. P(Good) = 1 − P(Defect escapes).';
+  }
+}
+
+function checkStep2() {
+  const s = scenarios[currentScenario];
+  const logicToUse = s.logic === 'both' ? 'and' : s.logic;
+
+  const val = parseFloat(document.getElementById('step2-val').value);
+  if (isNaN(val)) { showFb('fb-step2','incorrect','Enter a value.'); return; }
+
+  let expected;
+  if (logicToUse === 'and') {
+    expected = s.stages.reduce((p, st) => p * (1 - st.value), 1);
+  } else {
+    expected = s.stages.reduce((p, st) => p * st.value, 1);
+  }
+  expected = round(expected, 5);
+
+  if (close(val, expected, 0.0005)) {
+    showFb('fb-step2','correct',`✓ Correct: ${round(expected, 5)}. Proceed to Step 3.`);
+    document.getElementById('step2').className = 'step-block done';
+    document.getElementById('step3').className = 'step-block';
+    if (logicToUse === 'or') {
+      document.getElementById('s3-good').value = round(1 - expected, 5);
+    }
+  } else {
+    const formulaVals = logicToUse === 'and'
+      ? s.stages.map(st => (1 - st.value).toFixed(2)).join(' × ')
+      : s.stages.map(st => st.value.toFixed(2)).join(' × ');
+    showFb('fb-step2','incorrect',`✗ Expected: ${expected}. Calculation: ${formulaVals} = ${expected}. Check your multiplication.`);
+  }
+}
+
+function checkStep3() {
+  const s = scenarios[currentScenario];
+  const logicToUse = s.logic === 'both' ? 'and' : s.logic;
+  const val = parseFloat(document.getElementById('s3-good').value);
+  if (isNaN(val)) { showFb('fb-step3','incorrect','Enter a value.'); return; }
+
+  let pGood;
+  if (logicToUse === 'and') {
+    pGood = s.stages.reduce((p, st) => p * (1 - st.value), 1);
+  } else {
+    const pEscape = s.stages.reduce((p, st) => p * st.value, 1);
+    pGood = 1 - pEscape;
+  }
+  pGood = round(pGood, 5);
+
+  if (close(val, pGood, 0.0005)) {
+    showFb('fb-step3','correct',`✓ P(Good Unit) = ${pGood}. Proceed to Step 4.`);
+    document.getElementById('step3').className = 'step-block done';
+    document.getElementById('step4').className = 'step-block';
+  } else {
+    showFb('fb-step3','incorrect',`✗ P(Good Unit) = ${pGood}. ${logicToUse === 'or' ? 'P(Good) = 1 − P(Defect escapes) from Step 2.' : 'P(Good) is the product of all stage success rates from Step 2.'}`);
+  }
+}
+
+function checkStep4() {
+  const s = scenarios[currentScenario];
+  const logicToUse = s.logic === 'both' ? 'and' : s.logic;
+  const val = parseFloat(document.getElementById('s4-defective').value);
+  if (isNaN(val)) { showFb('fb-step4','incorrect','Enter a value.'); return; }
+
+  let pGood;
+  if (logicToUse === 'and') {
+    pGood = s.stages.reduce((p, st) => p * (1 - st.value), 1);
+  } else {
+    pGood = 1 - s.stages.reduce((p, st) => p * st.value, 1);
+  }
+  const pDefective = round(1 - pGood, 5);
+
+  if (close(val, pDefective, 0.0005)) {
+    showFb('fb-step4','correct',`✓ P(Defective) = 1 − ${round(pGood,5)} = ${pDefective}. ${s.teaching}`);
+    document.getElementById('step4').className = 'step-block done';
+    showComparison(s, logicToUse, pGood, pDefective);
+  } else {
+    showFb('fb-step4','incorrect',`✗ P(Defective) = 1 − P(Good) = 1 − ${round(pGood,5)} = ${pDefective}.`);
+  }
+}
+
+function showComparison(s, logicUsed, pGood, pDefective) {
+  // Compute the opposite logic answer for comparison
+  let altPGood, altPDefective, altLabel, altNote;
+  if (logicUsed === 'and') {
+    // Show what OR logic would give
+    const pEscape = s.stages.reduce((p, st) => p * st.value, 1);
+    altPGood = round(1 - pEscape, 5);
+    altPDefective = round(pEscape, 5);
+    altLabel = 'If this were OR/Robust logic';
+    altNote = 'Multiply miss rates: ' + s.stages.map(st => st.value.toFixed(2)).join(' × ');
+  } else {
+    // Show what AND logic would give
+    const pG = s.stages.reduce((p, st) => p * (1 - st.value), 1);
+    altPGood = round(pG, 5);
+    altPDefective = round(1 - pG, 5);
+    altLabel = 'If this were AND logic';
+    altNote = 'Multiply success rates: ' + s.stages.map(st => (1 - st.value).toFixed(2)).join(' × ');
+  }
+
+  document.getElementById('compare-grid').innerHTML = `
+    <div class="compare-col ${logicUsed}">
+      <div class="cc-title">This scenario (${logicUsed.toUpperCase()} logic)</div>
+      <p style="font-size:13px;">P(Good) = ${pGood}</p>
+      <p style="font-size:13px;margin-top:4px;font-weight:600;">P(Defective) = ${pDefective} (${(pDefective*100).toFixed(2)}%)</p>
+    </div>
+    <div class="compare-col ${logicUsed === 'and' ? 'or' : 'and'}">
+      <div class="cc-title">${altLabel}</div>
+      <p style="font-size:13px;color:var(--text-muted);">${altNote}</p>
+      <p style="font-size:13px;margin-top:4px;">P(Good) = ${altPGood}</p>
+      <p style="font-size:13px;margin-top:4px;font-weight:600;">P(Defective) = ${altPDefective} (${(altPDefective*100).toFixed(2)}%)</p>
+    </div>
+  `;
+  document.getElementById('compare-panel').classList.add('visible');
+}
+
+function showFb(id, type, html) {
+  const el = document.getElementById(id);
+  el.className = 'feedback-box ' + type;
+  el.innerHTML = html;
+}
+
+// Initialize
+loadScenario(0);
+</script>
+</body>
+</html>

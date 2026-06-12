@@ -1,0 +1,62 @@
+<section class="slide-page" data-title="Bank Deposit Slips — p-Chart Solution" data-lo="LO7-4" data-notes="p-chart solution. p̄ = 54/1600 = 0.03375. ESD = √(0.03375 × 0.96625 / 200) = √(0.0001630) = 0.01277. UCL = 0.03375 + 3(0.01277) = 0.07206. LCL = 0.03375 − 3(0.01277) = −0.00456 → set to 0. Day 9: p = 18/200 = 0.090 > UCL = 0.07206 → out of control. Total items = 8 × 200 = 1600. Teaching point: p̄ from totals not averages; LCL floors at 0; Day 9 signal is clear (0.090 significantly exceeds 0.07206).">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">LO7-4</span>
+      <span class="le-course">SCM 352 · Module 07</span>
+    </div>
+    <span class="le-pagenum">15 / 21</span>
+  </div>
+  <div class="le-titleblock">
+    <div class="le-title">Bank Deposit Slips — <span>p-Chart Solution</span></div>
+    <div class="le-sub">n = 200 · 8 days · Total defective = 54</div>
+  </div>
+  <div class="le-body">
+    <div class="two-col">
+      <div style="display:flex;flex-direction:column;gap:calc(7px * var(--slide-scale));">
+        <div class="callout teal">
+          <div class="callout-label">Step 1 — Centerline</div>
+          <div class="formula-box" style="font-size:calc(12px * var(--slide-scale));margin:calc(5px * var(--slide-scale)) 0;">
+            p̄ = 54 / (8 × 200) = 54 / 1,600 = <strong class="pos">0.03375</strong>
+          </div>
+          <p style="font-size:calc(11px * var(--slide-scale));">Total defects / total items — not average of daily p values</p>
+        </div>
+        <div class="callout teal">
+          <div class="callout-label">Step 2 — ESD(p)</div>
+          <div class="formula-box" style="font-size:calc(12px * var(--slide-scale));margin:calc(5px * var(--slide-scale)) 0;">
+            ESD = √(0.03375 × 0.96625 / 200)<br>
+            = √(0.0001630)<br>
+            = <strong class="pos">0.01277</strong>
+          </div>
+        </div>
+        <div class="callout teal">
+          <div class="callout-label">Step 3 — Control Limits</div>
+          <div class="formula-box" style="font-size:calc(12px * var(--slide-scale));margin:calc(5px * var(--slide-scale)) 0;">
+            UCL = 0.03375 + 3(0.01277) = <strong class="pos">0.07206</strong><br>
+            LCL = 0.03375 − 3(0.01277) = −0.00456 → <strong class="pos">0</strong>
+          </div>
+          <p style="font-size:calc(11px * var(--slide-scale));">LCL is negative — set to 0 (proportion cannot be negative)</p>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:calc(7px * var(--slide-scale));">
+        <div class="callout red">
+          <div class="callout-label">Day 9 — Out of Control Signal</div>
+          <div class="formula-box" style="font-size:calc(12px * var(--slide-scale));margin:calc(5px * var(--slide-scale)) 0;">
+            p₉ = 18 / 200 = <strong>0.090</strong>
+          </div>
+          <p style="margin-top:4px;"><strong>0.090 &gt; UCL (0.07206) → Out of Control</strong></p>
+          <p style="margin-top:4px;font-size:calc(11px * var(--slide-scale));">Day 9 proportion (9.0%) significantly exceeds the control limit (7.2%). This signals an assignable cause — investigate before Day 10 processing.</p>
+        </div>
+        <div class="callout navy">
+          <div class="callout-label" style="color:var(--teal);">The Decision is Mechanical</div>
+          <p style="color:rgba(255,255,255,.78);">Do not eyeball the chart. Compute UCL, compute the new p. If new p exceeds UCL, investigate. 0.090 > 0.07206 → investigation required regardless of subjective impression.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="le-footer">
+    <div class="le-lo-pills"><span class="le-lo-pill">LO7-4</span><span class="le-lo-pill">LO7-5</span></div>
+    <div><span class="le-gate-note">Gate 2 · Q3 · Case Part 3</span></div>
+  </div>
+</section>

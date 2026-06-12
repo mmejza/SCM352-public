@@ -1,0 +1,50 @@
+<section class="slide-page" data-title="Control Limits ≠ Specification Limits" data-lo="LO7-1" data-notes="Pattern 13 — addressing the most common SPC misconception. Control limits are computed from process data (statistical). Specification limits are set by engineers or customers (requirements). A process can be in-control but incapable (producing defects consistently). A process can be out-of-control but all within spec (chaotic but accidentally meeting requirements). Gate 2 Q4 tests this directly: Cp=0.83 scenario — process is in control, producing to spec range, but Cp < 1.00 means it cannot reliably meet specification. Both sets of limits must be managed separately.">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">LO7-1</span>
+      <span class="le-course">SCM 352 · Module 07</span>
+    </div>
+    <span class="le-pagenum">16 / 21</span>
+  </div>
+  <div class="le-titleblock">
+    <div class="le-title">Control Limits <span>≠ Specification Limits</span></div>
+    <div class="le-sub">Two independent standards · one statistical · one managerial</div>
+  </div>
+  <div class="le-body">
+    <div class="two-col">
+      <div style="display:flex;flex-direction:column;gap:calc(7px * var(--slide-scale));">
+        <div class="callout blue">
+          <div class="callout-label">Control Limits</div>
+          <p><strong>What they are:</strong> Computed from actual process data</p>
+          <p style="margin-top:4px;"><strong>What they mean:</strong> Define the expected range of natural variation when the process is stable</p>
+          <p style="margin-top:4px;"><strong>Who sets them:</strong> Statistical calculation (X̄̄ ± 3 × ESD)</p>
+          <p style="margin-top:4px;"><strong>Question they answer:</strong> "Is the process behaving consistently?"</p>
+        </div>
+        <div class="callout teal">
+          <div class="callout-label">In Control</div>
+          <p>All sample means fall between UCL and LCL. No assignable cause detected. <strong>Does not mean the process meets customer requirements.</strong></p>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:calc(7px * var(--slide-scale));">
+        <div class="callout amber">
+          <div class="callout-label">Specification Limits</div>
+          <p><strong>What they are:</strong> Set by engineering design or customer requirements</p>
+          <p style="margin-top:4px;"><strong>What they mean:</strong> Define the acceptable range for the product or service</p>
+          <p style="margin-top:4px;"><strong>Who sets them:</strong> Engineers, customers, or regulations (LSL / USL)</p>
+          <p style="margin-top:4px;"><strong>Question they answer:</strong> "Does the output meet requirements?"</p>
+        </div>
+        <div class="callout red">
+          <div class="callout-label">The Dangerous Case — Gate 2 Q4</div>
+          <p><strong>In control but incapable (Cp = 0.83):</strong> The process is stable and predictable — but it is predictably producing some output outside specification. Control chart says "no assignable cause." Cp says "the process cannot reliably meet the spec."</p>
+          <p style="margin-top:4px;font-size:calc(11px * var(--slide-scale));">Response: process improvement, not just monitoring.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="le-footer">
+    <div class="le-lo-pills"><span class="le-lo-pill">LO7-1</span><span class="le-lo-pill">LO7-2</span></div>
+    <div><span class="le-gate-note">Gate 2 · Q4</span></div>
+  </div>
+</section>

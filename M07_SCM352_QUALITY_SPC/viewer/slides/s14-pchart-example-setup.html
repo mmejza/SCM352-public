@@ -1,0 +1,60 @@
+<section class="slide-page" data-title="Bank Deposit Slips — p-Chart Setup" data-lo="LO7-4" data-notes="p-chart example setup. Bank processes 200 deposit slips per day. 8 days of data. Total defective slips across all days = 54. Students compute p for each day, then p̄ from totals. ESD from p̄ formula. UCL and LCL. Day 9: 18 defects out of 200 — does it signal out of control? Answer: p=0.090, which exceeds UCL=0.07206 → out of control. The 8-day sample data is given as raw defective counts; students must divide by 200 to get per-day p.">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">LO7-4</span>
+      <span class="le-course">SCM 352 · Module 07</span>
+    </div>
+    <span class="le-pagenum">14 / 21</span>
+  </div>
+  <div class="le-titleblock">
+    <div class="le-title">Bank Deposit Slips — <span>p-Chart Setup</span></div>
+    <div class="le-sub">Attempt before the next slide · n = 200 slips per day · 8 days baseline</div>
+  </div>
+  <div class="le-body">
+    <div class="two-col">
+      <div style="display:flex;flex-direction:column;gap:calc(7px * var(--slide-scale));">
+        <div class="callout blue">
+          <div class="callout-label">Sample Data — 8 Days</div>
+          <table class="clean-table" style="width:100%;font-size:calc(11px * var(--slide-scale));margin-top:calc(5px * var(--slide-scale));">
+            <thead><tr><th>Day</th><th>Defective Slips</th><th>p</th></tr></thead>
+            <tbody>
+              <tr><td class="table-cell label">1</td><td class="table-cell">6</td><td class="table-cell">?</td></tr>
+              <tr><td class="table-cell label">2</td><td class="table-cell">8</td><td class="table-cell">?</td></tr>
+              <tr><td class="table-cell label">3</td><td class="table-cell">5</td><td class="table-cell">?</td></tr>
+              <tr><td class="table-cell label">4</td><td class="table-cell">7</td><td class="table-cell">?</td></tr>
+              <tr><td class="table-cell label">5</td><td class="table-cell">9</td><td class="table-cell">?</td></tr>
+              <tr><td class="table-cell label">6</td><td class="table-cell">4</td><td class="table-cell">?</td></tr>
+              <tr><td class="table-cell label">7</td><td class="table-cell">8</td><td class="table-cell">?</td></tr>
+              <tr><td class="table-cell label">8</td><td class="table-cell">7</td><td class="table-cell">?</td></tr>
+              <tr style="font-weight:600;"><td class="table-cell label">Total</td><td class="table-cell">54</td><td class="table-cell">—</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:calc(7px * var(--slide-scale));">
+        <div class="callout teal">
+          <div class="callout-label">Q1 — Compute p for each day</div>
+          <p style="font-size:calc(11px * var(--slide-scale));">Divide each day's defective count by n = 200</p>
+        </div>
+        <div class="callout teal">
+          <div class="callout-label">Q2 — Compute p̄ (centerline)</div>
+          <p style="font-size:calc(11px * var(--slide-scale));">Use total defects and total items — not average of daily p values</p>
+        </div>
+        <div class="callout teal">
+          <div class="callout-label">Q3 — Compute ESD(p) and control limits</div>
+          <p style="font-size:calc(11px * var(--slide-scale));">Remember: divide by n INSIDE the square root</p>
+        </div>
+        <div class="callout teal">
+          <div class="callout-label">Q4 — Day 9: 18 defective slips</div>
+          <p style="font-size:calc(11px * var(--slide-scale));">Is the process in control? Compare Day 9 p to UCL</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="le-footer">
+    <div class="le-lo-pills"><span class="le-lo-pill">LO7-4</span></div>
+    <div><span class="le-gate-note">Gate 2 · Q3 · Case Part 3</span></div>
+  </div>
+</section>

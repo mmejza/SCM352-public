@@ -1,0 +1,54 @@
+<section class="slide-page" data-title="Pareto Analysis — Solution" data-lo="LO7-6" data-notes="Pareto solution. Operator setup error: 45/120=37.5%, cum=37.5%. Software entry: 25/120=20.8%, cum=58.3%. Label print failure: 18/120=15.0%, cum=73.3%. Wrong bin placement: 15/120=12.5%, cum=85.8% — crosses 80% threshold. Top 3 causes = 73.3%; top 4 = 85.8%. The 80% line falls between cause 3 and cause 4. Recommendation: prioritize operator setup error and software entry error, which together account for 58.3% of all errors. Adding label print failure reaches 73.3%. Shift handover gap and equipment misalignment are the trivial many (14.2% combined).">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">LO7-6</span>
+      <span class="le-course">SCM 352 · Module 07</span>
+    </div>
+    <span class="le-pagenum">19 / 21</span>
+  </div>
+  <div class="le-titleblock">
+    <div class="le-title">Pareto Analysis — <span>Solution</span></div>
+    <div class="le-sub">Total = 120 incidents · 80% threshold = 96 incidents</div>
+  </div>
+  <div class="le-body">
+    <div class="two-col">
+      <div style="display:flex;flex-direction:column;gap:calc(7px * var(--slide-scale));">
+        <div class="callout teal">
+          <div class="callout-label">Ranked Causes with Cumulative %</div>
+          <table class="clean-table" style="width:100%;font-size:calc(11px * var(--slide-scale));margin-top:calc(5px * var(--slide-scale));">
+            <thead><tr><th>Root Cause</th><th>Count</th><th>%</th><th>Cum %</th></tr></thead>
+            <tbody>
+              <tr><td class="table-cell label">Operator setup error</td><td class="table-cell">45</td><td class="table-cell">37.5%</td><td class="table-cell">37.5%</td></tr>
+              <tr><td class="table-cell label">Software entry error</td><td class="table-cell">25</td><td class="table-cell">20.8%</td><td class="table-cell">58.3%</td></tr>
+              <tr><td class="table-cell label">Label print failure</td><td class="table-cell">18</td><td class="table-cell">15.0%</td><td class="table-cell">73.3%</td></tr>
+              <tr style="background:rgba(255,180,0,.12);"><td class="table-cell label">Wrong bin placement</td><td class="table-cell">15</td><td class="table-cell">12.5%</td><td class="table-cell"><strong>85.8%</strong></td></tr>
+              <tr><td class="table-cell label">Shift handover gap</td><td class="table-cell">10</td><td class="table-cell">8.3%</td><td class="table-cell">94.2%</td></tr>
+              <tr><td class="table-cell label">Equipment misalignment</td><td class="table-cell">7</td><td class="table-cell">5.8%</td><td class="table-cell">100%</td></tr>
+            </tbody>
+          </table>
+          <p style="margin-top:4px;font-size:calc(10px * var(--slide-scale));color:rgba(255,255,255,.6);">Row highlighted = cumulative crosses 80% threshold</p>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:calc(7px * var(--slide-scale));">
+        <div class="callout blue">
+          <div class="callout-label">The Vital Few</div>
+          <p><strong>Top 3 causes</strong> (operator setup + software entry + label print) account for <strong>73.3%</strong> of all errors.</p>
+          <p style="margin-top:4px;"><strong>Top 4 causes</strong> account for <strong>85.8%</strong> — crosses the 80% threshold at wrong bin placement.</p>
+        </div>
+        <div class="callout amber">
+          <div class="callout-label">Recommendation Logic</div>
+          <p><strong>Priority 1:</strong> Operator setup error (37.5% alone — address first, largest single contributor)</p>
+          <p style="margin-top:4px;"><strong>Priority 2:</strong> Software entry error (additional 20.8% — together top 2 = 58.3%)</p>
+          <p style="margin-top:4px;">Label print failure adds 15.0% — a third initiative worth scheduling.</p>
+          <p style="margin-top:4px;font-size:calc(11px * var(--slide-scale));">Shift handover and equipment misalignment together are only 14.2% — address after higher-impact causes are resolved.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="le-footer">
+    <div class="le-lo-pills"><span class="le-lo-pill">LO7-6</span></div>
+    <div><span class="le-gate-note">Case Part 5 · Gate 2 Q6</span></div>
+  </div>
+</section>

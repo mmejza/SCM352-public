@@ -1,0 +1,44 @@
+<section class="slide-page" data-title="p-Chart — Construction Formulas" data-lo="LO7-4" data-notes="Core p-chart formula slide. Binary outcomes (defective / not defective). p̄ = total defects / total items — NOT average of per-period p values. ESD(p) = √(p̄(1-p̄)/n) — the division by n is INSIDE the square root. If LCL is negative → set to 0. Gate 2 Q3 has 18 pts. Most common errors: (1) averaging per-period p instead of computing from totals, (2) forgetting to divide by n before taking square root.">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">LO7-4</span>
+      <span class="le-course">SCM 352 · Module 07</span>
+    </div>
+    <span class="le-pagenum">13 / 21</span>
+  </div>
+  <div class="le-titleblock">
+    <div class="le-title">p-Chart — <span>Construction Formulas</span></div>
+    <div class="le-sub">For binary outcomes: defective or not · proportion defective per period</div>
+  </div>
+  <div class="le-body">
+    <div style="display:flex;flex-direction:column;gap:calc(7px * var(--slide-scale));">
+      <div class="formula-box">
+        p = (# defective in period) / n
+        <div class="formula-caption">Per-period proportion defective · n = items inspected per period</div>
+      </div>
+      <div class="formula-box">
+        p̄ = (total defects, all periods) / (total items inspected, all periods)
+        <div class="formula-caption">Centerline — do NOT average the per-period p values · compute from raw totals</div>
+      </div>
+      <div class="formula-box">
+        ESD(p) = √(p̄ × (1 − p̄) / n)
+        <div class="formula-caption">The entire expression p̄(1−p̄)/n is under the square root — divide by n BEFORE taking √</div>
+      </div>
+      <div class="formula-box">
+        UCL = p̄ + 3 × ESD(p) &nbsp;&nbsp;&nbsp; LCL = p̄ − 3 × ESD(p)
+        <div class="formula-caption">If LCL is negative → set LCL = 0 (a proportion cannot be negative)</div>
+      </div>
+    </div>
+    <div class="callout red" style="margin-top:calc(7px * var(--slide-scale));">
+      <div class="callout-label">Two Critical Errors to Avoid</div>
+      <p><strong>Error 1 — p̄ from averages:</strong> Averaging the 8 daily p values gives a different (wrong) number than total defects / total items when periods have equal sample sizes. Always compute from totals.</p>
+      <p style="margin-top:4px;"><strong>Error 2 — ESD formula:</strong> √(p̄(1−p̄)) / n is wrong. √(p̄(1−p̄)/n) is correct. The division belongs inside the radical. If your ESD is larger than p̄, you made this error.</p>
+    </div>
+  </div>
+  <div class="le-footer">
+    <div class="le-lo-pills"><span class="le-lo-pill">LO7-4</span></div>
+    <div><span class="le-gate-note">Gate 2 · Q3 · Case Part 3</span></div>
+  </div>
+</section>

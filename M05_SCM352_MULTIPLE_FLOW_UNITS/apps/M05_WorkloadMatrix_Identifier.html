@@ -116,6 +116,13 @@ header h1{font-size:18px;font-weight:600}
   <h1>Workload Matrix Analyzer</h1>
 </header>
 
+<!-- INSTRUCTION BLOCK -->
+<div style="background:#fffbeb;border-left:4px solid #f59e0b;padding:12px 24px;font-size:13px;line-height:1.65;color:#374151;">
+  <p style="margin:0 0 5px 0;"><strong style="color:#1a3a5c;">Do this:</strong> Work through all 4 scenarios — for each multi-product process, fill the workload matrix (demand × processing time per resource), compute implied utilization using available time, identify the bottleneck, and determine flow rates.</p>
+  <p style="margin:0 0 5px 0;"><strong style="color:#1a3a5c;">Gate 2 connection:</strong> Gate 2 Q3 uses the workload matrix form — this app drills the core distinction between workload (changes with demand) and available time (changes with staffing) that Gate 2 tests directly.</p>
+  <p style="margin:0;"><strong style="color:#1a3a5c;">Watch for:</strong> Adding a worker changes available time, not workload — before recomputing IU after a staffing change, update only the available time; the workload matrix cells stay fixed because demand and processing times did not change.</p>
+</div>
+
 <div class="scenario-nav" id="scenarioNav"></div>
 
 <div class="main">

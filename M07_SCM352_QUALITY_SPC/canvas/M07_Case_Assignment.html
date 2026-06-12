@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Case Analysis M07 — Riverside Health System Prescription Fulfillment Center — SCM 352</title>
+<style>
+:root{--navy:#1a3a5c;--blue:#2563a8;--blue-lt:#dbeafe;--blue-xlt:#eff6ff;--gold:#f59e0b;--gold-lt:#fffbeb;--gold-bdr:#fde68a;--green:#16a34a;--green-lt:#f0fdf4;--green-bdr:#bbf7d0;--red:#dc2626;--red-lt:#fef2f2;--red-bdr:#fecaca;--amber:#d97706;--amber-lt:#fffbeb;--amber-bdr:#fde68a;--purple:#7c3aed;--purple-lt:#faf5ff;--purple-bdr:#ddd6fe;--teal:#0891b2;--teal-lt:#f0fdfe;--teal-bdr:#a5f3fc;--gray-50:#f9fafb;--gray-100:#f3f4f6;--gray-200:#e5e7eb;--gray-300:#d1d5db;--gray-400:#9ca3af;--gray-600:#4b5563;--gray-700:#374151;--gray-800:#1f2937;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--gray-50);color:var(--gray-800);line-height:1.65;font-size:14px;}
+.pg-header{background:var(--navy);color:white;padding:24px 28px;}
+.pg-header-eyebrow{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
+.pg-header h1{font-size:22px;font-weight:700;letter-spacing:-.01em;margin-bottom:6px;}
+.pg-header p{font-size:13px;color:rgba(255,255,255,.68);}
+.meta-strip{background:white;border-bottom:2px solid var(--gray-200);display:flex;gap:0;overflow-x:auto;}
+.meta-cell{padding:11px 20px;border-right:1px solid var(--gray-200);flex-shrink:0;}
+.meta-cell:last-child{border-right:none;}
+.meta-lbl{font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--gray-400);margin-bottom:2px;}
+.meta-val{font-size:13px;font-weight:700;color:var(--navy);}
+.pg-body{max-width:860px;margin:0 auto;padding:28px 22px 60px;display:flex;flex-direction:column;gap:28px;}
+.version-banner{background:var(--navy);border-radius:12px;overflow:hidden;border:2px solid var(--navy);}
+.version-banner-hd{padding:13px 20px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,255,255,.15);}
+.version-banner-hd h2{font-size:14px;font-weight:700;color:white;}
+.version-banner-hd p{font-size:12px;color:rgba(255,255,255,.6);margin-top:2px;}
+.version-table{width:100%;border-collapse:collapse;font-size:13px;}
+.version-table th{padding:9px 16px;text-align:left;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:rgba(255,255,255,.55);border-bottom:1px solid rgba(255,255,255,.1);}
+.version-table td{padding:10px 16px;border-bottom:1px solid rgba(255,255,255,.07);color:rgba(255,255,255,.85);}
+.version-table tr:last-child td{border-bottom:none;}
+.ver-badge{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:6px;font-size:13px;font-weight:800;}
+.ver-a{background:#dcfce7;color:#166534;} .ver-b{background:#dbeafe;color:#1e40af;} .ver-c{background:#faf5ff;color:#6b21a8;} .ver-d{background:#fef9c3;color:#854d0e;}
+.alert{border-radius:10px;padding:13px 16px;font-size:13.5px;line-height:1.6;display:flex;gap:11px;align-items:flex-start;}
+.alert-icon{font-size:17px;flex-shrink:0;margin-top:1px;}
+.alert-body{flex:1;}
+.alert-body strong{display:block;margin-bottom:3px;}
+.alert-red{background:var(--red-lt);border:1.5px solid var(--red-bdr);}
+.alert-gold{background:var(--gold-lt);border:1.5px solid var(--gold-bdr);}
+.alert-blue{background:var(--blue-xlt);border:1.5px solid #bfdbfe;}
+.sec-div{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--gray-400);padding-bottom:10px;border-bottom:1px solid var(--gray-200);margin-bottom:-4px;}
+.section-card{background:white;border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;}
+.section-hd{padding:14px 20px;border-bottom:1px solid var(--gray-200);display:flex;align-items:center;gap:12px;}
+.part-badge{display:flex;align-items:center;justify-content:center;min-width:36px;height:36px;border-radius:8px;font-size:12px;font-weight:800;flex-shrink:0;}
+.section-hd-text h2{font-size:15px;font-weight:700;color:var(--navy);}
+.section-hd-text p{font-size:12px;color:var(--gray-600);margin-top:2px;}
+.pts-badge{margin-left:auto;flex-shrink:0;font-size:13px;font-weight:700;padding:4px 12px;border-radius:100px;}
+.section-bd{padding:20px;}
+.part1 .section-hd{background:var(--blue-xlt);} .part1 .part-badge{background:var(--blue);color:white;} .part1 .pts-badge{background:var(--blue-lt);color:var(--navy);}
+.part2 .section-hd{background:var(--green-lt);} .part2 .part-badge{background:var(--green);color:white;} .part2 .pts-badge{background:var(--green-bdr);color:var(--green);}
+.part3 .section-hd{background:var(--purple-lt);} .part3 .part-badge{background:var(--purple);color:white;} .part3 .pts-badge{background:var(--purple-bdr);color:var(--purple);}
+.part4 .section-hd{background:var(--teal-lt);} .part4 .part-badge{background:var(--teal);color:white;} .part4 .pts-badge{background:var(--teal-bdr);color:var(--teal);}
+.part5 .section-hd{background:var(--gold-lt);} .part5 .part-badge{background:var(--amber);color:white;} .part5 .pts-badge{background:var(--gold-bdr);color:#92400e;}
+.ver-tabs{border:1.5px solid var(--gray-200);border-radius:10px;overflow:hidden;margin:16px 0;}
+.ver-tab-hd{display:flex;border-bottom:1.5px solid var(--gray-200);background:var(--gray-50);}
+.ver-tab-btn{flex:1;padding:10px 0;border:none;background:none;cursor:pointer;font-size:13px;font-weight:700;color:var(--gray-400);border-right:1px solid var(--gray-200);transition:all 0.15s;display:flex;align-items:center;justify-content:center;gap:6px;}
+.ver-tab-btn:last-child{border-right:none;}
+.ver-tab-btn:hover{color:var(--navy);background:white;}
+.ver-tab-btn.active{color:var(--navy);background:white;box-shadow:inset 0 -2px 0 var(--blue);}
+.ver-tab-btn .vb{width:20px;height:20px;border-radius:4px;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;}
+.ver-tab-panel{display:none;padding:16px;}
+.ver-tab-panel.active{display:block;}
+.data-table{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px;}
+.data-table th{background:var(--navy);color:white;padding:9px 13px;text-align:left;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;}
+.data-table td{padding:9px 13px;border-bottom:1px solid var(--gray-100);}
+.data-table tr:last-child td{border-bottom:none;}
+.data-table td:first-child{font-weight:700;}
+.q-block{margin-bottom:16px;padding:14px 16px;border:1.5px solid var(--gray-200);border-radius:8px;background:var(--gray-50);}
+.q-block:last-child{margin-bottom:0;}
+.q-num{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--gray-400);margin-bottom:5px;}
+.q-text{font-size:13.5px;line-height:1.65;color:var(--gray-700);}
+.q-pts{display:inline-block;margin-top:7px;font-size:11px;font-weight:700;padding:2px 9px;border-radius:100px;background:var(--blue-lt);color:var(--navy);}
+.grade-table{width:100%;border-collapse:collapse;font-size:13px;}
+.grade-table th{background:var(--navy);color:white;padding:9px 13px;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;text-align:left;}
+.grade-table td{padding:9px 13px;border-bottom:1px solid var(--gray-100);}
+.grade-table tr:last-child td{border-bottom:none;}
+.grade-table tr.total td{font-weight:700;background:var(--blue-xlt);color:var(--navy);font-size:14px;}
+.pts-right{text-align:right;font-weight:700;}
+</style>
+</head>
+<body>
+
+<div class="pg-header">
+  <div class="pg-header-eyebrow">SCM 352 · Module M07 · Case Analysis</div>
+  <h1>Riverside Health System Prescription Fulfillment Center</h1>
+  <p>Quality and Statistical Process Control · Parameterized case — 4 versions · 100 points · Due Day 6 at 11:59 PM</p>
+</div>
+
+<div class="meta-strip">
+  <div class="meta-cell"><div class="meta-lbl">Points</div><div class="meta-val">100</div></div>
+  <div class="meta-cell"><div class="meta-lbl">Due</div><div class="meta-val">Day 6 · 11:59 PM</div></div>
+  <div class="meta-cell"><div class="meta-lbl">Format</div><div class="meta-val">PDF or Word</div></div>
+  <div class="meta-cell"><div class="meta-lbl">Attempts</div><div class="meta-val">1</div></div>
+  <div class="meta-cell"><div class="meta-lbl">Allowed resources</div><div class="meta-val">Ch. 9 · Lectures · Apps · Slides</div></div>
+</div>
+
+<div class="pg-body">
+
+  <div class="version-banner">
+    <div class="version-banner-hd">
+      <div><h2>Find Your Assigned Version</h2><p>Use the last digit of your student ID. Submit only your assigned version.</p></div>
+    </div>
+    <table class="version-table">
+      <thead><tr><th>Last digit of student ID</th><th>Your version</th><th>Key identifier</th></tr></thead>
+      <tbody>
+        <tr><td>0, 1, or 2</td><td><span class="ver-badge ver-a">A</span></td><td>Target 500 mg · ±20 mg tolerance · n=4 per period</td></tr>
+        <tr><td>3, 4, or 5</td><td><span class="ver-badge ver-b">B</span></td><td>Target 250 mg · ±15 mg tolerance · n=5 per period</td></tr>
+        <tr><td>6 or 7</td><td><span class="ver-badge ver-c">C</span></td><td>Target 100 mg · ±10 mg tolerance · n=4 per period</td></tr>
+        <tr><td>8 or 9</td><td><span class="ver-badge ver-d">D</span></td><td>Target 750 mg · ±30 mg tolerance · n=5 per period</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:10px;">
+    <div class="alert alert-red">
+      <div class="alert-icon">🚫</div>
+      <div class="alert-body"><strong>Do not collaborate on version-specific calculations.</strong> Parts 1, 2, 3, and 4 use data unique to your version. Submitting another version's numbers constitutes academic dishonesty.</div>
+    </div>
+    <div class="alert alert-gold">
+      <div class="alert-icon">📋</div>
+      <div class="alert-body"><strong>Show all calculation steps with labeled intermediate values.</strong> Answers without supporting work will not receive full credit, even if numerically correct. State the formula before substituting values for all computation questions.</div>
+    </div>
+    <div class="alert alert-blue">
+      <div class="alert-icon">ℹ️</div>
+      <div class="alert-body">Part 5 (Pareto table) uses the same root cause data for all versions. You may discuss concepts but your written responses must be your own.</div>
+    </div>
+  </div>
+
+  <div>
+    <div class="sec-div">Background — All Versions</div>
+    <div class="section-card" style="margin-top:14px;">
+      <div class="section-bd" style="font-size:13.5px;line-height:1.75;color:var(--gray-700);">
+        <p>This case extends the Riverside Health System scenario from Modules 2–5. The fulfillment center now implements a formal quality monitoring program. You will apply the SPC framework to two quality concerns: prescription fill accuracy (a continuous outcome) and prescription dispensing errors (a binary outcome).</p>
+        <p style="margin-top:12px;">The Riverside center fills prescriptions for a critical medication. Each prescription must contain exactly the target amount of active ingredient (see your version parameters). The engineering specification allows a tolerance band. The center also tracks whether prescriptions are dispensed with errors — wrong patient, wrong drug, wrong dose — a binary outcome. A three-stage quality safeguard system catches errors before they reach patients.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- PART 1 -->
+  <div>
+    <div class="sec-div">Part 1 — Process Capability Analysis</div>
+    <div class="section-card part1" style="margin-top:14px;">
+      <div class="section-hd">
+        <div class="part-badge">1</div>
+        <div class="section-hd-text"><h2>Process Capability Analysis</h2><p>Version-specific parameters — use your assigned version only</p></div>
+        <div class="pts-badge">20 pts</div>
+      </div>
+      <div class="section-bd">
+        <div class="ver-tabs">
+          <div class="ver-tab-hd">
+            <button class="ver-tab-btn active" onclick="switchTab('p1','a')" id="p1-tab-a"><span class="vb ver-a">A</span> Version A</button>
+            <button class="ver-tab-btn" onclick="switchTab('p1','b')" id="p1-tab-b"><span class="vb ver-b">B</span> Version B</button>
+            <button class="ver-tab-btn" onclick="switchTab('p1','c')" id="p1-tab-c"><span class="vb ver-c">C</span> Version C</button>
+            <button class="ver-tab-btn" onclick="switchTab('p1','d')" id="p1-tab-d"><span class="vb ver-d">D</span> Version D</button>
+          </div>
+          <div class="ver-tab-panel active" id="p1-panel-a">
+            <p style="font-size:13px;color:var(--gray-700);margin-bottom:10px;">Target fill: <strong>500 mg</strong> · LSL: <strong>480 mg</strong> · USL: <strong>520 mg</strong> · Estimated σ̂: <strong>5.0 mg</strong></p>
+          </div>
+          <div class="ver-tab-panel" id="p1-panel-b">
+            <p style="font-size:13px;color:var(--gray-700);margin-bottom:10px;">Target fill: <strong>250 mg</strong> · LSL: <strong>235 mg</strong> · USL: <strong>265 mg</strong> · Estimated σ̂: <strong>4.0 mg</strong></p>
+          </div>
+          <div class="ver-tab-panel" id="p1-panel-c">
+            <p style="font-size:13px;color:var(--gray-700);margin-bottom:10px;">Target fill: <strong>100 mg</strong> · LSL: <strong>90 mg</strong> · USL: <strong>110 mg</strong> · Estimated σ̂: <strong>3.0 mg</strong></p>
+          </div>
+          <div class="ver-tab-panel" id="p1-panel-d">
+            <p style="font-size:13px;color:var(--gray-700);margin-bottom:10px;">Target fill: <strong>750 mg</strong> · LSL: <strong>720 mg</strong> · USL: <strong>780 mg</strong> · Estimated σ̂: <strong>6.0 mg</strong></p>
+          </div>
+        </div>
+        <div class="q-block"><div class="q-num">Part 1(a)</div><div class="q-text">Calculate the process capability index Cp for your version. Show the formula, plug in all values, and state the result.</div><div class="q-pts">8 pts</div></div>
+        <div class="q-block"><div class="q-num">Part 1(b)</div><div class="q-text">Using the three-threshold interpretation rule, classify the process capability. State which threshold applies and what it means for the Riverside center's fill process.</div><div class="q-pts">6 pts</div></div>
+        <div class="q-block"><div class="q-num">Part 1(c)</div><div class="q-text">The operations director wants to achieve Cp = 2.0 (six-sigma capability) without changing the specification limits. What would the process standard deviation need to be? Show your calculation.</div><div class="q-pts">6 pts</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PART 2 -->
+  <div>
+    <div class="sec-div">Part 2 — X-bar Control Chart</div>
+    <div class="section-card part2" style="margin-top:14px;">
+      <div class="section-hd">
+        <div class="part-badge">2</div>
+        <div class="section-hd-text"><h2>X-bar Control Chart</h2><p>5 sample periods of fill measurements · version-specific data</p></div>
+        <div class="pts-badge">25 pts</div>
+      </div>
+      <div class="section-bd">
+        <p style="font-size:13.5px;color:var(--gray-700);margin-bottom:14px;">The center collected fill amount measurements (in mg) during the first 5 periods of quality monitoring. Use the data for your assigned version below.</p>
+        <div class="ver-tabs">
+          <div class="ver-tab-hd">
+            <button class="ver-tab-btn active" onclick="switchTab('p2','a')" id="p2-tab-a"><span class="vb ver-a">A</span> Version A</button>
+            <button class="ver-tab-btn" onclick="switchTab('p2','b')" id="p2-tab-b"><span class="vb ver-b">B</span> Version B</button>
+            <button class="ver-tab-btn" onclick="switchTab('p2','c')" id="p2-tab-c"><span class="vb ver-c">C</span> Version C</button>
+            <button class="ver-tab-btn" onclick="switchTab('p2','d')" id="p2-tab-d"><span class="vb ver-d">D</span> Version D</button>
+          </div>
+          <div class="ver-tab-panel active" id="p2-panel-a">
+            <p style="font-size:12px;color:var(--gray-600);margin-bottom:8px;">n = 4 measurements per period · σ(all parts) = 5.0 mg · Period 6 new X̄ = 509.2 mg</p>
+            <table class="data-table"><thead><tr><th>Period</th><th>x₁ (mg)</th><th>x₂ (mg)</th><th>x₃ (mg)</th><th>x₄ (mg)</th></tr></thead><tbody>
+              <tr><td>1</td><td>498</td><td>502</td><td>499</td><td>501</td></tr>
+              <tr><td>2</td><td>503</td><td>497</td><td>501</td><td>499</td></tr>
+              <tr><td>3</td><td>500</td><td>498</td><td>503</td><td>499</td></tr>
+              <tr><td>4</td><td>497</td><td>503</td><td>500</td><td>500</td></tr>
+              <tr><td>5</td><td>501</td><td>499</td><td>502</td><td>498</td></tr>
+            </tbody></table>
+          </div>
+          <div class="ver-tab-panel" id="p2-panel-b">
+            <p style="font-size:12px;color:var(--gray-600);margin-bottom:8px;">n = 5 measurements per period · σ(all parts) = 4.0 mg · Period 6 new X̄ = 257.1 mg</p>
+            <table class="data-table"><thead><tr><th>Period</th><th>x₁</th><th>x₂</th><th>x₃</th><th>x₄</th><th>x₅</th></tr></thead><tbody>
+              <tr><td>1</td><td>248</td><td>252</td><td>249</td><td>251</td><td>250</td></tr>
+              <tr><td>2</td><td>253</td><td>247</td><td>251</td><td>249</td><td>250</td></tr>
+              <tr><td>3</td><td>250</td><td>248</td><td>253</td><td>249</td><td>250</td></tr>
+              <tr><td>4</td><td>247</td><td>253</td><td>250</td><td>250</td><td>250</td></tr>
+              <tr><td>5</td><td>251</td><td>249</td><td>252</td><td>248</td><td>250</td></tr>
+            </tbody></table>
+          </div>
+          <div class="ver-tab-panel" id="p2-panel-c">
+            <p style="font-size:12px;color:var(--gray-600);margin-bottom:8px;">n = 4 measurements per period · σ(all parts) = 3.0 mg · Period 6 new X̄ = 93.0 mg</p>
+            <table class="data-table"><thead><tr><th>Period</th><th>x₁</th><th>x₂</th><th>x₃</th><th>x₄</th></tr></thead><tbody>
+              <tr><td>1</td><td>98</td><td>102</td><td>99</td><td>101</td></tr>
+              <tr><td>2</td><td>103</td><td>97</td><td>101</td><td>99</td></tr>
+              <tr><td>3</td><td>100</td><td>98</td><td>103</td><td>99</td></tr>
+              <tr><td>4</td><td>97</td><td>103</td><td>100</td><td>100</td></tr>
+              <tr><td>5</td><td>101</td><td>99</td><td>102</td><td>98</td></tr>
+            </tbody></table>
+          </div>
+          <div class="ver-tab-panel" id="p2-panel-d">
+            <p style="font-size:12px;color:var(--gray-600);margin-bottom:8px;">n = 5 measurements per period · σ(all parts) = 6.0 mg · Period 6 new X̄ = 760.1 mg</p>
+            <table class="data-table"><thead><tr><th>Period</th><th>x₁</th><th>x₂</th><th>x₃</th><th>x₄</th><th>x₅</th></tr></thead><tbody>
+              <tr><td>1</td><td>748</td><td>752</td><td>749</td><td>751</td><td>750</td></tr>
+              <tr><td>2</td><td>753</td><td>747</td><td>751</td><td>749</td><td>750</td></tr>
+              <tr><td>3</td><td>750</td><td>748</td><td>753</td><td>749</td><td>750</td></tr>
+              <tr><td>4</td><td>747</td><td>753</td><td>750</td><td>750</td><td>750</td></tr>
+              <tr><td>5</td><td>751</td><td>749</td><td>752</td><td>748</td><td>750</td></tr>
+            </tbody></table>
+          </div>
+        </div>
+        <div class="q-block"><div class="q-num">Part 2(a)</div><div class="q-text">Compute the sample mean X̄ for each period.</div><div class="q-pts">5 pts</div></div>
+        <div class="q-block"><div class="q-num">Part 2(b)</div><div class="q-text">Compute the grand mean X̄̄ (center line).</div><div class="q-pts">4 pts</div></div>
+        <div class="q-block"><div class="q-num">Part 2(c)</div><div class="q-text">Compute ESD(X-bar) using σ(all parts)/√n. Write the formula explicitly before substituting values.</div><div class="q-pts">6 pts</div></div>
+        <div class="q-block"><div class="q-num">Part 2(d)</div><div class="q-text">Compute the UCL and LCL.</div><div class="q-pts">5 pts</div></div>
+        <div class="q-block"><div class="q-num">Part 2(e)</div><div class="q-text">In period 6, a new sample produces the mean shown above for your version. Is this period in control? State your decision rule explicitly.</div><div class="q-pts">5 pts</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PART 3 -->
+  <div>
+    <div class="sec-div">Part 3 — p-Chart for Dispensing Errors</div>
+    <div class="section-card part3" style="margin-top:14px;">
+      <div class="section-hd">
+        <div class="part-badge">3</div>
+        <div class="section-hd-text"><h2>p-Chart for Dispensing Errors</h2><p>8-week baseline · binary outcome · version-specific sample size</p></div>
+        <div class="pts-badge">25 pts</div>
+      </div>
+      <div class="section-bd">
+        <p style="font-size:13.5px;color:var(--gray-700);margin-bottom:14px;">The center reviewed a random sample of prescriptions each week for 8 weeks and recorded the number with dispensing errors (wrong patient, wrong drug, or wrong dose). Use the data for your assigned version below.</p>
+        <div class="ver-tabs">
+          <div class="ver-tab-hd">
+            <button class="ver-tab-btn active" onclick="switchTab('p3','a')" id="p3-tab-a"><span class="vb ver-a">A</span> Version A</button>
+            <button class="ver-tab-btn" onclick="switchTab('p3','b')" id="p3-tab-b"><span class="vb ver-b">B</span> Version B</button>
+            <button class="ver-tab-btn" onclick="switchTab('p3','c')" id="p3-tab-c"><span class="vb ver-c">C</span> Version C</button>
+            <button class="ver-tab-btn" onclick="switchTab('p3','d')" id="p3-tab-d"><span class="vb ver-d">D</span> Version D</button>
+          </div>
+          <div class="ver-tab-panel active" id="p3-panel-a">
+            <p style="font-size:12px;color:var(--gray-600);margin-bottom:8px;">n = 200 prescriptions/week · Week 9 errors = 16</p>
+            <table class="data-table"><thead><tr><th>Week</th><th>Dispensing Errors</th></tr></thead><tbody>
+              <tr><td>1</td><td>5</td></tr><tr><td>2</td><td>6</td></tr><tr><td>3</td><td>4</td></tr><tr><td>4</td><td>8</td></tr>
+              <tr><td>5</td><td>7</td></tr><tr><td>6</td><td>5</td></tr><tr><td>7</td><td>9</td></tr><tr><td>8</td><td>4</td></tr>
+              <tr><td><strong>Total</strong></td><td><strong>48</strong></td></tr>
+            </tbody></table>
+          </div>
+          <div class="ver-tab-panel" id="p3-panel-b">
+            <p style="font-size:12px;color:var(--gray-600);margin-bottom:8px;">n = 150 prescriptions/week · Week 9 errors = 18</p>
+            <table class="data-table"><thead><tr><th>Week</th><th>Dispensing Errors</th></tr></thead><tbody>
+              <tr><td>1</td><td>5</td></tr><tr><td>2</td><td>7</td></tr><tr><td>3</td><td>6</td></tr><tr><td>4</td><td>4</td></tr>
+              <tr><td>5</td><td>7</td></tr><tr><td>6</td><td>5</td></tr><tr><td>7</td><td>6</td></tr><tr><td>8</td><td>8</td></tr>
+              <tr><td><strong>Total</strong></td><td><strong>48</strong></td></tr>
+            </tbody></table>
+          </div>
+          <div class="ver-tab-panel" id="p3-panel-c">
+            <p style="font-size:12px;color:var(--gray-600);margin-bottom:8px;">n = 250 prescriptions/week · Week 9 errors = 17</p>
+            <table class="data-table"><thead><tr><th>Week</th><th>Dispensing Errors</th></tr></thead><tbody>
+              <tr><td>1</td><td>5</td></tr><tr><td>2</td><td>7</td></tr><tr><td>3</td><td>6</td></tr><tr><td>4</td><td>4</td></tr>
+              <tr><td>5</td><td>8</td></tr><tr><td>6</td><td>6</td></tr><tr><td>7</td><td>7</td></tr><tr><td>8</td><td>7</td></tr>
+              <tr><td><strong>Total</strong></td><td><strong>50</strong></td></tr>
+            </tbody></table>
+          </div>
+          <div class="ver-tab-panel" id="p3-panel-d">
+            <p style="font-size:12px;color:var(--gray-600);margin-bottom:8px;">n = 200 prescriptions/shift · Week 9 errors = 12</p>
+            <table class="data-table"><thead><tr><th>Shift</th><th>Dispensing Errors</th></tr></thead><tbody>
+              <tr><td>1</td><td>3</td></tr><tr><td>2</td><td>4</td></tr><tr><td>3</td><td>3</td></tr><tr><td>4</td><td>5</td></tr>
+              <tr><td>5</td><td>4</td></tr><tr><td>6</td><td>3</td></tr><tr><td>7</td><td>5</td></tr><tr><td>8</td><td>5</td></tr>
+              <tr><td><strong>Total</strong></td><td><strong>32</strong></td></tr>
+            </tbody></table>
+          </div>
+        </div>
+        <div class="q-block"><div class="q-num">Part 3(a)</div><div class="q-text">Compute the proportion defective p for each week (or shift). Show p = defects / n for each period.</div><div class="q-pts">4 pts</div></div>
+        <div class="q-block"><div class="q-num">Part 3(b)</div><div class="q-text">Compute p̄ (centerline). Show the calculation as total defects / total items reviewed — not as an average of the weekly proportions.</div><div class="q-pts">5 pts</div></div>
+        <div class="q-block"><div class="q-num">Part 3(c)</div><div class="q-text">Compute ESD(p) using the p-chart formula. Write the formula with values substituted before computing: ESD(p) = √(p̄ × (1 − p̄) / n).</div><div class="q-pts">6 pts</div></div>
+        <div class="q-block"><div class="q-num">Part 3(d)</div><div class="q-text">Compute UCL and LCL. If LCL is negative, state it as 0 and explain in one sentence why this is appropriate.</div><div class="q-pts">5 pts</div></div>
+        <div class="q-block"><div class="q-num">Part 3(e)</div><div class="q-text">In the next period, the center finds the number of errors shown for your version above. Is this period in control? State your comparison and decision explicitly.</div><div class="q-pts">5 pts</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PART 4 -->
+  <div>
+    <div class="sec-div">Part 4 — Event Tree Analysis of Quality Safeguards</div>
+    <div class="section-card part4" style="margin-top:14px;">
+      <div class="section-hd">
+        <div class="part-badge">4</div>
+        <div class="section-hd-text"><h2>Event Tree Analysis of Quality Safeguards</h2><p>Three independent safeguards · version-specific catch rates</p></div>
+        <div class="pts-badge">15 pts</div>
+      </div>
+      <div class="section-bd">
+        <p style="font-size:13.5px;color:var(--gray-700);margin-bottom:14px;">Riverside has implemented three independent quality safeguards to catch dispensing errors before they reach patients. Use the catch rates for your assigned version.</p>
+        <div class="ver-tabs">
+          <div class="ver-tab-hd">
+            <button class="ver-tab-btn active" onclick="switchTab('p4','a')" id="p4-tab-a"><span class="vb ver-a">A</span> Version A</button>
+            <button class="ver-tab-btn" onclick="switchTab('p4','b')" id="p4-tab-b"><span class="vb ver-b">B</span> Version B</button>
+            <button class="ver-tab-btn" onclick="switchTab('p4','c')" id="p4-tab-c"><span class="vb ver-c">C</span> Version C</button>
+            <button class="ver-tab-btn" onclick="switchTab('p4','d')" id="p4-tab-d"><span class="vb ver-d">D</span> Version D</button>
+          </div>
+          <div class="ver-tab-panel active" id="p4-panel-a">
+            <p style="font-size:13px;color:var(--gray-700);">Safeguard 1 (Pharmacist verification): catches <strong>85%</strong> of errors. Safeguard 2 (Computer cross-check): catches <strong>70%</strong> of errors that pass Safeguard 1. Safeguard 3 (Patient counseling): catches <strong>60%</strong> of errors that pass Safeguards 1 and 2.</p>
+          </div>
+          <div class="ver-tab-panel" id="p4-panel-b">
+            <p style="font-size:13px;color:var(--gray-700);">Safeguard 1 (Pharmacist verification): catches <strong>80%</strong> of errors. Safeguard 2 (Computer cross-check): catches <strong>75%</strong> of errors that pass Safeguard 1. Safeguard 3 (Patient counseling): catches <strong>70%</strong> of errors that pass Safeguards 1 and 2.</p>
+          </div>
+          <div class="ver-tab-panel" id="p4-panel-c">
+            <p style="font-size:13px;color:var(--gray-700);">Safeguard 1 (Pharmacist verification): catches <strong>90%</strong> of errors. Safeguard 2 (Computer cross-check): catches <strong>65%</strong> of errors that pass Safeguard 1. Safeguard 3 (Patient counseling): catches <strong>60%</strong> of errors that pass Safeguards 1 and 2.</p>
+          </div>
+          <div class="ver-tab-panel" id="p4-panel-d">
+            <p style="font-size:13px;color:var(--gray-700);">Safeguard 1 (Pharmacist verification): catches <strong>75%</strong> of errors. Safeguard 2 (Computer cross-check): catches <strong>80%</strong> of errors that pass Safeguard 1. Safeguard 3 (Patient counseling): catches <strong>65%</strong> of errors that pass Safeguards 1 and 2.</p>
+          </div>
+        </div>
+        <div class="q-block"><div class="q-num">Part 4(a)</div><div class="q-text">Describe the event tree for this process. Is this AND-logic or OR/robust logic? Explain what that logic type means for process robustness in one to two sentences.</div><div class="q-pts">5 pts</div></div>
+        <div class="q-block"><div class="q-num">Part 4(b)</div><div class="q-text">Compute the probability that a dispensing error reaches a patient (all three safeguards fail). Show the full multiplication chain with the miss rates for each safeguard.</div><div class="q-pts">5 pts</div></div>
+        <div class="q-block"><div class="q-num">Part 4(c)</div><div class="q-text">Suppose Safeguard 2 (the computer system) is removed due to budget cuts. Recompute the probability that an error reaches the patient with only Safeguards 1 and 3 remaining. By how much does this change the probability?</div><div class="q-pts">5 pts</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PART 5 -->
+  <div>
+    <div class="sec-div">Part 5 — Root Cause Investigation (Same for All Versions)</div>
+    <div class="section-card part5" style="margin-top:14px;">
+      <div class="section-hd">
+        <div class="part-badge">5</div>
+        <div class="section-hd-text"><h2>Root Cause Investigation — Pareto Analysis</h2><p>Same data for all versions · apply Pareto principle and SPC cycle</p></div>
+        <div class="pts-badge">15 pts</div>
+      </div>
+      <div class="section-bd">
+        <p style="font-size:13.5px;color:var(--gray-700);margin-bottom:14px;">Quality data from the past month identified the following root causes for the dispensing errors caught internally:</p>
+        <table class="data-table" style="margin-bottom:18px;">
+          <thead><tr><th>Root Cause</th><th>Frequency (# errors)</th></tr></thead>
+          <tbody>
+            <tr><td>Incorrect patient information in system</td><td>38</td></tr>
+            <tr><td>Pharmacist transcription error</td><td>24</td></tr>
+            <tr><td>Barcode scanning failure</td><td>17</td></tr>
+            <tr><td>Drug-drug interaction check skipped</td><td>12</td></tr>
+            <tr><td>Shift handover communication gap</td><td>9</td></tr>
+            <tr><td>Equipment calibration error</td><td>5</td></tr>
+            <tr><td><strong>Total</strong></td><td><strong>105</strong></td></tr>
+          </tbody>
+        </table>
+        <div class="q-block"><div class="q-num">Part 5(a)</div><div class="q-text">Sort the root causes by frequency (already done above) and compute the cumulative percentage for each. Present as a table with columns: Root Cause, Frequency, Cumulative %.</div><div class="q-pts">5 pts</div></div>
+        <div class="q-block"><div class="q-num">Part 5(b)</div><div class="q-text">Identify which root causes account for approximately 80% of errors (Pareto principle). State the specific causes and the cumulative percentage they represent. Attribute the 80/20 principle to the correct scholar.</div><div class="q-pts">5 pts</div></div>
+        <div class="q-block"><div class="q-num">Part 5(c)</div><div class="q-text">Using the SPC 4-step framework (Capability → Conformance → Investigate → Eliminate), explain which step this Pareto analysis represents and what the operations director should do next in the cycle.</div><div class="q-pts">5 pts</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GRADING SUMMARY -->
+  <div>
+    <div class="sec-div">Grading Summary</div>
+    <div class="section-card" style="margin-top:14px;">
+      <div class="section-bd">
+        <table class="grade-table">
+          <thead><tr><th>Part</th><th>Topic</th><th style="text-align:right;">Points</th></tr></thead>
+          <tbody>
+            <tr><td>Part 1</td><td>Process Capability Analysis (Cp)</td><td class="pts-right">20</td></tr>
+            <tr><td>Part 2</td><td>X-bar Control Chart</td><td class="pts-right">25</td></tr>
+            <tr><td>Part 3</td><td>p-Chart for Dispensing Errors</td><td class="pts-right">25</td></tr>
+            <tr><td>Part 4</td><td>Event Tree Analysis of Quality Safeguards</td><td class="pts-right">15</td></tr>
+            <tr><td>Part 5</td><td>Root Cause Investigation (Pareto)</td><td class="pts-right">15</td></tr>
+            <tr class="total"><td colspan="2"><strong>Total</strong></td><td class="pts-right" style="font-size:15px;">100</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function switchTab(part, ver) {
+  ['a','b','c','d'].forEach(v => {
+    const btn = document.getElementById(`${part}-tab-${v}`);
+    const panel = document.getElementById(`${part}-panel-${v}`);
+    if (btn) btn.classList.toggle('active', v === ver);
+    if (panel) panel.classList.toggle('active', v === ver);
+  });
+}
+// Initialize all tabs
+['p1','p2','p3','p4'].forEach(p => {
+  document.querySelectorAll(`#${p}-tab-a`).forEach(el => el.classList.add('active'));
+});
+</script>
+</body>
+</html>

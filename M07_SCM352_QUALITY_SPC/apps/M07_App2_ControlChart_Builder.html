@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SCM 352 · M07 — Control Chart Builder</title>
+<style>
+  :root {
+    --navy: #0d1b2a;
+    --blue: #1a6fc4;
+    --teal: #0fb5ae;
+    --amber: #f5a623;
+    --red: #e74c3c;
+    --green: #27ae60;
+    --surface: #f4f6f9;
+    --border: #dde2ea;
+    --text: #1a1d23;
+    --text-muted: #6b7280;
+    --white: #ffffff;
+    --radius: 10px;
+    --shadow: 0 2px 12px rgba(13,27,42,.10);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--surface); color: var(--text); font-size: 15px; line-height: 1.5; }
+
+  .app-header { background: var(--navy); color: var(--white); padding: 18px 28px; display: flex; align-items: center; gap: 14px; }
+  .app-badge { background: var(--blue); font-size: 11px; font-weight: 700; letter-spacing: .05em; padding: 3px 10px; border-radius: 20px; }
+  .app-header h1 { font-size: 18px; font-weight: 600; }
+  .lo-badge { background: rgba(255,255,255,.12); font-size: 11px; padding: 2px 9px; border-radius: 12px; color: rgba(255,255,255,.8); }
+
+  .app-body { max-width: 900px; margin: 28px auto; padding: 0 20px 50px; }
+
+  .mode-tabs { display: flex; gap: 0; margin-bottom: 24px; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+  .mode-tab { flex: 1; padding: 12px 20px; text-align: center; cursor: pointer; font-size: 14px; font-weight: 600; background: var(--white); border: none; color: var(--text-muted); transition: all .15s; }
+  .mode-tab.active { background: var(--navy); color: var(--white); }
+
+  .card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px 24px; margin-bottom: 18px; box-shadow: var(--shadow); }
+  .card-title { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--text-muted); margin-bottom: 12px; }
+
+  .scenario-panel { background: var(--navy); color: var(--white); border-radius: var(--radius); padding: 18px 20px; margin-bottom: 20px; }
+  .sp-title { font-size: 13px; color: rgba(255,255,255,.5); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 8px; }
+  .sp-context { font-size: 15px; color: rgba(255,255,255,.9); margin-bottom: 14px; line-height: 1.6; }
+  .sp-params { display: flex; gap: 12px; flex-wrap: wrap; }
+  .sp-param { background: rgba(255,255,255,.07); border-radius: 8px; padding: 8px 14px; }
+  .sp-param .plabel { font-size: 11px; color: rgba(255,255,255,.5); }
+  .sp-param .pvalue { font-size: 17px; font-weight: 700; color: var(--teal); }
+
+  .data-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 14px; }
+  .data-table th { background: var(--navy); color: var(--white); padding: 8px 10px; text-align: center; font-weight: 600; font-size: 12px; }
+  .data-table td { padding: 7px 10px; text-align: center; border: 1px solid var(--border); }
+  .data-table tr:nth-child(even) { background: #f8f9fb; }
+  .data-table input[type=number] { width: 80px; padding: 4px 8px; border: 1px solid var(--border); border-radius: 6px; font-size: 13px; text-align: center; }
+  .data-table input.correct { border-color: var(--green); background: rgba(39,174,96,.05); }
+  .data-table input.incorrect { border-color: var(--red); background: rgba(231,76,60,.05); }
+
+  .step-block { border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 20px; margin-bottom: 14px; }
+  .step-block.locked { opacity: .4; pointer-events: none; }
+  .step-block.done { border-color: var(--green); background: rgba(39,174,96,.04); }
+  .step-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .step-num { width: 28px; height: 28px; border-radius: 50%; background: var(--blue); color: var(--white); font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .step-block.done .step-num { background: var(--green); }
+  .step-title { font-size: 15px; font-weight: 600; }
+  .step-prompt { font-size: 14px; color: var(--text-muted); margin-bottom: 12px; line-height: 1.6; }
+
+  .formula-display { background: #f8f9fb; border: 1px solid var(--border); border-radius: 8px; padding: 9px 14px; font-family: "Courier New", monospace; font-size: 13px; color: var(--navy); margin-bottom: 12px; }
+
+  .input-row { display: flex; gap: 10px; align-items: center; margin-bottom: 10px; flex-wrap: wrap; }
+  .input-row label { font-size: 13px; color: var(--text-muted); min-width: 140px; }
+  .input-row input[type=number] { width: 130px; padding: 8px 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; }
+  .input-row input:focus { outline: none; border-color: var(--blue); }
+
+  .btn-primary { background: var(--blue); color: var(--white); padding: 9px 22px; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; transition: background .15s; }
+  .btn-primary:hover { background: #1559a8; }
+  .btn-reset { background: transparent; border: 1px solid var(--border); color: var(--text-muted); padding: 8px 18px; border-radius: 8px; font-size: 13px; cursor: pointer; margin-left: 10px; }
+
+  .feedback-box { border-radius: 8px; padding: 12px 16px; font-size: 14px; margin-top: 10px; display: none; line-height: 1.6; }
+  .feedback-box.correct { background: rgba(39,174,96,.08); border: 1px solid rgba(39,174,96,.3); color: #1a5c38; display: block; }
+  .feedback-box.incorrect { background: rgba(231,76,60,.07); border: 1px solid rgba(231,76,60,.25); color: #7b1d12; display: block; }
+  .feedback-box.info { background: rgba(26,111,196,.07); border: 1px solid rgba(26,111,196,.25); color: #0d3e72; display: block; }
+
+  .scenario-picker { display: flex; gap: 8px; margin-bottom: 16px; }
+  .sp-btn { padding: 6px 14px; border: 2px solid var(--border); background: var(--white); border-radius: 20px; cursor: pointer; font-size: 12px; font-weight: 500; color: var(--text); transition: all .15s; }
+  .sp-btn:hover { border-color: var(--blue); }
+  .sp-btn.active { background: var(--blue); border-color: var(--blue); color: var(--white); }
+
+  .comparison-box { background: rgba(231,76,60,.06); border: 1px solid rgba(231,76,60,.2); border-radius: 8px; padding: 12px 16px; margin-top: 10px; font-size: 13px; color: #7b1d12; }
+</style>
+</head>
+<body>
+
+<div class="app-header">
+  <span class="app-badge">SCM 352 · M07</span>
+  <h1>Control Chart Builder</h1>
+  <span class="lo-badge">LO7-3 · LO7-4</span>
+</div>
+
+<!-- INSTRUCTION BLOCK -->
+<div style="background:#fffbeb;border-left:4px solid #f59e0b;padding:12px 24px;font-size:13px;line-height:1.65;color:#374151;">
+  <p style="margin:0 0 5px 0;"><strong style="color:#1a3a5c;">Do this:</strong> Work through 4 X-bar scenarios and 4 p-chart scenarios — for each, compute ESD, set control limits (UCL = center ± 3×ESD), and decide whether a new observation falls in or out of control.</p>
+  <p style="margin:0 0 5px 0;"><strong style="color:#1a3a5c;">Gate 2 connection:</strong> Gate 2 Q2 (X-bar) and Q3 (p-chart) both require this exact calculation sequence — this app shows the correct ESD formula alongside the most common wrong formula so you see the difference before the quiz.</p>
+  <p style="margin:0;"><strong style="color:#1a3a5c;">Watch for:</strong> The ESD for an X-bar chart uses σ of all individual parts in the numerator, not σ of the sample means — before dividing by √n, confirm your σ was computed from all raw observations, not from the period-level averages you just calculated.</p>
+</div>
+
+<div class="app-body">
+
+  <div class="mode-tabs">
+    <button class="mode-tab active" id="tab-xbar" onclick="switchMode('xbar')">X-bar Chart Mode</button>
+    <button class="mode-tab" id="tab-pchart" onclick="switchMode('pchart')">p-Chart Mode</button>
+  </div>
+
+  <!-- ===== X-BAR MODE ===== -->
+  <div id="mode-xbar">
+    <div class="card">
+      <div class="card-title">X-bar Mode — Scenario</div>
+      <div class="scenario-picker">
+        <button class="sp-btn active" onclick="loadXbar(0)">1 — Call Center</button>
+        <button class="sp-btn" onclick="loadXbar(1)">2 — Coffee Fill</button>
+        <button class="sp-btn" onclick="loadXbar(2)">3 — Delivery Time</button>
+        <button class="sp-btn" onclick="loadXbar(3)">4 — Battery Voltage</button>
+      </div>
+      <div class="scenario-panel" id="xbar-scenario-panel"></div>
+    </div>
+
+    <!-- Step 1: Compute X-bar per period -->
+    <div class="step-block" id="xbar-step1">
+      <div class="step-header"><div class="step-num">1</div><div class="step-title">Compute X̄ for each period</div></div>
+      <div class="step-prompt">Using the sample data table above, calculate the sample mean for each period. Round to three decimal places.</div>
+      <table class="data-table" id="xbar-table"></table>
+      <button class="btn-primary" onclick="checkXbarStep1()">Check All Means</button>
+      <div class="feedback-box" id="fb-xbar1"></div>
+    </div>
+
+    <!-- Step 2: Grand mean -->
+    <div class="step-block locked" id="xbar-step2">
+      <div class="step-header"><div class="step-num">2</div><div class="step-title">Compute X̄̄ (grand mean / center line)</div></div>
+      <div class="step-prompt">Average the sample means you computed in Step 1. This is the center line of the X-bar chart.</div>
+      <div class="input-row"><label>X̄̄ =</label><input type="number" id="xbar-grand-mean" step="any" placeholder="grand mean"></div>
+      <button class="btn-primary" onclick="checkXbarStep2()">Check</button>
+      <div class="feedback-box" id="fb-xbar2"></div>
+    </div>
+
+    <!-- Step 3: ESD -->
+    <div class="step-block locked" id="xbar-step3">
+      <div class="step-header"><div class="step-num">3</div><div class="step-title">Compute ESD(X̄)</div></div>
+      <div class="step-prompt">Use the formula: <strong>ESD(X̄) = σ(all parts) / √n</strong> where σ(all parts) is given in the scenario and n is the sample size per period.</div>
+      <div class="formula-display">ESD(X̄) = σ(all parts) / √n</div>
+      <div class="input-row"><label>ESD(X̄) =</label><input type="number" id="xbar-esd" step="any" placeholder="e.g. 0.050"></div>
+      <button class="btn-primary" onclick="checkXbarStep3()">Check</button>
+      <div class="feedback-box" id="fb-xbar3"></div>
+      <div class="comparison-box" id="xbar-comparison" style="display:none;"></div>
+    </div>
+
+    <!-- Step 4: Limits + decision -->
+    <div class="step-block locked" id="xbar-step4">
+      <div class="step-header"><div class="step-num">4</div><div class="step-title">Compute UCL, LCL, and make a decision</div></div>
+      <div class="step-prompt">Compute the control limits. Then evaluate the new sample mean given in the scenario.</div>
+      <div class="input-row"><label>UCL =</label><input type="number" id="xbar-ucl" step="any" placeholder=""></div>
+      <div class="input-row"><label>LCL =</label><input type="number" id="xbar-lcl" step="any" placeholder=""></div>
+      <div style="margin-top:4px;margin-bottom:12px;font-size:13px;color:var(--text-muted);">New sample mean: <strong id="xbar-new-mean-label">—</strong></div>
+      <select id="xbar-decision"><option value="">— Is the new sample in control? —</option><option value="in">In control</option><option value="out">Out of control</option></select>
+      <button class="btn-primary" style="margin-top:12px;" onclick="checkXbarStep4()">Submit</button>
+      <div class="feedback-box" id="fb-xbar4"></div>
+    </div>
+  </div>
+
+  <!-- ===== P-CHART MODE ===== -->
+  <div id="mode-pchart" style="display:none;">
+    <div class="card">
+      <div class="card-title">p-Chart Mode — Scenario</div>
+      <div class="scenario-picker">
+        <button class="sp-btn active" onclick="loadPchart(0)">1 — Invoicing Errors</button>
+        <button class="sp-btn" onclick="loadPchart(1)">2 — Hotel Check-in</button>
+        <button class="sp-btn" onclick="loadPchart(2)">3 — Delivery Accuracy</button>
+        <button class="sp-btn" onclick="loadPchart(3)">4 — Lab Test Results</button>
+      </div>
+      <div class="scenario-panel" id="pchart-scenario-panel"></div>
+    </div>
+
+    <!-- Step 1: Per-period p -->
+    <div class="step-block" id="pchart-step1">
+      <div class="step-header"><div class="step-num">1</div><div class="step-title">Compute p for each period</div></div>
+      <div class="step-prompt">Divide each period's defective count by n to get the per-period proportion defective.</div>
+      <table class="data-table" id="pchart-table"></table>
+      <button class="btn-primary" onclick="checkPchartStep1()">Check All Proportions</button>
+      <div class="feedback-box" id="fb-pchart1"></div>
+    </div>
+
+    <!-- Step 2: p-bar -->
+    <div class="step-block locked" id="pchart-step2">
+      <div class="step-header"><div class="step-num">2</div><div class="step-title">Compute p̄ (centerline)</div></div>
+      <div class="step-prompt">Compute p̄ using <strong>total defects across all periods / total items inspected</strong>. Do NOT average the per-period p values.</div>
+      <div class="input-row"><label>p̄ =</label><input type="number" id="pchart-pbar" step="any" placeholder="e.g. 0.035"></div>
+      <button class="btn-primary" onclick="checkPchartStep2()">Check</button>
+      <div class="feedback-box" id="fb-pchart2"></div>
+    </div>
+
+    <!-- Step 3: ESD and limits -->
+    <div class="step-block locked" id="pchart-step3">
+      <div class="step-header"><div class="step-num">3</div><div class="step-title">Compute ESD(p) and control limits</div></div>
+      <div class="step-prompt">Use: <strong>ESD(p) = √(p̄ × (1 − p̄) / n)</strong>. Remember: divide by n INSIDE the square root.</div>
+      <div class="formula-display">ESD(p) = √(p̄ × (1 − p̄) / n)</div>
+      <div class="input-row"><label>ESD(p) =</label><input type="number" id="pchart-esd" step="any" placeholder="e.g. 0.013"></div>
+      <button class="btn-primary" onclick="checkPchartStep3()">Check ESD</button>
+      <div class="feedback-box" id="fb-pchart3"></div>
+    </div>
+
+    <!-- Step 4: UCL, LCL, decision -->
+    <div class="step-block locked" id="pchart-step4">
+      <div class="step-header"><div class="step-num">4</div><div class="step-title">Compute UCL, LCL, handle negative LCL, and decide</div></div>
+      <div class="step-prompt">Compute UCL = p̄ + 3×ESD and LCL = p̄ − 3×ESD. If LCL is negative, enter 0. Then evaluate the new period.</div>
+      <div class="input-row"><label>UCL =</label><input type="number" id="pchart-ucl" step="any"></div>
+      <div class="input-row"><label>LCL =</label><input type="number" id="pchart-lcl" step="any" placeholder="(enter 0 if negative)"></div>
+      <div style="margin-top:4px;margin-bottom:12px;font-size:13px;color:var(--text-muted);">New period — defective count: <strong id="pchart-new-label">—</strong></div>
+      <select id="pchart-decision"><option value="">— New period in control? —</option><option value="in">In control</option><option value="out">Out of control</option></select>
+      <button class="btn-primary" style="margin-top:12px;" onclick="checkPchartStep4()">Submit</button>
+      <div class="feedback-box" id="fb-pchart4"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ===== DATA =====
+
+const xbarScenarios = [
+  {
+    title: "Call Center — Average Handle Time",
+    context: "A call center tracks average handle time (in minutes) per shift. Supervisor takes n=5 calls each shift. The process standard deviation across all calls is σ(all parts) = 2.0 min.",
+    n: 5, sigma: 2.0,
+    periods: [
+      [8.2, 7.9, 8.4, 8.1, 7.8],
+      [8.3, 8.0, 7.9, 8.2, 8.1],
+      [7.8, 8.1, 8.0, 7.9, 8.2],
+      [8.1, 8.3, 7.9, 8.0, 8.2],
+      [8.0, 8.2, 8.1, 7.8, 7.9],
+    ],
+    newMean: 9.8,
+    newMeanIn: false,
+  },
+  {
+    title: "Coffee Shop — Fill Volume",
+    context: "A coffee shop tracks the fill volume (in oz) for size-large drinks. Four drinks are sampled per hour. σ(all parts) = 0.3 oz.",
+    n: 4, sigma: 0.3,
+    periods: [
+      [16.1, 15.9, 16.0, 16.2],
+      [16.0, 16.2, 15.8, 16.1],
+      [15.9, 16.1, 16.0, 16.2],
+      [16.2, 16.0, 15.9, 16.1],
+      [16.0, 16.1, 16.2, 15.8],
+    ],
+    newMean: 16.55,
+    newMeanIn: false,
+  },
+  {
+    title: "Logistics — Package Delivery Time",
+    context: "A regional shipper tracks delivery time (in days) for next-day shipments. Three shipments are sampled per route per day. σ(all parts) = 0.4 days.",
+    n: 3, sigma: 0.4,
+    periods: [
+      [1.0, 1.2, 0.9],
+      [1.1, 1.0, 1.2],
+      [0.9, 1.1, 1.0],
+      [1.2, 1.0, 0.9],
+      [1.0, 1.1, 1.2],
+    ],
+    newMean: 1.85,
+    newMeanIn: false,
+  },
+  {
+    title: "Electronics — Battery Voltage",
+    context: "A battery assembly line tracks output voltage (volts). Six batteries sampled per production run. σ(all parts) = 0.06 V.",
+    n: 6, sigma: 0.06,
+    periods: [
+      [3.70, 3.72, 3.68, 3.71, 3.69, 3.70],
+      [3.71, 3.69, 3.70, 3.72, 3.68, 3.71],
+      [3.70, 3.71, 3.69, 3.68, 3.72, 3.70],
+      [3.69, 3.70, 3.72, 3.71, 3.68, 3.70],
+      [3.71, 3.70, 3.68, 3.72, 3.69, 3.71],
+    ],
+    newMean: 3.66,
+    newMeanIn: true,
+  },
+];
+
+const pchartScenarios = [
+  {
+    title: "Accounts Payable — Invoice Errors",
+    context: "A finance team inspects n=150 invoices per week. They record the number containing errors.",
+    n: 150,
+    periods: [5, 7, 4, 9, 6, 8, 5, 6],
+    newDefects: 18,
+    newIn: false,
+  },
+  {
+    title: "Hotel — Check-in Errors",
+    context: "A hotel front desk reviews n=100 check-ins per shift for keying errors. Data from 8 shifts.",
+    n: 100,
+    periods: [3, 5, 2, 4, 6, 3, 4, 5],
+    newDefects: 12,
+    newIn: false,
+  },
+  {
+    title: "E-Commerce — Delivery Accuracy",
+    context: "A fulfillment center tracks delivery errors (wrong item, wrong address) per day. n=500 orders per day, 8 days baseline.",
+    n: 500,
+    periods: [12, 15, 10, 14, 11, 13, 12, 11],
+    newDefects: 28,
+    newIn: false,
+  },
+  {
+    title: "Lab — Specimen Processing Errors",
+    context: "A hospital lab tracks specimen processing errors. n=200 specimens per session, 8 sessions.",
+    n: 200,
+    periods: [4, 6, 5, 3, 7, 4, 5, 6],
+    newDefects: 14,
+    newIn: false,
+  },
+];
+
+// ===== STATE =====
+let xbarIdx = 0;
+let pchartIdx = 0;
+
+// ===== HELPERS =====
+function round(v, d) { return Math.round(v * Math.pow(10, d)) / Math.pow(10, d); }
+function close(a, b, tol=0.005) { return Math.abs(a - b) <= tol; }
+
+function mean(arr) { return arr.reduce((s, v) => s + v, 0) / arr.length; }
+function sum(arr) { return arr.reduce((s, v) => s + v, 0); }
+
+// ===== MODE SWITCH =====
+function switchMode(mode) {
+  document.getElementById('mode-xbar').style.display = mode === 'xbar' ? '' : 'none';
+  document.getElementById('mode-pchart').style.display = mode === 'pchart' ? '' : 'none';
+  document.getElementById('tab-xbar').classList.toggle('active', mode === 'xbar');
+  document.getElementById('tab-pchart').classList.toggle('active', mode === 'pchart');
+}
+
+// ===== FEEDBACK =====
+function fb(id, type, html) {
+  const el = document.getElementById(id);
+  el.className = 'feedback-box ' + type;
+  el.innerHTML = html;
+}
+
+// ===== X-BAR MODE =====
+function loadXbar(idx) {
+  xbarIdx = idx;
+  const s = xbarScenarios[idx];
+  document.querySelectorAll('#mode-xbar .sp-btn').forEach((b, i) => b.classList.toggle('active', i === idx));
+
+  document.getElementById('xbar-scenario-panel').innerHTML = `
+    <div class="sp-title">X-bar Scenario — ${s.title}</div>
+    <div class="sp-context">${s.context}</div>
+    <div class="sp-params">
+      <div class="sp-param"><div class="plabel">n (per period)</div><div class="pvalue">${s.n}</div></div>
+      <div class="sp-param"><div class="plabel">σ(all parts)</div><div class="pvalue">${s.sigma}</div></div>
+      <div class="sp-param"><div class="plabel">Periods</div><div class="pvalue">${s.periods.length}</div></div>
+    </div>
+  `;
+
+  // Build data table
+  let thead = '<thead><tr><th>Period</th>';
+  for (let j = 0; j < s.n; j++) thead += `<th>x${j+1}</th>`;
+  thead += '<th>X̄ (your answer)</th></tr></thead>';
+  let tbody = '<tbody>';
+  s.periods.forEach((row, i) => {
+    tbody += `<tr><td><strong>${i+1}</strong></td>`;
+    row.forEach(v => tbody += `<td>${v}</td>`);
+    tbody += `<td><input type="number" id="xbar-mean-${i}" step="0.001" placeholder=""></td></tr>`;
+  });
+  tbody += '</tbody>';
+  document.getElementById('xbar-table').innerHTML = thead + tbody;
+
+  // Reset steps
+  ['xbar-step1','xbar-step2','xbar-step3','xbar-step4'].forEach((id, i) => {
+    const el = document.getElementById(id);
+    el.className = 'step-block' + (i === 0 ? '' : ' locked');
+  });
+  ['fb-xbar1','fb-xbar2','fb-xbar3','fb-xbar4'].forEach(id => { document.getElementById(id).className = 'feedback-box'; document.getElementById(id).innerHTML = ''; });
+  ['xbar-grand-mean','xbar-esd','xbar-ucl','xbar-lcl'].forEach(id => { const el = document.getElementById(id); if(el) el.value=''; });
+  document.getElementById('xbar-decision').value = '';
+  document.getElementById('xbar-comparison').style.display = 'none';
+  document.getElementById('xbar-new-mean-label').textContent = s.newMean;
+}
+
+function checkXbarStep1() {
+  const s = xbarScenarios[xbarIdx];
+  let allCorrect = true;
+  let errors = [];
+  s.periods.forEach((row, i) => {
+    const input = document.getElementById(`xbar-mean-${i}`);
+    const expected = round(mean(row), 3);
+    const val = parseFloat(input.value);
+    if (isNaN(val) || !close(val, expected, 0.005)) {
+      allCorrect = false;
+      input.className = 'incorrect';
+      errors.push(`Period ${i+1}: expected ${expected}`);
+    } else {
+      input.className = 'correct';
+    }
+  });
+  if (allCorrect) {
+    fb('fb-xbar1','correct','✓ All sample means correct. Proceed to Step 2.');
+    document.getElementById('xbar-step1').className = 'step-block done';
+    document.getElementById('xbar-step2').className = 'step-block';
+  } else {
+    fb('fb-xbar1','incorrect','✗ Some means are incorrect. Check highlighted cells.<br>' + errors.map(e=>`• ${e}`).join('<br>'));
+  }
+}
+
+function checkXbarStep2() {
+  const s = xbarScenarios[xbarIdx];
+  const sampleMeans = s.periods.map(row => mean(row));
+  const expected = round(mean(sampleMeans), 3);
+  const val = parseFloat(document.getElementById('xbar-grand-mean').value);
+  if (isNaN(val)) { fb('fb-xbar2','incorrect','Enter a value.'); return; }
+  if (close(val, expected, 0.005)) {
+    fb('fb-xbar2','correct',`✓ X̄̄ = ${expected}. Proceed to Step 3.`);
+    document.getElementById('xbar-step2').className = 'step-block done';
+    document.getElementById('xbar-step3').className = 'step-block';
+  } else {
+    fb('fb-xbar2','incorrect',`✗ Expected X̄̄ = ${expected}. Average the sample means from Step 1.`);
+  }
+}
+
+function checkXbarStep3() {
+  const s = xbarScenarios[xbarIdx];
+  const expected = round(s.sigma / Math.sqrt(s.n), 4);
+  const val = parseFloat(document.getElementById('xbar-esd').value);
+  if (isNaN(val)) { fb('fb-xbar3','incorrect','Enter a value.'); return; }
+
+  // Show comparison with wrong formula
+  const sampleMeans = s.periods.map(row => mean(row));
+  const grandMean = mean(sampleMeans);
+  const wrongSigma = round(Math.sqrt(sampleMeans.reduce((s2,x) => s2 + Math.pow(x - grandMean, 2), 0) / (sampleMeans.length - 1)), 4);
+  const wrongESD = round(wrongSigma / Math.sqrt(s.n), 4);
+
+  if (close(val, expected, 0.003)) {
+    const compHtml = `<strong>For comparison:</strong> If you had (incorrectly) used σ of the computed X̄ values as the standard deviation, you would get σ(X̄ values) = ${wrongSigma}, and ESD = ${wrongESD}. That is wrong — σ(all parts) = ${s.sigma} is the correct value to use.`;
+    document.getElementById('xbar-comparison').innerHTML = compHtml;
+    document.getElementById('xbar-comparison').style.display = 'block';
+    fb('fb-xbar3','correct',`✓ ESD(X̄) = ${s.sigma} / √${s.n} = ${expected}. Proceed to Step 4.`);
+    document.getElementById('xbar-step3').className = 'step-block done';
+    document.getElementById('xbar-step4').className = 'step-block';
+  } else if (close(val, wrongESD, 0.003)) {
+    fb('fb-xbar3','incorrect',`✗ You used σ of the computed X̄ values (${wrongSigma}) instead of σ(all parts). σ(all parts) = ${s.sigma} was given in the scenario. ESD = ${s.sigma} / √${s.n} = ${expected}.`);
+  } else {
+    fb('fb-xbar3','incorrect',`✗ ESD(X̄) = σ(all parts) / √n = ${s.sigma} / √${s.n} = ${expected}. Check which values you substituted.`);
+  }
+}
+
+function checkXbarStep4() {
+  const s = xbarScenarios[xbarIdx];
+  const sampleMeans = s.periods.map(row => mean(row));
+  const grandMean = mean(sampleMeans);
+  const esd = s.sigma / Math.sqrt(s.n);
+  const expectedUCL = round(grandMean + 3 * esd, 3);
+  const expectedLCL = round(grandMean - 3 * esd, 3);
+  const ucl = parseFloat(document.getElementById('xbar-ucl').value);
+  const lcl = parseFloat(document.getElementById('xbar-lcl').value);
+  const decision = document.getElementById('xbar-decision').value;
+
+  if (isNaN(ucl) || isNaN(lcl) || !decision) { fb('fb-xbar4','incorrect','Fill in UCL, LCL, and the in-control decision.'); return; }
+
+  const uclOk = close(ucl, expectedUCL, 0.005);
+  const lclOk = close(lcl, expectedLCL, 0.005);
+  const newMeanIn = s.newMean > expectedLCL && s.newMean < expectedUCL;
+  const expectedDecision = newMeanIn ? 'in' : 'out';
+
+  if (uclOk && lclOk && decision === expectedDecision) {
+    fb('fb-xbar4','correct',`✓ UCL = ${expectedUCL}, LCL = ${expectedLCL}. New sample mean = ${s.newMean} → ${newMeanIn ? 'In control (within limits)' : 'Out of control (' + s.newMean + ' > UCL ' + expectedUCL + ')'}. Scenario complete.`);
+    document.getElementById('xbar-step4').className = 'step-block done';
+  } else {
+    let msg = '✗ ';
+    if (!uclOk || !lclOk) msg += `Control limits: UCL = ${expectedUCL}, LCL = ${expectedLCL}. `;
+    if (decision !== expectedDecision) msg += `Decision: New mean ${s.newMean} compared to UCL ${expectedUCL} and LCL ${expectedLCL} → ${newMeanIn ? 'in control' : 'out of control'}.`;
+    fb('fb-xbar4','incorrect', msg);
+  }
+}
+
+// ===== P-CHART MODE =====
+function loadPchart(idx) {
+  pchartIdx = idx;
+  const s = pchartScenarios[idx];
+  document.querySelectorAll('#mode-pchart .sp-btn').forEach((b, i) => b.classList.toggle('active', i === idx));
+
+  document.getElementById('pchart-scenario-panel').innerHTML = `
+    <div class="sp-title">p-Chart Scenario — ${s.title}</div>
+    <div class="sp-context">${s.context}</div>
+    <div class="sp-params">
+      <div class="sp-param"><div class="plabel">n (per period)</div><div class="pvalue">${s.n}</div></div>
+      <div class="sp-param"><div class="plabel">Periods (baseline)</div><div class="pvalue">${s.periods.length}</div></div>
+      <div class="sp-param"><div class="plabel">Total defects</div><div class="pvalue">${sum(s.periods)}</div></div>
+    </div>
+  `;
+
+  // Table
+  let thead = '<thead><tr><th>Period</th><th>Defective Count</th><th>p (your answer)</th></tr></thead>';
+  let tbody = '<tbody>';
+  s.periods.forEach((d, i) => {
+    tbody += `<tr><td><strong>${i+1}</strong></td><td>${d}</td><td><input type="number" id="pchart-p-${i}" step="0.00001" placeholder=""></td></tr>`;
+  });
+  tbody += '</tbody>';
+  document.getElementById('pchart-table').innerHTML = thead + tbody;
+
+  ['pchart-step1','pchart-step2','pchart-step3','pchart-step4'].forEach((id, i) => {
+    document.getElementById(id).className = 'step-block' + (i === 0 ? '' : ' locked');
+  });
+  ['fb-pchart1','fb-pchart2','fb-pchart3','fb-pchart4'].forEach(id => { document.getElementById(id).className='feedback-box'; document.getElementById(id).innerHTML=''; });
+  ['pchart-pbar','pchart-esd','pchart-ucl','pchart-lcl'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
+  document.getElementById('pchart-decision').value='';
+  document.getElementById('pchart-new-label').textContent = `${s.newDefects} out of ${s.n} (p = ${round(s.newDefects/s.n,5)})`;
+}
+
+function checkPchartStep1() {
+  const s = pchartScenarios[pchartIdx];
+  let allCorrect = true;
+  s.periods.forEach((d, i) => {
+    const expected = round(d / s.n, 5);
+    const input = document.getElementById(`pchart-p-${i}`);
+    const val = parseFloat(input.value);
+    if (isNaN(val) || !close(val, expected, 0.0005)) {
+      allCorrect = false;
+      input.className = 'incorrect';
+    } else {
+      input.className = 'correct';
+    }
+  });
+  if (allCorrect) {
+    fb('fb-pchart1','correct','✓ All per-period proportions correct. Proceed to Step 2.');
+    document.getElementById('pchart-step1').className = 'step-block done';
+    document.getElementById('pchart-step2').className = 'step-block';
+  } else {
+    fb('fb-pchart1','incorrect','✗ Some proportions are incorrect. Check highlighted cells. p = defective count / n for each period.');
+  }
+}
+
+function checkPchartStep2() {
+  const s = pchartScenarios[pchartIdx];
+  const totalDef = sum(s.periods);
+  const totalItems = s.n * s.periods.length;
+  const expected = round(totalDef / totalItems, 5);
+  const val = parseFloat(document.getElementById('pchart-pbar').value);
+  if (isNaN(val)) { fb('fb-pchart2','incorrect','Enter a value.'); return; }
+
+  // Wrong answer: average of p values
+  const avgP = round(s.periods.reduce((acc, d) => acc + d/s.n, 0) / s.periods.length, 5);
+
+  if (close(val, expected, 0.0005)) {
+    fb('fb-pchart2','correct',`✓ p̄ = ${totalDef} / ${totalItems} = ${expected}. Proceed to Step 3.`);
+    document.getElementById('pchart-step2').className = 'step-block done';
+    document.getElementById('pchart-step3').className = 'step-block';
+  } else if (close(val, avgP, 0.0005)) {
+    fb('fb-pchart2','incorrect',`✗ You averaged the per-period p values (= ${avgP}). Instead, compute p̄ = total defects / total items = ${totalDef} / ${totalItems} = ${expected}. These differ when computed correctly vs. by averaging.`);
+  } else {
+    fb('fb-pchart2','incorrect',`✗ p̄ = total defects / total items = ${totalDef} / ${totalItems} = ${expected}.`);
+  }
+}
+
+function checkPchartStep3() {
+  const s = pchartScenarios[pchartIdx];
+  const totalDef = sum(s.periods);
+  const totalItems = s.n * s.periods.length;
+  const pbar = totalDef / totalItems;
+  const expected = round(Math.sqrt(pbar * (1 - pbar) / s.n), 5);
+  // Wrong version: forgetting to divide by n
+  const wrongESD = round(Math.sqrt(pbar * (1 - pbar)), 5);
+
+  const val = parseFloat(document.getElementById('pchart-esd').value);
+  if (isNaN(val)) { fb('fb-pchart3','incorrect','Enter a value.'); return; }
+
+  if (close(val, expected, 0.0005)) {
+    fb('fb-pchart3','correct',`✓ ESD(p) = √(${round(pbar,5)} × ${round(1-pbar,5)} / ${s.n}) = ${expected}. Proceed to Step 4.`);
+    document.getElementById('pchart-step3').className = 'step-block done';
+    document.getElementById('pchart-step4').className = 'step-block';
+  } else if (close(val, wrongESD, 0.0005)) {
+    fb('fb-pchart3','incorrect',`✗ You computed √(p̄(1−p̄)) = ${wrongESD} without dividing by n. The correct formula is √(p̄(1−p̄)/n) — the division by n = ${s.n} is INSIDE the square root. ESD = ${expected}.`);
+  } else {
+    fb('fb-pchart3','incorrect',`✗ ESD(p) = √(p̄ × (1−p̄) / n) = √(${round(pbar,5)} × ${round(1-pbar,5)} / ${s.n}) = ${expected}.`);
+  }
+}
+
+function checkPchartStep4() {
+  const s = pchartScenarios[pchartIdx];
+  const totalDef = sum(s.periods);
+  const totalItems = s.n * s.periods.length;
+  const pbar = totalDef / totalItems;
+  const esd = Math.sqrt(pbar * (1 - pbar) / s.n);
+  const rawUCL = pbar + 3 * esd;
+  const rawLCL = pbar - 3 * esd;
+  const expectedUCL = round(rawUCL, 5);
+  const expectedLCL = Math.max(0, round(rawLCL, 5));
+  const newP = s.newDefects / s.n;
+  const expectedDecision = newP > rawUCL ? 'out' : 'in';
+
+  const ucl = parseFloat(document.getElementById('pchart-ucl').value);
+  const lcl = parseFloat(document.getElementById('pchart-lcl').value);
+  const decision = document.getElementById('pchart-decision').value;
+
+  if (isNaN(ucl) || isNaN(lcl) || !decision) { fb('fb-pchart4','incorrect','Fill in all fields.'); return; }
+
+  const uclOk = close(ucl, expectedUCL, 0.001);
+  const lclOk = close(lcl, expectedLCL, 0.001);
+
+  if (uclOk && lclOk && decision === expectedDecision) {
+    const lclNote = rawLCL < 0 ? ` (raw LCL = ${round(rawLCL,5)} → floored to 0)` : '';
+    fb('fb-pchart4','correct',`✓ UCL = ${expectedUCL}, LCL = ${expectedLCL}${lclNote}. New period p = ${round(newP,5)} → ${expectedDecision === 'out' ? 'Out of control — exceeds UCL' : 'In control'}. Scenario complete.`);
+    document.getElementById('pchart-step4').className = 'step-block done';
+  } else {
+    let msg = '✗ ';
+    if (!uclOk || !lclOk) {
+      const lclNote = rawLCL < 0 ? ` Note: raw LCL = ${round(rawLCL,5)} is negative — set to 0.` : '';
+      msg += `Control limits: UCL = ${expectedUCL}, LCL = ${expectedLCL}.${lclNote} `;
+    }
+    if (decision !== expectedDecision) msg += `Decision: new period p = ${round(newP,5)}. Compare to UCL ${expectedUCL} → ${expectedDecision === 'out' ? 'out of control' : 'in control'}.`;
+    fb('fb-pchart4','incorrect', msg);
+  }
+}
+
+// Initialize
+loadXbar(0);
+loadPchart(0);
+</script>
+</body>
+</html>

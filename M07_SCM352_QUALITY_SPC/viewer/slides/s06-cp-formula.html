@@ -1,0 +1,43 @@
+<section class="slide-page" data-title="Process Capability Index — Cp" data-lo="LO7-2" data-notes="Core formula slide for Cp. Numerator = tolerance width (fixed by spec). Denominator = 6σ̂ (controlled by process improvement). Reducing σ̂ is the only way to increase Cp without relaxing the specification. Gate 2 Q1(c) asks students to compute σ̂ required to double Cp — they need to understand the algebraic relationship. The 'six sigma' name comes from Cp=2: tolerance spans 12σ (6 on each side).">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">LO7-2</span>
+      <span class="le-course">SCM 352 · Module 07</span>
+    </div>
+    <span class="le-pagenum">6 / 21</span>
+  </div>
+  <div class="le-titleblock">
+    <div class="le-title">Process Capability Index — <span>Cp</span></div>
+    <div class="le-sub">Measures how well the process variation fits within the engineering specification</div>
+  </div>
+  <div class="le-body">
+    <div class="formula-box" style="margin-bottom:calc(10px * var(--slide-scale));">
+      Cp = (USL − LSL) / (6σ̂)
+      <div class="formula-caption">Tolerance width divided by six standard deviations of the process</div>
+    </div>
+    <div class="two-col" style="margin-bottom:calc(8px * var(--slide-scale));">
+      <div class="callout blue">
+        <div class="callout-label">Components</div>
+        <p><strong>USL</strong> = Upper specification limit (engineering/customer requirement)</p>
+        <p style="margin-top:4px;"><strong>LSL</strong> = Lower specification limit</p>
+        <p style="margin-top:4px;"><strong>σ̂</strong> = Estimated process standard deviation (from production data)</p>
+        <p style="margin-top:4px;"><strong>6σ̂</strong> = Width capturing ±3σ of process output</p>
+      </div>
+      <div class="callout teal">
+        <div class="callout-label">Two Things to Notice</div>
+        <p><strong>Numerator (USL−LSL):</strong> Fixed by the specification. Management cannot widen the tolerance without relaxing quality standards.</p>
+        <p style="margin-top:5px;"><strong>Denominator (6σ̂):</strong> Controlled by process improvement. Reducing σ̂ is the only lever to increase Cp while holding the specification constant.</p>
+      </div>
+    </div>
+    <div class="callout amber" style="padding:calc(6px * var(--slide-scale)) calc(12px * var(--slide-scale));">
+      <div class="callout-label">The Algebra</div>
+      <p>To double Cp: double (USL−LSL)/6Cp_target = σ̂_required. Since the numerator is fixed, doubling Cp requires halving σ̂. Gate 2 Q1(c) tests this directly.</p>
+    </div>
+  </div>
+  <div class="le-footer">
+    <div class="le-lo-pills"><span class="le-lo-pill">LO7-2</span></div>
+    <div><span class="le-gate-note">Gate 2 · Q1 · Case Part 1</span></div>
+  </div>
+</section>

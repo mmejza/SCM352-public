@@ -1,0 +1,52 @@
+<section class="slide-page" data-title="Kanban Card Sizing — Formula" data-lo="LO6-4" data-notes="SS-05 Part A. The kanban formula is K = (D × LT + SS) / C. The most important concept is what D × LT represents: the demand that must be covered while waiting for the next replenishment delivery. This is why kanban containers must exist — if you have no inventory during the LT window, production stops. Safety stock adds a buffer for LT uncertainty. The system authorizes exactly K containers — no more are ever in the system.">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">LO6-4</span>
+      <span class="le-course">SCM 352 · Module 06</span>
+    </div>
+    <span class="le-pagenum">13 / 24</span>
+  </div>
+  <div class="le-titleblock">
+    <div class="le-title">Kanban Card Sizing — <span>How Many Containers?</span></div>
+    <div class="le-sub">Authorizing exactly the inventory needed — and no more</div>
+  </div>
+  <div class="le-body">
+    <div class="formula-box" style="font-size:calc(16px * var(--slide-scale));margin-bottom:8px;">
+      K = (D &times; LT + SS) &frasl; C
+    </div>
+    <div class="two-col">
+      <div style="display:flex;flex-direction:column;gap:7px;">
+        <div class="callout teal">
+          <div class="callout-label">Variables</div>
+          <p><strong>D</strong> = daily demand rate (units/day)</p>
+          <p style="margin-top:3px;"><strong>LT</strong> = replenishment lead time (days)</p>
+          <p style="margin-top:3px;"><strong>SS</strong> = safety stock (units) — buffer for LT uncertainty</p>
+          <p style="margin-top:3px;"><strong>C</strong> = container size (units/container)</p>
+          <p style="margin-top:3px;"><strong>K</strong> = number of kanban containers authorized</p>
+        </div>
+        <div class="callout blue">
+          <div class="callout-label">What D &times; LT Means</div>
+          <p>Demand during the replenishment window — the units the system must cover while waiting for the next delivery to arrive.</p>
+          <p style="margin-top:4px;">This is the floor. Safety stock adds the buffer.</p>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:7px;">
+        <div class="callout amber">
+          <div class="callout-label">What Kanban Authorizes</div>
+          <p>The system authorizes <strong>exactly K containers</strong>. When a container is emptied, the kanban card travels upstream as a replenishment signal.</p>
+          <p style="margin-top:4px;"><strong>No more than K containers are ever in the system.</strong> This is what makes kanban a pull signal, not a push instruction.</p>
+        </div>
+        <div class="callout teal">
+          <div class="callout-label">Safety Stock Tradeoff</div>
+          <p>SS &gt; 0 protects against LT variability. SS = 0 maximizes inventory efficiency — and maximizes stockout risk if LT extends unexpectedly.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="le-footer">
+    <div class="le-lo-pills"><span class="le-lo-pill">LO6-4</span></div>
+    <div><span class="le-gate-note">Gate 2 · Q3 · Case Part 3</span></div>
+  </div>
+</section>

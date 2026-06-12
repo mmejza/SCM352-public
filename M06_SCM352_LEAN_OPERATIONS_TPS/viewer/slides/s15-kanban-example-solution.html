@@ -1,0 +1,51 @@
+<section class="slide-page" data-title="Kanban Example — Auto Parts Solution" data-lo="LO6-4" data-notes="SS-05 Parts B+C solution. K = (200×3+100)/50 = 14 containers. Without SS: K = 12 containers — SS adds exactly 2 containers (100 units / 50 per container). The architecture also asks: if LT dropped from 3 to 1 day, what happens? K = (200×1+100)/50 = 6 containers — a 57% reduction from the same demand rate. Shorter lead time = far fewer authorized containers = less inventory. This is a key lean supply chain insight.">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">LO6-4</span>
+      <span class="le-course">SCM 352 · Module 06</span>
+    </div>
+    <span class="le-pagenum">15 / 24</span>
+  </div>
+  <div class="le-titleblock">
+    <div class="le-title">Auto Parts Kanban — <span>Solution</span></div>
+    <div class="le-sub">D=200 · LT=3 days · SS=100 · C=50 units/container</div>
+  </div>
+  <div class="le-body">
+    <div class="two-col">
+      <div style="display:flex;flex-direction:column;gap:7px;">
+        <div class="callout teal">
+          <div class="callout-label">With Safety Stock</div>
+          <p>D &times; LT = 200 &times; 3 = <strong>600 units</strong> (demand during LT window)</p>
+          <p style="margin-top:4px;">+ SS = 100 units → total = 700 units</p>
+          <div class="formula-box" style="font-size:calc(13px * var(--slide-scale));margin-top:4px;">
+            K = 700 &frasl; 50 = <strong class="pos">14 containers</strong>
+          </div>
+          <p style="margin-top:4px;">Total authorized inventory: 14 × 50 = <strong>700 units</strong></p>
+        </div>
+        <div class="callout teal">
+          <div class="callout-label">Without Safety Stock (SS = 0)</div>
+          <p>D &times; LT = 600 units → ÷ 50 = <strong class="pos">12 containers</strong></p>
+          <p style="margin-top:4px;">SS adds exactly 2 containers — the buffer against LT uncertainty.</p>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:7px;">
+        <div class="callout amber">
+          <div class="callout-label">Lead Time Reduction Insight</div>
+          <p>If LT drops from 3 days to 1 day (same demand, same SS):</p>
+          <p style="margin-top:4px;">K = (200 &times; 1 + 100) / 50 = 300 / 50 = <strong>6 containers</strong></p>
+          <p style="margin-top:4px;">From 14 → 6 containers: <strong>57% reduction in authorized inventory</strong> from a single lead time improvement.</p>
+        </div>
+        <div class="callout blue">
+          <div class="callout-label">Key Takeaway</div>
+          <p>Lead time reduction is an inventory reduction strategy. Shorter supplier LT → fewer containers needed → less capital tied up in WIP. <strong>Lean targets LT, not just output.</strong></p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="le-footer">
+    <div class="le-lo-pills"><span class="le-lo-pill">LO6-4</span></div>
+    <div><span class="le-gate-note">Gate 2 · Q3 · Case Part 3</span></div>
+  </div>
+</section>

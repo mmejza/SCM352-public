@@ -1,0 +1,49 @@
+<section class="slide-page" data-title="Takt Time and Target Manpower — Formulas" data-lo="LO6-5" data-notes="SS-06 Parts A+B. Both formulas together. The rounding rule for TM (always UP) is non-negotiable — you cannot staff 0.7 of a worker. The unit check (takt time unit = min/unit) is important: Available time and demand must use consistent time units. If demand is in units/day and available time is in min/shift, the result is in min/unit — which is what you want.">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">LO6-5</span>
+      <span class="le-course">SCM 352 · Module 06</span>
+    </div>
+    <span class="le-pagenum">16 / 24</span>
+  </div>
+  <div class="le-titleblock">
+    <div class="le-title">Takt Time &amp; <span>Target Manpower</span></div>
+    <div class="le-sub">Matching production pace and staffing to customer demand</div>
+  </div>
+  <div class="le-body">
+    <div class="two-col" style="margin-bottom:8px;">
+      <div style="display:flex;flex-direction:column;gap:6px;">
+        <div class="callout-label" style="color:var(--navy);">Formula 1 — Takt Time</div>
+        <div class="formula-box" style="font-size:calc(15px * var(--slide-scale));">
+          Takt = Available production time &frasl; Demand rate
+        </div>
+        <div class="callout teal">
+          <p><strong>Unit:</strong> time per unit (min/unit, hr/unit)</p>
+          <p style="margin-top:4px;"><strong>Interpretation:</strong> "How often must we finish one unit to keep pace with customers?"</p>
+          <p style="margin-top:4px;"><strong>Key:</strong> Takt is set by <em>demand</em> — you cannot control it, only respond to it.</p>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px;">
+        <div class="callout-label" style="color:var(--navy);">Formula 2 — Target Manpower</div>
+        <div class="formula-box" style="font-size:calc(15px * var(--slide-scale));">
+          TM = Total labor content &frasl; Takt time
+        </div>
+        <div class="callout teal">
+          <p><strong>Unit:</strong> workers</p>
+          <p style="margin-top:4px;"><strong>Interpretation:</strong> "How many workers are needed to hit takt time exactly?"</p>
+          <p style="margin-top:4px;"><strong>Round UP</strong> to the nearest whole number — you cannot staff 0.7 of a worker.</p>
+        </div>
+      </div>
+    </div>
+    <div class="callout amber">
+      <div class="callout-label">Demand Increases → Takt Falls → TM Rises</div>
+      <p>More customers demand faster output (shorter takt). Shorter takt with the same labor content requires more workers. TM rises in direct proportion to the demand increase. This is a lean staffing decision — add exactly the number of workers required, not more.</p>
+    </div>
+  </div>
+  <div class="le-footer">
+    <div class="le-lo-pills"><span class="le-lo-pill">LO6-5</span></div>
+    <div><span class="le-gate-note">Gate 2 · Q4 · Case Part 4</span></div>
+  </div>
+</section>

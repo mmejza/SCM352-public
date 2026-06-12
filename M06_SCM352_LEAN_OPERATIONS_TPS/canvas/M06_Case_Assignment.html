@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Case Analysis M06 — Riverside Prescription Center Lean Audit — SCM 352</title>
+<style>
+:root{--navy:#1a3a5c;--blue:#2563a8;--blue-lt:#dbeafe;--blue-xlt:#eff6ff;--gold:#f59e0b;--gold-lt:#fffbeb;--gold-bdr:#fde68a;--green:#16a34a;--green-lt:#f0fdf4;--green-bdr:#bbf7d0;--red:#dc2626;--red-lt:#fef2f2;--red-bdr:#fecaca;--amber:#d97706;--amber-lt:#fffbeb;--amber-bdr:#fde68a;--purple:#7c3aed;--purple-lt:#faf5ff;--purple-bdr:#ddd6fe;--teal:#0891b2;--teal-lt:#f0fdfe;--teal-bdr:#a5f3fc;--gray-50:#f9fafb;--gray-100:#f3f4f6;--gray-200:#e5e7eb;--gray-300:#d1d5db;--gray-400:#9ca3af;--gray-600:#4b5563;--gray-700:#374151;--gray-800:#1f2937;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--gray-50);color:var(--gray-800);line-height:1.65;font-size:14px;}
+.pg-header{background:var(--navy);color:white;padding:24px 28px;}
+.pg-header-eyebrow{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
+.pg-header h1{font-size:22px;font-weight:700;letter-spacing:-.01em;margin-bottom:6px;}
+.pg-header p{font-size:13px;color:rgba(255,255,255,.68);}
+.meta-strip{background:white;border-bottom:2px solid var(--gray-200);display:flex;gap:0;overflow-x:auto;}
+.meta-cell{padding:11px 20px;border-right:1px solid var(--gray-200);flex-shrink:0;}
+.meta-cell:last-child{border-right:none;}
+.meta-lbl{font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--gray-400);margin-bottom:2px;}
+.meta-val{font-size:13px;font-weight:700;color:var(--navy);}
+.pg-body{max-width:860px;margin:0 auto;padding:28px 22px 60px;display:flex;flex-direction:column;gap:28px;}
+.version-banner{background:var(--navy);border-radius:12px;overflow:hidden;border:2px solid var(--navy);}
+.version-banner-hd{padding:13px 20px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,255,255,.15);}
+.version-banner-hd h2{font-size:14px;font-weight:700;color:white;}
+.version-banner-hd p{font-size:12px;color:rgba(255,255,255,.6);margin-top:2px;}
+.version-table{width:100%;border-collapse:collapse;font-size:13px;}
+.version-table th{padding:9px 16px;text-align:left;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:rgba(255,255,255,.55);border-bottom:1px solid rgba(255,255,255,.1);}
+.version-table td{padding:10px 16px;border-bottom:1px solid rgba(255,255,255,.07);color:rgba(255,255,255,.85);}
+.version-table tr:last-child td{border-bottom:none;}
+.ver-badge{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:6px;font-size:13px;font-weight:800;}
+.ver-a{background:#dcfce7;color:#166534;} .ver-b{background:#dbeafe;color:#1e40af;} .ver-c{background:#faf5ff;color:#6b21a8;} .ver-d{background:#fef9c3;color:#854d0e;}
+.alert{border-radius:10px;padding:13px 16px;font-size:13.5px;line-height:1.6;display:flex;gap:11px;align-items:flex-start;}
+.alert-icon{font-size:17px;flex-shrink:0;margin-top:1px;}
+.alert-body{flex:1;}
+.alert-body strong{display:block;margin-bottom:3px;}
+.alert-red{background:var(--red-lt);border:1.5px solid var(--red-bdr);}
+.alert-gold{background:var(--gold-lt);border:1.5px solid var(--gold-bdr);}
+.alert-blue{background:var(--blue-xlt);border:1.5px solid #bfdbfe;}
+.sec-div{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--gray-400);padding-bottom:10px;border-bottom:1px solid var(--gray-200);margin-bottom:-4px;}
+.section-card{background:white;border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;}
+.section-hd{padding:14px 20px;border-bottom:1px solid var(--gray-200);display:flex;align-items:center;gap:12px;}
+.part-badge{display:flex;align-items:center;justify-content:center;min-width:36px;height:36px;border-radius:8px;font-size:12px;font-weight:800;flex-shrink:0;}
+.section-hd-text h2{font-size:15px;font-weight:700;color:var(--navy);}
+.section-hd-text p{font-size:12px;color:var(--gray-600);margin-top:2px;}
+.pts-badge{margin-left:auto;flex-shrink:0;font-size:13px;font-weight:700;padding:4px 12px;border-radius:100px;}
+.section-bd{padding:20px;}
+.part1 .section-hd{background:var(--blue-xlt);} .part1 .part-badge{background:var(--blue);color:white;} .part1 .pts-badge{background:var(--blue-lt);color:var(--navy);}
+.part2 .section-hd{background:var(--green-lt);} .part2 .part-badge{background:var(--green);color:white;} .part2 .pts-badge{background:var(--green-bdr);color:var(--green);}
+.part3 .section-hd{background:var(--purple-lt);} .part3 .part-badge{background:var(--purple);color:white;} .part3 .pts-badge{background:var(--purple-bdr);color:var(--purple);}
+.part4 .section-hd{background:var(--teal-lt);} .part4 .part-badge{background:var(--teal);color:white;} .part4 .pts-badge{background:var(--teal-bdr);color:var(--teal);}
+.part5 .section-hd{background:var(--gold-lt);} .part5 .part-badge{background:var(--gold);color:var(--navy);} .part5 .pts-badge{background:var(--gold-bdr);color:#92400e;}
+.ver-tabs{border:1.5px solid var(--gray-200);border-radius:10px;overflow:hidden;margin:16px 0;}
+.ver-tab-hd{display:flex;border-bottom:1.5px solid var(--gray-200);background:var(--gray-50);}
+.ver-tab-btn{flex:1;padding:10px 0;border:none;background:none;cursor:pointer;font-size:13px;font-weight:700;color:var(--gray-400);border-right:1px solid var(--gray-200);transition:all 0.15s;display:flex;align-items:center;justify-content:center;gap:6px;}
+.ver-tab-btn:last-child{border-right:none;}
+.ver-tab-btn:hover{color:var(--navy);background:white;}
+.ver-tab-btn.active{color:var(--navy);background:white;box-shadow:inset 0 -2px 0 var(--blue);}
+.ver-tab-btn .vb{width:20px;height:20px;border-radius:4px;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;}
+.ver-tab-panel{display:none;padding:16px;}
+.ver-tab-panel.active{display:block;}
+.data-table{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px;}
+.data-table th{background:var(--navy);color:white;padding:9px 13px;text-align:left;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;}
+.data-table td{padding:9px 13px;border-bottom:1px solid var(--gray-100);}
+.data-table tr:last-child td{border-bottom:none;}
+.data-table tr.total-row td{font-weight:700;background:var(--blue-xlt);color:var(--navy);}
+.data-table td:first-child{color:var(--gray-800);}
+.q-block{margin-bottom:14px;padding:14px 16px;border:1.5px solid var(--gray-200);border-radius:8px;background:var(--gray-50);}
+.q-block:last-child{margin-bottom:0;}
+.q-num{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--gray-400);margin-bottom:5px;}
+.q-text{font-size:13.5px;line-height:1.65;color:var(--gray-700);}
+.q-pts{display:inline-block;margin-top:7px;font-size:11px;font-weight:700;padding:2px 9px;border-radius:100px;background:var(--blue-lt);color:var(--navy);}
+.param-table{width:100%;border-collapse:collapse;font-size:13px;margin:10px 0;}
+.param-table th{background:var(--navy);color:white;padding:8px 13px;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;text-align:left;}
+.param-table td{padding:8px 13px;border-bottom:1px solid var(--gray-100);vertical-align:middle;}
+.param-table tr:last-child td{border-bottom:none;}
+.scenario-box{background:var(--gray-50);border:1.5px solid var(--gray-200);border-left:4px solid var(--teal);border-radius:0 8px 8px 0;padding:16px 18px;font-size:13.5px;line-height:1.75;color:var(--gray-700);margin:12px 0;}
+.submit-list{display:flex;flex-direction:column;gap:6px;}
+.submit-item{display:flex;gap:10px;align-items:flex-start;padding:9px 13px;background:var(--gray-50);border:1px solid var(--gray-200);border-radius:7px;font-size:13px;line-height:1.5;color:var(--gray-700);}
+.submit-item::before{content:'☐';font-size:16px;flex-shrink:0;color:var(--gray-400);margin-top:-1px;}
+.grade-table{width:100%;border-collapse:collapse;font-size:13px;}
+.grade-table th{background:var(--navy);color:white;padding:9px 13px;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;text-align:left;}
+.grade-table td{padding:9px 13px;border-bottom:1px solid var(--gray-100);}
+.grade-table tr:last-child td{border-bottom:none;}
+.grade-table tr.total td{font-weight:700;background:var(--blue-xlt);color:var(--navy);font-size:14px;}
+.pts-right{text-align:right;font-weight:700;font-size:15px;color:var(--navy);}
+</style>
+</head>
+<body>
+
+<div class="pg-header">
+  <div class="pg-header-eyebrow">SCM 352 · M06 · Case Analysis</div>
+  <h1>Riverside Prescription Center — Lean Operations Audit</h1>
+  <p>Parameterized case — 4 versions · 100 points · Due Day 6 at 11:59 PM</p>
+</div>
+
+<div class="meta-strip">
+  <div class="meta-cell"><div class="meta-lbl">Points</div><div class="meta-val">100</div></div>
+  <div class="meta-cell"><div class="meta-lbl">Due</div><div class="meta-val">Day 6 · 11:59 PM</div></div>
+  <div class="meta-cell"><div class="meta-lbl">Format</div><div class="meta-val">PDF or Word</div></div>
+  <div class="meta-cell"><div class="meta-lbl">Attempts</div><div class="meta-val">1</div></div>
+  <div class="meta-cell"><div class="meta-lbl">Allowed</div><div class="meta-val">Ch. 8 · Lectures · Apps · Slides</div></div>
+</div>
+
+<div class="pg-body">
+
+  <div class="version-banner">
+    <div class="version-banner-hd">
+      <div><h2>Find Your Assigned Version</h2><p>Use the last digit of your student ID. Submit only your assigned version.</p></div>
+    </div>
+    <table class="version-table">
+      <thead><tr><th>Last digit of student ID</th><th>Your version</th><th>Identifying detail (for confirmation)</th></tr></thead>
+      <tbody>
+        <tr><td>0, 1, or 2</td><td><span class="ver-badge ver-a">A</span></td><td>480-min shift · VA = 280 min · OEE ≈ 58.3% · Flow = 240 min</td></tr>
+        <tr><td>3, 4, or 5</td><td><span class="ver-badge ver-b">B</span></td><td>540-min shift · VA = 310 min · OEE ≈ 57.4% · Flow = 180 min</td></tr>
+        <tr><td>6 or 7</td><td><span class="ver-badge ver-c">C</span></td><td>480-min shift · VA = 260 min · OEE ≈ 54.2% · Flow = 200 min</td></tr>
+        <tr><td>8 or 9</td><td><span class="ver-badge ver-d">D</span></td><td>540-min shift · VA = 300 min · OEE ≈ 55.6% · Flow = 300 min</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:10px;">
+    <div class="alert alert-red">
+      <div class="alert-icon">🚫</div>
+      <div class="alert-body"><strong>Do not collaborate on version-specific calculations.</strong> Parts 1 and 2 use data unique to your version. Submitting another version's numbers constitutes academic dishonesty.</div>
+    </div>
+    <div class="alert alert-gold">
+      <div class="alert-icon">📋</div>
+      <div class="alert-body"><strong>Show all calculation steps with labeled intermediate values.</strong> Answers without supporting work will not receive full credit, even if numerically correct.</div>
+    </div>
+    <div class="alert alert-blue">
+      <div class="alert-icon">ℹ️</div>
+      <div class="alert-body">Parts 3, 4, and 5 use the same parameters for all versions. You may discuss the concepts, but your written responses must be your own.</div>
+    </div>
+  </div>
+
+  <div>
+    <div class="sec-div">Background — All Versions</div>
+    <div class="section-card" style="margin-top:14px;">
+      <div class="section-bd">
+        <p style="margin-bottom:12px;font-size:14px;line-height:1.7;color:var(--gray-700);">This case extends the Riverside Health System scenario from Modules 2–5. The Riverside prescription fulfillment center is now audited for lean performance across five dimensions. You will apply the full lean framework from Module 6 to a healthcare operations context.</p>
+        <p style="margin-bottom:12px;font-size:14px;line-height:1.7;color:var(--gray-700);">The Riverside Prescription Center operates as an outpatient pharmacy serving patients of the Riverside Health System network. Prescriptions arrive throughout the day, are processed by a team of pharmacy technicians under pharmacist supervision, and are either dispensed in-center or prepared for mail-out delivery.</p>
+        <p style="font-size:14px;line-height:1.7;color:var(--gray-700);">The center manager has engaged the operations team to conduct a lean audit — identifying where value is and is not being created, calculating key lean metrics, and proposing targeted improvements. As the analyst, you will complete that audit using the framework and formulas from Module 6.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- PART 1 -->
+  <div>
+    <div class="sec-div">Part 1 — OEE Analysis &nbsp;·&nbsp; Version-specific data</div>
+    <div class="section-card part1" style="margin-top:14px;">
+      <div class="section-hd">
+        <div class="part-badge">1</div>
+        <div class="section-hd-text"><h2>OEE Analysis — Pharmacy Technician Time Decomposition</h2><p>Use the shift data for your assigned version only</p></div>
+        <div class="pts-badge">20 pts</div>
+      </div>
+      <div class="section-bd">
+        <p style="font-size:13.5px;color:var(--gray-700);margin-bottom:14px;">The Riverside center has documented one pharmacy technician's daily schedule to assess how their shift time is being used. Use the data table for your assigned version below.</p>
+        <div class="ver-tabs">
+          <div class="ver-tab-hd">
+            <button class="ver-tab-btn" onclick="switchTab('p1','a')" id="p1-tab-a"><span class="vb ver-a">A</span> Version A</button>
+            <button class="ver-tab-btn" onclick="switchTab('p1','b')" id="p1-tab-b"><span class="vb ver-b">B</span> Version B</button>
+            <button class="ver-tab-btn" onclick="switchTab('p1','c')" id="p1-tab-c"><span class="vb ver-c">C</span> Version C</button>
+            <button class="ver-tab-btn" onclick="switchTab('p1','d')" id="p1-tab-d"><span class="vb ver-d">D</span> Version D</button>
+          </div>
+          <div class="ver-tab-panel" id="p1-panel-a">
+            <table class="data-table">
+              <thead><tr><th>Activity</th><th style="text-align:right;width:120px;">Time (min)</th></tr></thead>
+              <tbody>
+                <tr><td>Waiting for new prescription orders to arrive in queue</td><td style="text-align:right;">75</td></tr>
+                <tr><td>Waiting for medication delivery from central pharmacy</td><td style="text-align:right;">45</td></tr>
+                <tr><td>Writing service reports and administrative documentation</td><td style="text-align:right;">60</td></tr>
+                <tr><td>Moving medications and equipment between workstations</td><td style="text-align:right;">20</td></tr>
+                <tr><td>Processing and dispensing prescriptions</td><td style="text-align:right;">280</td></tr>
+                <tr class="total-row"><td>Total shift</td><td style="text-align:right;">480</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="ver-tab-panel" id="p1-panel-b">
+            <table class="data-table">
+              <thead><tr><th>Activity</th><th style="text-align:right;width:120px;">Time (min)</th></tr></thead>
+              <tbody>
+                <tr><td>Waiting for physician order clarification before proceeding</td><td style="text-align:right;">60</td></tr>
+                <tr><td>Re-documenting patient information already in electronic record</td><td style="text-align:right;">80</td></tr>
+                <tr><td>Administrative reporting and compliance paperwork</td><td style="text-align:right;">50</td></tr>
+                <tr><td>Searching for controlled substances in dual-lock storage</td><td style="text-align:right;">40</td></tr>
+                <tr><td>Processing and dispensing prescriptions</td><td style="text-align:right;">310</td></tr>
+                <tr class="total-row"><td>Total shift</td><td style="text-align:right;">540</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="ver-tab-panel" id="p1-panel-c">
+            <table class="data-table">
+              <thead><tr><th>Activity</th><th style="text-align:right;width:120px;">Time (min)</th></tr></thead>
+              <tbody>
+                <tr><td>Waiting for physician approval or order clarification</td><td style="text-align:right;">60</td></tr>
+                <tr><td>Searching for medications, supplies, and equipment across storage areas</td><td style="text-align:right;">75</td></tr>
+                <tr><td>Attending required departmental meetings (not related to current prescriptions)</td><td style="text-align:right;">45</td></tr>
+                <tr><td>Administrative filing and documentation</td><td style="text-align:right;">40</td></tr>
+                <tr><td>Processing and dispensing prescriptions</td><td style="text-align:right;">260</td></tr>
+                <tr class="total-row"><td>Total shift</td><td style="text-align:right;">480</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="ver-tab-panel" id="p1-panel-d">
+            <table class="data-table">
+              <thead><tr><th>Activity</th><th style="text-align:right;width:120px;">Time (min)</th></tr></thead>
+              <tbody>
+                <tr><td>Waiting for prescription batches and order queue</td><td style="text-align:right;">70</td></tr>
+                <tr><td>Administrative compliance documentation beyond core requirements</td><td style="text-align:right;">90</td></tr>
+                <tr><td>Rework — correcting prior dispensing errors flagged during pharmacist verification</td><td style="text-align:right;">50</td></tr>
+                <tr><td>Moving between workstations and supply rooms</td><td style="text-align:right;">30</td></tr>
+                <tr><td>Processing and dispensing prescriptions</td><td style="text-align:right;">300</td></tr>
+                <tr class="total-row"><td>Total shift</td><td style="text-align:right;">540</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Question 1a</div>
+          <div class="q-text">Classify each activity as value-added (VA), non-value-added (NVA waste), or non-value-added but necessary (NVA-necessary). For each NVA or NVA-necessary step, identify the waste type using the 7-source taxonomy from Chapter 8. Justify each classification in one sentence.</div>
+          <span class="q-pts">8 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Question 1b</div>
+          <div class="q-text">Calculate OEE for the pharmacy technician's shift. Show the formula, substitute all values, and state the result as a percentage.</div>
+          <span class="q-pts">6 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Question 1c</div>
+          <div class="q-text">Identify the single largest waste category by time in your version's data. Propose one specific lean intervention that would reduce or eliminate it. Explain how the intervention addresses this specific waste type.</div>
+          <span class="q-pts">6 pts</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PART 2 -->
+  <div>
+    <div class="sec-div">Part 2 — Process Flow Analysis &nbsp;·&nbsp; Version-specific data</div>
+    <div class="section-card part2" style="margin-top:14px;">
+      <div class="section-hd">
+        <div class="part-badge">2</div>
+        <div class="section-hd-text"><h2>Value-Added % — Prescription Flow Unit Analysis</h2><p>Show all calculation steps</p></div>
+        <div class="pts-badge">25 pts</div>
+      </div>
+      <div class="section-bd">
+        <p style="font-size:13.5px;color:var(--gray-700);margin-bottom:14px;">The table below describes the journey of one prescription (the flow unit) through the Riverside center — from submission to ready-for-pickup. Use the table for your assigned version.</p>
+        <div class="ver-tabs">
+          <div class="ver-tab-hd">
+            <button class="ver-tab-btn" onclick="switchTab('p2','a')" id="p2-tab-a"><span class="vb ver-a">A</span> Version A</button>
+            <button class="ver-tab-btn" onclick="switchTab('p2','b')" id="p2-tab-b"><span class="vb ver-b">B</span> Version B</button>
+            <button class="ver-tab-btn" onclick="switchTab('p2','c')" id="p2-tab-c"><span class="vb ver-c">C</span> Version C</button>
+            <button class="ver-tab-btn" onclick="switchTab('p2','d')" id="p2-tab-d"><span class="vb ver-d">D</span> Version D</button>
+          </div>
+          <div class="ver-tab-panel" id="p2-panel-a">
+            <table class="data-table">
+              <thead><tr><th>Step</th><th style="text-align:right;width:90px;">Duration (min)</th><th>Notes</th></tr></thead>
+              <tbody>
+                <tr><td>Prescription submitted and sits in intake queue</td><td style="text-align:right;">60</td><td style="font-size:12px;color:var(--gray-600);">Awaiting technician assignment</td></tr>
+                <tr><td>Technician retrieves and enters prescription data</td><td style="text-align:right;">15</td><td style="font-size:12px;color:var(--gray-600);">Data entry and eligibility check</td></tr>
+                <tr><td>Prescription sits waiting for drug interaction check</td><td style="text-align:right;">45</td><td style="font-size:12px;color:var(--gray-600);">Awaiting pharmacist availability</td></tr>
+                <tr><td>Pharmacist performs drug interaction verification</td><td style="text-align:right;">10</td><td style="font-size:12px;color:var(--gray-600);">Clinical review</td></tr>
+                <tr><td>Prescription sits waiting for filling</td><td style="text-align:right;">60</td><td style="font-size:12px;color:var(--gray-600);">Awaiting available technician at fill station</td></tr>
+                <tr><td>Technician fills and labels prescription</td><td style="text-align:right;">20</td><td style="font-size:12px;color:var(--gray-600);">Dispensing</td></tr>
+                <tr><td>Prescription sits in verification queue</td><td style="text-align:right;">30</td><td style="font-size:12px;color:var(--gray-600);">Awaiting final pharmacist sign-off</td></tr>
+                <tr class="total-row"><td>Total flow time</td><td style="text-align:right;">240</td><td></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="ver-tab-panel" id="p2-panel-b">
+            <table class="data-table">
+              <thead><tr><th>Step</th><th style="text-align:right;width:90px;">Duration (min)</th><th>Notes</th></tr></thead>
+              <tbody>
+                <tr><td>Prescription submitted and sits in intake queue</td><td style="text-align:right;">45</td><td style="font-size:12px;color:var(--gray-600);">Awaiting technician assignment</td></tr>
+                <tr><td>Technician data entry and insurance verification</td><td style="text-align:right;">10</td><td style="font-size:12px;color:var(--gray-600);">Intake processing</td></tr>
+                <tr><td>Prescription waits for pharmacist allergy and interaction review</td><td style="text-align:right;">50</td><td style="font-size:12px;color:var(--gray-600);">Awaiting pharmacist</td></tr>
+                <tr><td>Pharmacist reviews and approves prescription</td><td style="text-align:right;">10</td><td style="font-size:12px;color:var(--gray-600);">Clinical approval</td></tr>
+                <tr><td>Prescription sits waiting for filling</td><td style="text-align:right;">40</td><td style="font-size:12px;color:var(--gray-600);">Awaiting fill station availability</td></tr>
+                <tr><td>Technician fills prescription</td><td style="text-align:right;">10</td><td style="font-size:12px;color:var(--gray-600);">Dispensing</td></tr>
+                <tr><td>Prescription sits waiting for patient pickup notification</td><td style="text-align:right;">15</td><td style="font-size:12px;color:var(--gray-600);">Awaiting system notification cycle</td></tr>
+                <tr class="total-row"><td>Total flow time</td><td style="text-align:right;">180</td><td></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="ver-tab-panel" id="p2-panel-c">
+            <table class="data-table">
+              <thead><tr><th>Step</th><th style="text-align:right;width:90px;">Duration (min)</th><th>Notes</th></tr></thead>
+              <tbody>
+                <tr><td>Prescription submitted and sits in intake queue</td><td style="text-align:right;">70</td><td style="font-size:12px;color:var(--gray-600);">Awaiting technician assignment</td></tr>
+                <tr><td>Technician data entry and eligibility check</td><td style="text-align:right;">10</td><td style="font-size:12px;color:var(--gray-600);">Intake processing</td></tr>
+                <tr><td>Prescription waits for pharmacist assignment and review</td><td style="text-align:right;">60</td><td style="font-size:12px;color:var(--gray-600);">Awaiting pharmacist</td></tr>
+                <tr><td>Pharmacist reviews, approves, and fills prescription</td><td style="text-align:right;">10</td><td style="font-size:12px;color:var(--gray-600);">Clinical review and dispensing</td></tr>
+                <tr><td>Prescription waits in final verification staging area</td><td style="text-align:right;">50</td><td style="font-size:12px;color:var(--gray-600);">Awaiting secondary check cycle</td></tr>
+                <tr class="total-row"><td>Total flow time</td><td style="text-align:right;">200</td><td></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="ver-tab-panel" id="p2-panel-d">
+            <table class="data-table">
+              <thead><tr><th>Step</th><th style="text-align:right;width:90px;">Duration (min)</th><th>Notes</th></tr></thead>
+              <tbody>
+                <tr><td>Prescription submitted and sits in intake queue</td><td style="text-align:right;">80</td><td style="font-size:12px;color:var(--gray-600);">Awaiting technician assignment</td></tr>
+                <tr><td>Technician data entry, insurance, and eligibility check</td><td style="text-align:right;">15</td><td style="font-size:12px;color:var(--gray-600);">Intake processing</td></tr>
+                <tr><td>Prescription waits for pharmacist assignment</td><td style="text-align:right;">90</td><td style="font-size:12px;color:var(--gray-600);">Awaiting pharmacist</td></tr>
+                <tr><td>Pharmacist drug interaction check and approval</td><td style="text-align:right;">15</td><td style="font-size:12px;color:var(--gray-600);">Clinical review</td></tr>
+                <tr><td>Prescription sits in filling queue</td><td style="text-align:right;">60</td><td style="font-size:12px;color:var(--gray-600);">Awaiting fill station availability</td></tr>
+                <tr><td>Technician fills prescription</td><td style="text-align:right;">10</td><td style="font-size:12px;color:var(--gray-600);">Dispensing</td></tr>
+                <tr><td>Prescription sits in final verification queue</td><td style="text-align:right;">30</td><td style="font-size:12px;color:var(--gray-600);">Awaiting pharmacist sign-off</td></tr>
+                <tr class="total-row"><td>Total flow time</td><td style="text-align:right;">300</td><td></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Question 2a</div>
+          <div class="q-text">Calculate the total flow time. Identify which steps are value-added and which are non-value-added. For each NVA step, name the waste type using the 7-source taxonomy from Chapter 8.</div>
+          <span class="q-pts">7 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Question 2b</div>
+          <div class="q-text">Calculate the value-added percentage (VA%). Show the formula, substitute all values, and state the result. Remember: the denominator is total flow time, not shift time.</div>
+          <span class="q-pts">6 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Question 2c</div>
+          <div class="q-text">Identify the dominant waste type by total time in your version's flow table. Name the specific waste source using Chapter 8 terminology.</div>
+          <span class="q-pts">5 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Question 2d</div>
+          <div class="q-text">Propose one lean intervention that targets the dominant waste. If the intervention is fully successful, estimate the new value-added percentage. Show your calculation. (You may make reasonable assumptions about how much waiting time is eliminated; state your assumptions explicitly.)</div>
+          <span class="q-pts">7 pts</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PART 3 -->
+  <div>
+    <div class="sec-div">Part 3 — Kanban Card Sizing &nbsp;·&nbsp; Version-specific parameters · Same questions</div>
+    <div class="section-card part3" style="margin-top:14px;">
+      <div class="section-hd">
+        <div class="part-badge">3</div>
+        <div class="section-hd-text"><h2>Kanban Card Sizing — Critical Medication Supply</h2><p>Show all calculation steps</p></div>
+        <div class="pts-badge">15 pts</div>
+      </div>
+      <div class="section-bd">
+        <p style="font-size:13.5px;color:var(--gray-700);margin-bottom:14px;">The Riverside center receives a critical high-demand cardiovascular medication from its central pharmacy supplier. The center manager wants to configure a kanban replenishment system. Use the parameters for your assigned version below.</p>
+        <table class="param-table">
+          <thead><tr><th>Parameter</th><th>Version A</th><th>Version B</th><th>Version C</th><th>Version D</th></tr></thead>
+          <tbody>
+            <tr><td>Daily demand rate (units/day)</td><td>80</td><td>60</td><td>100</td><td>120</td></tr>
+            <tr><td>Replenishment lead time (days)</td><td>2</td><td>3</td><td>2</td><td>1</td></tr>
+            <tr><td>Safety stock (units)</td><td>40</td><td>30</td><td>50</td><td>60</td></tr>
+            <tr><td>Container size (units/container)</td><td>20</td><td>15</td><td>25</td><td>30</td></tr>
+          </tbody>
+        </table>
+        <div class="q-block">
+          <div class="q-num">Question 3a</div>
+          <div class="q-text">Calculate the number of kanban containers required. Show the formula, substitute all values, and state the result. Interpret the result in one sentence — what does this number of containers authorize?</div>
+          <span class="q-pts">6 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Question 3b</div>
+          <div class="q-text">The center's supply chain director proposes eliminating safety stock entirely to reduce holding costs. Calculate the new number of kanban containers without safety stock. Show your work.</div>
+          <span class="q-pts">4 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Question 3c</div>
+          <div class="q-text">The center's operations manager argues that reducing replenishment lead time is a more sustainable lean approach than maintaining safety stock. In 2–3 sentences, explain why lead time reduction is preferable to safety stock as a lean response to supply uncertainty. Reference the chapter's lean inventory philosophy in your answer.</div>
+          <span class="q-pts">5 pts</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PART 4 -->
+  <div>
+    <div class="sec-div">Part 4 — ITAT Analysis &nbsp;·&nbsp; Version-specific parameters · Same questions</div>
+    <div class="section-card part4" style="margin-top:14px;">
+      <div class="section-hd">
+        <div class="part-badge">4</div>
+        <div class="section-hd-text"><h2>ITAT Analysis — Defect Detection Speed</h2><p>Show all calculation steps</p></div>
+        <div class="pts-badge">15 pts</div>
+      </div>
+      <div class="section-bd">
+        <p style="font-size:13.5px;color:var(--gray-700);margin-bottom:14px;">In the Riverside fulfillment process, prescription-filling errors (wrong drug, wrong dose, wrong quantity) are introduced at the <strong>technician fill step</strong> and detected at the <strong>pharmacist verification step</strong>. Use the parameters for your assigned version below.</p>
+        <table class="param-table">
+          <thead><tr><th>Parameter</th><th>Version A</th><th>Version B</th><th>Version C</th><th>Version D</th></tr></thead>
+          <tbody>
+            <tr><td>Cycle time of pharmacist verification (min/prescription)</td><td>15</td><td>10</td><td>12</td><td>8</td></tr>
+            <tr><td>Current buffer (prescriptions between fill and verification)</td><td>6</td><td>8</td><td>5</td><td>10</td></tr>
+            <tr><td>Reduced buffer (after lean redesign)</td><td>2</td><td>3</td><td>2</td><td>4</td></tr>
+          </tbody>
+        </table>
+        <div class="q-block">
+          <div class="q-num">Question 4a</div>
+          <div class="q-text">Calculate ITAT under current operations. Show the formula, substitute all values, and interpret the result in one sentence — what does this ITAT mean for the defect cycle at the Riverside center?</div>
+          <span class="q-pts">5 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Question 4b</div>
+          <div class="q-text">If the center reduces the buffer between filling and pharmacist verification to the reduced buffer size in the table above, what is the new ITAT? Show the calculation.</div>
+          <span class="q-pts">4 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Question 4c</div>
+          <div class="q-text">The center director argues that reducing the buffer between filling and verification increases the risk of a pharmacist being idle while waiting — and that a larger buffer keeps the pharmacist fully utilized. Using the ITAT concept and lean philosophy, write a 2–3 sentence response explaining why Toyota's approach to this argument is to reduce lead time rather than maintain the buffer.</div>
+          <span class="q-pts">6 pts</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PART 5 -->
+  <div>
+    <div class="sec-div">Part 5 — Lean Redesign Recommendation &nbsp;·&nbsp; Same for all versions</div>
+    <div class="section-card part5" style="margin-top:14px;">
+      <div class="section-hd">
+        <div class="part-badge">5</div>
+        <div class="section-hd-text"><h2>Mura/Muri/Muda · Heijunka · Takt Time and Manpower</h2><p>Written + calculation responses</p></div>
+        <div class="pts-badge">25 pts</div>
+      </div>
+      <div class="section-bd">
+        <div class="q-block">
+          <div class="q-num">Question 5a — Mura → Muri → Muda Causal Chain</div>
+          <div class="q-text">Using the mura → muri → muda causal chain, identify one specific source of unevenness (mura) in the Riverside center's current operations. Trace how this mura generates overburden (muri) for a specific resource, and explain what muda (waste) this muri creates downstream. Be concrete — name the resources and waste types involved.</div>
+          <span class="q-pts">8 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Question 5b — Heijunka Redesign</div>
+          <div class="q-text">The center serves three prescription categories that arrive throughout the day: routine refills (high volume), new prescriptions requiring insurance verification (medium volume), and controlled substances requiring dual-lock documentation (low volume). Currently, all three categories queue together in arrival order. Apply heijunka (demand leveling) to redesign how the center schedules prescription processing. Describe: (1) what is being leveled, (2) how the leveling mechanism works operationally, and (3) what specific waste or overburden it would reduce.</div>
+          <span class="q-pts">9 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Question 5c — Takt Time and Target Manpower (same data for all versions)</div>
+          <div class="q-text">
+            <p style="margin-bottom:10px;"><strong>Current operations:</strong> The center processes 90 prescriptions per day across a 480-minute shift. Total labor content per prescription is 12 minutes.</p>
+            <p style="margin-bottom:4px;">(i) Calculate takt time. Show the formula. Interpret in one sentence. <span class="q-pts">2 pts</span></p>
+            <p style="margin-bottom:10px;">(ii) Calculate target manpower. Show the formula. Interpret in one sentence. <span class="q-pts">2 pts</span></p>
+            <p style="margin-bottom:10px;"><strong>Demand scenario:</strong> Volume increases to 120 prescriptions per day. Shift and labor content unchanged.</p>
+            <p style="margin-bottom:4px;">(iii) Calculate new takt time and new target manpower. Show all work. <span class="q-pts">2 pts</span></p>
+            <p>(iv) What operational change is required? What happens if the center maintains current staffing? <span class="q-pts">2 pts</span></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUBMISSION -->
+  <div>
+    <div class="sec-div">Submission Requirements</div>
+    <div class="section-card" style="margin-top:14px;">
+      <div class="section-hd" style="background:var(--gray-50);padding:13px 20px;border-bottom:1px solid var(--gray-200);">
+        <h2 style="font-size:14px;font-weight:700;color:var(--navy);">Before you submit, verify the following</h2>
+      </div>
+      <div class="section-bd">
+        <div class="submit-list">
+          <div class="submit-item">File is saved as <strong>PDF or Word (.docx)</strong>.</div>
+          <div class="submit-item">Your <strong>assigned version (A, B, C, or D)</strong> is written at the top of your document.</div>
+          <div class="submit-item">Parts 1 and 2: <strong>your version's data</strong> is used — not another version's numbers.</div>
+          <div class="submit-item">All calculations in Parts 1–4 show the <strong>formula, substituted values, and final result</strong>.</div>
+          <div class="submit-item">Part 5 written responses use <strong>specific Chapter 8 terminology</strong> (mura, muri, muda, heijunka, takt time, target manpower).</div>
+          <div class="submit-item">Part 5c shows all four sub-answers <strong>(i through iv)</strong> with formulas.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GRADING SUMMARY -->
+  <div class="section-card">
+    <div style="background:var(--blue-xlt);padding:13px 20px;border-bottom:1px solid var(--gray-200);">
+      <h2 style="font-size:14px;font-weight:700;color:var(--navy);">Grading Summary · 100 points total</h2>
+    </div>
+    <table class="grade-table">
+      <thead><tr><th>Part</th><th>Content</th><th style="text-align:right;">Points</th><th>Primary LO</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Part 1</strong></td><td>OEE Analysis — Pharmacy Technician Time Decomposition</td><td class="pts-right">20</td><td>LO6-2</td></tr>
+        <tr><td><strong>Part 2</strong></td><td>Process Flow Analysis — Prescription VA%</td><td class="pts-right">25</td><td>LO6-3</td></tr>
+        <tr><td><strong>Part 3</strong></td><td>Kanban Card Sizing — Critical Medication Supply</td><td class="pts-right">15</td><td>LO6-4</td></tr>
+        <tr><td><strong>Part 4</strong></td><td>ITAT Analysis — Defect Detection Speed</td><td class="pts-right">15</td><td>LO6-6</td></tr>
+        <tr><td><strong>Part 5</strong></td><td>Lean Redesign — Mura/Muri/Muda + Heijunka + Takt</td><td class="pts-right">25</td><td>LO6-5, LO6-7</td></tr>
+        <tr class="total"><td colspan="2"><strong>Total</strong></td><td class="pts-right">100</td><td></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<script>
+function switchTab(part, ver) {
+  ['a','b','c','d'].forEach(v => {
+    const btn   = document.getElementById(part + '-tab-' + v);
+    const panel = document.getElementById(part + '-panel-' + v);
+    if (btn)   btn.classList.toggle('active', v === ver);
+    if (panel) panel.classList.toggle('active', v === ver);
+  });
+}
+</script>
+</body>
+</html>

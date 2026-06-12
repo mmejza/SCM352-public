@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Waste Lens Explorer — SCM 352 M06</title>
+<style>
+:root {
+  --navy:        #1a3a5c;
+  --blue:        #2563a8;
+  --blue-lt:     #dbeafe;
+  --blue-xlt:    #eff6ff;
+  --blue-bdr:    #bfdbfe;
+  --blue-hover:  #1d4ed8;
+  --gold:        #f59e0b;
+  --gold-lt:     #fffbeb;
+  --gold-bdr:    #fde68a;
+  --gold-dark:   #92400e;
+  --green:       #16a34a;
+  --green-lt:    #f0fdf4;
+  --green-bdr:   #bbf7d0;
+  --green-hover: #15803d;
+  --red:         #dc2626;
+  --red-lt:      #fef2f2;
+  --red-bdr:     #fecaca;
+  --amber:       #d97706;
+  --amber-lt:    #fffbeb;
+  --amber-bdr:   #fde68a;
+  --orange:      #ea580c;
+  --orange-lt:   #fff7ed;
+  --orange-bdr:  #fed7aa;
+  --purple:      #7c3aed;
+  --purple-lt:   #faf5ff;
+  --purple-bdr:  #ddd6fe;
+  --teal:        #0891b2;
+  --teal-lt:     #f0fdfe;
+  --teal-bdr:    #a5f3fc;
+  --gray-50:     #f9fafb;
+  --gray-100:    #f3f4f6;
+  --gray-200:    #e5e7eb;
+  --gray-300:    #d1d5db;
+  --gray-400:    #9ca3af;
+  --gray-600:    #4b5563;
+  --gray-700:    #374151;
+  --gray-800:    #1f2937;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; background: var(--gray-50); color: var(--gray-800); font-size: 14px; line-height: 1.5; }
+
+header { background: var(--navy); color: white; padding: 16px 24px; display: flex; align-items: center; gap: 14px; }
+.header-badge { background: var(--gold); color: var(--navy); font-weight: 700; font-size: 11px; padding: 3px 8px; border-radius: 4px; letter-spacing: .05em; text-transform: uppercase; flex-shrink: 0; }
+.header-text h1 { font-size: 17px; font-weight: 700; }
+.header-text p { font-size: 12px; color: rgba(255,255,255,.65); margin-top: 2px; }
+
+.scenario-nav { background: white; border-bottom: 2px solid var(--gray-200); padding: 0 24px; display: flex; gap: 0; overflow-x: auto; }
+.snav-btn { padding: 12px 16px; border: none; background: none; cursor: pointer; font-size: 12.5px; font-weight: 600; color: var(--gray-600); border-bottom: 3px solid transparent; white-space: nowrap; transition: all 0.15s; display: flex; align-items: center; gap: 5px; }
+.snav-btn:hover { color: var(--blue); }
+.snav-btn.active { color: var(--blue); border-bottom-color: var(--blue); }
+.snav-btn.done { color: var(--green); border-bottom-color: var(--green); }
+.snav-btn.locked { color: var(--gray-300); cursor: not-allowed; }
+
+.main { max-width: 900px; margin: 0 auto; padding: 24px 20px 60px; }
+
+.card { background: white; border: 1.5px solid var(--gray-200); border-radius: 12px; overflow: hidden; margin-bottom: 20px; }
+.card-hd { background: var(--blue-xlt); border-bottom: 1.5px solid var(--gray-200); padding: 14px 20px; }
+.card-hd h2 { font-size: 15px; font-weight: 700; color: var(--navy); }
+.card-hd p { font-size: 12.5px; color: var(--gray-600); margin-top: 3px; }
+.card-bd { padding: 20px; }
+
+.phase-label { font-size: 11px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--gray-400); padding: 12px 0 10px; border-bottom: 1px solid var(--gray-100); margin-bottom: 14px; }
+.phase-desc { font-size: 13px; color: var(--gray-600); margin-bottom: 14px; line-height: 1.6; }
+
+.act-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.act-table th { background: var(--navy); color: white; padding: 8px 12px; text-align: left; font-size: 11px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; }
+.act-table td { padding: 10px 12px; border-bottom: 1px solid var(--gray-100); vertical-align: top; }
+.act-table tr:last-child td { border-bottom: none; }
+.act-name { font-size: 13px; line-height: 1.45; }
+.act-time { font-weight: 700; color: var(--navy); white-space: nowrap; }
+.cls-btns { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 4px; }
+.cls-btn { font-size: 11px; font-weight: 700; padding: 4px 9px; border-radius: 6px; border: 1.5px solid var(--gray-300); background: white; cursor: pointer; color: var(--gray-600); transition: all .15s; }
+.cls-btn:hover:not(:disabled) { border-color: var(--blue); color: var(--blue); }
+.cls-btn:disabled { cursor: not-allowed; }
+.cls-btn.va { background: var(--green-lt); border-color: var(--green-bdr); color: var(--green); }
+.cls-btn.nva { background: var(--red-lt); border-color: var(--red-bdr); color: var(--red); }
+.cls-btn.nvn { background: var(--gold-lt); border-color: var(--gold-bdr); color: var(--gold-dark); }
+.act-fb { font-size: 12px; line-height: 1.5; margin-top: 6px; padding: 7px 10px; border-radius: 6px; display: none; }
+.act-fb.show { display: block; }
+.act-fb.ok { background: var(--green-lt); border: 1px solid var(--green-bdr); color: #14532d; }
+.act-fb.err { background: var(--red-lt); border: 1px solid var(--red-bdr); color: #7f1d1d; }
+
+.btn-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-top: 16px; }
+.btn-primary { background: var(--blue); color: white; font-size: 13px; font-weight: 700; padding: 9px 20px; border: none; border-radius: 8px; cursor: pointer; transition: background .15s; }
+.btn-primary:hover:not(:disabled) { background: var(--blue-hover); }
+.btn-primary:disabled { opacity: .4; cursor: not-allowed; }
+.btn-green { background: var(--green); color: white; font-size: 13px; font-weight: 700; padding: 9px 20px; border: none; border-radius: 8px; cursor: pointer; transition: background .15s; }
+.btn-green:hover { background: var(--green-hover); }
+.cls-count { font-size: 12px; color: var(--gray-400); }
+
+.alert { border-radius: 10px; padding: 12px 16px; font-size: 13px; line-height: 1.6; display: flex; gap: 10px; align-items: flex-start; margin-top: 12px; }
+.alert-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+.alert-body { flex: 1; }
+.alert-body strong { display: block; margin-bottom: 2px; }
+.alert-green { background: var(--green-lt); border: 1.5px solid var(--green-bdr); }
+.alert-red { background: var(--red-lt); border: 1.5px solid var(--red-bdr); }
+.alert-gold { background: var(--gold-lt); border: 1.5px solid var(--gold-bdr); }
+.alert-blue { background: var(--blue-xlt); border: 1.5px solid var(--blue-bdr); }
+
+.metric-form { background: var(--gray-50); border: 1.5px solid var(--gray-200); border-radius: 10px; padding: 16px 18px; margin-bottom: 14px; }
+.metric-form h3 { font-size: 13.5px; font-weight: 700; color: var(--navy); margin-bottom: 10px; }
+.formula-box { background: var(--blue-xlt); border: 1px solid var(--blue-bdr); border-radius: 6px; padding: 7px 12px; font-size: 12.5px; color: var(--navy); margin-bottom: 10px; font-weight: 600; }
+.f-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
+.f-row label { font-size: 12.5px; color: var(--gray-700); min-width: 170px; }
+.f-input { width: 90px; padding: 6px 10px; border: 1.5px solid var(--gray-300); border-radius: 6px; font-size: 13px; }
+.f-input:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px #eff6ff; }
+.f-unit { font-size: 12px; color: var(--gray-400); }
+.f-input.locked { background: var(--gray-100); color: var(--gray-600); }
+
+.flow-table { width: 100%; font-size: 12.5px; border-collapse: collapse; margin: 10px 0 14px; }
+.flow-table th { background: var(--navy); color: white; padding: 7px 10px; text-align: left; font-size: 11px; text-transform: uppercase; font-weight: 700; letter-spacing: .04em; }
+.flow-table td { padding: 7px 10px; border-bottom: 1px solid var(--gray-100); vertical-align: middle; }
+.flow-table tr:last-child td { border-bottom: none; }
+.cls-pill { font-size: 10.5px; font-weight: 700; padding: 2px 8px; border-radius: 100px; white-space: nowrap; }
+.pill-va { background: var(--green-lt); color: var(--green); }
+.pill-nva { background: var(--red-lt); color: var(--red); }
+.pill-nvn { background: var(--gold-lt); color: var(--gold-dark); }
+
+.locked-msg { background: var(--gray-100); border: 2px dashed var(--gray-300); border-radius: 10px; padding: 24px; text-align: center; color: var(--gray-400); font-size: 13.5px; }
+
+.summary-final { background: var(--navy); color: white; border-radius: 12px; padding: 24px; margin-top: 4px; }
+.summary-final h3 { font-size: 16px; font-weight: 700; color: var(--gold); margin-bottom: 12px; }
+.summary-final p { font-size: 13.5px; line-height: 1.7; color: rgba(255,255,255,.85); margin-bottom: 10px; }
+.summary-final p:last-child { margin-bottom: 0; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-badge">SCM 352 · M06</div>
+  <div class="header-text">
+    <h1>App 1: Waste Lens Explorer — OEE and Value-Added %</h1>
+    <p>LO6-1 · LO6-2 · LO6-3 | 10–12 minutes | Classify activities · Calculate both lean metrics</p>
+  </div>
+</header>
+
+<div class="scenario-nav" id="scenarioNav"></div>
+
+<div class="main" id="mainContent"></div>
+
+<script>
+const SC = [
+  {
+    id: 0,
+    title: "Airport Gate Agent",
+    tag: "Baseline",
+    shift: 480,
+    context: "8-hour shift (480 min). Classify each activity, then calculate the two lean metrics.",
+    acts: [
+      { name: "Assisting passengers with boarding, upgrades, and seat changes", time: 160, ans: "VA",
+        fb: "Value-added — this work directly transforms the passenger's situation. Boarding, upgrades, and seat changes are the core service customers pay for at the gate." },
+      { name: "Waiting between flights — no aircraft, crew, or passengers at gate", time: 120, ans: "NVA",
+        fb: "Non-value-added — waiting (not booked). The gate agent is available and capable, but no work has arrived. This is a staffing/scheduling mismatch, not an agent performance issue. The waste lies in the schedule, not the person." },
+      { name: "Administrative documentation and flight reporting", time: 80, ans: "NVA",
+        alt: "NVA-N",
+        fb: "Non-value-added — overprocessing. Passengers do not pay for reports; this is work beyond what the service requires. If you answered NVA-Necessary on the basis that aviation regulation requires some reporting, accept that answer — but the key is whether THIS documentation is above the regulatory minimum." },
+      { name: "Rebooking passengers with missed connections or cancelled flights", time: 60, ans: "VA",
+        fb: "Value-added — the agent is directly resolving the customer's problem. Rebooking a missed connection transforms the customer's situation; this is explicitly what the customer needs at this moment." },
+      { name: "Searching for gate assignments and flight status across multiple systems", time: 60, ans: "NVA",
+        fb: "Non-value-added — motion (searching). Time spent locating information that should be immediately accessible is digital motion waste. The lean fix is system integration — not a faster searcher." }
+    ],
+    oeeVA: 220,
+    p2: {
+      unit: "one departing passenger's gate experience",
+      steps: [
+        { name: "Passenger arrives at gate; waits for boarding to be called", time: "35", cls: "NVA", type: "Waiting" },
+        { name: "Gate agent verifies boarding pass and clears passenger to board", time: "3", cls: "VA" },
+        { name: "Passenger waits in jetway queue before reaching aircraft door", time: "12", cls: "NVA", type: "Waiting" }
+      ],
+      flow: 50, va: 3, pct: 6.0,
+      reflection: "The gate agent's OEE (45.8%) and the passenger's VA% (6.0%) are measuring two different waste problems. High OEE waste is in the agent's day — idle between flights, documentation overhead. Low VA% waste is in the passenger's journey — almost all of it is queue time. Fixing the agent's schedule doesn't fix the passenger's wait, and vice versa. These require different interventions."
+    }
+  },
+  {
+    id: 1,
+    title: "Bank Loan Officer",
+    tag: "Medium",
+    shift: 480,
+    context: "8-hour shift (480 min). Key focus: identifying overprocessing vs. NVA-necessary.",
+    acts: [
+      { name: "Evaluating loan applications — analyzing risk and making lending decisions", time: 200, ans: "VA",
+        fb: "Value-added — the lending decision is the core service. The officer's analysis directly transforms information into a credit outcome the customer is waiting for." },
+      { name: "Re-verifying applicant data already confirmed in the core banking system", time: 90, ans: "NVA",
+        fb: "Non-value-added — overprocessing. The data was already verified once; verifying it again adds no new information. The most common error here: 'NVA-necessary because compliance requires verification.' Compliance requires ONE verification. Re-doing it is overprocessing." },
+      { name: "Internal committee meetings where no loan decisions are made", time: 70, ans: "NVA",
+        fb: "Non-value-added — overprocessing or waiting (either accepted). If the meeting produces no loan decisions and no information used in decisions, the officer's time there is idle (waiting). If they participate but the meeting content is redundant with available data, it is overprocessing." },
+      { name: "Government reporting forms manually populated from existing system data", time: 80, ans: "NVA",
+        alt: "NVA-N",
+        fb: "Either classification is accepted with correct justification. If the form auto-populates from the system and only needs a signature: overprocessing. If it requires manual entry of legally required information not in the system: NVA-necessary. The key distinction is whether the regulation requires manual entry specifically." },
+      { name: "Searching for application files without a standardized digital filing system", time: 40, ans: "NVA",
+        fb: "Non-value-added — motion (searching). Time spent finding files is time not spent evaluating them. The lean fix is a standardized naming/filing protocol — 5S applied to digital files." }
+    ],
+    oeeVA: 200,
+    p2: {
+      unit: "one mortgage loan application",
+      steps: [
+        { name: "Application submitted; sits in assignment queue", time: "3", cls: "NVA", type: "Waiting", unit: "days" },
+        { name: "Loan officer reviews application and conducts analysis", time: "0.5", cls: "VA", unit: "days" },
+        { name: "Application sits in committee review queue", time: "2", cls: "NVA", type: "Waiting", unit: "days" },
+        { name: "Committee decision made", time: "0.25", cls: "VA", unit: "days" },
+        { name: "Application sits awaiting documentation and disbursement", time: "1.5", cls: "NVA", type: "Waiting", unit: "days" },
+        { name: "Loan documents prepared and funds disbursed", time: "0.25", cls: "VA", unit: "days" }
+      ],
+      flow: 7.5, va: 1.0, pct: 13.3, unitLabel: "days",
+      reflection: "The loan officer's OEE is 41.7% — meaning 58.3% of their day is absorbed by waste. The application's VA% is 13.3% — meaning the application spends 86.7% of its 7.5-day journey sitting in queues. Both are high-waste, but the interventions are completely different. Improving the officer's OEE (removing the redundant verification, streamlining meetings) helps the officer. Pulling the application through stages faster (reducing queue times at each handoff) helps the customer."
+    }
+  },
+  {
+    id: 2,
+    title: "Restaurant Server",
+    tag: "Medium",
+    shift: 360,
+    context: "6-hour dinner service (360 min). Key focus: motion waste and NVA-necessary distinction.",
+    acts: [
+      { name: "Taking orders, serving food and beverages, handling payments", time: 180, ans: "VA",
+        fb: "Value-added — directly serving the dining experience. This is what customers pay for: responsive, attentive service at the table." },
+      { name: "Individual trips to kitchen for single items (could be batched)", time: 90, ans: "NVA",
+        fb: "Non-value-added — motion waste. The movement itself adds no value to the food or service. The problem is the failure to batch: 6 individual trips instead of one coordinated trip is motion waste. Lean fix: coordinate multi-table kitchen trips, or use a table-team relay system." },
+      { name: "Waiting at the kitchen window for food to be ready", time: 60, ans: "NVA",
+        fb: "Non-value-added — waiting (not booked). The server has no other work available while standing at the window. This is a pull-signal failure: the server should be called to the window when food is ready, not waiting for it to be ready." },
+      { name: "Resetting tables between dining parties", time: 30, ans: "NVA",
+        alt: "NVA-N",
+        fb: "Both NVA (motion/transportation) and NVA-necessary are accepted. Most lean practitioners classify table reset as NVA-necessary: it is required overhead to prepare for the next party — without it, no service can occur. The argument for NVA waste: in an ideal pull system, the reset team would handle this while the server serves another table simultaneously, reducing server motion." }
+    ],
+    oeeVA: 180,
+    p2: {
+      unit: "one dining party's table visit",
+      steps: [
+        { name: "Party seated; waits for server to approach", time: "8", cls: "NVA", type: "Waiting" },
+        { name: "Server takes order", time: "4", cls: "VA" },
+        { name: "Food prepared in kitchen (NVA-necessary — cannot eliminate)", time: "22", cls: "NVA-N", type: "NVA-Necessary" },
+        { name: "Server delivers food to table", time: "2", cls: "VA" },
+        { name: "Dining party finishes; waits for server to bring check", time: "7", cls: "NVA", type: "Waiting" },
+        { name: "Server processes payment", time: "4", cls: "VA" }
+      ],
+      flow: 47, va: 10, pct: 21.3,
+      reflection: "The restaurant server's OEE is 50.0% — half the shift is waste. The dining party's VA% is 21.3% — about 78% of the experience is waiting. The kitchen time (22 min) is NVA-necessary: it cannot be eliminated. But the waits for the server to approach (8 min) and bring the check (7 min) are pure waiting waste — fixable with faster service triggers. This is why VA% improvement (reducing the customer's wait) and OEE improvement (reducing the server's motion waste) are two separate project tracks."
+    }
+  },
+  {
+    id: 3,
+    title: "Retail Pharmacist",
+    tag: "Hard",
+    shift: 480,
+    context: "8-hour shift (480 min). Hard: rework is defect waste, not NVA-necessary.",
+    acts: [
+      { name: "Reviewing prescriptions, verifying clinical appropriateness, counseling patients", time: 220, ans: "VA",
+        fb: "Value-added — the pharmacist's clinical judgment is the core service. Prescription review and patient counseling directly transform the patient's safety and understanding. This is what the patient pays for." },
+      { name: "Catching and correcting a prior technician fill error (wrong dosage dispensed)", time: 80, ans: "NVA",
+        fb: "Non-value-added — defect waste (rework). This is the key teaching in this scenario. Students often say 'NVA-necessary because errors must be corrected.' But: the error was not necessary. Correcting it is necessary only because the error occurred. The waste is the error; the correction is the symptom. Remove the defect and this 80 minutes disappears." },
+      { name: "Mandatory annual certification and pharmacy board compliance training", time: 60, ans: "NVA-N",
+        fb: "NVA-necessary — correct. This training is required by pharmacy board regulation for licensure. It adds no direct value to the current patient, but it cannot legally be eliminated. The pharmacist must complete it to maintain their license to practice. This is the prototype NVA-necessary activity: required by regulation, not by management choice." },
+      { name: "Administrative insurance processing and billing documentation", time: 70, ans: "NVA",
+        alt: "NVA-N",
+        fb: "Either accepted with justification. The portion beyond what insurance regulation requires is overprocessing. If some documentation is legally mandated for insurance reimbursement, that portion is NVA-necessary. The question is: is the specific documentation observed above or at the regulatory minimum?" },
+      { name: "Searching for drug interaction references not integrated into dispensing software", time: 50, ans: "NVA",
+        fb: "Non-value-added — motion (searching). The pharmacist's time searching for references that should be immediately accessible is digital motion waste. Lean fix: integrate reference databases directly into the dispensing workflow interface." }
+    ],
+    oeeVA: 220,
+    p2: {
+      unit: "one prescription's fulfillment journey",
+      steps: [
+        { name: "Prescription submitted; waits in queue for technician assignment", time: "25", cls: "NVA", type: "Waiting" },
+        { name: "Technician fills prescription", time: "8", cls: "VA" },
+        { name: "Filled prescription waits in pharmacist verification queue", time: "30", cls: "NVA", type: "Waiting" },
+        { name: "Pharmacist reviews and verifies prescription", time: "5", cls: "VA" },
+        { name: "Prescription sits waiting for patient pickup", time: "12", cls: "NVA", type: "Waiting" }
+      ],
+      flow: 80, va: 13, pct: 16.3,
+      reflection: "OEE = 45.8%, VA% = 16.3%. The prescription spends most of its 80-minute journey sitting in queues (67 of 80 minutes — 84% — is waiting). The technician and pharmacist combined do only 13 minutes of value-adding work. The lean intervention here is pull: the pharmacist's queue is the dominant constraint. A pull signal that notifies the pharmacist when the technician finishes (rather than batching review) would cut the 30-minute verification queue dramatically."
+    }
+  },
+  {
+    id: 4,
+    title: "Call Center Agent",
+    tag: "Expert",
+    shift: 480,
+    context: "8-hour shift (480 min). Expert: combined waste types including a true NVA-necessary item.",
+    acts: [
+      { name: "Answering customer questions, troubleshooting issues, resolving complaints", time: 230, ans: "VA",
+        fb: "Value-added — the agent is directly solving the customer's problem. This is the core service the customer called for. Any time spent actually working on the resolution is value-added." },
+      { name: "Mandatory security verification with all returning customers (required by Reg E and CFPB guidelines)", time: 80, ans: "NVA-N",
+        fb: "NVA-necessary — this is the most important classification in this scenario. Federal regulation (Regulation E, CFPB guidelines) requires identity verification for financial services interactions. This step adds no value to the customer's resolution, but it cannot legally be eliminated. Students who classify this as overprocessing are applying the wrong test. NVA-necessary requires external mandate (law, regulation, physical safety) — not management preference. This regulation-based verification meets that standard." },
+      { name: "Post-call documentation in CRM — manual entry beyond the required case summary", time: 60, ans: "NVA",
+        fb: "Non-value-added — overprocessing. The required summary is brief; the observed documentation significantly exceeds what compliance requires. The excess is overprocessing. If the system auto-generated the required summary from call data, all manual documentation would become pure overprocessing waste." },
+      { name: "Waiting in 'available' state between calls — call queue is empty", time: 70, ans: "NVA",
+        fb: "Non-value-added — waiting (not booked). The agent is available and capable but no work is in the queue. This is a staffing/demand mismatch: too many agents are scheduled during low-demand periods. Lean fix: heijunka scheduling — match staffing levels to the actual hourly call arrival pattern." },
+      { name: "Re-entering customer data already present in the CRM from previous interactions", time: 40, ans: "NVA",
+        fb: "Non-value-added — overprocessing. The data already exists in the CRM. Re-entering it adds no value and is the same waste type as the hospital admissions example from your lecture. Lean fix: auto-populate call intake forms from the existing customer record at call start." }
+    ],
+    oeeVA: 230,
+    p2: {
+      unit: "one customer service call",
+      steps: [
+        { name: "Customer waits in queue for available agent", time: "8", cls: "NVA", type: "Waiting" },
+        { name: "Agent completes mandatory security verification (regulated — NVA-necessary)", time: "3", cls: "NVA-N", type: "NVA-Necessary" },
+        { name: "Agent addresses and resolves customer issue", time: "7", cls: "VA" },
+        { name: "Agent completes post-call documentation", time: "4", cls: "NVA", type: "Overprocessing" }
+      ],
+      flow: 22, va: 7, pct: 31.8,
+      reflection: "The call center agent's OEE is 47.9%. The customer call's VA% is 31.8% — the highest VA% of any scenario in this app, and it still means 68% of the call's duration is non-value-adding. The security verification (3 min, NVA-necessary) is in the denominator but not the numerator — just like OEE's NVA-necessary treatment. The key insight: even highly efficient service processes often run VA% below 40%. The waiting waste (8 min queue) is the single biggest lever."
+    }
+  }
+];
+
+let cur = 0;
+let states = SC.map(() => ({ sels: {}, p1Done: false, p1Score: 0, oeeOk: false, vapOk: false, done: false }));
+
+function pilClass(c) {
+  if (c === 'VA') return 'pill-va';
+  if (c === 'NVA-N') return 'pill-nvn';
+  return 'pill-nva';
+}
+function pilLabel(c) {
+  if (c === 'VA') return 'Value-Added';
+  if (c === 'NVA-N') return 'NVA-Necessary';
+  return 'Non-Value-Added';
+}
+
+function buildNav() {
+  const nav = document.getElementById('scenarioNav');
+  nav.innerHTML = SC.map((s, i) => {
+    const st = states[i];
+    let cls = 'snav-btn';
+    if (i === cur) cls += ' active';
+    else if (st.done) cls += ' done';
+    else if (i > 0 && !states[i-1].done) cls += ' locked';
+    const tick = st.done ? ' ✓' : '';
+    return `<button class="${cls}" onclick="goTo(${i})">${s.title}${tick}</button>`;
+  }).join('');
+}
+
+function goTo(i) {
+  if (i > 0 && !states[i-1].done && i !== cur) return;
+  cur = i;
+  render();
+}
+
+function render() {
+  buildNav();
+  const sc = SC[cur];
+  const st = states[cur];
+  const p2 = sc.p2;
+
+  // Activity rows
+  const actRows = sc.acts.map((a, idx) => {
+    const sel = st.sels[idx];
+    const selClass = sel === 'VA' ? 'va' : sel === 'NVA' ? 'nva' : sel === 'NVA-N' ? 'nvn' : '';
+    const dis = st.p1Done ? 'disabled' : '';
+    const fbShow = st.p1Done ? 'show' : '';
+    let fbCls = 'act-fb'; let fbTxt = '';
+    if (st.p1Done && sel) {
+      const ok = sel === a.ans || sel === (a.alt || '');
+      fbCls = `act-fb ${ok ? 'ok' : 'err'} show`;
+      fbTxt = a.fb;
+    }
+    return `<tr>
+      <td>
+        <div class="act-name">${a.name}</div>
+        <div class="cls-btns">
+          <button class="cls-btn ${sel==='VA'?'va':''}" ${dis} onclick="classify(${idx},'VA')">VA</button>
+          <button class="cls-btn ${sel==='NVA'?'nva':''}" ${dis} onclick="classify(${idx},'NVA')">NVA (Waste)</button>
+          <button class="cls-btn ${sel==='NVA-N'?'nvn':''}" ${dis} onclick="classify(${idx},'NVA-N')">NVA-Necessary</button>
+        </div>
+        <div class="${fbCls}">${fbTxt}</div>
+      </td>
+      <td class="act-time">${a.time} min</td>
+    </tr>`;
+  }).join('');
+
+  // Flow table rows for Phase 2
+  const flowRows = p2.steps.map(s => `<tr>
+    <td>${s.name}</td>
+    <td style="white-space:nowrap;font-weight:600;">${s.time} ${s.unit||'min'}</td>
+    <td><span class="cls-pill ${pilClass(s.cls)}">${pilLabel(s.cls)}</span></td>
+  </tr>`).join('');
+
+  // P1 summary
+  const clsCount = Object.keys(st.sels).length;
+  const p1Alert = st.p1Done
+    ? `<div class="alert ${st.p1Score >= sc.acts.length - 1 ? 'alert-green' : 'alert-gold'}">
+        <div class="alert-icon">${st.p1Score >= sc.acts.length - 1 ? '✓' : '⚠'}</div>
+        <div class="alert-body"><strong>${st.p1Score} of ${sc.acts.length} exactly correct.</strong> Review each activity's feedback below, then scroll to Phase 2 to calculate the metrics.</div>
+       </div>` : '';
+
+  // P2 section
+  const p2Locked = !st.p1Done
+    ? `<div class="locked-msg">Complete Phase 1 classifications above to unlock metric calculations.</div>`
+    : `
+      <div class="metric-form">
+        <h3>Step 1 — OEE (Resource: the ${sc.title})</h3>
+        <div class="formula-box">OEE = Value-Added Time ÷ Total Shift Time</div>
+        <div class="f-row">
+          <label>VA time from your classifications:</label>
+          <input type="number" class="f-input ${st.oeeOk?'locked':''}" id="oeeva" placeholder="min" ${st.oeeOk?'disabled':''} oninput="checkOee()">
+          <span class="f-unit">min</span>
+        </div>
+        <div class="f-row">
+          <label>Shift time:</label>
+          <input type="number" class="f-input locked" value="${sc.shift}" disabled>
+          <span class="f-unit">min</span>
+        </div>
+        <div class="f-row">
+          <label>OEE =</label>
+          <input type="number" class="f-input ${st.oeeOk?'locked':''}" id="oeeresult" placeholder="%" step="0.1" ${st.oeeOk?'disabled':''} oninput="checkOee()">
+          <span class="f-unit">%</span>
+        </div>
+        <div class="btn-row" style="margin-top:8px;">
+          <button class="btn-primary" id="oeeBtn" onclick="submitOee()" ${st.oeeOk?'disabled':''}>Check OEE</button>
+        </div>
+        <div id="oeeFb"></div>
+      </div>
+
+      <div class="metric-form" id="vapSection">
+        <h3>Step 2 — Value-Added % (Flow unit: ${p2.unit})</h3>
+        <p class="phase-desc">Below are the steps the flow unit goes through from entry to exit. VA% uses the flow unit's total journey time — not shift time.</p>
+        <table class="flow-table">
+          <thead><tr><th>Step</th><th>Time</th><th>Classification</th></tr></thead>
+          <tbody>${flowRows}</tbody>
+        </table>
+        <div class="formula-box">VA% = Value-Added Time ÷ Total Flow Time</div>
+        <div class="f-row">
+          <label>VA time (from flow table above):</label>
+          <input type="number" class="f-input ${st.vapOk?'locked':''}" id="vapva" placeholder="${p2.unitLabel||'min'}" step="0.01" ${st.vapOk?'disabled':''} oninput="checkVap()">
+          <span class="f-unit">${p2.unitLabel||'min'}</span>
+        </div>
+        <div class="f-row">
+          <label>Total flow time:</label>
+          <input type="number" class="f-input ${st.vapOk?'locked':''}" id="vapflow" placeholder="${p2.unitLabel||'min'}" step="0.01" ${st.vapOk?'disabled':''} oninput="checkVap()">
+          <span class="f-unit">${p2.unitLabel||'min'}</span>
+        </div>
+        <div class="f-row">
+          <label>VA% =</label>
+          <input type="number" class="f-input ${st.vapOk?'locked':''}" id="vapresult" placeholder="%" step="0.1" ${st.vapOk?'disabled':''} oninput="checkVap()">
+          <span class="f-unit">%</span>
+        </div>
+        <div class="btn-row" style="margin-top:8px;">
+          <button class="btn-primary" id="vapBtn" onclick="submitVap()" ${st.vapOk?'disabled':''}>Check VA%</button>
+        </div>
+        <div id="vapFb"></div>
+      </div>
+
+      ${st.vapOk ? renderReflection(sc) : ''}
+    `;
+
+  document.getElementById('mainContent').innerHTML = `
+    <div class="card">
+      <div class="card-hd">
+        <h2>Scenario ${cur+1}: ${sc.title} <span style="font-size:11px;font-weight:700;padding:2px 8px;border-radius:100px;margin-left:8px;background:var(--blue-lt);color:var(--blue);">${sc.tag}</span></h2>
+        <p>${sc.context}</p>
+      </div>
+      <div class="card-bd">
+        <div class="phase-label">Phase 1 — Classify Each Activity</div>
+        <div class="phase-desc">For each activity, select <strong>VA</strong> (creates customer value), <strong>NVA Waste</strong> (adds no value — should be eliminated), or <strong>NVA-Necessary</strong> (required by law/safety/regulation, but adds no direct customer value).</div>
+        <table class="act-table">
+          <thead><tr><th style="width:80%">Activity</th><th style="width:20%">Time</th></tr></thead>
+          <tbody>${actRows}</tbody>
+        </table>
+        <div class="btn-row">
+          <button class="btn-primary" id="p1Btn" onclick="submitP1()" ${clsCount < sc.acts.length || st.p1Done ? 'disabled' : ''}>
+            ${st.p1Done ? 'Classifications Submitted' : 'Check Classifications'}
+          </button>
+          ${!st.p1Done ? `<span class="cls-count">${clsCount} of ${sc.acts.length} classified</span>` : ''}
+        </div>
+        ${p1Alert}
+        <div class="phase-label" style="margin-top:20px;">Phase 2 — Calculate OEE and Value-Added %</div>
+        ${p2Locked}
+      </div>
+    </div>
+  `;
+
+  if (st.p1Done) restoreOeeVap();
+}
+
+function restoreOeeVap() {
+  const st = states[cur];
+  if (st.oeeOk) {
+    const sc = SC[cur];
+    document.getElementById('oeeFb') && (document.getElementById('oeeFb').innerHTML = oeeCorrectHtml(sc));
+  }
+  if (st.vapOk) {
+    const sc = SC[cur];
+    document.getElementById('vapFb') && (document.getElementById('vapFb').innerHTML = vapCorrectHtml(sc));
+  }
+}
+
+function oeeCorrectHtml(sc) {
+  const pct = ((sc.oeeVA/sc.shift)*100).toFixed(1);
+  return `<div class="alert alert-green"><div class="alert-icon">✓</div><div class="alert-body"><strong>Correct.</strong> VA time = ${sc.oeeVA} min · OEE = ${sc.oeeVA}/${sc.shift} = <strong>${pct}%</strong>. ${(100-parseFloat(pct)).toFixed(1)}% of the ${sc.title}'s shift was absorbed by non-value-adding activities.</div></div>`;
+}
+
+function vapCorrectHtml(sc) {
+  const p2 = sc.p2;
+  const u = p2.unitLabel||'min';
+  return `<div class="alert alert-green"><div class="alert-icon">✓</div><div class="alert-body"><strong>Correct.</strong> VA = ${p2.va} ${u} · Flow = ${p2.flow} ${u} · VA% = ${p2.va}/${p2.flow} = <strong>${p2.pct}%</strong>.<br>Compare: OEE = ${((sc.oeeVA/sc.shift)*100).toFixed(1)}% (resource lens) vs. VA% = ${p2.pct}% (flow unit lens). Two different waste problems.</div></div>`;
+}
+
+function classify(idx, val) {
+  if (states[cur].p1Done) return;
+  states[cur].sels[idx] = val;
+  render();
+}
+
+function submitP1() {
+  const sc = SC[cur];
+  const st = states[cur];
+  if (Object.keys(st.sels).length < sc.acts.length || st.p1Done) return;
+  let score = 0;
+  sc.acts.forEach((a, i) => {
+    const sel = st.sels[i];
+    if (sel === a.ans || sel === (a.alt||'__')) score++;
+  });
+  st.p1Done = true;
+  st.p1Score = score;
+  render();
+}
+
+function checkOee() {
+  const va = document.getElementById('oeeva')?.value;
+  const res = document.getElementById('oeeresult')?.value;
+  const btn = document.getElementById('oeeBtn');
+  if (btn) btn.disabled = !(parseFloat(va) > 0 && parseFloat(res) > 0);
+}
+
+function submitOee() {
+  const sc = SC[cur];
+  const st = states[cur];
+  const va = parseFloat(document.getElementById('oeeva')?.value) || 0;
+  const res = parseFloat(document.getElementById('oeeresult')?.value) || 0;
+  const correctPct = parseFloat(((sc.oeeVA/sc.shift)*100).toFixed(2));
+  const vaOk = Math.abs(va - sc.oeeVA) <= 10;
+  const pctOk = Math.abs(res - correctPct) <= 1.5;
+  const fbEl = document.getElementById('oeeFb');
+  if (!fbEl) return;
+  if (vaOk && pctOk) {
+    st.oeeOk = true;
+    fbEl.innerHTML = oeeCorrectHtml(sc);
+    document.getElementById('oeeBtn').disabled = true;
+    document.getElementById('oeeva').disabled = true;
+    document.getElementById('oeeresult').disabled = true;
+  } else {
+    let hint = '';
+    if (!vaOk) hint = `Check your VA time — sum only the activities classified as value-added. `;
+    else if (!pctOk) hint = `Check the formula: OEE = VA time ÷ ${sc.shift} (total shift min) × 100. `;
+    fbEl.innerHTML = `<div class="alert alert-red"><div class="alert-icon">✗</div><div class="alert-body"><strong>Not quite.</strong> ${hint}The denominator for OEE is the total shift time (${sc.shift} min), not flow time.</div></div>`;
+  }
+}
+
+function checkVap() {
+  const va = document.getElementById('vapva')?.value;
+  const flow = document.getElementById('vapflow')?.value;
+  const res = document.getElementById('vapresult')?.value;
+  const btn = document.getElementById('vapBtn');
+  if (btn) btn.disabled = !(parseFloat(va) > 0 && parseFloat(flow) > 0 && parseFloat(res) > 0);
+}
+
+function submitVap() {
+  const sc = SC[cur];
+  const st = states[cur];
+  const p2 = sc.p2;
+  const va = parseFloat(document.getElementById('vapva')?.value) || 0;
+  const flow = parseFloat(document.getElementById('vapflow')?.value) || 0;
+  const res = parseFloat(document.getElementById('vapresult')?.value) || 0;
+  const fbEl = document.getElementById('vapFb');
+  if (!fbEl) return;
+  const vaOk = Math.abs(va - p2.va) < 1.5;
+  const flowOk = Math.abs(flow - p2.flow) < 1.5;
+  const pctOk = Math.abs(res - p2.pct) < 2.0;
+  if (vaOk && flowOk && pctOk) {
+    st.vapOk = true;
+    st.done = true;
+    fbEl.innerHTML = vapCorrectHtml(sc);
+    document.getElementById('vapBtn').disabled = true;
+    render();
+  } else {
+    let hint = '';
+    if (!vaOk) hint = `Check your VA time — only steps where the flow unit is being actively transformed count. NVA-necessary steps do NOT count toward VA in the numerator. `;
+    else if (!flowOk) hint = `Check your flow time — include ALL steps from start to finish, including all waits. `;
+    else hint = `Check the formula: VA% = VA time ÷ total flow time × 100. `;
+    fbEl.innerHTML = `<div class="alert alert-red"><div class="alert-icon">✗</div><div class="alert-body"><strong>Not quite.</strong> ${hint}The denominator for VA% is TOTAL FLOW TIME — not shift time.</div></div>`;
+  }
+}
+
+function renderReflection(sc) {
+  const isLast = cur === SC.length - 1;
+  const nextBtn = isLast
+    ? `<div class="summary-final">
+        <h3>Waste Lens Mastery — M06 Takeaway</h3>
+        <p><strong>OEE and VA% are not interchangeable.</strong> OEE asks how the resource spends its time. VA% asks how long the flow unit exists before being transformed. A resource can have a high OEE while its flow units experience a very low VA% — because the resource is busy on other units while this one waits in queue.</p>
+        <p><strong>The dominant waste in almost every service process is waiting.</strong> Not overprocessing. Not defects. Waiting. The prescription, the loan application, the boarding pass — each spends most of its flow time sitting in a queue. Lean's primary tool for this waste is pull: downstream steps signal upstream steps to produce, eliminating the accumulation that drives waiting.</p>
+        <p><strong>NVA-necessary activities follow the same rule in both formulas:</strong> they appear in the denominator (total time) but not in the numerator (VA time). The security verification, the compliance training, the kitchen preparation — all are in the total, none are in the value-added count.</p>
+        <p style="color:var(--gold);font-weight:700;">✓ App 1 complete — ready for Gate 2 Q1, Q2, and Case Parts 1–2</p>
+      </div>`
+    : `<button class="btn-green" onclick="goTo(${cur+1})">Continue to Scenario ${cur+2}: ${SC[cur+1].title} →</button>`;
+  return `
+    <div style="background:var(--blue-xlt);border:1.5px solid var(--blue-bdr);border-radius:10px;padding:16px 18px;margin-top:4px;">
+      <div style="font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--blue);margin-bottom:8px;">Reflection</div>
+      <p style="font-size:13px;line-height:1.65;color:var(--gray-800);">${sc.p2.reflection}</p>
+    </div>
+    <div style="margin-top:14px;">${nextBtn}</div>
+  `;
+}
+
+render();
+</script>
+</body>
+</html>

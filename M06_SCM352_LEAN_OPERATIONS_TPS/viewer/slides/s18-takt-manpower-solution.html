@@ -1,0 +1,48 @@
+<section class="slide-page" data-title="Laptop Manufacturing — Solution" data-lo="LO6-5" data-notes="SS-06 Parts C+D solution. Baseline: takt=6.0, TM=4 (exact). Demand increase to 84: takt=5.0, TM=4.8→5. The demand change scenario is the conceptual bridge: adding 1 worker is a lean decision (add exactly as many as required by takt), not a capacity guess. With 3 workers at takt=6.0: 3 workers × 6 min each = 18 min labor content per unit per worker-slot — but total LC per unit is 24 min, so 3 workers process at 24/3=8 min/unit > takt=6.0 → shortfall.">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">LO6-5</span>
+      <span class="le-course">SCM 352 · Module 06</span>
+    </div>
+    <span class="le-pagenum">18 / 24</span>
+  </div>
+  <div class="le-titleblock">
+    <div class="le-title">Laptop Manufacturing — <span>Solution</span></div>
+    <div class="le-sub">420 min/shift · 70 laptops/day → 84 laptops/day · LC = 24 min</div>
+  </div>
+  <div class="le-body">
+    <div class="two-col">
+      <div style="display:flex;flex-direction:column;gap:7px;">
+        <div class="callout teal">
+          <div class="callout-label">Baseline: 70 laptops/day</div>
+          <p>Takt = 420 &frasl; 70 = <strong class="pos">6.0 min/laptop</strong></p>
+          <p style="margin-top:4px;">TM = 24 &frasl; 6.0 = <strong class="pos">4.0 workers</strong> (exact — no rounding)</p>
+          <p style="margin-top:4px;">4 workers × 6 min each = 24 min labor content per unit ✓</p>
+        </div>
+        <div class="callout teal">
+          <div class="callout-label">Demand Increases to 84 laptops/day</div>
+          <p>New takt = 420 &frasl; 84 = <strong class="pos">5.0 min/laptop</strong></p>
+          <p style="margin-top:4px;">New TM = 24 &frasl; 5.0 = 4.8 → <strong class="pos">round UP to 5 workers</strong></p>
+          <p style="margin-top:4px;">Management must add 1 worker.</p>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:7px;">
+        <div class="callout amber">
+          <div class="callout-label">Why Round Up?</div>
+          <p>TM = 4.8 means 4 workers cannot meet takt. Each of the 4 workers processes at 24/4 = 6 min — but takt is now 5 min. The line falls behind demand.</p>
+          <p style="margin-top:4px;">5 workers process at 24/5 = 4.8 min/unit &lt; 5.0 takt. Line meets demand. One worker has a small amount of slack — that is acceptable.</p>
+        </div>
+        <div class="callout blue">
+          <div class="callout-label">Key Takeaway</div>
+          <p>This is <strong>lean staffing</strong>, not intuitive staffing. Don't add people until you're "fast enough" — add exactly the number required to match takt time. That precision is the discipline.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="le-footer">
+    <div class="le-lo-pills"><span class="le-lo-pill">LO6-5</span></div>
+    <div><span class="le-gate-note">Gate 2 · Q4 · Case Part 4</span></div>
+  </div>
+</section>

@@ -1,0 +1,52 @@
+<section class="slide-page" data-title="VA% Worked Example — DMV Solution" data-lo="LO6-3" data-notes="SS-04 Part B solution. Flow time = 80 min, VA time = 15 min, VA% = 18.75%. The two waits (45 + 20 = 65 min) represent 81.25% of the customer's time. Most common error: students put 80 in the denominator correctly but add only the 10-min license issuance step to the numerator, forgetting that the 5-min check-in is also VA. Next slide (s12) shows the OEE comparison — same process, different number.">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">LO6-3</span>
+      <span class="le-course">SCM 352 · Module 06</span>
+    </div>
+    <span class="le-pagenum">11 / 24</span>
+  </div>
+  <div class="le-titleblock">
+    <div class="le-title">DMV License Renewal — <span>VA% Solution</span></div>
+    <div class="le-sub">Flow time = 80 min · VA time = 15 min</div>
+  </div>
+  <div class="le-body">
+    <div class="two-col">
+      <div style="display:flex;flex-direction:column;gap:6px;">
+        <table class="clean-table">
+          <thead>
+            <tr><th>Step</th><th style="text-align:center;">Min</th><th>Class</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Wait in line</td><td style="text-align:center;">45</td><td><span class="neg">NVA — waiting</span></td></tr>
+            <tr><td>Initial check-in</td><td style="text-align:center;">5</td><td><span class="pos">VA</span></td></tr>
+            <tr><td>Wait for document processing</td><td style="text-align:center;">20</td><td><span class="neg">NVA — waiting</span></td></tr>
+            <tr><td>Document reviewed, license issued</td><td style="text-align:center;">10</td><td><span class="pos">VA</span></td></tr>
+            <tr class="total-row"><td><strong>Total</strong></td><td style="text-align:center;"><strong>80</strong></td><td></td></tr>
+          </tbody>
+        </table>
+        <div class="formula-box" style="font-size:calc(14px * var(--slide-scale));">
+          VA% = 15 &frasl; 80 = <strong class="pos">18.75%</strong>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:7px;">
+        <div class="callout amber">
+          <div class="callout-label">Common Error</div>
+          <p>Only counting 10 min (license issued) as VA and missing the 5 min check-in → VA% = 10/80 = 12.5% → <em>wrong</em>.</p>
+          <p style="margin-top:4px;">Both steps actively process the customer's application. Both are VA.</p>
+        </div>
+        <div class="callout blue">
+          <div class="callout-label">Key Takeaway</div>
+          <p>The customer experiences <strong>81.25% wait</strong> in this process — nearly 5 of every 6 minutes is spent waiting, not being served.</p>
+          <p style="margin-top:4px;">Dominant waste: <strong>Waiting</strong> (65 of 80 min). Lean intervention: reduce queue length by adding capacity or redesigning appointment flow.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="le-footer">
+    <div class="le-lo-pills"><span class="le-lo-pill">LO6-3</span></div>
+    <div><span class="le-gate-note">Gate 2 · Q2 · Case Part 2</span></div>
+  </div>
+</section>

@@ -1,0 +1,50 @@
+<section class="slide-page" data-title="ITAT — Formula and Components" data-lo="LO6-6" data-notes="SS-07 Part A. ITAT = CT_detection × buffer. The three key terms must be precise: (1) defect-generation step = where errors are introduced; (2) detection step = where errors are first identified; (3) buffer = the number of units queued between the two steps at any point in time. Students often confuse 'buffer' with the total number of steps between defect and detection — it's the number of UNITS, not steps.">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">LO6-6</span>
+      <span class="le-course">SCM 352 · Module 06</span>
+    </div>
+    <span class="le-pagenum">19 / 24</span>
+  </div>
+  <div class="le-titleblock">
+    <div class="le-title">ITAT — <span>Information Turnaround Time</span></div>
+    <div class="le-sub">How long before a defect is detected and the operator gets feedback?</div>
+  </div>
+  <div class="le-body">
+    <div class="formula-box" style="font-size:calc(16px * var(--slide-scale));margin-bottom:8px;">
+      ITAT = Cycle time of detection step &times; Buffer (units between defect and detection steps)
+    </div>
+    <div class="two-col">
+      <div style="display:flex;flex-direction:column;gap:7px;">
+        <div class="callout teal">
+          <div class="callout-label">Three Terms</div>
+          <p><strong>Defect-generation step:</strong> the process step where errors are introduced — where the root cause originates</p>
+          <p style="margin-top:5px;"><strong>Detection step:</strong> the step where errors are first identified and caught</p>
+          <p style="margin-top:5px;"><strong>Buffer:</strong> the number of <em>units</em> queued between the defect step and the detection step</p>
+        </div>
+        <div class="callout blue">
+          <div class="callout-label">Unit Check</div>
+          <p>CT × buffer = (min/unit) × (units) = <strong>minutes</strong></p>
+          <p style="margin-top:4px;">ITAT is a time — how many minutes (or hours, days) elapse between when a defect is made and when it's caught.</p>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:7px;">
+        <div class="callout amber">
+          <div class="callout-label">What ITAT Reveals</div>
+          <p>A high ITAT means the operator won't know about an error for a long time. During that window, <strong>every unit processed at the defect step may carry the same error.</strong></p>
+          <p style="margin-top:4px;">The longer ITAT is, the more defective units are produced before detection.</p>
+        </div>
+        <div class="callout teal">
+          <div class="callout-label">To Reduce ITAT</div>
+          <p>Reduce the <strong>buffer</strong> between defect-generation and detection. Lean's push toward single-unit flow is, at its core, a quality strategy — not just an inventory strategy.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="le-footer">
+    <div class="le-lo-pills"><span class="le-lo-pill">LO6-6</span></div>
+    <div><span class="le-gate-note">Gate 2 · Q5 · Case Part 4</span></div>
+  </div>
+</section>

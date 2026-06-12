@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Discussion: Lean in the Wild — SCM 352 M06</title>
+<style>
+:root {
+  --navy:#1a3a5c;--blue:#2563a8;--blue-lt:#dbeafe;--blue-xlt:#eff6ff;
+  --gold:#f59e0b;--gold-lt:#fffbeb;--gold-bdr:#fde68a;
+  --green:#16a34a;--green-lt:#f0fdf4;--green-bdr:#bbf7d0;
+  --red:#dc2626;--red-lt:#fef2f2;--red-bdr:#fecaca;
+  --purple:#7c3aed;--purple-lt:#faf5ff;--purple-bdr:#ddd6fe;
+  --teal:#0891b2;--teal-lt:#f0fdfe;--teal-bdr:#a5f3fc;
+  --gray-50:#f9fafb;--gray-100:#f3f4f6;--gray-200:#e5e7eb;
+  --gray-400:#9ca3af;--gray-600:#4b5563;--gray-700:#374151;--gray-800:#1f2937;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--gray-50);color:var(--gray-800);line-height:1.6;}
+.page-header{background:var(--navy);color:white;padding:20px 28px;display:flex;align-items:flex-start;gap:16px;}
+.header-badge{background:var(--gold);color:var(--navy);font-weight:700;font-size:11px;padding:3px 9px;border-radius:4px;letter-spacing:.05em;text-transform:uppercase;white-space:nowrap;flex-shrink:0;}
+.header-text h1{font-size:20px;font-weight:700;margin-bottom:4px;}
+.header-text p{font-size:13px;color:rgba(255,255,255,.7);}
+.meta-strip{display:flex;gap:0;flex-wrap:wrap;border-bottom:2px solid var(--gray-200);background:white;}
+.meta-pill{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;padding:9px 16px;border-right:1px solid var(--gray-200);color:var(--gray-700);}
+.meta-pill:last-child{border-right:none;}
+.pip{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.pg-body{max-width:860px;margin:0 auto;padding:28px 24px 48px;display:flex;flex-direction:column;gap:24px;}
+.sec-div{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--gray-400);padding-bottom:10px;border-bottom:1px solid var(--gray-200);margin-bottom:-4px;}
+.card{background:white;border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;}
+.card-hd{padding:14px 20px;border-bottom:1px solid var(--gray-200);display:flex;align-items:center;gap:10px;}
+.card-hd h2{font-size:15px;font-weight:700;color:var(--navy);}
+.card-hd p{font-size:12px;color:var(--gray-600);margin-top:2px;}
+.card-bd{padding:20px;font-size:13.5px;line-height:1.7;color:var(--gray-700);}
+.card-bd p+p{margin-top:10px;}
+.alert{border-radius:10px;padding:13px 16px;font-size:13.5px;line-height:1.6;display:flex;gap:11px;align-items:flex-start;}
+.alert-icon{font-size:17px;flex-shrink:0;margin-top:1px;}
+.alert-body{flex:1;}
+.alert-body strong{display:block;margin-bottom:3px;}
+.alert-red{background:var(--red-lt);border:1.5px solid var(--red-bdr);}
+.alert-gold{background:var(--gold-lt);border:1.5px solid var(--gold-bdr);}
+.alert-blue{background:var(--blue-xlt);border:1.5px solid #bfdbfe;}
+.part{border:1.5px solid var(--gray-200);border-radius:10px;overflow:hidden;margin-bottom:14px;}
+.part:last-child{margin-bottom:0;}
+.part-header{padding:12px 16px;display:flex;align-items:center;gap:12px;border-bottom:1.5px solid var(--gray-200);}
+.part-num{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;flex-shrink:0;color:white;}
+.part-title{flex:1;font-size:14px;font-weight:700;color:var(--gray-800);}
+.part-pts{font-size:12px;font-weight:700;padding:3px 9px;border-radius:100px;white-space:nowrap;}
+.part-body{padding:14px 16px;font-size:13.5px;line-height:1.65;color:var(--gray-700);}
+.part-body p+p{margin-top:8px;}
+.part-1 .part-header{background:var(--blue-xlt);border-color:#bfdbfe;} .part-1 .part-num{background:var(--blue);} .part-1 .part-pts{background:var(--blue-lt);color:var(--navy);}
+.part-2 .part-header{background:var(--purple-lt);border-color:var(--purple-bdr);} .part-2 .part-num{background:var(--purple);} .part-2 .part-pts{background:var(--purple-bdr);color:var(--purple);}
+.part-3 .part-header{background:var(--teal-lt);border-color:var(--teal-bdr);} .part-3 .part-num{background:var(--teal);} .part-3 .part-pts{background:var(--teal-bdr);color:var(--teal);}
+.part-4 .part-header{background:var(--green-lt);border-color:var(--green-bdr);} .part-4 .part-num{background:var(--green);} .part-4 .part-pts{background:var(--green-bdr);color:var(--green);}
+.pts-table{width:100%;border-collapse:collapse;font-size:13.5px;}
+.pts-table th{background:var(--navy);color:white;padding:9px 14px;text-align:left;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;}
+.pts-table td{padding:9px 14px;border-bottom:1px solid var(--gray-100);vertical-align:top;}
+.pts-table tr:last-child td{border-bottom:none;}
+.pts-table tr.total-row td{font-weight:700;background:var(--gray-50);font-size:14px;border-top:2px solid var(--gray-200);}
+.pts-num{font-weight:700;font-size:15px;color:var(--navy);text-align:right;white-space:nowrap;}
+.tip-list{list-style:none;padding:0;display:flex;flex-direction:column;gap:8px;}
+.tip-list li{display:flex;gap:10px;font-size:13.5px;line-height:1.55;color:var(--gray-700);}
+.tip-list li::before{content:'→';color:var(--gold);font-weight:700;flex-shrink:0;margin-top:1px;}
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div class="header-badge">SCM 352 · M06</div>
+  <div class="header-text">
+    <h1>Discussion: Lean in the Wild — Finding Waste Where You Work</h1>
+    <p>Module M06 Discussion · 30 points · Item 10 of 12</p>
+  </div>
+</div>
+
+<div class="meta-strip">
+  <div class="meta-pill"><div class="pip" style="background:var(--blue)"></div> Deadline: end of Module 07</div>
+  <div class="meta-pill"><div class="pip" style="background:var(--green)"></div> 30 points</div>
+  <div class="meta-pill"><div class="pip" style="background:var(--gold)"></div> 30–40 minutes</div>
+  <div class="meta-pill"><div class="pip" style="background:var(--teal)"></div> LO6-1 · LO6-2 · LO6-3</div>
+</div>
+
+<div class="pg-body">
+
+  <div class="card">
+    <div class="card-hd" style="background:var(--blue-xlt);">
+      <div><h2>What You Are Doing</h2><p>Applying Module 6's lean framework to a real process you observe firsthand</p></div>
+    </div>
+    <div class="card-bd">
+      <p>Identify a service or production process you interact with regularly — a retail checkout, a healthcare visit, a university administrative process, a workplace task, or any other repeatable process with identifiable steps.</p>
+      <p>You are not analyzing a company's strategy. You are describing a specific, observable sequence of steps and identifying where value is — and is not — being created. The goal is to apply the OEE and value-added % lenses from Module 6 to a process you can actually describe from direct observation.</p>
+      <p>Your post does four things: describes and classifies the process step by step, estimates one lean metric, identifies the dominant waste and its root cause, and proposes a targeted lean intervention.</p>
+    </div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:12px;">
+    <div class="alert alert-red">
+      <div class="alert-icon">🚫</div>
+      <div class="alert-body">
+        <strong>Do not use any process from the textbook, slides, lecture videos, or any previous module's discussion.</strong>
+        Posts based on the DMV example, the hospital ER example, the Toyota supply chain example, the Aisin fire, or any other process already presented in course materials will receive zero credit. Your observation must come from your own experience this week.
+      </div>
+    </div>
+    <div class="alert alert-gold">
+      <div class="alert-icon">📅</div>
+      <div class="alert-body">
+        <strong>The process must be one you observed or participated in personally during this module period.</strong>
+        You cannot describe a process you read about or remember in general — describe a specific instance you experienced. "Last Tuesday at the student health center" is what we are looking for. "Healthcare processes in general" is not.
+      </div>
+    </div>
+    <div class="alert alert-blue">
+      <div class="alert-icon">ℹ️</div>
+      <div class="alert-body"><strong>Initial post only — no peer reply required for this module's discussion.</strong> The deadline extends to the end of Module 07 to give you flexibility, but earlier is better — the Case Analysis draws on the same skills.</div>
+    </div>
+  </div>
+
+  <div>
+    <div class="sec-div">Your Initial Post · 30 points · All four parts required</div>
+    <div class="card" style="margin-top:16px;">
+      <div class="card-bd" style="padding:16px;">
+
+        <div class="part part-1">
+          <div class="part-header">
+            <div class="part-num">1</div>
+            <div class="part-title">Process Description and Waste Inventory</div>
+            <div class="part-pts">10 pts</div>
+          </div>
+          <div class="part-body">
+            <p>Name the process and describe it step by step. For each step, include an estimated duration (even if approximate — "roughly 5 minutes"). Then classify each step as one of the following:</p>
+            <ul style="margin:10px 0 10px 20px;display:flex;flex-direction:column;gap:5px;">
+              <li><strong>Value-added (VA)</strong> — directly transforms the product or service in a way the customer pays for</li>
+              <li><strong>Non-value-added / waste (NVA)</strong> — consumes time or resources without adding value; could theoretically be eliminated</li>
+              <li><strong>NVA-necessary</strong> — adds no value from the customer's perspective but is required by law, regulation, or safety (not simply "required by current process design")</li>
+            </ul>
+            <p>For each NVA step, name the waste type using the <strong>7-source taxonomy from Chapter 8</strong> (Overproduction, Waiting, Transportation, Overprocessing, Inventory, Motion, Defects). One sentence of justification per step.</p>
+          </div>
+        </div>
+
+        <div class="part part-2">
+          <div class="part-header">
+            <div class="part-num">2</div>
+            <div class="part-title">OEE or Value-Added % Estimate</div>
+            <div class="part-pts">8 pts</div>
+          </div>
+          <div class="part-body">
+            <p>Choose <strong>either OEE or value-added %</strong> — whichever is the more informative lens for your process:</p>
+            <ul style="margin:10px 0 10px 20px;display:flex;flex-direction:column;gap:5px;">
+              <li><strong>OEE</strong> measures how a resource's time is being used: VA time ÷ total available time. Choose this if your waste analysis focused on a person or machine whose time is being partially wasted.</li>
+              <li><strong>Value-added %</strong> measures how much of a flow unit's journey through the process is value-adding: VA time ÷ total flow time. Choose this if your waste analysis followed a unit (a customer, an order, a document) through a series of steps.</li>
+            </ul>
+            <p>You do not need exact data — a grounded estimate is fine. Show your numbers and explain which metric you chose and why it is the more informative lens for this specific process.</p>
+          </div>
+        </div>
+
+        <div class="part part-3">
+          <div class="part-header">
+            <div class="part-num">3</div>
+            <div class="part-title">Dominant Waste and Root Cause</div>
+            <div class="part-pts">6 pts</div>
+          </div>
+          <div class="part-body">
+            <p>Identify the <strong>single largest waste category by time</strong> from your step-by-step description. Name it using Chapter 8 terminology.</p>
+            <p>Then propose a <strong>root cause</strong> for why this waste exists. Do not just say it is inefficient — explain why the process was designed, or has evolved, to include this waste. What constraint, incentive, technology gap, or organizational structure created it? One or two sentences of genuine causal reasoning.</p>
+          </div>
+        </div>
+
+        <div class="part part-4">
+          <div class="part-header">
+            <div class="part-num">4</div>
+            <div class="part-title">Lean Intervention Proposal</div>
+            <div class="part-pts">6 pts</div>
+          </div>
+          <div class="part-body">
+            <p>Propose <strong>one specific lean intervention</strong> that would reduce the dominant waste you identified. Be concrete about the mechanism — describe what specifically would change in the process and how that change addresses the root cause you identified in Part 3.</p>
+            <p>Close with an estimate: if the intervention is fully successful, what would the new OEE or value-added % be? Show your reasoning.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-hd" style="background:var(--blue-xlt);">
+      <div><h2>Points Summary</h2><p>30 points total · 13% of Module M06 grade</p></div>
+    </div>
+    <table class="pts-table">
+      <thead><tr><th>Component</th><th>Criteria</th><th style="text-align:right;">Points</th></tr></thead>
+      <tbody>
+        <tr>
+          <td rowspan="4" style="font-weight:600;color:var(--navy);vertical-align:top;padding-top:12px;">Initial Post<br><span style="font-weight:400;font-size:12px;color:var(--gray-600);">No reply required</span></td>
+          <td>1 — Process description and waste inventory (step-by-step, VA/NVA/NVA-necessary, 7-source taxonomy)</td><td class="pts-num">10</td>
+        </tr>
+        <tr><td>2 — OEE or VA% estimate with lens-choice explanation</td><td class="pts-num">8</td></tr>
+        <tr><td>3 — Dominant waste identification and root-cause reasoning</td><td class="pts-num">6</td></tr>
+        <tr><td>4 — Lean intervention proposal with mechanism and revised metric estimate</td><td class="pts-num">6</td></tr>
+        <tr class="total-row"><td colspan="2">Total</td><td class="pts-num">30</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-hd" style="background:var(--gold-lt);border-color:var(--gold-bdr);">
+      <div><h2 style="color:#92400e;">Tips for Full Credit</h2></div>
+    </div>
+    <div class="card-bd">
+      <ul class="tip-list">
+        <li>Step counts matter. A strong Part 1 post has at least 5 steps with estimated durations. One-step descriptions ("the whole thing took 20 minutes") cannot be classified and will receive minimal credit.</li>
+        <li>Name the waste type precisely. "It was slow" or "there was a lot of waiting" does not satisfy Part 1. "This step is waiting waste — the customer waits for an available cashier because staffing doesn't match peak-hour demand" is the level of specificity we are looking for.</li>
+        <li>The NVA-necessary classification is narrow. A step that is inconvenient, annoying, or currently required by company policy is not NVA-necessary. NVA-necessary means required by law, regulation, or safety with no alternative — and most service processes have very few truly NVA-necessary steps.</li>
+        <li>Choose your metric based on your waste analysis, not convenience. If you described a process by following a customer through multiple steps, value-added % is the correct lens. If you focused on a worker whose time was partially wasted, OEE is the correct lens. Getting this choice wrong and explaining it clearly is better than getting it right for the wrong reason.</li>
+        <li>Root causes require causal reasoning. "They haven't improved it yet" is not a root cause. "The legacy scheduling system assigns technicians alphabetically by last name, creating cross-department travel waste that no one department owns the incentive to fix" is a root cause.</li>
+        <li>The Case Analysis uses the same 7-waste taxonomy and both metric formulas. Using this discussion to practice on a real process you observed is the best preparation for the Case — Parts 1 and 2 in the Case are structurally identical to what you're doing here.</li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

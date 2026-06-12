@@ -1,0 +1,30 @@
+{
+  "title": "Lean Operations and the Toyota Production System",
+  "moduleLabel": "SCM 352 · M06 Lecture Slides",
+  "slides": [
+    "slides/s01-title.html",
+    "slides/s02-learning-objectives.html",
+    "slides/s03-gate-content.html",
+    "slides/s04-two-lenses.html",
+    "slides/s05-muda-seven-sources.html",
+    "slides/s06-oee-formula.html",
+    "slides/s07-oee-example-setup.html",
+    "slides/s08-oee-example-solution.html",
+    "slides/s09-va-percent-formula.html",
+    "slides/s10-va-percent-example-setup.html",
+    "slides/s11-va-percent-example-solution.html",
+    "slides/s12-oee-vs-va-reveal.html",
+    "slides/s13-kanban-formula.html",
+    "slides/s14-kanban-example-setup.html",
+    "slides/s15-kanban-example-solution.html",
+    "slides/s16-takt-manpower-formulas.html",
+    "slides/s17-takt-manpower-setup.html",
+    "slides/s18-takt-manpower-solution.html",
+    "slides/s19-itat-formula.html",
+    "slides/s20-itat-example-setup.html",
+    "slides/s21-itat-example-solution.html",
+    "slides/s22-3ms-chain.html",
+    "slides/s23-4ps-toyota.html",
+    "slides/s24-bridge.html"
+  ]
+}

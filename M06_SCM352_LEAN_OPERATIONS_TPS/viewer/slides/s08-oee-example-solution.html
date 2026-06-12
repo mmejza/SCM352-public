@@ -1,0 +1,54 @@
+<section class="slide-page" data-title="OEE Worked Example — Hospital ER Solution" data-lo="LO6-2" data-notes="SS-03 Parts B+C solution. OEE = 200/480 = 41.7%. NVA-necessary (regulatory documentation) is in the denominator but NOT the numerator — this is where students lose points if they added 60 to the numerator. Largest waste by time = Waiting (90 min). Intervention: coordinate physician order batching or implement a paging/push system to reduce idle nurse time.">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">LO6-2</span>
+      <span class="le-course">SCM 352 · Module 06</span>
+    </div>
+    <span class="le-pagenum">08 / 24</span>
+  </div>
+  <div class="le-titleblock">
+    <div class="le-title">Hospital ER — <span>OEE Solution</span></div>
+    <div class="le-sub">8-hour shift (480 min) · Direct patient care = 200 min VA</div>
+  </div>
+  <div class="le-body">
+    <div class="two-col">
+      <div style="display:flex;flex-direction:column;gap:6px;">
+        <table class="clean-table">
+          <thead>
+            <tr><th>Activity</th><th style="text-align:center;">Min</th><th>Class</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Direct patient care</td><td style="text-align:center;">200</td><td><span class="pos">VA</span></td></tr>
+            <tr><td>Waiting for physician orders</td><td style="text-align:center;">90</td><td><span class="neg">NVA — waiting</span></td></tr>
+            <tr><td>Re-entering charting data</td><td style="text-align:center;">70</td><td><span class="neg">NVA — overprocessing</span></td></tr>
+            <tr><td>Searching for equipment</td><td style="text-align:center;">60</td><td><span class="neg">NVA — motion</span></td></tr>
+            <tr><td>Regulatory documentation</td><td style="text-align:center;">60</td><td style="color:var(--amber);font-weight:600;">NVA-necessary</td></tr>
+            <tr class="total-row"><td><strong>Total</strong></td><td style="text-align:center;"><strong>480</strong></td><td></td></tr>
+          </tbody>
+        </table>
+        <div class="formula-box" style="font-size:calc(14px * var(--slide-scale));">
+          OEE = 200 &frasl; 480 = <strong class="pos">41.7%</strong>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:7px;">
+        <div class="callout amber">
+          <div class="callout-label">NVA-Necessary Trap</div>
+          <p>Regulatory documentation (60 min) goes in the <strong>denominator</strong> — it uses shift time.</p>
+          <p style="margin-top:4px;">It does <strong>not</strong> go in the numerator — it creates no customer value.</p>
+          <p style="margin-top:4px;">Adding it to the numerator → OEE = 260/480 = 54.2% → <em>wrong</em>.</p>
+        </div>
+        <div class="callout blue">
+          <div class="callout-label">Key Takeaway</div>
+          <p>Largest waste: <strong>Waiting</strong> (90 min, 18.75% of shift). Targeted intervention: physician order coordination or a proactive alert system to reduce nurse idle time between orders.</p>
+          <p style="margin-top:4px;">OEE = 41.7% means <strong>58.3%</strong> of the nurse's shift is non-value-adding.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="le-footer">
+    <div class="le-lo-pills"><span class="le-lo-pill">LO6-2</span></div>
+    <div><span class="le-gate-note">Gate 2 · Q1 · Case Part 1</span></div>
+  </div>
+</section>

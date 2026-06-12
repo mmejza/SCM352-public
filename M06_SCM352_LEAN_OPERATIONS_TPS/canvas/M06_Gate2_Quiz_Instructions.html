@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gate 2 Quiz Instructions — M06 — SCM 352</title>
+<style>
+:root{--navy:#1a3a5c;--blue:#2563a8;--blue-lt:#dbeafe;--blue-xlt:#eff6ff;--gold:#f59e0b;--gold-lt:#fffbeb;--gold-bdr:#fde68a;--green:#16a34a;--green-lt:#f0fdf4;--green-bdr:#bbf7d0;--red:#dc2626;--red-lt:#fef2f2;--red-bdr:#fecaca;--purple:#7c3aed;--purple-lt:#faf5ff;--purple-bdr:#ddd6fe;--teal:#0891b2;--teal-lt:#f0fdfe;--teal-bdr:#a5f3fc;--gray-50:#f9fafb;--gray-100:#f3f4f6;--gray-200:#e5e7eb;--gray-400:#9ca3af;--gray-600:#4b5563;--gray-700:#374151;--gray-800:#1f2937;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--gray-50);color:var(--gray-800);line-height:1.6;font-size:14px;}
+.header{background:var(--navy);padding:22px 28px;}
+.header-eyebrow{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
+.header h1{font-size:22px;font-weight:700;color:white;letter-spacing:-.01em;margin-bottom:4px;}
+.header p{font-size:13px;color:rgba(255,255,255,.65);}
+.stats-row{background:white;border-bottom:2px solid var(--gray-200);display:flex;flex-wrap:wrap;gap:0;}
+.stat{padding:12px 22px;border-right:1px solid var(--gray-200);flex-shrink:0;}
+.stat:last-child{border-right:none;}
+.stat-lbl{font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--gray-400);margin-bottom:3px;}
+.stat-val{font-size:15px;font-weight:800;color:var(--navy);}
+.pg-body{max-width:860px;margin:0 auto;padding:28px 22px 60px;display:flex;flex-direction:column;gap:26px;}
+.version-callout{background:var(--gold-lt);border:2px solid var(--gold);border-radius:12px;padding:16px 20px;display:flex;gap:13px;align-items:flex-start;}
+.version-callout-icon{font-size:22px;flex-shrink:0;margin-top:1px;}
+.version-callout-body{flex:1;}
+.version-callout-body strong{font-size:15px;font-weight:800;color:var(--navy);display:block;margin-bottom:6px;}
+.version-callout-body p{font-size:13.5px;color:var(--gray-700);line-height:1.6;}
+.sec-label{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--gray-400);padding-bottom:10px;border-bottom:1px solid var(--gray-200);margin-bottom:4px;}
+.q-table{width:100%;border-collapse:collapse;font-size:13px;}
+.q-table th{background:var(--navy);color:white;padding:10px 13px;text-align:left;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;}
+.q-table td{padding:11px 13px;border-bottom:1px solid var(--gray-100);vertical-align:middle;}
+.q-table tr:last-child td{border-bottom:none;}
+.q-table tr:hover td{background:var(--gray-50);}
+.q-num{font-weight:800;font-size:14px;color:var(--navy);white-space:nowrap;}
+.q-topic{font-weight:600;color:var(--gray-800);}
+.q-topic-sub{font-size:12px;color:var(--gray-400);margin-top:2px;}
+.type-badge{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;padding:3px 10px;border-radius:100px;white-space:nowrap;}
+.tb-calc{background:#dbeafe;color:#1e40af;}
+.tb-essay{background:var(--purple-lt);color:var(--purple);border:1px solid var(--purple-bdr);}
+.versioned-badge{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:800;padding:2px 8px;border-radius:100px;background:var(--gold-lt);color:#92400e;border:1.5px solid var(--gold);white-space:nowrap;margin-left:6px;}
+.linked-badge{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:800;padding:2px 8px;border-radius:100px;background:var(--teal-lt);color:var(--teal);border:1.5px solid var(--teal);white-space:nowrap;margin-left:6px;}
+.pts-cell{font-weight:800;font-size:15px;color:var(--navy);text-align:right;white-space:nowrap;}
+.total-row td{background:var(--blue-xlt);font-weight:700;}
+.total-row .pts-cell{font-size:17px;}
+.inst-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.inst-card{background:white;border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;}
+.inst-hd{padding:12px 18px;border-bottom:1px solid var(--gray-200);}
+.inst-hd h2{font-size:14px;font-weight:700;color:var(--navy);}
+.inst-bd{padding:16px 18px;}
+.inst-list{list-style:none;display:flex;flex-direction:column;gap:9px;}
+.inst-list li{display:flex;gap:10px;font-size:13.5px;line-height:1.55;color:var(--gray-700);}
+.inst-list li::before{content:'•';color:var(--gold);font-weight:900;flex-shrink:0;font-size:15px;line-height:1.3;}
+.grading-card{background:white;border:1px solid var(--gray-200);border-radius:12px;padding:18px 20px;font-size:13.5px;color:var(--gray-700);line-height:1.7;}
+.grading-card p+p{margin-top:10px;}
+.grading-card strong{color:var(--navy);}
+.integrity-footer{background:var(--navy);border-radius:12px;padding:20px 24px;display:flex;gap:14px;align-items:flex-start;}
+.integrity-icon{font-size:22px;flex-shrink:0;margin-top:2px;}
+.integrity-body strong{font-size:14px;color:white;display:block;margin-bottom:8px;}
+.integrity-body p{font-size:13px;color:rgba(255,255,255,.75);line-height:1.65;}
+@media(max-width:640px){.inst-grid{grid-template-columns:1fr;}.stats-row{flex-wrap:wrap;}.stat{border-bottom:1px solid var(--gray-200);}}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-eyebrow">SCM 352 · M06 · Gate 2</div>
+  <h1>Gate 2 Quiz — Lean Operations and the Toyota Production System</h1>
+  <p>Read this page carefully before beginning. You have one attempt and 90 minutes.</p>
+</div>
+
+<div class="stats-row">
+  <div class="stat"><div class="stat-lbl">Attempts</div><div class="stat-val">1 only</div></div>
+  <div class="stat"><div class="stat-lbl">Time limit</div><div class="stat-val">90 minutes</div></div>
+  <div class="stat"><div class="stat-lbl">Questions</div><div class="stat-val">8</div></div>
+  <div class="stat"><div class="stat-lbl">Total points</div><div class="stat-val">100</div></div>
+  <div class="stat"><div class="stat-lbl">Question types</div><div class="stat-val">Calculation · Essay</div></div>
+  <div class="stat"><div class="stat-lbl">Format</div><div class="stat-val">Open-book, open-notes</div></div>
+</div>
+
+<div class="pg-body">
+
+  <div class="version-callout">
+    <div class="version-callout-icon">⚠️</div>
+    <div class="version-callout-body">
+      <strong>Version Assignment — Questions 2 and 5 are parameterized.</strong>
+      <p>Both questions will display a scenario and a data table specific to your version. Canvas assigns your version automatically when the quiz loads — you will not see a version label. Questions 2 and 5 will simply display your scenario. Question 7 uses the same scenario as Questions 2 and 5; your answer to Q7 should reference the data from those questions.</p>
+    </div>
+  </div>
+
+  <div>
+    <div class="sec-label">Question Breakdown · 100 points total</div>
+    <div style="border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;margin-top:14px;background:white;">
+      <table class="q-table">
+        <thead>
+          <tr>
+            <th style="width:6%">Q #</th>
+            <th style="width:44%">Topic</th>
+            <th style="width:18%">Type</th>
+            <th style="width:10%;text-align:right;">Points</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="q-num">Q1</td>
+            <td>
+              <div class="q-topic">OEE Analysis</div>
+              <div class="q-topic-sub">Classify shift activities · Calculate OEE · Identify dominant waste</div>
+            </td>
+            <td><span class="type-badge tb-calc">Calculation</span></td>
+            <td class="pts-cell">15</td>
+          </tr>
+          <tr>
+            <td class="q-num">Q2</td>
+            <td>
+              <div class="q-topic">Value-Added Percentage <span class="versioned-badge">⚡ VERSIONED</span></div>
+              <div class="q-topic-sub">Analyze process flow unit · Calculate VA% · Identify dominant waste</div>
+            </td>
+            <td><span class="type-badge tb-calc">Calculation</span></td>
+            <td class="pts-cell">20</td>
+          </tr>
+          <tr>
+            <td class="q-num">Q3</td>
+            <td>
+              <div class="q-topic">Kanban Card Sizing</div>
+              <div class="q-topic-sub">Apply kanban formula · Reason about safety stock vs. lead time</div>
+            </td>
+            <td><span class="type-badge tb-calc">Calculation</span></td>
+            <td class="pts-cell">10</td>
+          </tr>
+          <tr>
+            <td class="q-num">Q4</td>
+            <td>
+              <div class="q-topic">Takt Time and Target Manpower</div>
+              <div class="q-topic-sub">Calculate takt and target MP · Reason about demand change impact</div>
+            </td>
+            <td><span class="type-badge tb-calc">Calculation</span></td>
+            <td class="pts-cell">10</td>
+          </tr>
+          <tr>
+            <td class="q-num">Q5</td>
+            <td>
+              <div class="q-topic">ITAT Calculation <span class="versioned-badge">⚡ VERSIONED</span></div>
+              <div class="q-topic-sub">Calculate ITAT using your Q2 scenario · Reason about buffer reduction</div>
+            </td>
+            <td><span class="type-badge tb-calc">Calculation</span></td>
+            <td class="pts-cell">10</td>
+          </tr>
+          <tr>
+            <td class="q-num">Q6</td>
+            <td>
+              <div class="q-topic">Push vs. Pull System Reasoning</div>
+              <div class="q-topic-sub">Compare push and pull systems · Identify risks · Apply Toyota's response</div>
+            </td>
+            <td><span class="type-badge tb-essay">Essay</span></td>
+            <td class="pts-cell">15</td>
+          </tr>
+          <tr>
+            <td class="q-num">Q7</td>
+            <td>
+              <div class="q-topic">Waste Classification and Lean Intervention <span class="linked-badge">↗ LINKED to Q2/Q5</span></div>
+              <div class="q-topic-sub">Uses the same process as Questions 2 and 5 · Identify largest waste · Propose intervention · Estimate new VA%</div>
+            </td>
+            <td><span class="type-badge tb-calc">Calculation</span></td>
+            <td class="pts-cell">10</td>
+          </tr>
+          <tr>
+            <td class="q-num">Q8</td>
+            <td>
+              <div class="q-topic">Demand Leveling and the Mura–Muri–Muda Chain</div>
+              <div class="q-topic-sub">Describe mura → muri → muda causal chain · Apply heijunka · Classify using 4Ps of Toyota</div>
+            </td>
+            <td><span class="type-badge tb-essay">Essay</span></td>
+            <td class="pts-cell">10</td>
+          </tr>
+          <tr class="total-row">
+            <td colspan="3" style="font-size:14px;font-weight:700;color:var(--navy);">Total</td>
+            <td class="pts-cell">100</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div>
+    <div class="sec-label">Instructions</div>
+    <div class="inst-grid" style="margin-top:14px;">
+      <div class="inst-card">
+        <div class="inst-hd" style="background:var(--blue-xlt);"><h2>Before You Begin</h2></div>
+        <div class="inst-bd">
+          <ul class="inst-list">
+            <li>Have your <strong>Chapter 8 notes, slides, and lecture notes</strong> ready before you click Begin — this quiz is open-book and open-notes.</li>
+            <li>Have <strong>scratch paper</strong> ready. Questions 1–5 and 7 require written calculations that you will transcribe into Canvas.</li>
+            <li>The <strong>timer starts immediately</strong> when you click Begin and does not pause for any reason.</li>
+            <li><strong>Do not refresh</strong> the page or navigate away during the quiz — Canvas will not save an in-progress answer if you leave a question field mid-entry.</li>
+            <li>Questions 2 and 5 will each display a data table with your version's scenario. <strong>Both questions use the same scenario</strong> — treat them as one analysis split across two questions.</li>
+            <li>Question 7 also uses the same scenario as Q2 and Q5. Reference those data tables when answering Q7.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="inst-card">
+        <div class="inst-hd" style="background:var(--green-lt);border-color:var(--green-bdr);"><h2>Answering Each Question Type</h2></div>
+        <div class="inst-bd">
+          <ul class="inst-list">
+            <li><strong>Calculation questions (Q1–Q5, Q7):</strong> Show the formula, substitute all values, and state the final result. A numerically correct answer without work shown earns a maximum of 50% of the question's points.</li>
+            <li><strong>Essay questions (Q6, Q8):</strong> All sub-parts must be answered. Vague or generic answers receive partial or no credit. Use Chapter 8 vocabulary precisely — "waiting waste," "mura," "heijunka," "kanban signal" are terms with specific meanings; don't substitute informal paraphrases.</li>
+            <li><strong>Sub-part structure:</strong> Most questions have labeled sub-parts (a), (b), (c). Answer each sub-part explicitly. Do not combine answers into a single paragraph — the grader needs to award points per sub-part.</li>
+            <li><strong>Units matter:</strong> Include units in every calculation answer (minutes, units/day, workers, etc.). Answers without units on calculation questions are treated as incomplete.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="sec-label">Grading and Timing</div>
+    <div class="grading-card" style="margin-top:14px;">
+      <p><strong>Grading turnaround:</strong> Calculation and essay questions are manually graded. Grades are returned within 5 business days of the quiz close date.</p>
+      <p><strong>Technical issues:</strong> If Canvas freezes, closes, or you experience a technical failure during the quiz, contact your instructor immediately with a screenshot or description of the error. Do not attempt to re-enter the quiz — doing so will consume your one attempt. Documented technical issues may be eligible for an instructor-authorized reset.</p>
+      <p><strong>No grade disputes on calculation errors:</strong> If you show correct work but make an arithmetic error that propagates forward, penalties are applied once at the origin. If you do not show work and get the wrong answer, no partial credit is available — this policy is fixed.</p>
+    </div>
+  </div>
+
+  <div class="integrity-footer">
+    <div class="integrity-icon">🔒</div>
+    <div class="integrity-body">
+      <strong>Academic Integrity</strong>
+      <p>This quiz is open-book and open-notes. You may use your personal notes, slides, and textbook. You may <strong style="color:white;">not</strong> communicate with other students, share question content during or after the quiz window, or use AI tools to generate answers. Violations are subject to university academic dishonesty policy. The quiz contains version-specific scenarios — submitting an answer that matches a different version's data is a collaboration signal that will be investigated.</p>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

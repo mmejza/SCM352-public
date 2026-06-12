@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kanban Card Sizer — SCM 352 M06</title>
+<style>
+:root {
+  --navy:        #1a3a5c;
+  --blue:        #2563a8;
+  --blue-lt:     #dbeafe;
+  --blue-xlt:    #eff6ff;
+  --blue-bdr:    #bfdbfe;
+  --blue-hover:  #1d4ed8;
+  --gold:        #f59e0b;
+  --gold-lt:     #fffbeb;
+  --gold-bdr:    #fde68a;
+  --gold-dark:   #92400e;
+  --green:       #16a34a;
+  --green-lt:    #f0fdf4;
+  --green-bdr:   #bbf7d0;
+  --green-hover: #15803d;
+  --red:         #dc2626;
+  --red-lt:      #fef2f2;
+  --red-bdr:     #fecaca;
+  --amber:       #d97706;
+  --amber-lt:    #fffbeb;
+  --amber-bdr:   #fde68a;
+  --teal:        #0891b2;
+  --teal-lt:     #f0fdfe;
+  --teal-bdr:    #a5f3fc;
+  --gray-50:     #f9fafb;
+  --gray-100:    #f3f4f6;
+  --gray-200:    #e5e7eb;
+  --gray-300:    #d1d5db;
+  --gray-400:    #9ca3af;
+  --gray-600:    #4b5563;
+  --gray-700:    #374151;
+  --gray-800:    #1f2937;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; background: var(--gray-50); color: var(--gray-800); font-size: 14px; line-height: 1.5; }
+
+header { background: var(--navy); color: white; padding: 16px 24px; display: flex; align-items: center; gap: 14px; }
+.hdr-badge { background: var(--gold); color: var(--navy); font-weight: 700; font-size: 11px; padding: 3px 8px; border-radius: 4px; letter-spacing: .05em; text-transform: uppercase; flex-shrink: 0; }
+.hdr-text h1 { font-size: 17px; font-weight: 700; }
+.hdr-text p { font-size: 12px; color: rgba(255,255,255,.65); margin-top: 2px; }
+
+.phase-bar { background: white; border-bottom: 2px solid var(--gray-200); padding: 0 24px; display: flex; align-items: stretch; }
+.phase-btn { padding: 12px 18px; border: none; background: none; cursor: pointer; font-size: 13px; font-weight: 700; color: var(--gray-400); border-bottom: 3px solid transparent; display: flex; align-items: center; gap: 7px; transition: all .15s; white-space: nowrap; }
+.phase-btn:hover { color: var(--blue); }
+.phase-btn.active { color: var(--blue); border-bottom-color: var(--blue); }
+.phase-btn.done { color: var(--green); border-bottom-color: var(--green); }
+.phase-btn.locked { color: var(--gray-300); cursor: not-allowed; }
+.phase-dot { width: 20px; height: 20px; border-radius: 50%; font-size: 10px; font-weight: 800; display: flex; align-items: center; justify-content: center; background: var(--gray-200); color: var(--gray-600); }
+.phase-btn.active .phase-dot { background: var(--blue); color: white; }
+.phase-btn.done .phase-dot { background: var(--green); color: white; }
+
+.sc-nav { background: var(--gray-50); border-bottom: 1px solid var(--gray-200); padding: 8px 24px; display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+.sc-dot { width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--gray-300); background: white; font-size: 11px; font-weight: 700; color: var(--gray-400); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all .15s; }
+.sc-dot:hover { border-color: var(--blue); color: var(--blue); }
+.sc-dot.cur { background: var(--blue); border-color: var(--blue); color: white; }
+.sc-dot.ok { background: var(--green); border-color: var(--green); color: white; }
+.sc-dot.locked { opacity: .35; cursor: not-allowed; }
+
+.main { max-width: 860px; margin: 0 auto; padding: 24px 20px 60px; }
+.card { background: white; border: 1.5px solid var(--gray-200); border-radius: 12px; overflow: hidden; margin-bottom: 18px; }
+.card-hd { background: var(--blue-xlt); border-bottom: 1.5px solid var(--gray-200); padding: 14px 20px; }
+.card-hd h2 { font-size: 15px; font-weight: 700; color: var(--navy); }
+.card-hd p { font-size: 12.5px; color: var(--gray-600); margin-top: 3px; }
+.card-bd { padding: 20px; }
+
+.scenario-desc { font-size: 13.5px; line-height: 1.7; color: var(--gray-800); background: var(--gray-50); border-left: 4px solid var(--blue); padding: 13px 16px; border-radius: 0 8px 8px 0; margin-bottom: 18px; }
+
+.param-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 18px; }
+.param-box { background: var(--blue-xlt); border: 1.5px solid var(--blue-bdr); border-radius: 10px; padding: 12px 14px; }
+.param-label { font-size: 10.5px; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; color: var(--blue); margin-bottom: 3px; }
+.param-value { font-size: 18px; font-weight: 700; color: var(--navy); }
+.param-sub { font-size: 11px; color: var(--gray-600); margin-top: 2px; }
+
+.step-block { border: 1.5px solid var(--gray-200); border-radius: 10px; padding: 16px; margin-bottom: 12px; transition: border-color .2s; }
+.step-block.unlocked { border-color: var(--blue-bdr); background: var(--blue-xlt); }
+.step-block.locked { background: var(--gray-50); opacity: .5; }
+.step-block.done-ok { border-color: var(--green-bdr); background: var(--green-lt); }
+.step-label { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; color: var(--gray-400); margin-bottom: 8px; }
+.step-formula { font-size: 13px; font-weight: 600; color: var(--navy); margin-bottom: 10px; }
+.f-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.f-row label { font-size: 12.5px; color: var(--gray-700); min-width: 200px; }
+.f-input { width: 90px; padding: 7px 10px; border: 1.5px solid var(--gray-300); border-radius: 6px; font-size: 13px; font-weight: 600; }
+.f-input:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px #eff6ff; }
+.f-input:disabled { background: var(--gray-100); color: var(--gray-600); cursor: not-allowed; }
+.f-unit { font-size: 12px; color: var(--gray-400); }
+
+.btn-primary { background: var(--blue); color: white; font-size: 12.5px; font-weight: 700; padding: 8px 18px; border: none; border-radius: 7px; cursor: pointer; transition: background .15s; margin-top: 10px; }
+.btn-primary:hover:not(:disabled) { background: var(--blue-hover); }
+.btn-primary:disabled { opacity: .4; cursor: not-allowed; }
+.btn-green { background: var(--green); color: white; font-size: 12.5px; font-weight: 700; padding: 8px 18px; border: none; border-radius: 7px; cursor: pointer; transition: background .15s; }
+.btn-green:hover { background: var(--green-hover); }
+
+.alert { border-radius: 8px; padding: 11px 14px; font-size: 13px; line-height: 1.6; display: flex; gap: 9px; align-items: flex-start; margin-top: 10px; }
+.alert-icon { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
+.alert-body { flex: 1; }
+.alert-green { background: var(--green-lt); border: 1.5px solid var(--green-bdr); }
+.alert-red { background: var(--red-lt); border: 1.5px solid var(--red-bdr); }
+.alert-gold { background: var(--gold-lt); border: 1.5px solid var(--gold-bdr); }
+.alert-blue { background: var(--blue-xlt); border: 1.5px solid var(--blue-bdr); }
+
+.change-block { background: var(--gold-lt); border: 1.5px solid var(--gold-bdr); border-radius: 10px; padding: 14px 16px; margin-top: 12px; }
+.change-block h4 { font-size: 13px; font-weight: 700; color: var(--gold-dark); margin-bottom: 8px; }
+.change-block p { font-size: 13px; color: var(--gray-700); margin-bottom: 10px; line-height: 1.55; }
+
+.summary-final { background: var(--navy); color: white; border-radius: 12px; padding: 24px; margin-top: 4px; }
+.summary-final h3 { font-size: 16px; font-weight: 700; color: var(--gold); margin-bottom: 12px; }
+.summary-final p { font-size: 13.5px; line-height: 1.7; color: rgba(255,255,255,.85); margin-bottom: 10px; }
+
+.locked-phase { background: var(--gray-100); border: 2px dashed var(--gray-300); border-radius: 12px; padding: 36px; text-align: center; color: var(--gray-400); }
+.locked-phase .lock-icon { font-size: 28px; margin-bottom: 8px; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hdr-badge">SCM 352 · M06</div>
+  <div class="hdr-text">
+    <h1>App 2: Kanban Card Sizer — Kanban Sizing and Takt/Manpower</h1>
+    <p>LO6-4 · LO6-5 | 10–12 minutes | Kanban containers · Takt time · Target manpower</p>
+  </div>
+</header>
+
+<div class="phase-bar">
+  <button class="phase-btn active" id="pBtn0" onclick="switchPhase(0)">
+    <div class="phase-dot">K</div> Kanban Sizing <span id="kCount" style="font-size:11px;color:var(--gray-400);">(0/5)</span>
+  </button>
+  <button class="phase-btn locked" id="pBtn1" onclick="switchPhase(1)">
+    <div class="phase-dot">T</div> Takt + Manpower <span id="tCount" style="font-size:11px;">(unlocks after kanban)</span>
+  </button>
+</div>
+
+<div class="sc-nav" id="scNav"></div>
+<div class="main" id="mainContent"></div>
+
+<script>
+// ─── Kanban Scenarios ───────────────────────────────────────────────
+const K = [
+  {
+    id: 'k1', title: "Coffee Shop Specialty Beans", tag: "Easy",
+    desc: "A specialty coffee shop orders its signature espresso blend from a local roaster. Daily demand is 50 bags. The roaster's delivery lead time is 2 days. The shop keeps a safety stock of 20 bags to cover delivery variability. Each storage bin holds 10 bags.",
+    D: 50, LT: 2, SS: 20, C: 10, Dunit: "bags/day", Cunit: "bags/bin",
+    feedback: "With D=50, LT=2, SS=20, C=10: demand during LT = 100 bags, plus SS = 120 total. Containers = 120÷10 = 12 bins. When the team opens the 12th bin, that's the pull signal to reorder. The bin system replaces manual stock counts with a visual trigger.",
+    changeQ: null
+  },
+  {
+    id: 'k2', title: "Auto Dealership Parts Room", tag: "Medium",
+    desc: "A dealership's parts room replenishes oil filters from a regional warehouse. Daily demand is 80 filters. The warehouse replenishment lead time is 3 days. The parts manager holds 60 filters as safety stock. Standard stock boxes hold 20 filters each.",
+    D: 80, LT: 3, SS: 60, C: 20, Dunit: "filters/day", Cunit: "filters/box",
+    feedback: "D×LT = 240 filters (demand during the 3-day replenishment window). Add SS = 300 total authorized inventory. Containers = 300÷20 = 15 boxes. Each box gets a kanban card. When a box is opened, its card travels to the ordering station. No card, no reorder — this prevents overproduction.",
+    changeQ: null
+  },
+  {
+    id: 'k3', title: "Hospital Pharmacy Medication", tag: "Medium",
+    desc: "A hospital pharmacy replenishes a high-use antibiotic from the central distribution center. Daily demand is 120 units. Replenishment lead time is 2 days. The pharmacy maintains 80 units of safety stock (FDA compliance buffer). Medication storage trays hold 40 units each.",
+    D: 120, LT: 2, SS: 80, C: 40, Dunit: "units/day", Cunit: "units/tray",
+    feedback: "D×LT = 240 (2-day demand coverage). Add SS = 320 total. Containers = 320÷40 = 8 trays. The FDA-required safety stock is part of the authorized inventory in the kanban system — it is accounted for in the formula, not held outside the system. This is consistent with the NVA-necessary treatment: required, but visible and controlled.",
+    changeQ: null
+  },
+  {
+    id: 'k4', title: "University IT — Laptop Deployment", tag: "Hard",
+    desc: "A university IT department replenishes pre-configured laptops from the central technology depot. Daily issue rate is 30 laptops. Replenishment lead time is 5 days (configuration + shipping). Safety stock is 40 laptops (buffer for enrollment surges). Each cart holds 10 laptops.",
+    D: 30, LT: 5, SS: 40, C: 10, Dunit: "laptops/day", Cunit: "laptops/cart",
+    feedback: "D×LT = 150 (5-day demand coverage). Add SS = 190 total. Containers = 190÷10 = 19 carts. Now consider: the IT team invests in automation that cuts replenishment lead time from 5 days to 2 days. New containers = (30×2+40)÷10 = 100÷10 = 10 carts — a 47% reduction in authorized inventory from the same safety stock. Shorter lead time = less inventory needed = fewer carts, less space, less capital tied up.",
+    changeQ: {
+      q: "If lead time drops from 5 days to 2 days (automation investment), how many carts are authorized?",
+      D: 30, newLT: 2, SS: 40, C: 10,
+      ans: 10,
+      explain: "(30×2 + 40) ÷ 10 = 100 ÷ 10 = 10 carts. Cutting lead time from 5 to 2 days saves 9 carts of inventory. This is the lean argument for supplier/process investment: the inventory reduction often pays for the improvement many times over."
+    }
+  },
+  {
+    id: 'k5', title: "Restaurant Fresh Sauce Supply", tag: "Hard",
+    desc: "A restaurant chain orders fresh pasta sauce from a regional producer. Daily demand per location is 200 jars. Replenishment lead time is 2 days. The restaurant holds 200 jars as safety stock (perishability buffer). Storage cases hold 50 jars each.",
+    D: 200, LT: 2, SS: 200, C: 50, Dunit: "jars/day", Cunit: "jars/case",
+    feedback: "D×LT = 400 (demand during 2-day lead time). Add SS = 600 total. Containers = 600÷50 = 12 cases. The safety stock here equals one full day's demand — an unusually high buffer driven by perishability risk. Notice: the large SS is the primary driver of container count. If the producer offered daily delivery (LT = 1 day), containers = (200×1+200)÷50 = 400÷50 = 8 cases — 33% reduction without changing safety stock.",
+    changeQ: {
+      q: "If the producer shifts to daily delivery (lead time drops from 2 days to 1 day), how many cases are authorized?",
+      D: 200, newLT: 1, SS: 200, C: 50,
+      ans: 8,
+      explain: "(200×1 + 200) ÷ 50 = 400 ÷ 50 = 8 cases. The safety stock stays the same, but the demand-during-lead-time component drops by half. Daily delivery is a supplier relationship investment — lean's People and Partners layer of the 4Ps."
+    }
+  }
+];
+
+// ─── Takt / Manpower Scenarios ──────────────────────────────────────
+const T = [
+  {
+    id: 't1', title: "Coffee Shop Prep Station", tag: "Easy",
+    desc: "A coffee shop prep station operates a 480-minute shift. Customer demand during the shift is 120 drinks. Each drink requires 12 minutes of total labor content across all preparation steps.",
+    avail: 480, demand: 120, labor: 12,
+    takt: 4.0, mp: 3, mpRaw: 3.0,
+    taktExplain: "480 ÷ 120 = 4.0 min/drink. The station must complete one drink every 4 minutes to match customer pace.",
+    mpExplain: "12 ÷ 4.0 = 3.0 → 3 baristas. With 3 baristas each working at their 4-minute cycle, the station produces exactly at takt — no overproduction, no shortfall.",
+    changeQ: null
+  },
+  {
+    id: 't2', title: "Insurance Claims Processing", tag: "Medium",
+    desc: "An insurance claims team works a 450-minute day. Current demand is 90 claims per day. Each claim requires 20 minutes of total labor content across all processor steps.",
+    avail: 450, demand: 90, labor: 20,
+    takt: 5.0, mp: 4, mpRaw: 4.0,
+    taktExplain: "450 ÷ 90 = 5.0 min/claim. The team must clear one claim every 5 minutes to stay current.",
+    mpExplain: "20 ÷ 5.0 = 4.0 → 4 processors. Exactly 4 processors are needed — no rounding required.",
+    changeQ: {
+      q: "Demand increases from 90 to 150 claims per day (new product line launch). How many processors are needed?",
+      newDemand: 150, avail: 450, labor: 20,
+      newTakt: 3.0, newMP: 7, newMPRaw: 6.67,
+      taktE: "450 ÷ 150 = 3.0 min/claim",
+      mpE: "20 ÷ 3.0 = 6.67 → round up to 7 processors. You cannot staff 0.67 of a person — always round up because rounding down creates a capacity shortfall that violates takt time."
+    }
+  },
+  {
+    id: 't3', title: "Hospital Lab Testing", tag: "Medium",
+    desc: "A hospital laboratory operates a 420-minute shift. The day's testing demand is 105 lab samples. Each sample requires 16 minutes of total technician labor across the full testing sequence.",
+    avail: 420, demand: 105, labor: 16,
+    takt: 4.0, mp: 4, mpRaw: 4.0,
+    taktExplain: "420 ÷ 105 = 4.0 min/sample. The lab must complete one sample every 4 minutes to keep up with clinical demand.",
+    mpExplain: "16 ÷ 4.0 = 4.0 → 4 technicians. Each technician handles one step in the testing sequence. With exactly 4 workers at 4-minute cycle times, the lab runs at takt.",
+    changeQ: null
+  },
+  {
+    id: 't4', title: "Auto Service Center", tag: "Hard",
+    desc: "An auto service center runs a 480-minute shift. Peak season demand: 32 vehicles per shift. Each vehicle requires 75 minutes of total technician labor across diagnostics, service, and QC steps.",
+    avail: 480, demand: 32, labor: 75,
+    takt: 15.0, mp: 5, mpRaw: 5.0,
+    taktExplain: "480 ÷ 32 = 15.0 min/vehicle. A vehicle must leave the service line every 15 minutes.",
+    mpExplain: "75 ÷ 15.0 = 5.0 → 5 technicians. With 5 technicians each at a 15-minute cycle, the center handles exactly 32 vehicles per shift.",
+    changeQ: {
+      q: "Demand drops to 24 vehicles per shift (off-peak season). What is the lean staffing response?",
+      newDemand: 24, avail: 480, labor: 75,
+      newTakt: 20.0, newMP: 4, newMPRaw: 3.75,
+      taktE: "480 ÷ 24 = 20.0 min/vehicle",
+      mpE: "75 ÷ 20.0 = 3.75 → round UP to 4 technicians. (Rounding down to 3 gives cycle time of 25 min — faster than takt, but 3 workers cannot physically complete 75 min of work in 20 min each.) The lean response is NOT to keep 5 technicians busy with padded work. It is to staff to the new takt time, reassign the 5th technician to kaizen/cross-training activities, and maintain takt discipline."
+    }
+  }
+];
+
+let phase = 0; // 0=kanban, 1=takt
+let kSt = K.map(() => ({ done: false, steps: [false, false, false], changeDone: false }));
+let tSt = T.map(() => ({ done: false, taktOk: false, mpOk: false, changeDone: false }));
+let kCur = 0, tCur = 0;
+
+function allKDone() { return kSt.every(s => s.done); }
+function allTDone() { return tSt.every(s => s.done); }
+function kDoneCount() { return kSt.filter(s => s.done).length; }
+function tDoneCount() { return tSt.filter(s => s.done).length; }
+
+function switchPhase(p) {
+  if (p === 1 && !allKDone()) return;
+  phase = p;
+  render();
+}
+
+function render() {
+  // Phase bar
+  const p0Btn = document.getElementById('pBtn0');
+  const p1Btn = document.getElementById('pBtn1');
+  const kc = document.getElementById('kCount');
+  const tc = document.getElementById('tCount');
+  p0Btn.className = `phase-btn ${phase===0?'active':allKDone()?'done':''}`;
+  p1Btn.className = `phase-btn ${phase===1?'active':allTDone()?'done':allKDone()?'':'locked'}`;
+  if (kc) kc.textContent = `(${kDoneCount()}/5)`;
+  if (tc) tc.textContent = allKDone() ? `(${tDoneCount()}/4)` : '(unlocks after kanban)';
+
+  if (phase === 0) renderKanban();
+  else renderTakt();
+}
+
+function buildKNav() {
+  const nav = document.getElementById('scNav');
+  nav.innerHTML = K.map((s, i) => {
+    let cls = 'sc-dot';
+    if (i === kCur) cls += ' cur';
+    else if (kSt[i].done) cls += ' ok';
+    else if (i > 0 && !kSt[i-1].done) cls += ' locked';
+    return `<button class="${cls}" onclick="kGoTo(${i})">${i+1}</button>`;
+  }).join('') + `<span style="font-size:11px;color:var(--gray-400);margin-left:6px;">${K[kCur].title}</span>`;
+}
+
+function buildTNav() {
+  const nav = document.getElementById('scNav');
+  nav.innerHTML = T.map((s, i) => {
+    let cls = 'sc-dot';
+    if (i === tCur) cls += ' cur';
+    else if (tSt[i].done) cls += ' ok';
+    else if (i > 0 && !tSt[i-1].done) cls += ' locked';
+    return `<button class="${cls}" onclick="tGoTo(${i})">${i+1}</button>`;
+  }).join('') + `<span style="font-size:11px;color:var(--gray-400);margin-left:6px;">${T[tCur].title}</span>`;
+}
+
+function kGoTo(i) { if (i > 0 && !kSt[i-1].done && i !== kCur) return; kCur = i; render(); }
+function tGoTo(i) { if (i > 0 && !tSt[i-1].done && i !== tCur) return; tCur = i; render(); }
+
+// ─── KANBAN RENDER ──────────────────────────────────────────────────
+function renderKanban() {
+  buildKNav();
+  const sc = K[kCur];
+  const st = kSt[kCur];
+  const correctStep1 = sc.D * sc.LT;
+  const correctStep2 = sc.D * sc.LT + sc.SS;
+  const correctStep3 = Math.ceil(correctStep2 / sc.C);
+
+  function stepClass(idx) {
+    if (st.steps[idx]) return 'step-block done-ok';
+    const prev = idx === 0 || st.steps[idx-1];
+    return prev ? 'step-block unlocked' : 'step-block locked';
+  }
+  const dis1 = st.steps[0] ? 'disabled' : '';
+  const dis2 = !st.steps[0] || st.steps[1] ? 'disabled' : '';
+  const dis3 = !st.steps[1] || st.steps[2] ? 'disabled' : '';
+
+  let changeHtml = '';
+  if (st.steps[2] && sc.changeQ) {
+    const cq = sc.changeQ;
+    const cAns = Math.ceil((cq.D * cq.newLT + cq.SS) / cq.C);
+    changeHtml = `
+      <div class="change-block">
+        <h4>Lead Time Change — What Happens to Inventory?</h4>
+        <p>${cq.q}</p>
+        <div class="f-row">
+          <label style="min-width:0;">New containers =</label>
+          <input type="number" class="f-input" id="changeAns" placeholder="containers" ${st.changeDone?'disabled':''} oninput="enableChangeBtn()">
+          <button class="btn-primary" id="changeBtn" onclick="submitChange(${cAns},'${sc.id}')" ${st.changeDone?'disabled':''}>Check</button>
+        </div>
+        <div id="changeFb" style="margin-top:8px;"></div>
+        ${st.changeDone ? `<div class="alert alert-blue" style="margin-top:8px;"><div class="alert-icon">→</div><div class="alert-body">${cq.explain}</div></div>` : ''}
+      </div>`;
+  }
+
+  let nextHtml = '';
+  const allStepsDone = st.steps[2];
+  const changePending = sc.changeQ && !st.changeDone;
+  if (allStepsDone && (!sc.changeQ || st.changeDone)) {
+    if (kCur < K.length - 1) {
+      nextHtml = `<div style="margin-top:14px;"><button class="btn-green" onclick="kGoTo(${kCur+1})">Next Scenario: ${K[kCur+1].title} →</button></div>`;
+    } else if (!allTDone()) {
+      nextHtml = `
+        <div class="summary-final" style="margin-top:14px;">
+          <h3>Kanban Phase Complete</h3>
+          <p>You have sized kanban systems across five industries. The key insight: the formula is always (D × LT + SS) ÷ C. The discipline is understanding what each variable represents — and recognizing that lead time is the lever with the most powerful knock-on effects on container count.</p>
+          <p><strong>Gate 2 Q3:</strong> The case there tests whether you can identify which parameter change creates the largest inventory reduction. The answer is always the one that reduces the numerator most. Safety stock reduces the numerator by exactly SS units. Lead time reduction reduces it by D × ΔLT — which grows with demand. For high-demand items, LT reduction always dominates SS reduction.</p>
+          <p style="color:var(--gold);font-weight:700;">✓ Kanban phase complete — unlocking Takt/Manpower phase</p>
+        </div>
+        <button class="btn-green" onclick="switchPhase(1)" style="margin-top:14px;">Start Takt + Manpower →</button>`;
+    }
+  }
+
+  document.getElementById('mainContent').innerHTML = `
+    <div class="card">
+      <div class="card-hd">
+        <h2>Kanban ${kCur+1} of 5: ${sc.title} <span style="font-size:11px;background:${sc.tag==='Easy'?'var(--green-lt)':sc.tag==='Medium'?'var(--amber-lt)':'var(--red-lt)'};color:${sc.tag==='Easy'?'var(--green)':sc.tag==='Medium'?'var(--amber)':'var(--red)'};padding:2px 8px;border-radius:100px;font-weight:700;margin-left:8px;">${sc.tag}</span></h2>
+        <p>Calculate the number of kanban containers using the three-step method.</p>
+      </div>
+      <div class="card-bd">
+        <div class="scenario-desc">${sc.desc}</div>
+        <div class="param-grid">
+          <div class="param-box"><div class="param-label">D — Daily Demand</div><div class="param-value">${sc.D}</div><div class="param-sub">${sc.Dunit}</div></div>
+          <div class="param-box"><div class="param-label">LT — Lead Time</div><div class="param-value">${sc.LT}</div><div class="param-sub">days</div></div>
+          <div class="param-box"><div class="param-label">SS — Safety Stock</div><div class="param-value">${sc.SS}</div><div class="param-sub">${sc.Dunit.split('/')[0]}s</div></div>
+          <div class="param-box"><div class="param-label">C — Container Size</div><div class="param-value">${sc.C}</div><div class="param-sub">${sc.Cunit}</div></div>
+        </div>
+
+        <div class="${stepClass(0)}">
+          <div class="step-label">Step 1 — Demand During Lead Time</div>
+          <div class="step-formula">D × LT = ?</div>
+          <div class="f-row">
+            <label>D × LT =</label>
+            <input type="number" class="f-input" id="s1ans" placeholder="units" ${dis1} oninput="en('s1btn')">
+            <span class="f-unit">units</span>
+            <button class="btn-primary" id="s1btn" onclick="checkStep(1,${correctStep1},'${sc.id}')" ${dis1} disabled>Check</button>
+          </div>
+          <div id="s1fb"></div>
+        </div>
+
+        <div class="${stepClass(1)}">
+          <div class="step-label">Step 2 — Total Inventory Authorization</div>
+          <div class="step-formula">D × LT + SS = ?</div>
+          <div class="f-row">
+            <label>Total authorized units =</label>
+            <input type="number" class="f-input" id="s2ans" placeholder="units" ${dis2} oninput="en('s2btn')">
+            <span class="f-unit">units</span>
+            <button class="btn-primary" id="s2btn" onclick="checkStep(2,${correctStep2},'${sc.id}')" ${dis2} disabled>Check</button>
+          </div>
+          <div id="s2fb"></div>
+        </div>
+
+        <div class="${stepClass(2)}">
+          <div class="step-label">Step 3 — Number of Kanban Containers</div>
+          <div class="step-formula">(D × LT + SS) ÷ C = ?</div>
+          <div class="f-row">
+            <label>Containers =</label>
+            <input type="number" class="f-input" id="s3ans" placeholder="containers" ${dis3} oninput="en('s3btn')">
+            <button class="btn-primary" id="s3btn" onclick="checkStep(3,${correctStep3},'${sc.id}')" ${dis3} disabled>Check</button>
+          </div>
+          <div id="s3fb"></div>
+          ${st.steps[2] ? `<div class="alert alert-blue" style="margin-top:10px;"><div class="alert-icon">→</div><div class="alert-body">${sc.feedback}</div></div>` : ''}
+        </div>
+        ${changeHtml}
+        ${nextHtml}
+      </div>
+    </div>`;
+}
+
+function en(btnId) {
+  const inp = btnId.replace('btn','ans');
+  const btn = document.getElementById(btnId);
+  if (btn) btn.disabled = !document.getElementById(inp)?.value;
+}
+function enableChangeBtn() {
+  const btn = document.getElementById('changeBtn');
+  if (btn) btn.disabled = !document.getElementById('changeAns')?.value;
+}
+
+function checkStep(step, correct, scId) {
+  const idx = K.findIndex(s => s.id === scId);
+  const val = parseInt(document.getElementById(`s${step}ans`)?.value) || 0;
+  const fbEl = document.getElementById(`s${step}fb`);
+  if (Math.abs(val - correct) <= 0) {
+    kSt[idx].steps[step-1] = true;
+    if (fbEl) fbEl.innerHTML = `<div class="alert alert-green"><div class="alert-icon">✓</div><div class="alert-body">Correct — ${['D × LT','D × LT + SS','Containers'][step-1]} = <strong>${correct}</strong>${step===3?' containers':' units'}.</div></div>`;
+    render();
+  } else {
+    const hints = [
+      `Check: multiply D (${K[idx].D}) × LT (${K[idx].LT}).`,
+      `Check: add SS (${K[idx].SS}) to your Step 1 answer.`,
+      `Check: divide your Step 2 total by C (${K[idx].C}). If not a whole number, round up.`
+    ];
+    if (fbEl) fbEl.innerHTML = `<div class="alert alert-red"><div class="alert-icon">✗</div><div class="alert-body"><strong>Not quite.</strong> ${hints[step-1]}</div></div>`;
+  }
+}
+
+function submitChange(correct, scId) {
+  const idx = K.findIndex(s => s.id === scId);
+  const val = parseInt(document.getElementById('changeAns')?.value) || 0;
+  const fbEl = document.getElementById('changeFb');
+  if (Math.abs(val - correct) === 0) {
+    kSt[idx].changeDone = true;
+    if (fbEl) fbEl.innerHTML = `<div class="alert alert-green"><div class="alert-icon">✓</div><div class="alert-body">Correct — <strong>${correct} containers</strong>.</div></div>`;
+    render();
+  } else {
+    if (fbEl) fbEl.innerHTML = `<div class="alert alert-red"><div class="alert-icon">✗</div><div class="alert-body">Not quite. Apply the same formula with the new lead time value.</div></div>`;
+  }
+}
+
+// ─── TAKT RENDER ────────────────────────────────────────────────────
+function renderTakt() {
+  buildTNav();
+  const sc = T[tCur];
+  const st = tSt[tCur];
+
+  let changeHtml = '';
+  if (st.mpOk && sc.changeQ) {
+    const cq = sc.changeQ;
+    changeHtml = `
+      <div class="change-block">
+        <h4>Demand Change — Lean Staffing Response</h4>
+        <p>${cq.q}</p>
+        <div class="f-row" style="flex-wrap:wrap;gap:14px;margin-bottom:8px;">
+          <span style="font-size:12.5px;color:var(--gray-700);">New takt =</span>
+          <input type="number" class="f-input" id="newTakt" placeholder="min/unit" step="0.1" ${st.changeDone?'disabled':''} oninput="en2()">
+          <span class="f-unit">min/unit</span>
+          <span style="font-size:12.5px;color:var(--gray-700);margin-left:10px;">New workers =</span>
+          <input type="number" class="f-input" id="newMP" placeholder="workers" ${st.changeDone?'disabled':''} oninput="en2()">
+        </div>
+        <button class="btn-primary" id="changeBtn2" onclick="submitTaktChange('${sc.id}')" ${st.changeDone?'disabled':''} disabled>Check</button>
+        <div id="changeFb2" style="margin-top:8px;"></div>
+        ${st.changeDone ? `<div class="alert alert-blue" style="margin-top:8px;"><div class="alert-icon">→</div><div class="alert-body">${cq.taktE} = <strong>${cq.newTakt} min/unit</strong> · MP = ${cq.mpE}</div></div>` : ''}
+      </div>`;
+  }
+
+  let nextHtml = '';
+  if (st.mpOk && (!sc.changeQ || st.changeDone)) {
+    if (tCur < T.length - 1) {
+      nextHtml = `<div style="margin-top:14px;"><button class="btn-green" onclick="tGoTo(${tCur+1})">Next: ${T[tCur+1].title} →</button></div>`;
+    } else {
+      nextHtml = `
+        <div class="summary-final" style="margin-top:14px;">
+          <h3>App 2 Complete — Kanban + Takt/Manpower Mastery</h3>
+          <p><strong>The kanban formula</strong> tells you how much inventory to authorize, not how much to build. The system is disciplined by the card count — production stops when all cards are in circulation.</p>
+          <p><strong>Takt time</strong> is a management target, not a mechanical constraint. When demand changes, takt changes, and staffing should follow — up or down. Lean staffing is not about maximizing utilization; it is about matching capacity to takt with the minimum waste.</p>
+          <p><strong>Lead time is the common thread.</strong> Shorter LT → fewer containers needed. Shorter LT → smaller ITAT → faster quality learning. The Segment 2 lecture explains why Toyota obsesses over supplier lead time: it's not about cost — it's about inventory reduction and defect detection speed.</p>
+          <p style="color:var(--gold);font-weight:700;">✓ App 2 complete — ready for Gate 2 Q3, Q4, Q5, and Case Parts 3 and 5</p>
+        </div>`;
+    }
+  }
+
+  document.getElementById('mainContent').innerHTML = `
+    <div class="card">
+      <div class="card-hd">
+        <h2>Takt ${tCur+1} of 4: ${sc.title} <span style="font-size:11px;background:${sc.tag==='Easy'?'var(--green-lt)':sc.tag==='Medium'?'var(--amber-lt)':'var(--red-lt)'};color:${sc.tag==='Easy'?'var(--green)':sc.tag==='Medium'?'var(--amber)':'var(--red)'};padding:2px 8px;border-radius:100px;font-weight:700;margin-left:8px;">${sc.tag}</span></h2>
+        <p>Calculate takt time, then target manpower. Use exact decimal arithmetic — round manpower UP.</p>
+      </div>
+      <div class="card-bd">
+        <div class="scenario-desc">${sc.desc}</div>
+        <div class="param-grid">
+          <div class="param-box"><div class="param-label">Available Time</div><div class="param-value">${sc.avail}</div><div class="param-sub">min/shift</div></div>
+          <div class="param-box"><div class="param-label">Demand Rate</div><div class="param-value">${sc.demand}</div><div class="param-sub">units/shift</div></div>
+          <div class="param-box"><div class="param-label">Labor Content</div><div class="param-value">${sc.labor}</div><div class="param-sub">min/unit (total)</div></div>
+        </div>
+
+        <div class="step-block ${st.taktOk ? 'done-ok' : 'unlocked'}">
+          <div class="step-label">Step 1 — Takt Time</div>
+          <div class="step-formula">Takt = Available Time ÷ Demand Rate</div>
+          <div class="f-row">
+            <label>Takt time =</label>
+            <input type="number" class="f-input" id="taktAns" placeholder="min/unit" step="0.1" ${st.taktOk?'disabled':''} oninput="enTakt()">
+            <span class="f-unit">min/unit</span>
+            <button class="btn-primary" id="taktBtn" onclick="submitTakt('${sc.id}')" ${st.taktOk?'disabled':''} disabled>Check</button>
+          </div>
+          <div id="taktFb"></div>
+          ${st.taktOk ? `<div class="alert alert-green" style="margin-top:8px;"><div class="alert-icon">✓</div><div class="alert-body">${sc.taktExplain}</div></div>` : ''}
+        </div>
+
+        <div class="step-block ${st.mpOk ? 'done-ok' : st.taktOk ? 'unlocked' : 'locked'}">
+          <div class="step-label">Step 2 — Target Manpower</div>
+          <div class="step-formula">Target MP = Labor Content ÷ Takt Time (round UP)</div>
+          <div class="f-row">
+            <label>Target manpower =</label>
+            <input type="number" class="f-input" id="mpAns" placeholder="workers" ${!st.taktOk||st.mpOk?'disabled':''} oninput="enMP()">
+            <span class="f-unit">workers</span>
+            <button class="btn-primary" id="mpBtn" onclick="submitMP('${sc.id}')" ${!st.taktOk||st.mpOk?'disabled':''} disabled>Check</button>
+          </div>
+          <div id="mpFb"></div>
+          ${st.mpOk ? `<div class="alert alert-green" style="margin-top:8px;"><div class="alert-icon">✓</div><div class="alert-body">${sc.mpExplain}</div></div>` : ''}
+        </div>
+        ${changeHtml}
+        ${nextHtml}
+      </div>
+    </div>`;
+}
+
+function enTakt() {
+  const btn = document.getElementById('taktBtn');
+  if (btn) btn.disabled = !document.getElementById('taktAns')?.value;
+}
+function enMP() {
+  const btn = document.getElementById('mpBtn');
+  if (btn) btn.disabled = !document.getElementById('mpAns')?.value;
+}
+function en2() {
+  const btn = document.getElementById('changeBtn2');
+  if (btn) btn.disabled = !(document.getElementById('newTakt')?.value && document.getElementById('newMP')?.value);
+}
+
+function submitTakt(scId) {
+  const idx = T.findIndex(s => s.id === scId);
+  const sc = T[idx];
+  const val = parseFloat(document.getElementById('taktAns')?.value) || 0;
+  const fbEl = document.getElementById('taktFb');
+  if (Math.abs(val - sc.takt) < 0.15) {
+    tSt[idx].taktOk = true;
+    render();
+  } else {
+    if (fbEl) fbEl.innerHTML = `<div class="alert alert-red"><div class="alert-icon">✗</div><div class="alert-body">Not quite. Takt = ${sc.avail} ÷ ${sc.demand}. Carry your answer to one decimal place.</div></div>`;
+  }
+}
+
+function submitMP(scId) {
+  const idx = T.findIndex(s => s.id === scId);
+  const sc = T[idx];
+  const val = parseInt(document.getElementById('mpAns')?.value) || 0;
+  const fbEl = document.getElementById('mpFb');
+  if (val === sc.mp) {
+    tSt[idx].mpOk = true;
+    render();
+  } else {
+    const raw = (sc.labor / sc.takt).toFixed(2);
+    const hint = sc.mpRaw !== sc.mp
+      ? `${sc.labor} ÷ ${sc.takt} = ${raw} — round UP to the next whole number (you cannot staff a fraction of a worker).`
+      : `${sc.labor} ÷ ${sc.takt} = ${raw} workers exactly.`;
+    if (fbEl) fbEl.innerHTML = `<div class="alert alert-red"><div class="alert-icon">✗</div><div class="alert-body">Not quite. ${hint}</div></div>`;
+  }
+}
+
+function submitTaktChange(scId) {
+  const idx = T.findIndex(s => s.id === scId);
+  const cq = T[idx].changeQ;
+  const t = parseFloat(document.getElementById('newTakt')?.value) || 0;
+  const m = parseInt(document.getElementById('newMP')?.value) || 0;
+  const fbEl = document.getElementById('changeFb2');
+  if (Math.abs(t - cq.newTakt) < 0.2 && m === cq.newMP) {
+    tSt[idx].changeDone = true;
+    render();
+  } else {
+    let hint = '';
+    if (Math.abs(t - cq.newTakt) >= 0.2) hint = `New takt = ${cq.avail} ÷ ${cq.newDemand}. `;
+    else hint = `Check manpower: Labor content ÷ new takt. ${cq.newMPRaw.toFixed(2)} rounds ${cq.newMPRaw % 1 === 0 ? 'exactly' : 'UP'} to ${cq.newMP}. `;
+    if (fbEl) fbEl.innerHTML = `<div class="alert alert-red"><div class="alert-icon">✗</div><div class="alert-body">Not quite. ${hint}</div></div>`;
+  }
+}
+
+render();
+</script>
+</body>
+</html>

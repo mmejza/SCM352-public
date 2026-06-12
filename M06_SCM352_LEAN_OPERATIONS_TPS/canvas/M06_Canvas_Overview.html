@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module M06 Overview — SCM 352</title>
+<style>
+:root {
+  --navy:#1a3a5c;--blue:#2563a8;--blue-lt:#dbeafe;--blue-xlt:#eff6ff;
+  --gold:#f59e0b;--gold-lt:#fffbeb;--gold-bdr:#fde68a;
+  --green:#16a34a;--green-lt:#f0fdf4;--green-bdr:#bbf7d0;
+  --gray-50:#f9fafb;--gray-100:#f3f4f6;--gray-200:#e5e7eb;
+  --gray-400:#9ca3af;--gray-600:#4b5563;--gray-700:#374151;--gray-800:#1f2937;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:white;color:var(--gray-800);line-height:1.7;font-size:14.5px;}
+.hero{background:linear-gradient(135deg,var(--navy) 0%,#2a5280 100%);color:white;padding:36px 32px 32px;}
+.hero-eyebrow{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;}
+.hero h1{font-size:26px;font-weight:700;letter-spacing:-.02em;line-height:1.2;margin-bottom:10px;}
+.hero-sub{font-size:14px;color:rgba(255,255,255,.72);line-height:1.55;max-width:620px;}
+.meta-strip{display:flex;gap:0;border-bottom:2px solid var(--gray-200);overflow-x:auto;background:white;}
+.meta-item{padding:12px 20px;border-right:1px solid var(--gray-200);min-width:0;flex-shrink:0;}
+.meta-item:last-child{border-right:none;}
+.meta-label{font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--gray-400);margin-bottom:3px;}
+.meta-value{font-size:13px;font-weight:700;color:var(--navy);}
+.pg-body{max-width:780px;margin:0 auto;padding:36px 28px 60px;display:flex;flex-direction:column;gap:32px;}
+.section-h{font-size:18px;font-weight:700;color:var(--navy);letter-spacing:-.01em;margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid var(--blue-lt);}
+.gate-callout{background:var(--blue-xlt);border:1.5px solid var(--blue-lt);border-left:4px solid var(--blue);border-radius:0 10px 10px 0;padding:14px 18px;font-size:13.5px;color:var(--gray-700);line-height:1.6;}
+.gate-callout strong{color:var(--navy);}
+.agenda{display:flex;flex-direction:column;gap:0;border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;}
+.agenda-item{display:flex;align-items:flex-start;gap:14px;padding:13px 18px;border-bottom:1px solid var(--gray-100);font-size:13.5px;color:var(--gray-700);line-height:1.5;}
+.agenda-item:last-child{border-bottom:none;}
+.agenda-item:hover{background:var(--gray-50);}
+.agenda-icon{font-size:16px;flex-shrink:0;margin-top:1px;}
+.agenda-time{font-size:11px;font-weight:600;color:var(--gray-400);white-space:nowrap;align-self:center;}
+.lo-table{width:100%;border-collapse:collapse;font-size:13px;}
+.lo-table th{background:var(--navy);color:white;padding:9px 13px;text-align:left;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;}
+.lo-table td{padding:9px 13px;border-bottom:1px solid var(--gray-100);vertical-align:top;line-height:1.5;color:var(--gray-700);}
+.lo-table tr:last-child td{border-bottom:none;}
+.lo-table tr:hover td{background:var(--blue-xlt);}
+.lo-num{font-weight:800;color:var(--navy);white-space:nowrap;}
+.bloom-pill{font-size:10px;font-weight:700;padding:2px 7px;border-radius:100px;white-space:nowrap;display:inline-block;}
+.bl-apply{background:var(--blue-lt);color:var(--navy);}
+.bl-analyze{background:var(--gold-lt);color:#92400e;}
+.bl-evaluate{background:var(--green-lt);color:var(--green);}
+.bl-understand{background:var(--gray-100);color:var(--gray-600);}
+.workload-box{background:var(--gold-lt);border:1.5px solid var(--gold-bdr);border-radius:12px;padding:18px 22px;display:flex;align-items:center;gap:16px;}
+.workload-icon{font-size:28px;flex-shrink:0;}
+.workload-text h3{font-size:15px;font-weight:700;color:var(--navy);margin-bottom:4px;}
+.workload-text p{font-size:13px;color:var(--gray-700);line-height:1.5;}
+.grade-table{width:100%;border-collapse:collapse;font-size:13px;}
+.grade-table th{background:var(--navy);color:white;padding:9px 13px;text-align:left;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;}
+.grade-table td{padding:9px 13px;border-bottom:1px solid var(--gray-100);}
+.grade-table tr.total-row td{font-weight:700;background:var(--blue-xlt);color:var(--navy);font-size:14px;}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-eyebrow">SCM 352 · M06 · Summer 2026</div>
+  <h1>Lean Operations and the Toyota Production System</h1>
+  <p class="hero-sub">This module teaches you the analytical framework behind lean and the Toyota Production System — from measuring waste with precision to designing pull-based systems that make quality problems impossible to ignore.</p>
+</div>
+
+<div class="meta-strip">
+  <div class="meta-item"><div class="meta-label">Workload</div><div class="meta-value">4.5–6 hours</div></div>
+  <div class="meta-item"><div class="meta-label">Gate 1 due</div><div class="meta-value">Day 2</div></div>
+  <div class="meta-item"><div class="meta-label">Gate 2 due</div><div class="meta-value">Day 6 · 11:59 PM</div></div>
+  <div class="meta-item"><div class="meta-label">Case due</div><div class="meta-value">Day 6 · 11:59 PM</div></div>
+  <div class="meta-item"><div class="meta-label">Module points</div><div class="meta-value">230 pts</div></div>
+</div>
+
+<div class="pg-body">
+
+  <div style="font-size:14px;line-height:1.75;color:var(--gray-700);">
+    <p style="margin-bottom:14px;">On February 1, 1997, a fire destroyed the Aisin Seiki plant in Kariya, Japan. The plant made a single part — a proportioning valve used in almost every Toyota vehicle. Toyota held exactly zero units of it in inventory. Within two days, production at every Toyota assembly plant in Japan had stopped.</p>
+    <p style="margin-bottom:14px;">By any conventional logic, Toyota faced weeks of shutdown. The part required specialized machinery. Aisin was the sole supplier. There were no drawings on file at Toyota. There was no contingency plan.</p>
+    <p style="margin-bottom:14px;">What happened next surprised everyone, including Toyota. Without being asked, 200 suppliers across Japan — each working from rough measurements and improvised tooling — organized themselves into an emergency production network. Within six days, Toyota's assembly lines were running again. The crisis cost Toyota roughly $195 million in lost production. Without the network response, it would have cost thirty times that.</p>
+    <p>The Aisin fire did not reveal that just-in-time supply chains are fragile — though they can be. It revealed something harder to measure: that lean operations, built on deep relationships, shared process knowledge, and a problem-solving culture, generate a kind of organizational resilience that no safety stock can buy.</p>
+  </div>
+
+  <div class="gate-callout">
+    <strong>Important — module is gated.</strong> All lecture videos, apps, the discussion, Gate 2, and the Case are locked until you pass Gate 1 with an 80% or higher score. Gate 1 draws exclusively on Chapter 8 of the textbook. Gate 1 is due Day 2.
+  </div>
+
+  <div>
+    <div class="section-h">What You Will Do This Module</div>
+    <div class="agenda">
+      <div class="agenda-item"><div class="agenda-icon">📖</div><div style="flex:1"><strong>Read Chapter 8</strong> — Lean Operations and the Toyota Production System. Pay particular attention to the waste taxonomy (Table 8.1), heijunka diagrams (Figures 8.8–8.9), and the Taylor vs. Ohno philosophy section.</div><div class="agenda-time">90–120 min</div></div>
+      <div class="agenda-item"><div class="agenda-icon">🔓</div><div style="flex:1"><strong>Complete Gate 1</strong> — reading check. Score 80% or above to unlock all remaining content. Two attempts allowed (24-hour cooldown between attempts).</div><div class="agenda-time">10–15 min</div></div>
+      <div class="agenda-item"><div class="agenda-icon">🎬</div><div style="flex:1"><strong>Watch two lecture video segments</strong> — Segment 1: "Seeing Waste — The Lens Before the Formula" (~18 min); Segment 2: "Pulling the Thread — JIT, Quality, and Why Inventory Hides Problems" (~18 min).</div><div class="agenda-time">~36 min</div></div>
+      <div class="agenda-item"><div class="agenda-icon">📊</div><div style="flex:1"><strong>Work through the slide deck.</strong> 8 slides covering both formula sets (OEE, VA%, kanban, takt time, target manpower, ITAT) with worked examples. The lecture does not re-derive formulas — the slides are required before Segment 2.</div><div class="agenda-time">30–40 min</div></div>
+      <div class="agenda-item"><div class="agenda-icon">⚡</div><div style="flex:1"><strong>Complete three interactive apps</strong> — Waste Lens Explorer (OEE + VA%), Kanban Card Sizer (kanban + takt/manpower), ITAT Analyzer (buffer reduction + quality learning). These apps practice the exact calculation types on Gate 2 and the Case.</div><div class="agenda-time">30–36 min</div></div>
+      <div class="agenda-item"><div class="agenda-icon">💬</div><div style="flex:1"><strong>Participate in the Discussion: "Lean in the Wild."</strong> Identify a real process failure or waste example, classify it, and propose a targeted lean intervention. Initial post only — no reply required. Deadline extends to the close of the following module.</div><div class="agenda-time">30–45 min</div></div>
+      <div class="agenda-item"><div class="agenda-icon">📝</div><div style="flex:1"><strong>Complete Gate 2</strong> — 8 questions, 100 points, 90-minute timer, one attempt. Questions cover OEE, VA%, kanban, takt time, ITAT, and the 3Ms/4Ps. Due Day 6 at 11:59 PM.</div><div class="agenda-time">60–90 min</div></div>
+      <div class="agenda-item"><div class="agenda-icon">📋</div><div style="flex:1"><strong>Submit the Case Analysis.</strong> Riverside Prescription Center lean audit — 5 parts. Your version (A/B/C/D) is assigned by the last digit of your student ID. Due Day 6 at 11:59 PM.</div><div class="agenda-time">45–75 min</div></div>
+    </div>
+  </div>
+
+  <div class="workload-box">
+    <div class="workload-icon">⏱️</div>
+    <div class="workload-text">
+      <h3>Estimated total workload: 4.5–6 hours</h3>
+      <p>Session planning: complete the textbook reading and Gate 1 in Session 1 (Days 1–2). Watch both lecture segments and work through the slide deck before the apps in Session 2. Complete Gate 2 and the Case after finishing all apps — the Case uses the same calculation types as Gate 2 Q1–Q6.</p>
+    </div>
+  </div>
+
+  <div>
+    <div class="section-h">Learning Objectives</div>
+    <div style="border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;">
+      <table class="lo-table">
+        <thead><tr><th style="width:7%">LO</th><th style="width:58%">You will be able to…</th><th style="width:13%">Bloom's Level</th><th style="width:22%">Assessed in</th></tr></thead>
+        <tbody>
+          <tr><td class="lo-num">LO6-1</td><td>Classify activities as value-added, non-value-added (waste), or non-value-added but necessary; distinguish resource waste (OEE) from flow unit waste (VA%)</td><td><span class="bloom-pill bl-analyze">Analyze</span></td><td>Gate 1 Q1, Gate 2 Q1 Q2, Case Parts 1–2</td></tr>
+          <tr><td class="lo-num">LO6-2</td><td>Calculate OEE given a resource's time decomposition; identify the dominant waste category and propose a targeted lean intervention</td><td><span class="bloom-pill bl-apply">Apply</span></td><td>Gate 2 Q1, Case Part 1</td></tr>
+          <tr><td class="lo-num">LO6-3</td><td>Calculate value-added percentage given a process flow unit's time decomposition; identify the dominant waste type</td><td><span class="bloom-pill bl-apply">Apply</span></td><td>Gate 2 Q2 Q7, Case Part 2</td></tr>
+          <tr><td class="lo-num">LO6-4</td><td>Calculate the number of kanban containers given demand rate, replenishment lead time, safety stock, and container size; reason about the safety stock tradeoff</td><td><span class="bloom-pill bl-apply">Apply</span></td><td>Gate 2 Q3, Case Part 3</td></tr>
+          <tr><td class="lo-num">LO6-5</td><td>Calculate takt time and target manpower; reason about manpower adjustments when demand changes</td><td><span class="bloom-pill bl-apply">Apply</span></td><td>Gate 2 Q4, Case Part 5</td></tr>
+          <tr><td class="lo-num">LO6-6</td><td>Calculate ITAT given cycle time and buffer between defect-generation and detection stations; explain how buffer reduction accelerates quality improvement</td><td><span class="bloom-pill bl-apply">Apply</span></td><td>Gate 2 Q5 Q6, Case Part 4</td></tr>
+          <tr><td class="lo-num">LO6-7</td><td>Apply heijunka to redesign a production sequence; trace the mura → muri → muda causal chain; classify the intervention using the 4Ps of Toyota</td><td><span class="bloom-pill bl-analyze">Analyze</span></td><td>Gate 1 Q2, Gate 2 Q8, Discussion, Case Part 5</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div>
+    <div class="section-h">Module M06 Grading</div>
+    <div style="border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;">
+      <table class="grade-table">
+        <thead><tr><th>Component</th><th style="text-align:right;">Points</th><th style="text-align:right;">% of Module</th><th>Due</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Gate 1 Quiz</strong> — reading verification (access control only)</td><td style="text-align:right;">0</td><td style="text-align:right;color:var(--gray-400);">—</td><td>Day 2</td></tr>
+          <tr><td><strong>Gate 2 Quiz</strong> — chapter + lecture + app synthesis (8 questions)</td><td style="text-align:right;font-weight:700;">100</td><td style="text-align:right;">44%</td><td>Day 6</td></tr>
+          <tr><td><strong>Discussion: "Lean in the Wild"</strong> — initial post only, no reply required</td><td style="text-align:right;font-weight:700;">30</td><td style="text-align:right;">13%</td><td>End of M07</td></tr>
+          <tr><td><strong>Case Analysis M06</strong> — Riverside Prescription Center lean audit (5 parts)</td><td style="text-align:right;font-weight:700;">100</td><td style="text-align:right;">43%</td><td>Day 6</td></tr>
+          <tr class="total-row"><td><strong>Module Total</strong></td><td style="text-align:right;font-weight:800;font-size:15px;">230</td><td style="text-align:right;font-weight:700;">100%</td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

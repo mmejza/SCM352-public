@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ITAT Analyzer — SCM 352 M06</title>
+<style>
+:root {
+  --navy:        #1a3a5c;
+  --blue:        #2563a8;
+  --blue-lt:     #dbeafe;
+  --blue-xlt:    #eff6ff;
+  --blue-bdr:    #bfdbfe;
+  --blue-hover:  #1d4ed8;
+  --gold:        #f59e0b;
+  --gold-lt:     #fffbeb;
+  --gold-bdr:    #fde68a;
+  --gold-dark:   #92400e;
+  --green:       #16a34a;
+  --green-lt:    #f0fdf4;
+  --green-bdr:   #bbf7d0;
+  --green-hover: #15803d;
+  --red:         #dc2626;
+  --red-lt:      #fef2f2;
+  --red-bdr:     #fecaca;
+  --amber:       #d97706;
+  --amber-lt:    #fffbeb;
+  --amber-bdr:   #fde68a;
+  --teal:        #0891b2;
+  --teal-lt:     #f0fdfe;
+  --teal-bdr:    #a5f3fc;
+  --gray-50:     #f9fafb;
+  --gray-100:    #f3f4f6;
+  --gray-200:    #e5e7eb;
+  --gray-300:    #d1d5db;
+  --gray-400:    #9ca3af;
+  --gray-600:    #4b5563;
+  --gray-700:    #374151;
+  --gray-800:    #1f2937;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; background: var(--gray-50); color: var(--gray-800); font-size: 14px; line-height: 1.5; }
+
+header { background: var(--navy); color: white; padding: 16px 24px; display: flex; align-items: center; gap: 14px; }
+.hdr-badge { background: var(--gold); color: var(--navy); font-weight: 700; font-size: 11px; padding: 3px 8px; border-radius: 4px; letter-spacing: .05em; text-transform: uppercase; flex-shrink: 0; }
+.hdr-text h1 { font-size: 17px; font-weight: 700; }
+.hdr-text p { font-size: 12px; color: rgba(255,255,255,.65); margin-top: 2px; }
+
+.sc-nav { background: white; border-bottom: 2px solid var(--gray-200); padding: 10px 24px; display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+.sc-dot { width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--gray-300); background: white; font-size: 11px; font-weight: 700; color: var(--gray-400); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all .15s; }
+.sc-dot:hover { border-color: var(--blue); color: var(--blue); }
+.sc-dot.cur { background: var(--blue); border-color: var(--blue); color: white; }
+.sc-dot.ok { background: var(--green); border-color: var(--green); color: white; }
+.sc-dot.locked { opacity: .35; cursor: not-allowed; }
+.sc-title { font-size: 11px; color: var(--gray-400); margin-left: 6px; }
+
+.main { max-width: 860px; margin: 0 auto; padding: 24px 20px 60px; }
+
+.card { background: white; border: 1.5px solid var(--gray-200); border-radius: 12px; overflow: hidden; margin-bottom: 18px; }
+.card-hd { background: var(--blue-xlt); border-bottom: 1.5px solid var(--gray-200); padding: 14px 20px; }
+.card-hd h2 { font-size: 15px; font-weight: 700; color: var(--navy); }
+.card-hd p { font-size: 12.5px; color: var(--gray-600); margin-top: 3px; }
+.card-bd { padding: 20px; }
+
+.scenario-desc { font-size: 13.5px; line-height: 1.7; color: var(--gray-800); background: var(--gray-50); border-left: 4px solid var(--teal); padding: 13px 16px; border-radius: 0 8px 8px 0; margin-bottom: 18px; }
+
+.param-row { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 18px; }
+.param-box { background: var(--blue-xlt); border: 1.5px solid var(--blue-bdr); border-radius: 10px; padding: 12px 16px; flex: 1; min-width: 140px; }
+.param-label { font-size: 10.5px; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; color: var(--blue); margin-bottom: 3px; }
+.param-val { font-size: 20px; font-weight: 700; color: var(--navy); }
+.param-sub { font-size: 11px; color: var(--gray-600); margin-top: 2px; }
+
+.phase-label { font-size: 11px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--gray-400); padding: 10px 0 8px; border-bottom: 1px solid var(--gray-100); margin-bottom: 14px; }
+
+.calc-block { background: var(--gray-50); border: 1.5px solid var(--gray-200); border-radius: 10px; padding: 14px 16px; margin-bottom: 14px; }
+.calc-block.active { background: var(--blue-xlt); border-color: var(--blue-bdr); }
+.calc-block.done { background: var(--green-lt); border-color: var(--green-bdr); }
+.formula-box { font-size: 13px; font-weight: 700; color: var(--navy); background: rgba(37,99,168,.08); border-radius: 6px; padding: 7px 12px; margin-bottom: 10px; }
+.f-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.f-row label { font-size: 12.5px; color: var(--gray-700); }
+.f-input { width: 100px; padding: 7px 10px; border: 1.5px solid var(--gray-300); border-radius: 6px; font-size: 13px; font-weight: 600; }
+.f-input:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px #eff6ff; }
+.f-input:disabled { background: var(--gray-100); color: var(--gray-600); cursor: not-allowed; }
+.f-unit { font-size: 12px; color: var(--gray-400); }
+
+.btn-primary { background: var(--blue); color: white; font-size: 12.5px; font-weight: 700; padding: 8px 18px; border: none; border-radius: 7px; cursor: pointer; transition: background .15s; margin-top: 8px; }
+.btn-primary:hover:not(:disabled) { background: var(--blue-hover); }
+.btn-primary:disabled { opacity: .4; cursor: not-allowed; }
+.btn-green { background: var(--green); color: white; font-size: 12.5px; font-weight: 700; padding: 8px 18px; border: none; border-radius: 7px; cursor: pointer; transition: background .15s; }
+.btn-green:hover { background: var(--green-hover); }
+
+.alert { border-radius: 8px; padding: 11px 14px; font-size: 13px; line-height: 1.6; display: flex; gap: 9px; align-items: flex-start; margin-top: 10px; }
+.alert-icon { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
+.alert-body { flex: 1; }
+.alert-green { background: var(--green-lt); border: 1.5px solid var(--green-bdr); }
+.alert-red { background: var(--red-lt); border: 1.5px solid var(--red-bdr); }
+.alert-blue { background: var(--blue-xlt); border: 1.5px solid var(--blue-bdr); }
+.alert-teal { background: var(--teal-lt); border: 1.5px solid var(--teal-bdr); }
+.alert-gold { background: var(--gold-lt); border: 1.5px solid var(--gold-bdr); }
+
+/* Slider */
+.slider-section { background: var(--gray-50); border: 1.5px solid var(--gray-200); border-radius: 10px; padding: 16px; margin-bottom: 14px; }
+.slider-section h3 { font-size: 13.5px; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
+.slider-section p { font-size: 12.5px; color: var(--gray-600); margin-bottom: 14px; }
+.slider-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 10px; }
+.slider-row label { font-size: 12.5px; font-weight: 600; color: var(--gray-700); min-width: 80px; }
+input[type=range] { flex: 1; min-width: 140px; accent-color: var(--blue); }
+.slider-val { font-size: 17px; font-weight: 800; color: var(--navy); min-width: 50px; }
+.itat-display { background: var(--navy); color: white; border-radius: 10px; padding: 16px; text-align: center; margin: 12px 0; }
+.itat-big { font-size: 36px; font-weight: 800; color: var(--gold); }
+.itat-label { font-size: 12px; color: rgba(255,255,255,.65); margin-top: 2px; }
+.itat-reduction { font-size: 13px; font-weight: 700; margin-top: 6px; }
+.itat-reduction.good { color: var(--green-lt); }
+
+/* MCQ */
+.mcq-block { margin-bottom: 14px; }
+.mcq-q { font-size: 13.5px; font-weight: 600; color: var(--navy); line-height: 1.55; margin-bottom: 12px; }
+.mcq-opts { display: flex; flex-direction: column; gap: 7px; }
+.mcq-opt { display: flex; align-items: flex-start; gap: 10px; padding: 10px 14px; border: 2px solid var(--gray-200); border-radius: 9px; cursor: pointer; font-size: 13px; line-height: 1.5; transition: all .15s; background: white; }
+.mcq-opt:hover { border-color: var(--blue); background: var(--blue-xlt); }
+.mcq-opt.sel { border-color: var(--blue); background: var(--blue-xlt); }
+.mcq-opt.correct { border-color: var(--green); background: var(--green-lt); }
+.mcq-opt.wrong { border-color: var(--red); background: var(--red-lt); }
+.mcq-opt:disabled, .mcq-opt.locked-opt { pointer-events: none; }
+.opt-letter { font-weight: 800; color: var(--blue); flex-shrink: 0; }
+
+.summary-final { background: var(--navy); color: white; border-radius: 12px; padding: 24px; margin-top: 4px; }
+.summary-final h3 { font-size: 16px; font-weight: 700; color: var(--gold); margin-bottom: 12px; }
+.summary-final p { font-size: 13.5px; line-height: 1.7; color: rgba(255,255,255,.85); margin-bottom: 10px; }
+.summary-final p:last-child { margin-bottom: 0; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hdr-badge">SCM 352 · M06</div>
+  <div class="hdr-text">
+    <h1>App 3: ITAT Analyzer — Detection Time and Buffer Reduction</h1>
+    <p>LO6-6 | 10–12 minutes | Calculate ITAT · Explore buffer reduction · Reason about quality learning</p>
+  </div>
+</header>
+
+<div class="sc-nav" id="scNav"></div>
+<div class="main" id="mainContent"></div>
+
+<script>
+const SC = [
+  {
+    id: 0,
+    title: "Hospital Lab — Blood Tests",
+    tag: "Easy",
+    desc: "A hospital lab processes blood samples in a 5-step workflow. Samples are centrifuged at Step 2 — where labeling errors are sometimes introduced. Results are verified by a senior technician at Step 5. On average, 4 samples are queued between Step 2 and Step 5. The senior technician's cycle time is 10 minutes per sample.",
+    defectStep: "Step 2 — centrifuge and labeling",
+    detectStep: "Step 5 — senior technician verification",
+    CT: 10, buffer: 4,
+    itat: 40,
+    itatFeedback: "ITAT = 10 × 4 = 40 minutes. When a labeling error is introduced at Step 2, it won't be caught until Step 5, 40 minutes later. In those 40 minutes, additional samples may have been labeled with the same error.",
+    sliderMin: 1, sliderMax: 8,
+    reducedBuffer: 1,
+    reducedITAT: 10,
+    reflection: {
+      q: "The lab reduces the buffer from 4 to 1 sample. What is the primary quality benefit — beyond simply reducing the number of defective samples reaching Step 5?",
+      opts: [
+        { l: "A", t: "The technician can process samples faster because the queue is shorter.", correct: false, fb: "Incorrect. Cycle time is independent of queue length. The technician's speed doesn't change with buffer size." },
+        { l: "B", t: "Errors at Step 2 are now flagged within 10 minutes, while the labeling operator's memory of what they did is still fresh — enabling root-cause correction.", correct: true, fb: "Correct. This is the learning mechanism. A 10-minute feedback loop means the operator can trace exactly what caused the error — before the pattern has continued for 40+ minutes. Lean inventory reduction is fundamentally a quality learning strategy." },
+        { l: "C", t: "The hospital can reduce staffing because fewer verification tasks are needed.", correct: false, fb: "Incorrect. Fewer defective samples means less rework, but the verification step itself doesn't change. The benefit is speed of feedback, not reduction in throughput." },
+        { l: "D", t: "Small buffers eliminate the possibility of labeling errors at Step 2.", correct: false, fb: "Incorrect. Small buffers do not prevent errors — they accelerate the detection of errors that do occur. The source of the defect (Step 2) is unchanged; the buffer reduction only improves how quickly it is found." }
+      ]
+    }
+  },
+  {
+    id: 1,
+    title: "Claims Processing — Data Entry",
+    tag: "Medium",
+    desc: "An insurance company processes claims in a 7-step workflow. Data entry specialists at Step 2 sometimes apply incorrect billing codes. A quality auditor at Step 6 identifies and flags incorrect codes. On average, 15 claims are queued between Step 2 and Step 6. The auditor's cycle time is 12 minutes per claim.",
+    defectStep: "Step 2 — data entry (billing code assignment)",
+    detectStep: "Step 6 — quality auditor review",
+    CT: 12, buffer: 15,
+    itat: 180,
+    itatFeedback: "ITAT = 12 × 15 = 180 minutes (3 hours). A billing code error made at Step 2 isn't caught for 3 hours. In a full workday, an agent using the wrong code since morning may have processed 15+ claims before detection. All require rework.",
+    sliderMin: 1, sliderMax: 20,
+    reducedBuffer: 5,
+    reducedITAT: 60,
+    reflection: {
+      q: "A manager suggests the company hire a second auditor at Step 6 to catch errors faster. A lean consultant counters with: 'Reduce the buffer between Steps 2 and 6.' Which approach better addresses the root cause, and why?",
+      opts: [
+        { l: "A", t: "Adding an auditor — more detection capacity reduces the number of defects that pass through.", correct: false, fb: "Incorrect. Adding an auditor increases detection throughput but doesn't reduce ITAT. If the buffer stays at 15, errors still go undetected for hours. The additional auditor catches defects faster through throughput, not through learning." },
+        { l: "B", t: "Reducing the buffer — the ITAT drops, errors are caught faster, and the data entry agent gets corrective feedback while the mistake pattern is still active.", correct: true, fb: "Correct. The lean approach attacks the detection lag, not just the detection capacity. Reducing the buffer to 5 drops ITAT from 180 to 60 minutes. When the auditor flags an error within an hour, the data entry agent can identify what they did wrong and correct their process before processing another 10 claims with the same mistake." },
+        { l: "C", t: "Both approaches are equivalent — both reduce the number of defective claims reaching customers.", correct: false, fb: "Not equivalent. Adding an auditor increases detection volume without changing detection speed. Reducing the buffer changes detection speed, which drives the learning mechanism. The learning mechanism is what prevents future defects — it's the upstream fix, not a downstream catch." },
+        { l: "D", t: "Neither — the only fix is better training for the data entry agents.", correct: false, fb: "Training addresses human skill. But even well-trained agents make errors. The ITAT problem is about how quickly those errors are caught and corrected. Training and buffer reduction are complementary, not alternatives." }
+      ]
+    }
+  },
+  {
+    id: 2,
+    title: "Software Build Pipeline — QA Testing",
+    tag: "Medium",
+    desc: "A software team's CI/CD pipeline has 10 stages. Code defects are typically introduced at Stage 3 (component build). Defects are first detected at Stage 8 (integration test). On average, 4 builds are queued between Stage 3 and Stage 8. The integration test cycle time is 30 minutes per build.",
+    defectStep: "Stage 3 — component build (code defects introduced)",
+    detectStep: "Stage 8 — integration test (defects detected)",
+    CT: 30, buffer: 4,
+    itat: 120,
+    itatFeedback: "ITAT = 30 × 4 = 120 minutes (2 hours). A bug introduced at Stage 3 isn't detected until 2 hours later. By then, the developer has likely been working on additional code built on top of the faulty foundation — compounding the rework.",
+    sliderMin: 1, sliderMax: 6,
+    reducedBuffer: 1,
+    reducedITAT: 30,
+    reflection: {
+      q: "The team shifts from batching 4 builds before integration testing to testing after every single build (buffer = 1). This is analogous to which lean production concept?",
+      opts: [
+        { l: "A", t: "Heijunka — leveling the production mix to avoid uneven demand.", correct: false, fb: "Incorrect. Heijunka addresses demand variability and production scheduling. The shift from batch testing to single-unit flow is a different lean principle." },
+        { l: "B", t: "Single-unit flow (one-piece flow) — moving units through the system one at a time rather than in batches, so errors are detected before the next unit is processed.", correct: true, fb: "Correct. Single-unit flow minimizes the buffer between any two stages to 1 unit. In software, this means testing each build immediately rather than accumulating a batch. ITAT drops to 30 minutes (one cycle time). The quality feedback is nearly instantaneous relative to when the defect was introduced." },
+        { l: "C", t: "Kanban — authorizing production with cards to prevent overproduction.", correct: false, fb: "Not quite. Kanban controls the inventory authorization, but the principle at play here is single-unit flow — eliminating the batch between processing steps. Kanban could be part of the implementation, but the core idea is flow, not authorization." },
+        { l: "D", t: "Takt time — matching the pipeline speed to customer demand.", correct: false, fb: "Incorrect. Takt time governs the output rate to match demand. The question is about buffer between pipeline stages, not about pace relative to demand." }
+      ]
+    }
+  },
+  {
+    id: 3,
+    title: "Catering Kitchen — Portion Preparation",
+    tag: "Medium",
+    desc: "A hotel catering kitchen prepares 8 steps per dish. Incorrect seasoning is introduced at Step 2. Taste quality is checked at Step 6 by a chef supervisor. On average, 6 dishes are queued between Step 2 and Step 6. The chef supervisor's cycle time is 8 minutes per dish.",
+    defectStep: "Step 2 — seasoning station",
+    detectStep: "Step 6 — chef supervisor taste check",
+    CT: 8, buffer: 6,
+    itat: 48,
+    itatFeedback: "ITAT = 8 × 6 = 48 minutes. If the seasoning station is using the wrong spice blend, 6 dishes will be prepared incorrectly before the error is caught. At a large event with tight timing, this can mean re-preparing the entire batch — significant rework under deadline pressure.",
+    sliderMin: 1, sliderMax: 10,
+    reducedBuffer: 2,
+    reducedITAT: 16,
+    reflection: {
+      q: "The kitchen reduces the buffer from 6 to 2 dishes between the seasoning step and the chef check. The ITAT drops from 48 to 16 minutes. Which of the following BEST describes what this change prevents — beyond just catching the error earlier?",
+      opts: [
+        { l: "A", t: "It prevents the seasoning station from making any errors, because they know the chef will check soon.", correct: false, fb: "Incorrect. Proximity of detection doesn't prevent errors — it accelerates feedback when errors do occur. The number of errors made is driven by process capability, not awareness of upcoming checks." },
+        { l: "B", t: "It limits the damage: with a smaller buffer, at most 2 dishes are made with the wrong seasoning before the error is caught, versus 6.", correct: true, fb: "Correct — and there is a second benefit. With 16-minute feedback, the seasoning operator is informed of the error while the wrong ingredient is still likely on their station. They can identify whether they grabbed the wrong container, mis-measured, or substituted an ingredient. With a 48-minute lag, the error is much harder to trace to its source." },
+        { l: "C", t: "It allows the kitchen to reduce the number of chef supervisors needed for quality checks.", correct: false, fb: "Not the primary benefit. The check frequency doesn't change — what changes is how quickly each error propagates before being caught. Staffing decisions are separate from ITAT optimization." },
+        { l: "D", t: "It guarantees that every dish served at the event will be correct.", correct: false, fb: "No buffer reduction guarantees zero defects. ITAT reduction limits the damage and accelerates learning, but it does not eliminate the possibility of error at the defect-generation step." }
+      ]
+    }
+  },
+  {
+    id: 4,
+    title: "Payroll Processing — Data Entry Errors",
+    tag: "Hard",
+    desc: "A payroll team processes employee records in a 6-step workflow. Data entry errors are introduced at Step 1. The HR compliance team reviews records at Step 6 — but only in weekly batches. Each week, 50 records are reviewed at once. The compliance reviewer's cycle time is 20 minutes per record.",
+    defectStep: "Step 1 — payroll data entry",
+    detectStep: "Step 6 — HR compliance batch review (weekly, buffer = 50 records)",
+    CT: 20, buffer: 50,
+    itat: 1000,
+    itatFeedback: "ITAT = 20 × 50 = 1,000 minutes (16.7 hours). A data entry error made at Step 1 on Monday won't be detected until the Friday compliance review — after all 50 records in the batch have been processed. Depending on the error type, some employees may receive incorrect paychecks before the error is caught.",
+    sliderMin: 1, sliderMax: 50,
+    reducedBuffer: 5,
+    reducedITAT: 100,
+    reflection: {
+      q: "The payroll team moves from weekly batch review (buffer = 50) to daily rolling review (buffer ≈ 10). ITAT drops from 1,000 to 200 minutes. The compliance manager's concern: 'But daily review means the reviewer is touching records every day instead of once a week — more disruption.' Which lean response best addresses this concern?",
+      opts: [
+        { l: "A", t: "The compliance manager is right — batch processing is more efficient because it reduces setup time per review cycle.", correct: false, fb: "Incorrect. Batch processing reduces the number of review cycles but dramatically increases the damage from any error that occurs between cycles. Payroll errors are high-stakes: an employee receiving the wrong paycheck for a week is a significantly worse outcome than catching the error within a day." },
+        { l: "B", t: "Daily review distributes the same total work volume more evenly across the week, reducing the compliance reviewer's Friday spike and eliminating the end-of-week overburden (muri) caused by a large weekly batch.", correct: true, fb: "Correct. This is also a mura/muri connection: the weekly batch creates an uneven load (50 records on Friday, none earlier in the week) — that's mura. The Friday overburden is muri. Daily review levels the workload. The total review minutes are the same; the distribution changes. This is heijunka applied to review scheduling." },
+        { l: "C", t: "The compliance manager's concern is valid and daily review is too disruptive — a compromise of bi-weekly review is the best solution.", correct: false, fb: "Bi-weekly review (buffer ≈ 25) drops ITAT to 500 min. Better, but still over 8 hours. For a process with high-stakes errors like payroll, this is not the lean answer. The compliance concern about 'disruption' conflates frequency with total effort — daily review of 10 records takes the same total time as weekly review of 50." },
+        { l: "D", t: "The lean response is to automate the compliance review so humans don't need to be involved daily.", correct: false, fb: "Automation may eventually be the right investment, but it's a separate question from ITAT reduction. The lean response in the short term is to change the batch size. Automation also has its own risks — automated review that misses errors propagates defects at machine speed, which is worse than a 1,000-minute ITAT." }
+      ]
+    }
+  },
+  {
+    id: 5,
+    title: "Call Center — QA Supervisor Review",
+    tag: "Hard",
+    desc: "A call center agent makes compliance errors during calls. A QA supervisor reviews call recordings for compliance issues — but reviews are batched at the end of each day. On average, 40 calls are reviewed per session. The supervisor's review cycle time is 25 minutes per call.",
+    defectStep: "Agent during live call (compliance error introduced)",
+    detectStep: "QA supervisor end-of-day batch review (buffer = 40 calls)",
+    CT: 25, buffer: 40,
+    itat: 1000,
+    itatFeedback: "ITAT = 25 × 40 = 1,000 minutes (16.7 hours). A compliance error made at 9:00 AM isn't detected until after 5:00 PM — potentially hours after the affected customer already received incorrect information. Depending on the error type, regulatory exposure could exist from the moment of the call.",
+    sliderMin: 1, sliderMax: 40,
+    reducedBuffer: 2,
+    reducedITAT: 50,
+    reflection: {
+      q: "If the company implements real-time AI-assisted call monitoring (buffer ≈ 1 call), ITAT drops to 25 minutes. A senior manager cautions: 'Real-time monitoring makes agents anxious, which could worsen performance.' From a lean quality perspective, what is the most accurate response?",
+      opts: [
+        { l: "A", t: "The manager is correct — agent anxiety from surveillance is a muri issue that could counteract the ITAT benefit.", correct: false, fb: "Partially. Muri is real: overburdened or anxious workers make more errors. But this conflates the monitoring technology with the feedback mechanism. The lean quality argument for near-real-time feedback isn't surveillance — it's the ability to coach the agent immediately after a problematic call while the context is fresh, rather than 8 hours later." },
+        { l: "B", t: "Real-time feedback, when used for coaching rather than punishment, accelerates agent skill development by closing the gap between error occurrence and corrective instruction.", correct: true, fb: "Correct. This is the ITAT learning mechanism in a human context. The 25-minute ITAT (one call lag) means an agent makes an error at 9:00 AM and receives coaching by 9:25 AM. They understand exactly what went wrong and can adjust for the next call. With an 8-hour ITAT, the coaching at 5:30 PM is disconnected from the specific call context, and the agent has made the same error dozens of times throughout the day." },
+        { l: "C", t: "The ITAT reduction is only valuable for regulatory compliance — the learning benefit is secondary to avoiding regulatory fines.", correct: false, fb: "Incomplete. Regulatory compliance is one benefit. The primary lean quality benefit is the learning mechanism: accelerated feedback prevents future defects, not just damage control on current ones. A system that only catches errors (but doesn't change error rates) is a detection system, not a learning system." },
+        { l: "D", t: "The real-time system replaces the QA supervisor, reducing labor costs as well as ITAT.", correct: false, fb: "Incorrect. The monitoring tool changes the buffer size, not the detection responsibility. The QA supervisor role shifts from batch review to real-time coaching — different work, not eliminated work. Labor cost reduction is not the lean motivation for ITAT improvement." }
+      ]
+    }
+  }
+];
+
+let states = SC.map(() => ({ p1Done: false, p3Done: false, selOpt: null }));
+let cur = 0;
+
+function buildNav() {
+  const nav = document.getElementById('scNav');
+  nav.innerHTML = SC.map((s, i) => {
+    let cls = 'sc-dot';
+    if (i === cur) cls += ' cur';
+    else if (states[i].p3Done) cls += ' ok';
+    else if (i > 0 && !states[i-1].p3Done) cls += ' locked';
+    return `<button class="${cls}" onclick="goTo(${i})">${i+1}</button>`;
+  }).join('') + `<span class="sc-title">${SC[cur].title}</span>`;
+}
+
+function goTo(i) {
+  if (i > 0 && !states[i-1].p3Done && i !== cur) return;
+  cur = i;
+  render();
+}
+
+function render() {
+  buildNav();
+  const sc = SC[cur];
+  const st = states[cur];
+
+  // Phase 1: ITAT Calculation
+  const p1Html = `
+    <div class="phase-label">Phase 1 — Calculate ITAT</div>
+    <div style="margin-bottom:14px;">
+      <div style="font-size:11px;font-weight:700;color:var(--gray-600);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;">Process Context</div>
+      <div style="font-size:13px;color:var(--gray-700);display:flex;flex-direction:column;gap:4px;">
+        <div><span style="font-weight:700;color:var(--teal);">Defect generation:</span> ${sc.defectStep}</div>
+        <div><span style="font-weight:700;color:var(--red);">Detection point:</span> ${sc.detectStep}</div>
+      </div>
+    </div>
+    <div class="calc-block ${st.p1Done ? 'done' : 'active'}">
+      <div class="formula-box">ITAT = Cycle Time of Detection Step × Buffer Between Steps</div>
+      <div class="param-row" style="margin-bottom:10px;">
+        <div class="param-box"><div class="param-label">Detection Cycle Time (CT)</div><div class="param-val">${sc.CT}</div><div class="param-sub">min/unit</div></div>
+        <div class="param-box"><div class="param-label">Buffer Between Steps</div><div class="param-val">${sc.buffer}</div><div class="param-sub">units queued</div></div>
+      </div>
+      <div class="f-row">
+        <label style="font-size:12.5px;color:var(--gray-700);">ITAT =</label>
+        <input type="number" class="f-input" id="itatAns" placeholder="min" ${st.p1Done?'disabled':''} oninput="enItat()">
+        <span class="f-unit">min</span>
+        <button class="btn-primary" id="itatBtn" onclick="submitItat()" ${st.p1Done?'disabled':''} disabled>Check</button>
+      </div>
+      <div id="itatFb"></div>
+      ${st.p1Done ? `<div class="alert alert-green" style="margin-top:8px;"><div class="alert-icon">✓</div><div class="alert-body">${sc.itatFeedback}</div></div>` : ''}
+    </div>
+  `;
+
+  // Phase 2: Buffer Reduction Slider
+  const currentBuffer = window.sliderVals?.[cur] ?? sc.buffer;
+  const currentITAT = sc.CT * currentBuffer;
+  const pctReduction = Math.round((1 - currentITAT / sc.itat) * 100);
+  const reductionColor = pctReduction > 0 ? 'good' : '';
+
+  const p2Html = st.p1Done ? `
+    <div class="phase-label">Phase 2 — Buffer Reduction Sensitivity</div>
+    <div class="slider-section">
+      <h3>What happens to ITAT as the buffer shrinks?</h3>
+      <p>Use the slider to reduce the buffer between the defect-generation step and the detection step. Watch how ITAT responds.</p>
+      <div class="slider-row">
+        <label>Buffer:</label>
+        <input type="range" id="bufSlider" min="${sc.sliderMin}" max="${sc.sliderMax}" value="${currentBuffer}"
+          oninput="updateSlider(${sc.CT}, ${sc.itat})">
+        <span class="slider-val" id="bufVal">${currentBuffer}</span>
+        <span class="f-unit">units</span>
+      </div>
+      <div class="itat-display">
+        <div class="itat-big" id="itatBig">${currentITAT}</div>
+        <div class="itat-label">ITAT (minutes)</div>
+        ${pctReduction > 0
+          ? `<div class="itat-reduction good" id="itatRed">↓ ${pctReduction}% reduction from original ${sc.itat} min</div>`
+          : `<div class="itat-reduction" id="itatRed" style="color:rgba(255,255,255,.4);">At original buffer level (${sc.buffer} units)</div>`
+        }
+      </div>
+      <div id="sliderInsight" style="font-size:13px;color:var(--gray-600);line-height:1.6;margin-top:4px;">
+        ${getSliderInsight(sc, currentBuffer, currentITAT)}
+      </div>
+    </div>
+  ` : '<div style="background:var(--gray-100);border:2px dashed var(--gray-300);border-radius:10px;padding:22px;text-align:center;color:var(--gray-400);font-size:13px;margin-bottom:14px;">Complete Phase 1 to unlock the buffer reduction tool.</div>';
+
+  // Phase 3: Reasoning MCQ
+  const opts = sc.reflection.opts.map((o, i) => {
+    const sel = st.selOpt === i;
+    let cls = 'mcq-opt';
+    if (st.p3Done) {
+      cls += o.correct ? ' correct' : (sel ? ' wrong' : ' locked-opt');
+    } else if (sel) cls += ' sel';
+    return `<div class="${cls}" onclick="${st.p3Done?'':'selectOpt('+i+')'}" role="button">
+      <span class="opt-letter">${o.l}</span>
+      <span>${o.t}</span>
+    </div>`;
+  }).join('');
+
+  const p3Fb = st.p3Done && st.selOpt !== null ? (() => {
+    const o = sc.reflection.opts[st.selOpt];
+    return `<div class="alert ${o.correct?'alert-green':'alert-red'}" style="margin-top:12px;">
+      <div class="alert-icon">${o.correct?'✓':'✗'}</div>
+      <div class="alert-body">${o.fb}</div>
+    </div>`;
+  })() : '';
+
+  const p3Html = st.p1Done ? `
+    <div class="phase-label">Phase 3 — Quality Learning Reasoning</div>
+    <div class="mcq-block">
+      <div class="mcq-q">${sc.reflection.q}</div>
+      <div class="mcq-opts" id="mcqOpts">${opts}</div>
+      ${!st.p3Done ? `<button class="btn-primary" id="p3Btn" onclick="submitP3()" style="margin-top:10px;" ${st.selOpt===null?'disabled':''}>Submit Answer</button>` : ''}
+      ${p3Fb}
+    </div>
+    ${st.p3Done ? nextHtml(sc) : ''}
+  ` : '';
+
+  document.getElementById('mainContent').innerHTML = `
+    <div class="card">
+      <div class="card-hd">
+        <h2>Scenario ${cur+1} of 6: ${sc.title} <span style="font-size:11px;background:${sc.tag==='Easy'?'var(--green-lt)':sc.tag==='Medium'?'var(--amber-lt)':'var(--red-lt)'};color:${sc.tag==='Easy'?'var(--green)':sc.tag==='Medium'?'var(--amber)':'var(--red)'};padding:2px 8px;border-radius:100px;font-weight:700;margin-left:8px;">${sc.tag}</span></h2>
+        <p>Three-phase analysis: calculate ITAT · explore buffer reduction · reason about the quality learning mechanism.</p>
+      </div>
+      <div class="card-bd">
+        <div class="scenario-desc">${sc.desc}</div>
+        ${p1Html}
+        ${p2Html}
+        ${p3Html}
+      </div>
+    </div>
+  `;
+
+  if (st.p1Done) {
+    const sl = document.getElementById('bufSlider');
+    if (sl) sl.value = currentBuffer;
+  }
+}
+
+function nextHtml(sc) {
+  if (cur < SC.length - 1) {
+    return `<div style="margin-top:14px;"><button class="btn-green" onclick="goTo(${cur+1})">Next Scenario: ${SC[cur+1].title} →</button></div>`;
+  }
+  return `
+    <div class="summary-final" style="margin-top:14px;">
+      <h3>ITAT Mastery — Module 6 Takeaway</h3>
+      <p><strong>ITAT is a quality metric, not just a scheduling metric.</strong> The formula is simple: CT × buffer. The implication is profound: every unit sitting between the defect-generation step and the detection step is a defect that has been made but not yet caught, and is propagating damage.</p>
+      <p><strong>Buffer reduction is lean's upstream quality intervention.</strong> Reducing inventory between steps doesn't just limit damage from individual errors — it shortens the feedback loop, which allows the operator who made the error to learn from it while the memory is fresh. This is why Toyota's single-unit flow philosophy is inseparable from their quality philosophy.</p>
+      <p><strong>For Gate 2 Q6 and Case Part 4:</strong> ITAT questions ask you to calculate the formula AND to explain why buffer reduction improves quality learning — not just error containment. The "why" is always: shorter ITAT → faster feedback → operator corrects while error cause is still traceable → fewer future defects.</p>
+      <p style="color:var(--gold);font-weight:700;">✓ App 3 complete — ready for Gate 2 Q6, Q7, and Case Part 4</p>
+    </div>`;
+}
+
+function getSliderInsight(sc, buf, itat) {
+  if (buf === sc.buffer) return `At the original buffer of ${buf} units, ITAT is ${itat} min. Move the slider left to see how reducing inventory between the two steps changes detection time.`;
+  const damage = buf; // approximate units exposed
+  const pct = Math.round((1 - itat/sc.itat)*100);
+  if (buf === 1) return `At buffer = 1 (single-unit flow), ITAT = ${itat} min — a ${pct}% reduction. Errors are detected after exactly one unit passes through, while the cause is still immediately traceable. This is the lean quality ideal: near-real-time feedback.`;
+  return `At buffer = ${buf}, ITAT = ${itat} min (${pct}% reduction). When an error occurs, at most ${buf} unit${buf===1?'':'s'} will be processed before detection. Compare: original buffer of ${sc.buffer} would allow ${sc.buffer} units to be built with the defect.`;
+}
+
+function enItat() {
+  const btn = document.getElementById('itatBtn');
+  if (btn) btn.disabled = !document.getElementById('itatAns')?.value;
+}
+
+function submitItat() {
+  const sc = SC[cur];
+  const val = parseInt(document.getElementById('itatAns')?.value) || 0;
+  const fbEl = document.getElementById('itatFb');
+  if (Math.abs(val - sc.itat) === 0) {
+    states[cur].p1Done = true;
+    if (!window.sliderVals) window.sliderVals = {};
+    window.sliderVals[cur] = sc.buffer;
+    render();
+  } else {
+    const hint = val === sc.CT ? `You entered the cycle time only — multiply CT (${sc.CT}) × buffer (${sc.buffer}).`
+                : val === sc.buffer ? `You entered the buffer only — multiply CT (${sc.CT}) × buffer (${sc.buffer}).`
+                : `Check: ITAT = CT × buffer = ${sc.CT} × ${sc.buffer}.`;
+    if (fbEl) fbEl.innerHTML = `<div class="alert alert-red"><div class="alert-icon">✗</div><div class="alert-body"><strong>Not quite.</strong> ${hint}</div></div>`;
+  }
+}
+
+function updateSlider(ct, origItat) {
+  const sl = document.getElementById('bufSlider');
+  if (!sl) return;
+  const buf = parseInt(sl.value);
+  const itat = ct * buf;
+  const pct = Math.round((1 - itat/origItat)*100);
+  if (!window.sliderVals) window.sliderVals = {};
+  window.sliderVals[cur] = buf;
+  const bv = document.getElementById('bufVal');
+  const ib = document.getElementById('itatBig');
+  const ir = document.getElementById('itatRed');
+  const si = document.getElementById('sliderInsight');
+  if (bv) bv.textContent = buf;
+  if (ib) ib.textContent = itat;
+  if (ir) {
+    ir.className = `itat-reduction ${pct > 0 ? 'good' : ''}`;
+    ir.textContent = pct > 0
+      ? `↓ ${pct}% reduction from original ${origItat} min`
+      : `At original buffer level (${buf} units)`;
+  }
+  if (si) si.textContent = getSliderInsight(SC[cur], buf, itat);
+}
+
+function selectOpt(i) {
+  if (states[cur].p3Done) return;
+  states[cur].selOpt = i;
+  const opts = document.querySelectorAll('.mcq-opt');
+  opts.forEach((el, idx) => {
+    el.className = `mcq-opt ${idx === i ? 'sel' : ''}`;
+  });
+  const btn = document.getElementById('p3Btn');
+  if (btn) btn.disabled = false;
+}
+
+function submitP3() {
+  const st = states[cur];
+  if (st.selOpt === null || st.p3Done) return;
+  st.p3Done = true;
+  render();
+  // Scroll to feedback
+  setTimeout(() => {
+    const mc = document.getElementById('mcqOpts');
+    if (mc) mc.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }, 100);
+}
+
+render();
+</script>
+</body>
+</html>

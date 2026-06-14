@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Canvas Module Config — M08 SCM 352</title>
+<style>
+:root{--navy:#1a3a5c;--blue:#2563a8;--blue-lt:#dbeafe;--blue-xlt:#eff6ff;--gold:#f59e0b;--gold-lt:#fffbeb;--gold-bdr:#fde68a;--green:#16a34a;--green-lt:#f0fdf4;--green-bdr:#bbf7d0;--red:#dc2626;--red-lt:#fef2f2;--red-bdr:#fecaca;--amber:#d97706;--amber-lt:#fffbeb;--amber-bdr:#fde68a;--teal:#0891b2;--teal-lt:#f0fdfe;--teal-bdr:#a5f3fc;--purple:#7c3aed;--purple-lt:#faf5ff;--purple-bdr:#ddd6fe;--gray-50:#f9fafb;--gray-100:#f3f4f6;--gray-200:#e5e7eb;--gray-400:#9ca3af;--gray-600:#4b5563;--gray-700:#374151;--gray-800:#1f2937;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--gray-50);color:var(--gray-800);font-size:13.5px;line-height:1.55;}
+.pg-header{background:var(--navy);color:white;padding:18px 28px;display:flex;align-items:center;gap:14px;}
+.badge{background:var(--gold);color:var(--navy);font-weight:700;font-size:10px;padding:3px 8px;border-radius:4px;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;flex-shrink:0;}
+.pg-header h1{font-size:18px;font-weight:700;}
+.pg-header p{font-size:12px;color:rgba(255,255,255,.65);}
+.header-right{margin-left:auto;font-size:12px;color:rgba(255,255,255,.55);text-align:right;line-height:1.6;}
+.pg-body{max-width:1020px;margin:0 auto;padding:28px 20px 60px;display:flex;flex-direction:column;gap:32px;}
+.sec-heading{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--gray-400);padding-bottom:10px;border-bottom:1px solid var(--gray-200);margin-bottom:4px;}
+.card{background:white;border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;}
+.card-hd{padding:13px 20px;border-bottom:1px solid var(--gray-200);display:flex;align-items:center;gap:10px;}
+.card-hd h2{font-size:14px;font-weight:700;color:var(--navy);}
+.card-hd p{font-size:12px;color:var(--gray-600);margin-top:2px;}
+.card-bd{padding:18px 20px;}
+.alert{border-radius:10px;padding:13px 16px;font-size:13px;line-height:1.6;display:flex;gap:10px;align-items:flex-start;}
+.alert-icon{font-size:17px;flex-shrink:0;margin-top:1px;}
+.alert-body{flex:1;}
+.alert-body strong{display:block;margin-bottom:3px;}
+.alert-gold{background:var(--gold-lt);border:1.5px solid var(--gold-bdr);}
+.alert-red{background:var(--red-lt);border:1.5px solid var(--red-bdr);}
+.alert-blue{background:var(--blue-xlt);border:1.5px solid #bfdbfe;}
+.checklist{display:flex;flex-direction:column;gap:6px;}
+.check-item{display:flex;align-items:flex-start;gap:10px;padding:9px 12px;border:1px solid var(--gray-200);border-radius:8px;background:var(--gray-50);cursor:pointer;transition:background 0.1s;}
+.check-item:hover{background:var(--blue-xlt);}
+.check-item input[type="checkbox"]{width:16px;height:16px;accent-color:var(--blue);flex-shrink:0;margin-top:1px;cursor:pointer;}
+.check-item label{cursor:pointer;flex:1;font-size:13px;line-height:1.5;}
+.check-item label strong{color:var(--navy);}
+.check-tag{font-size:10px;font-weight:700;padding:2px 7px;border-radius:100px;white-space:nowrap;flex-shrink:0;align-self:flex-start;margin-top:2px;}
+.tag-file{background:var(--blue-lt);color:var(--navy);}
+.tag-canvas{background:var(--green-lt);color:var(--green);}
+.tag-config{background:var(--amber-lt);color:var(--amber);}
+.tag-verify{background:var(--red-lt);color:var(--red);}
+.seq-table{width:100%;border-collapse:collapse;font-size:12.5px;}
+.seq-table th{background:var(--navy);color:white;padding:9px 11px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;}
+.seq-table td{padding:9px 11px;border-bottom:1px solid var(--gray-100);vertical-align:top;line-height:1.45;}
+.seq-table tr:last-child td{border-bottom:none;}
+.seq-table tr:hover td{background:var(--gray-50);}
+.seq-table tr.gated td{background:var(--blue-xlt);}
+.seq-table tr.gated:hover td{background:#dbeefe;}
+.item-num{width:26px;height:26px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:white;flex-shrink:0;}
+.n-open{background:var(--gray-400);}
+.n-gate{background:var(--gold);color:var(--navy);}
+.n-lock{background:var(--blue);}
+.type-pill{font-size:10px;font-weight:700;padding:2px 7px;border-radius:100px;letter-spacing:.03em;white-space:nowrap;display:inline-block;}
+.tp-page{background:var(--gray-100);color:var(--gray-600);}
+.tp-link{background:var(--teal-lt);color:var(--teal);border:1px solid var(--teal-bdr);}
+.tp-quiz{background:var(--gold-lt);color:var(--amber);border:1px solid var(--gold-bdr);}
+.tp-media{background:var(--purple-lt);color:var(--purple);border:1px solid var(--purple-bdr);}
+.tp-tool{background:var(--blue-xlt);color:var(--blue);border:1px solid #bfdbfe;}
+.tp-disc{background:var(--green-lt);color:var(--green);border:1px solid var(--green-bdr);}
+.tp-assign{background:var(--red-lt);color:var(--red);border:1px solid var(--red-bdr);}
+.lock-note{font-size:11px;color:var(--blue);font-weight:600;white-space:nowrap;}
+.open-note{font-size:11px;color:var(--gray-400);}
+code{font-family:'SF Mono','Fira Code',Menlo,monospace;font-size:12px;background:var(--gray-100);border:1px solid var(--gray-200);border-radius:4px;padding:1px 6px;color:var(--navy);}
+.ver-table{width:100%;border-collapse:collapse;font-size:12px;}
+.ver-table th{background:var(--navy);color:white;padding:8px 10px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;}
+.ver-table td{padding:8px 10px;border-bottom:1px solid var(--gray-100);vertical-align:top;line-height:1.4;}
+.ver-table tr:last-child td{border-bottom:none;}
+.ver-a{background:#f0fdf4;} .ver-b{background:var(--blue-xlt);} .ver-c{background:var(--purple-lt);} .ver-d{background:var(--gold-lt);}
+.ver-badge{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:5px;font-size:12px;font-weight:800;}
+.vb-a{background:#dcfce7;color:#166534;} .vb-b{background:#dbeafe;color:#1e40af;} .vb-c{background:#faf5ff;color:#6b21a8;} .vb-d{background:#fef9c3;color:#854d0e;}
+.mon-row{display:flex;gap:14px;padding:12px 0;border-bottom:1px solid var(--gray-100);font-size:13px;line-height:1.55;}
+.mon-row:last-child{border-bottom:none;}
+.mon-day{font-size:11px;font-weight:800;padding:3px 9px;border-radius:100px;white-space:nowrap;align-self:flex-start;margin-top:1px;flex-shrink:0;}
+.day-3{background:var(--gold-lt);color:var(--amber);border:1px solid var(--gold-bdr);}
+.day-5{background:var(--teal-lt);color:var(--teal);border:1px solid var(--teal-bdr);}
+.day-6{background:var(--red-lt);color:var(--red);border:1px solid var(--red-bdr);}
+.day-post{background:var(--green-lt);color:var(--green);border:1px solid var(--green-bdr);}
+.spec-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;margin-top:4px;}
+.spec-card{border:1px solid var(--gray-200);border-radius:10px;overflow:hidden;}
+.spec-hd{padding:9px 14px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--gray-200);}
+.spec-hd h3{font-size:12.5px;font-weight:700;color:var(--gray-800);flex:1;}
+.spec-bd{padding:10px 14px;font-size:12px;color:var(--gray-700);}
+.spec-row{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--gray-100);gap:8px;}
+.spec-row:last-child{border-bottom:none;}
+.spec-key{color:var(--gray-400);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.04em;flex-shrink:0;}
+.spec-val{font-weight:600;color:var(--gray-800);text-align:right;}
+.q-label{font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--gray-400);display:block;margin-bottom:2px;}
+.q-detail{font-size:11.5px;line-height:1.45;color:var(--gray-700);}
+</style>
+</head>
+<body>
+
+<div class="pg-header">
+  <div class="badge">SCM 352 · M08</div>
+  <div>
+    <h1>Canvas Module M08 Configuration Guide</h1>
+    <p>Instructor use only · Pre-launch setup reference</p>
+  </div>
+  <div class="header-right">12 module items · 2 apps<br>Est. setup: 30–45 min</div>
+</div>
+
+<div class="pg-body">
+
+  <!-- PRE-LAUNCH CHECKLIST -->
+  <div>
+    <div class="sec-heading">Step 0 — Pre-Launch Checklist</div>
+    <div class="card" style="margin-top:14px;">
+      <div class="card-hd" style="background:var(--gold-lt);">
+        <div><h2 style="color:#92400e;">Complete before touching Canvas</h2><p style="color:#a16207;">All assets must be ready before configuring the module sequence</p></div>
+      </div>
+      <div class="card-bd">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+          <div>
+            <div style="font-size:11px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--gray-400);margin-bottom:8px;">Files to Have Ready</div>
+            <div class="checklist">
+              <div class="check-item"><input type="checkbox"><label><strong>Gates QTI zip</strong> — <code>gates/SCM352_M08_Gates_QTI.zip</code></label><span class="check-tag tag-file">FILE</span></div>
+              <div class="check-item"><input type="checkbox"><label><strong>App 1 HTML</strong> — <code>apps/M08_Turns_Explorer.html</code></label><span class="check-tag tag-file">FILE</span></div>
+              <div class="check-item"><input type="checkbox"><label><strong>App 2 HTML</strong> — <code>apps/M08_HoldingCost_Analyzer.html</code></label><span class="check-tag tag-file">FILE</span></div>
+              <div class="check-item"><input type="checkbox"><label><strong>Slide viewer</strong> — <code>viewer/</code> (index.html + slides/)</label><span class="check-tag tag-file">FILE</span></div>
+              <div class="check-item"><input type="checkbox"><label><strong>Lecture videos</strong> — recorded + captioned from <code>video/</code> scripts</label><span class="check-tag tag-file">FILE</span></div>
+              <div class="check-item"><input type="checkbox"><label><strong>Case PDF</strong> — exported from <code>assessments/M08_Case.md</code></label><span class="check-tag tag-file">FILE</span></div>
+              <div class="check-item"><input type="checkbox"><label><strong>Publisher reading URL</strong> — Chapter 10 link</label><span class="check-tag tag-file">FILE</span></div>
+            </div>
+          </div>
+          <div>
+            <div style="font-size:11px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--gray-400);margin-bottom:8px;">Canvas Actions</div>
+            <div class="checklist">
+              <div class="check-item"><input type="checkbox"><label><strong>Import Gates QTI</strong> — Course Settings → Import → QTI .zip</label><span class="check-tag tag-canvas">CANVAS</span></div>
+              <div class="check-item"><input type="checkbox"><label><strong>Upload app files</strong> — Files → M08_Apps folder</label><span class="check-tag tag-canvas">CANVAS</span></div>
+              <div class="check-item"><input type="checkbox"><label><strong>Upload slide viewer</strong> — Files → M08_Viewer folder</label><span class="check-tag tag-canvas">CANVAS</span></div>
+              <div class="check-item"><input type="checkbox"><label><strong>Upload lecture videos</strong> — Canvas Media → M08 folder + captions</label><span class="check-tag tag-canvas">CANVAS</span></div>
+              <div class="check-item"><input type="checkbox"><label><strong>Configure Gate 2 versions</strong> — Question Groups for Q3, Q4, Q5, Q7</label><span class="check-tag tag-config">CONFIG</span></div>
+              <div class="check-item"><input type="checkbox"><label><strong>Create Canvas Module</strong> — name + enable sequential</label><span class="check-tag tag-canvas">CANVAS</span></div>
+              <div class="check-item"><input type="checkbox"><label><strong>Verify Gate 1 lock</strong> — test in Student View</label><span class="check-tag tag-verify">VERIFY</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODULE SEQUENCE -->
+  <div>
+    <div class="sec-heading">Step 1 — Module Sequence Quick Reference</div>
+    <div class="card" style="margin-top:12px;">
+      <table class="seq-table">
+        <thead>
+          <tr>
+            <th style="width:4%">#</th>
+            <th style="width:28%">Canvas Item Name</th>
+            <th style="width:10%">Type</th>
+            <th style="width:8%">Points</th>
+            <th style="width:14%">Due / Opens</th>
+            <th style="width:13%">Timer / Attempts</th>
+            <th style="width:23%">Unlock Condition</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><div class="item-num n-open">1</div></td><td><strong>Module M08 Overview</strong></td><td><span class="type-pill tp-page">Page</span></td><td>—</td><td>Open on release</td><td>—</td><td><span class="open-note">No requirement</span></td></tr>
+          <tr><td><div class="item-num n-open">2</div></td><td><strong>Chapter 10 Reading</strong></td><td><span class="type-pill tp-link">Ext. URL</span></td><td>—</td><td>Open on release</td><td>—</td><td><span class="open-note">Must view #1</span></td></tr>
+          <tr><td><div class="item-num n-gate">3</div></td><td><strong>Gate 1 — Reading Check</strong></td><td><span class="type-pill tp-quiz">Quiz</span></td><td>0</td><td>Due Day 2</td><td>2 attempts<br>24-hr cooldown</td><td><span class="open-note">Must view #2</span></td></tr>
+          <tr class="gated"><td><div class="item-num n-lock">4</div></td><td><strong>Lecture: What Is Inventory and Why Does It Exist</strong></td><td><span class="type-pill tp-media">Media</span></td><td>—</td><td>After Gate 1</td><td>—</td><td><span class="lock-note">🔒 Gate 1 ≥ 80%</span></td></tr>
+          <tr class="gated"><td><div class="item-num n-lock">5</div></td><td><strong>Lecture: Measuring Inventory — Turns, DoS, and Financial Statements</strong></td><td><span class="type-pill tp-media">Media</span></td><td>—</td><td>After Gate 1</td><td>—</td><td><span class="lock-note">🔒 Must view #4</span></td></tr>
+          <tr class="gated"><td><div class="item-num n-lock">6</div></td><td><strong>Slide Deck — Module M08</strong></td><td><span class="type-pill tp-tool">Ext. Tool</span></td><td>—</td><td>After Gate 1</td><td>—</td><td><span class="lock-note">🔒 Must view #5</span></td></tr>
+          <tr class="gated"><td><div class="item-num n-lock">7</div></td><td><strong>App 1: Turns Explorer</strong></td><td><span class="type-pill tp-tool">Ext. Tool</span></td><td>—</td><td>After Gate 1</td><td>—</td><td><span class="lock-note">🔒 Must view #6</span></td></tr>
+          <tr class="gated"><td><div class="item-num n-lock">8</div></td><td><strong>App 2: Holding Cost Analyzer</strong></td><td><span class="type-pill tp-tool">Ext. Tool</span></td><td>—</td><td>After Gate 1</td><td>—</td><td><span class="lock-note">🔒 Must view #7</span></td></tr>
+          <tr class="gated"><td><div class="item-num n-lock">9</div></td><td><strong>Discussion: Inventory Everywhere</strong></td><td><span class="type-pill tp-disc">Discussion</span></td><td>30</td><td>Initial post Day 5</td><td>—</td><td><span class="lock-note">🔒 Must view #8</span></td></tr>
+          <tr class="gated"><td><div class="item-num n-gate">10</div></td><td><strong>Gate 2 Quiz</strong></td><td><span class="type-pill tp-quiz">Quiz</span></td><td>100</td><td>Due Day 6<br>11:59 PM</td><td>90 min<br>1 attempt</td><td><span class="lock-note">🔒 Must post #9</span></td></tr>
+          <tr class="gated"><td><div class="item-num n-lock">11</div></td><td><strong>Case Analysis M08 — Riverside Central Supply</strong></td><td><span class="type-pill tp-assign">Assignment</span></td><td>100</td><td>Due Day 6<br>11:59 PM</td><td>—</td><td><span class="lock-note">🔒 Must submit #10</span></td></tr>
+          <tr class="gated"><td><div class="item-num n-lock">12</div></td><td><strong>Module Wrap-Up</strong></td><td><span class="type-pill tp-page">Page</span></td><td>—</td><td>After Day 6</td><td>—</td><td><span class="lock-note">🔒 Must submit #11</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ITEM CONFIG SPECS -->
+  <div>
+    <div class="sec-heading">Step 2 — Item Configuration Specs (Module-Specific Items)</div>
+    <div class="alert alert-gold" style="margin-top:12px;">
+      <div class="alert-icon">ℹ️</div>
+      <div class="alert-body">Items 1–3 and 9–12 follow the same configuration pattern as prior modules. Only module-specific items are detailed below. See M01_Module_Config.html for field-by-field Canvas setup instructions.</div>
+    </div>
+    <div class="spec-grid" style="margin-top:14px;">
+
+      <div class="spec-card" style="border-color:var(--gold-bdr);">
+        <div class="spec-hd" style="background:var(--gold-lt);border-color:var(--gold-bdr);">
+          <div class="item-num n-gate" style="width:22px;height:22px;font-size:10px;">3</div>
+          <h3>Gate 1 — Reading Check</h3>
+          <span class="type-pill tp-quiz">Quiz</span>
+        </div>
+        <div class="spec-bd">
+          <div class="spec-row"><span class="spec-key">Points</span><span class="spec-val">0</span></div>
+          <div class="spec-row"><span class="spec-key">Questions</span><span class="spec-val">5 drawn from bank of 7</span></div>
+          <div class="spec-row"><span class="spec-key">Attempts</span><span class="spec-val">2 (24-hr cooldown)</span></div>
+          <div class="spec-row"><span class="spec-key">Due</span><span class="spec-val">Day 2 · 11:59 PM</span></div>
+          <div class="spec-row"><span class="spec-key">Requirement</span><span class="spec-val" style="color:var(--red);font-weight:800;">Score ≥ 80%</span></div>
+          <div class="spec-row" style="display:block;padding-top:6px;">
+            <span class="spec-key">Source</span>
+            <div style="font-size:11px;color:var(--gray-600);margin-top:2px;line-height:1.4;">Chapter 10 only — Tables 10.1, 10.2, 10.3, production smoothing, Monitor Sugar. Slides and narration do not cover Gate 1 content.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="spec-card" style="border-color:var(--gold-bdr);">
+        <div class="spec-hd" style="background:var(--gold-lt);border-color:var(--gold-bdr);">
+          <div class="item-num n-gate" style="width:22px;height:22px;font-size:10px;">10</div>
+          <h3>Gate 2 Quiz</h3>
+          <span class="type-pill tp-quiz">Quiz</span>
+        </div>
+        <div class="spec-bd">
+          <div class="spec-row"><span class="spec-key">Points</span><span class="spec-val">100</span></div>
+          <div class="spec-row"><span class="spec-key">Attempts</span><span class="spec-val" style="color:var(--red);font-weight:800;">1 only</span></div>
+          <div class="spec-row"><span class="spec-key">Time limit</span><span class="spec-val" style="color:var(--red);font-weight:800;">90 minutes</span></div>
+          <div class="spec-row"><span class="spec-key">Due</span><span class="spec-val">Day 6 · 11:59 PM</span></div>
+          <div class="spec-row"><span class="spec-key">Fixed Qs</span><span class="spec-val">Q1, Q2, Q6, Q8 (all versions)</span></div>
+          <div class="spec-row"><span class="spec-key">Parameterized</span><span class="spec-val" style="color:var(--blue);">Q3, Q4, Q5, Q7 (ver. A–D)</span></div>
+        </div>
+      </div>
+
+      <div class="spec-card">
+        <div class="spec-hd" style="background:var(--green-lt);border-color:var(--green-bdr);">
+          <div class="item-num n-lock" style="width:22px;height:22px;font-size:10px;">9</div>
+          <h3>Discussion: Inventory Everywhere</h3>
+          <span class="type-pill tp-disc">Discussion</span>
+        </div>
+        <div class="spec-bd">
+          <div class="spec-row"><span class="spec-key">Points</span><span class="spec-val">30</span></div>
+          <div class="spec-row"><span class="spec-key">Initial post due</span><span class="spec-val">Day 5 · 11:59 PM</span></div>
+          <div class="spec-row"><span class="spec-key">Reply required?</span><span class="spec-val" style="color:var(--green);font-weight:700;">No — initial only</span></div>
+          <div class="spec-row"><span class="spec-key">Grade when</span><span class="spec-val">After following module closes</span></div>
+          <div class="spec-row"><span class="spec-key">Rubric</span><span class="spec-val">M08_Discussion_Rubric.html</span></div>
+        </div>
+      </div>
+
+      <div class="spec-card">
+        <div class="spec-hd" style="background:var(--red-lt);border-color:var(--red-bdr);">
+          <div class="item-num n-lock" style="width:22px;height:22px;font-size:10px;">11</div>
+          <h3>Case Analysis — Riverside Central Supply</h3>
+          <span class="type-pill tp-assign">Assignment</span>
+        </div>
+        <div class="spec-bd">
+          <div class="spec-row"><span class="spec-key">Points</span><span class="spec-val">100</span></div>
+          <div class="spec-row"><span class="spec-key">Due</span><span class="spec-val">Day 6 · 11:59 PM</span></div>
+          <div class="spec-row"><span class="spec-key">Attempts</span><span class="spec-val">1</span></div>
+          <div class="spec-row"><span class="spec-key">Format</span><span class="spec-val">PDF or Word (.docx)</span></div>
+          <div class="spec-row"><span class="spec-key">Versions</span><span class="spec-val">A/B/C/D — student ID last digit</span></div>
+          <div class="spec-row"><span class="spec-key">Rubric</span><span class="spec-val">M08_Case_Rubric.html</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- GATE 2 VERSION TABLE -->
+  <div>
+    <div class="sec-heading">Step 3 — Gate 2 Version Reference (Q3, Q4, Q5, Q7)</div>
+    <div class="alert alert-blue" style="margin-top:12px;">
+      <div class="alert-icon">ℹ️</div>
+      <div class="alert-body">Q1, Q2, Q6, Q8 are fixed — same prompt and answer for all students. Only Q3, Q4, Q5, Q7 are parameterized. Use this table when reviewing student work to confirm which version they received.</div>
+    </div>
+    <div style="border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;margin-top:14px;background:white;">
+      <table class="ver-table">
+        <thead>
+          <tr>
+            <th style="width:4%">Ver.</th>
+            <th style="width:24%">Q3 — Unit-Based Turns<br><span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:9px;opacity:.7;">Industry · Correct turns · vs. competitor</span></th>
+            <th style="width:22%">Q4 — Multi-Period Conversion<br><span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:9px;opacity:.7;">Annual turns · Manager's claim · Error?</span></th>
+            <th style="width:27%">Q5 — Financial Statements<br><span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:9px;opacity:.7;">Company · Correct turns · vs. benchmark</span></th>
+            <th style="width:23%">Q7 — Holding Cost/Unit<br><span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:9px;opacity:.7;">Product · Turns improvement · Savings/unit</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="ver-a">
+            <td><span class="ver-badge vb-a">A</span></td>
+            <td>
+              <span class="q-label">Setting</span><span class="q-detail">Regional pharmacy; I=18,000 units; R=180,000/yr</span>
+              <span class="q-label" style="margin-top:5px;">Correct turns</span><span class="q-detail">10.0 turns; DoS = 36.5 days</span>
+              <span class="q-label" style="margin-top:5px;">Competitor / result</span><span class="q-detail">Competitor = 16.0 turns; this firm is <strong>below</strong> competitor; new inventory = 12,000 → 15.0 turns</span>
+            </td>
+            <td>
+              <span class="q-label">Annual turns</span><span class="q-detail">26 turns/yr; weekly = 0.500</span>
+              <span class="q-label" style="margin-top:5px;">Manager's claim</span><span class="q-detail">"2 days-of-supply" — <strong style="color:var(--red);">WRONG</strong></span>
+              <span class="q-label" style="margin-top:5px;">Correct answer</span><span class="q-detail">1/0.500 = 2.0 weeks = <strong>14 days</strong>. Manager dropped ×7 conversion.</span>
+            </td>
+            <td>
+              <span class="q-label">Company</span><span class="q-detail">Hartwell Grocery; COGS=$3,360M; Inv=$280M</span>
+              <span class="q-label" style="margin-top:5px;">Correct turns</span><span class="q-detail">$3,360M / $280M = <strong>12.0 turns</strong>; DoS = 30.4 days</span>
+              <span class="q-label" style="margin-top:5px;">Benchmark (Table 10.1)</span><span class="q-detail">Food stores = 10.78 turns → Hartwell is <strong>ABOVE</strong></span>
+            </td>
+            <td>
+              <span class="q-label">Product</span><span class="q-detail">Upholstered sofas; $650/unit; 30% annual HCP</span>
+              <span class="q-label" style="margin-top:5px;">Turns improvement</span><span class="q-detail">3.0 → 4.0 turns</span>
+              <span class="q-label" style="margin-top:5px;">Savings/unit</span><span class="q-detail">$65.00 → $48.75 actual HC/unit; saves <strong>$16.25/unit</strong></span>
+            </td>
+          </tr>
+          <tr class="ver-b">
+            <td><span class="ver-badge vb-b">B</span></td>
+            <td>
+              <span class="q-label">Setting</span><span class="q-detail">Hospital central supply; I=45,000 units; R=900,000/yr</span>
+              <span class="q-label" style="margin-top:5px;">Correct turns</span><span class="q-detail">20.0 turns; DoS = 18.25 days</span>
+              <span class="q-label" style="margin-top:5px;">Competitor / result</span><span class="q-detail">Competitor = 24.0 turns; this firm is <strong>below</strong>; new inventory = 30,000 → 30.0 turns</span>
+            </td>
+            <td>
+              <span class="q-label">Annual turns</span><span class="q-detail">12 turns/yr; weekly = 0.231</span>
+              <span class="q-label" style="margin-top:5px;">Manager's claim</span><span class="q-detail">"4.3 days-of-supply" — <strong style="color:var(--red);">WRONG</strong></span>
+              <span class="q-label" style="margin-top:5px;">Correct answer</span><span class="q-detail">1/0.231 = 4.33 weeks = <strong>30.4 days</strong>. Manager reported weeks as days.</span>
+            </td>
+            <td>
+              <span class="q-label">Company</span><span class="q-detail">Meridian Dept. Stores; COGS=$1,820M; Inv=$490M</span>
+              <span class="q-label" style="margin-top:5px;">Correct turns</span><span class="q-detail">$1,820M / $490M = <strong>3.71 turns</strong>; DoS = 98.4 days</span>
+              <span class="q-label" style="margin-top:5px;">Benchmark (Table 10.1)</span><span class="q-detail">Dept. stores = 3.87 turns → Meridian is <strong>SLIGHTLY BELOW</strong></span>
+            </td>
+            <td>
+              <span class="q-label">Product</span><span class="q-detail">Disposable surgical trays; $120/unit; 25% annual HCP</span>
+              <span class="q-label" style="margin-top:5px;">Turns improvement</span><span class="q-detail">8.0 → 12.0 turns</span>
+              <span class="q-label" style="margin-top:5px;">Savings/unit</span><span class="q-detail">$3.75 → $2.50 actual HC/unit; saves <strong>$1.25/unit</strong></span>
+            </td>
+          </tr>
+          <tr class="ver-c">
+            <td><span class="ver-badge vb-c">C</span></td>
+            <td>
+              <span class="q-label">Setting</span><span class="q-detail">Regional grocery distributor; I=240,000 units; R=2,880,000/yr</span>
+              <span class="q-label" style="margin-top:5px;">Correct turns</span><span class="q-detail">12.0 turns; DoS = 30.4 days</span>
+              <span class="q-label" style="margin-top:5px;">Competitor / result</span><span class="q-detail">Competitor = 16.0 turns; this firm is <strong>below</strong>; new inventory = 160,000 → 18.0 turns, <strong>ABOVE</strong> competitor</span>
+            </td>
+            <td>
+              <span class="q-label">Annual turns</span><span class="q-detail">52 turns/yr; weekly = 1.000</span>
+              <span class="q-label" style="margin-top:5px;">Manager's claim</span><span class="q-detail">"7 days-of-supply" — <strong style="color:var(--green);">CORRECT</strong></span>
+              <span class="q-label" style="margin-top:5px;">Correct answer</span><span class="q-detail">1/1.0 = 1.0 week = 7 days. Manager's statement is accurate for Version C.</span>
+            </td>
+            <td>
+              <span class="q-label">Company</span><span class="q-detail">Apex Consumer Electronics; COGS=$1,320M; Inv=$330M</span>
+              <span class="q-label" style="margin-top:5px;">Correct turns</span><span class="q-detail">$1,320M / $330M = <strong>4.0 turns</strong>; DoS = 91.25 days</span>
+              <span class="q-label" style="margin-top:5px;">Benchmark (Table 10.1)</span><span class="q-detail">Electronics = 4.10 turns → Apex is <strong>AT/NEAR benchmark</strong></span>
+            </td>
+            <td>
+              <span class="q-label">Product</span><span class="q-detail">Aged cheese wheels; $180/unit; 35% annual HCP</span>
+              <span class="q-label" style="margin-top:5px;">Turns improvement</span><span class="q-detail">6.0 → 9.0 turns</span>
+              <span class="q-label" style="margin-top:5px;">Savings/unit</span><span class="q-detail">$10.50 → $7.00 actual HC/unit; saves <strong>$3.50/unit</strong></span>
+            </td>
+          </tr>
+          <tr class="ver-d">
+            <td><span class="ver-badge vb-d">D</span></td>
+            <td>
+              <span class="q-label">Setting</span><span class="q-detail">Electronics retailer; I=8,500 units; R=34,000/yr</span>
+              <span class="q-label" style="margin-top:5px;">Correct turns</span><span class="q-detail">4.0 turns; DoS = 91.25 days</span>
+              <span class="q-label" style="margin-top:5px;">Competitor / result</span><span class="q-detail">Competitor = 5.0 turns; this firm is <strong>below</strong>; new inventory = 5,667 → 6.0 turns, <strong>ABOVE</strong> competitor</span>
+            </td>
+            <td>
+              <span class="q-label">Annual turns</span><span class="q-detail">6 turns/yr; weekly = 0.115</span>
+              <span class="q-label" style="margin-top:5px;">Manager's claim</span><span class="q-detail">"8.7 days-of-supply" — <strong style="color:var(--red);">WRONG</strong></span>
+              <span class="q-label" style="margin-top:5px;">Correct answer</span><span class="q-detail">1/0.115 = 8.67 weeks = <strong>60.8 days</strong>. Manager reported weeks as days.</span>
+            </td>
+            <td>
+              <span class="q-label">Company</span><span class="q-detail">Cascade Jewelry; COGS=$324M; Inv=$216M</span>
+              <span class="q-label" style="margin-top:5px;">Correct turns</span><span class="q-detail">$324M / $216M = <strong>1.5 turns</strong>; DoS = 243.3 days</span>
+              <span class="q-label" style="margin-top:5px;">Benchmark (Table 10.1)</span><span class="q-detail">Jewelry = 1.68 turns → Cascade is <strong>BELOW benchmark</strong></span>
+            </td>
+            <td>
+              <span class="q-label">Product</span><span class="q-detail">Smart home hub; $90/unit; 40% annual HCP</span>
+              <span class="q-label" style="margin-top:5px;">Turns improvement</span><span class="q-detail">5.0 → 10.0 turns</span>
+              <span class="q-label" style="margin-top:5px;">Savings/unit</span><span class="q-detail">$7.20 → $3.60 actual HC/unit; saves <strong>$3.60/unit</strong></span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- MONITORING -->
+  <div>
+    <div class="sec-heading">Step 4 — During-Module Monitoring</div>
+    <div class="card" style="margin-top:14px;">
+      <div class="card-hd"><div><h2>Weekly monitoring actions — 30–45 min total</h2></div></div>
+      <div class="card-bd">
+        <div class="mon-row">
+          <div class="mon-day day-3">Day 3</div>
+          <div><strong>Pull Gate 1 completion report.</strong> Students with 0 attempts by Day 3 should receive a targeted nudge. M08-specific: Gate 1 questions draw exclusively on Tables 10.1, 10.2, 10.3, the Monitor Sugar/production-smoothing content, and Chapter 10 numerical benchmarks — none of which appear in slides or narration. Students who only watched lectures will fail Gate 1. Do not message the whole class; nudge individual students with 0 attempts.</div>
+        </div>
+        <div class="mon-row">
+          <div class="mon-day day-5">Day 5</div>
+          <div><strong>Scan discussion initial posts for naming violations.</strong> M08-specific watch items: (1) Posts that name a textbook example by name — Kroger, Macy's, Monitor Sugar are the most common; (2) Posts describing only a consumer experience without applying the Ch.10 classification framework (inventory type, reason from the six) — likely Minimal on Criterion 1; (3) Posts that estimate turns/DoS without citing Table 10.1 or 10.2 — partial credit on Criterion 2. Apply 10-pt naming penalty to the post score before criterion-level grading.</div>
+        </div>
+        <div class="mon-row">
+          <div class="mon-day day-6">Day 6</div>
+          <div><strong>After Gate 2 closes at 11:59 PM:</strong> Export quiz statistics. M08-specific error patterns to watch: (a) Q4 — answers off by a factor of 7 (student inverted weekly turns and reported the result as "days" rather than "weeks"); (b) Q5 — turns 1.5–2× the expected value (used revenue instead of COGS); (c) Q7 — per-unit holding cost equals the annual HCP × unit cost without dividing by turns (applied annual HCP directly). These indicate formula confusion, not arithmetic errors — address in Module Wrap-Up announcement.</div>
+        </div>
+        <div class="mon-row">
+          <div class="mon-day day-post">Post-module</div>
+          <div><strong>Grade Discussion initial posts</strong> after following-module close. No peer reply required — grade initial posts only. Use M08_Discussion_Rubric.html. Recommend grading in criterion order (Criterion 4 first — most diagnostic) rather than post-by-post. Grade all Criterion 4 responses across all students before moving to Criterion 3. Estimated time: 2–4 min per student.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GRADING SUMMARY -->
+  <div>
+    <div class="sec-heading">Assessment Grading Summary</div>
+    <div class="card" style="margin-top:14px;">
+      <table class="seq-table">
+        <thead><tr><th>Assessment</th><th>Points</th><th>Autograded?</th><th>Est. Time / Student</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Gate 1</strong></td><td>0</td><td style="color:var(--green);font-weight:700;">Yes</td><td>0 min</td><td>Monitor completion rate only; do not grade</td></tr>
+          <tr><td><strong>Gate 2 — Q1, Q2, Q6, Q8 (fixed)</strong></td><td>50 pts combined</td><td style="color:var(--amber);font-weight:700;">Partial — text entry Qs need review</td><td>3–5 min</td><td>Q1 (WIP/FG classification) and Q8 (stockout severity) need rubric-based review</td></tr>
+          <tr><td><strong>Gate 2 — Q3, Q4, Q5, Q7 (versioned)</strong></td><td>52 pts combined</td><td style="color:var(--green);font-weight:700;">Yes — numeric entry</td><td>1–2 min</td><td>Verify version before grading; use Module_Config Step 3 table</td></tr>
+          <tr><td><strong>Discussion</strong></td><td>30</td><td style="color:var(--red);font-weight:700;">No — rubric</td><td>2–4 min</td><td>Initial post only; no reply; see M08_Discussion_Rubric.html</td></tr>
+          <tr><td><strong>Case Analysis</strong></td><td>100</td><td style="color:var(--red);font-weight:700;">No — rubric</td><td>8–12 min</td><td>Version-specific Parts 2–4; Part 5 is all-versions; see M08_Case_Rubric.html</td></tr>
+          <tr style="font-weight:700;background:var(--blue-xlt);"><td colspan="2"><strong>Module Total</strong></td><td></td><td></td><td style="font-weight:800;color:var(--navy);">230 points</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

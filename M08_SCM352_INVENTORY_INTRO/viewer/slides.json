@@ -1,0 +1,17 @@
+{
+  "title": "Introduction to Inventory Management",
+  "moduleLabel": "SCM 352 · M08 Lecture Slides",
+  "slides": [
+    "slides/s01-title.html",
+    "slides/s02-learning-objectives.html",
+    "slides/s03-gate-content.html",
+    "slides/s04-holding-cost-components.html",
+    "slides/s05-inventory-classification.html",
+    "slides/s06-safety-stock-logic.html",
+    "slides/s07-stockout-spectrum.html",
+    "slides/s08-three-calculation-errors.html",
+    "slides/s09-revenue-vs-cogs.html",
+    "slides/s10-benchmark-interpretation.html",
+    "slides/s11-holding-cost-cogs.html"
+  ]
+}

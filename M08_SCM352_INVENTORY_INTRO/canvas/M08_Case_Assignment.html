@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Case Analysis M08 — Riverside Central Supply — SCM 352</title>
+<style>
+:root{--navy:#1a3a5c;--blue:#2563a8;--blue-lt:#dbeafe;--blue-xlt:#eff6ff;--gold:#f59e0b;--gold-lt:#fffbeb;--gold-bdr:#fde68a;--green:#16a34a;--green-lt:#f0fdf4;--green-bdr:#bbf7d0;--red:#dc2626;--red-lt:#fef2f2;--red-bdr:#fecaca;--amber:#d97706;--amber-lt:#fffbeb;--amber-bdr:#fde68a;--purple:#7c3aed;--purple-lt:#faf5ff;--purple-bdr:#ddd6fe;--teal:#0891b2;--teal-lt:#f0fdfe;--teal-bdr:#a5f3fc;--gray-50:#f9fafb;--gray-100:#f3f4f6;--gray-200:#e5e7eb;--gray-300:#d1d5db;--gray-400:#9ca3af;--gray-600:#4b5563;--gray-700:#374151;--gray-800:#1f2937;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--gray-50);color:var(--gray-800);line-height:1.65;font-size:14px;}
+.pg-header{background:var(--navy);color:white;padding:24px 28px;}
+.pg-header-eyebrow{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
+.pg-header h1{font-size:20px;font-weight:700;letter-spacing:-.01em;margin-bottom:6px;}
+.pg-header p{font-size:13px;color:rgba(255,255,255,.68);}
+.meta-strip{background:white;border-bottom:2px solid var(--gray-200);display:flex;gap:0;overflow-x:auto;}
+.meta-cell{padding:11px 20px;border-right:1px solid var(--gray-200);flex-shrink:0;}
+.meta-cell:last-child{border-right:none;}
+.meta-lbl{font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--gray-400);margin-bottom:2px;}
+.meta-val{font-size:13px;font-weight:700;color:var(--navy);}
+.pg-body{max-width:860px;margin:0 auto;padding:28px 22px 60px;display:flex;flex-direction:column;gap:28px;}
+.version-banner{background:var(--navy);border-radius:12px;overflow:hidden;border:2px solid var(--navy);}
+.version-banner-hd{padding:13px 20px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,255,255,.15);}
+.version-banner-hd h2{font-size:14px;font-weight:700;color:white;}
+.version-banner-hd p{font-size:12px;color:rgba(255,255,255,.6);margin-top:2px;}
+.version-table{width:100%;border-collapse:collapse;font-size:13px;}
+.version-table th{padding:9px 16px;text-align:left;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:rgba(255,255,255,.55);border-bottom:1px solid rgba(255,255,255,.1);}
+.version-table td{padding:10px 16px;border-bottom:1px solid rgba(255,255,255,.07);color:rgba(255,255,255,.85);}
+.version-table tr:last-child td{border-bottom:none;}
+.ver-badge{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:6px;font-size:13px;font-weight:800;}
+.ver-a{background:#dcfce7;color:#166534;} .ver-b{background:#dbeafe;color:#1e40af;} .ver-c{background:#faf5ff;color:#6b21a8;} .ver-d{background:#fef9c3;color:#854d0e;}
+.alert{border-radius:10px;padding:13px 16px;font-size:13.5px;line-height:1.6;display:flex;gap:11px;align-items:flex-start;}
+.alert-icon{font-size:17px;flex-shrink:0;margin-top:1px;}
+.alert-body{flex:1;}
+.alert-body strong{display:block;margin-bottom:3px;}
+.alert-red{background:var(--red-lt);border:1.5px solid var(--red-bdr);}
+.alert-gold{background:var(--gold-lt);border:1.5px solid var(--gold-bdr);}
+.alert-blue{background:var(--blue-xlt);border:1.5px solid #bfdbfe;}
+.sec-div{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--gray-400);padding-bottom:10px;border-bottom:1px solid var(--gray-200);margin-bottom:-4px;}
+.section-card{background:white;border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;}
+.section-hd{padding:14px 20px;border-bottom:1px solid var(--gray-200);display:flex;align-items:center;gap:12px;}
+.part-badge{display:flex;align-items:center;justify-content:center;min-width:36px;height:36px;border-radius:8px;font-size:12px;font-weight:800;flex-shrink:0;}
+.section-hd-text h2{font-size:15px;font-weight:700;color:var(--navy);}
+.section-hd-text p{font-size:12px;color:var(--gray-600);margin-top:2px;}
+.pts-badge{margin-left:auto;flex-shrink:0;font-size:13px;font-weight:700;padding:4px 12px;border-radius:100px;}
+.section-bd{padding:20px;}
+.part1 .section-hd{background:var(--blue-xlt);} .part1 .part-badge{background:var(--blue);color:white;} .part1 .pts-badge{background:var(--blue-lt);color:var(--navy);}
+.part2 .section-hd{background:var(--green-lt);} .part2 .part-badge{background:var(--green);color:white;} .part2 .pts-badge{background:var(--green-bdr);color:var(--green);}
+.part3 .section-hd{background:var(--purple-lt);} .part3 .part-badge{background:var(--purple);color:white;} .part3 .pts-badge{background:var(--purple-bdr);color:var(--purple);}
+.part4 .section-hd{background:var(--teal-lt);} .part4 .part-badge{background:var(--teal);color:white;} .part4 .pts-badge{background:var(--teal-bdr);color:var(--teal);}
+.part5 .section-hd{background:var(--gold-lt);} .part5 .part-badge{background:var(--amber);color:white;} .part5 .pts-badge{background:var(--gold-bdr);color:#92400e;}
+.ver-tabs{border:1.5px solid var(--gray-200);border-radius:10px;overflow:hidden;margin:16px 0;}
+.ver-tab-hd{display:flex;border-bottom:1.5px solid var(--gray-200);background:var(--gray-50);}
+.ver-tab-btn{flex:1;padding:10px 0;border:none;background:none;cursor:pointer;font-size:13px;font-weight:700;color:var(--gray-400);border-right:1px solid var(--gray-200);transition:all 0.15s;display:flex;align-items:center;justify-content:center;gap:6px;}
+.ver-tab-btn:last-child{border-right:none;}
+.ver-tab-btn:hover{color:var(--navy);background:white;}
+.ver-tab-btn.active{color:var(--navy);background:white;box-shadow:inset 0 -2px 0 var(--blue);}
+.ver-tab-btn .vb{width:20px;height:20px;border-radius:4px;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;}
+.ver-tab-panel{display:none;padding:16px;}
+.ver-tab-panel.active{display:block;}
+.data-table{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px;}
+.data-table th{background:var(--navy);color:white;padding:9px 13px;text-align:left;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;}
+.data-table td{padding:9px 13px;border-bottom:1px solid var(--gray-100);}
+.data-table tr:last-child td{border-bottom:none;}
+.data-table td:first-child{font-weight:700;color:var(--gray-700);}
+.data-table td:last-child{font-weight:700;color:var(--navy);text-align:right;}
+.highlight-row td{background:var(--blue-xlt);}
+.q-block{margin-bottom:16px;padding:14px 16px;border:1.5px solid var(--gray-200);border-radius:8px;background:var(--gray-50);}
+.q-block:last-child{margin-bottom:0;}
+.q-num{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--gray-400);margin-bottom:5px;}
+.q-text{font-size:13.5px;line-height:1.65;color:var(--gray-700);}
+.q-text p+p{margin-top:8px;}
+.q-pts{display:inline-block;margin-top:7px;font-size:11px;font-weight:700;padding:2px 9px;border-radius:100px;background:var(--blue-lt);color:var(--navy);}
+.scenario-box{background:var(--gray-50);border:1.5px solid var(--gray-200);border-left:4px solid var(--teal);border-radius:0 8px 8px 0;padding:16px 18px;font-size:13.5px;line-height:1.75;color:var(--gray-700);margin:12px 0;}
+.incident-block{background:white;border:1.5px solid var(--gray-200);border-radius:8px;padding:14px 16px;margin-bottom:10px;font-size:13.5px;line-height:1.65;color:var(--gray-700);}
+.incident-block:last-child{margin-bottom:0;}
+.incident-label{font-size:11px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;margin-bottom:6px;}
+.inc-a .incident-label{color:var(--blue);}
+.inc-b .incident-label{color:var(--red);}
+.inc-a{border-left:4px solid var(--blue);}
+.inc-b{border-left:4px solid var(--red);}
+.submit-list{display:flex;flex-direction:column;gap:6px;}
+.submit-item{display:flex;gap:10px;align-items:flex-start;padding:9px 13px;background:var(--gray-50);border:1px solid var(--gray-200);border-radius:7px;font-size:13px;line-height:1.5;color:var(--gray-700);}
+.submit-item::before{content:'☐';font-size:16px;flex-shrink:0;color:var(--gray-400);margin-top:-1px;}
+.grade-table{width:100%;border-collapse:collapse;font-size:13px;}
+.grade-table th{background:var(--navy);color:white;padding:9px 13px;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;text-align:left;}
+.grade-table td{padding:9px 13px;border-bottom:1px solid var(--gray-100);}
+.grade-table tr:last-child td{border-bottom:none;}
+.grade-table tr.total td{font-weight:700;background:var(--blue-xlt);color:var(--navy);font-size:14px;}
+.pts-right{text-align:right;font-weight:700;font-size:15px;color:var(--navy);}
+</style>
+</head>
+<body>
+
+<div class="pg-header">
+  <div class="pg-header-eyebrow">SCM 352 · Module M08 · Case Analysis</div>
+  <h1>Riverside Health System Central Supply:<br>Inventory Performance and Cost Analysis</h1>
+  <p>Parameterized case — 4 versions (A–D) · 100 points · Due Day 6 at 11:59 PM</p>
+</div>
+
+<div class="meta-strip">
+  <div class="meta-cell"><div class="meta-lbl">Points</div><div class="meta-val">100</div></div>
+  <div class="meta-cell"><div class="meta-lbl">Due</div><div class="meta-val">Day 6 · 11:59 PM</div></div>
+  <div class="meta-cell"><div class="meta-lbl">Format</div><div class="meta-val">PDF or Word</div></div>
+  <div class="meta-cell"><div class="meta-lbl">Attempts</div><div class="meta-val">1</div></div>
+  <div class="meta-cell"><div class="meta-lbl">Allowed resources</div><div class="meta-val">Ch. 10 · Lectures · Apps · Slides</div></div>
+</div>
+
+<div class="pg-body">
+
+  <!-- VERSION ASSIGNMENT -->
+  <div class="version-banner">
+    <div class="version-banner-hd">
+      <div><h2>Find Your Assigned Version</h2><p>Use the last digit of your student ID. Write your version at the top of every page you submit.</p></div>
+    </div>
+    <table class="version-table">
+      <thead><tr><th>Last digit of student ID</th><th>Your version</th><th>Identifying parameter</th></tr></thead>
+      <tbody>
+        <tr><td>0 or 1</td><td><span class="ver-badge ver-a">A</span></td><td>Central Supply avg. inventory = $8.4M · Annual holding cost = 25%</td></tr>
+        <tr><td>2 or 3</td><td><span class="ver-badge ver-b">B</span></td><td>Central Supply avg. inventory = $6.2M · Annual holding cost = 22%</td></tr>
+        <tr><td>4 or 5</td><td><span class="ver-badge ver-c">C</span></td><td>Central Supply avg. inventory = $11.8M · Annual holding cost = 28%</td></tr>
+        <tr><td>6, 7, 8, or 9</td><td><span class="ver-badge ver-d">D</span></td><td>Central Supply avg. inventory = $5.0M · Annual holding cost = 20%</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- RULES -->
+  <div style="display:flex;flex-direction:column;gap:10px;">
+    <div class="alert alert-red">
+      <div class="alert-icon">🚫</div>
+      <div class="alert-body"><strong>Do not collaborate on version-specific calculations.</strong> Parts 2, 3, and 4 use data unique to your version. Submitting another version's numbers constitutes academic dishonesty and will result in a zero for the entire case.</div>
+    </div>
+    <div class="alert alert-gold">
+      <div class="alert-icon">📋</div>
+      <div class="alert-body"><strong>Show all calculation steps with labeled intermediate values.</strong> Answers without supporting work will not receive full credit, even if numerically correct. Label each step (e.g., "Step 1: Compute annual turns = R/I = $100.8M / $8.4M = 12.0 turns").</div>
+    </div>
+    <div class="alert alert-blue">
+      <div class="alert-icon">ℹ️</div>
+      <div class="alert-body">Parts 1 and 5 are the same for all versions. You may discuss the concepts, but your written responses must be your own. Part 4(e) contains a key insight — read the question carefully before computing.</div>
+    </div>
+  </div>
+
+  <!-- BACKGROUND -->
+  <div>
+    <div class="sec-div">Background — All Versions</div>
+    <div class="section-card" style="margin-top:14px;">
+      <div class="section-bd" style="font-size:13.5px;line-height:1.75;color:var(--gray-700);">
+        <p>This case extends the Riverside Health System scenario used in Modules 2 through 7. The focus now shifts to the Central Supply department, which manages the inventory of medical and surgical supplies distributed to nursing units throughout the hospital system. You will apply Chapter 10 concepts to measure Riverside's inventory performance, evaluate holding costs, and analyze the consequences of its inventory decisions.</p>
+        <p style="margin-top:12px;">Riverside Central Supply manages inventory of medical and surgical supplies across its regional hospital network. The department purchases supplies from distributors at cost and tracks inventory in cost dollars. Your version includes specific financial and operational data for Riverside's supply categories. You will analyze the Central Supply department as a process — supplies flow in from distributors, are held in inventory, and flow out to nursing units and surgical suites.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- PART 1 -->
+  <div>
+    <div class="sec-div">Part 1 — Inventory Classification and Reason Analysis &nbsp;·&nbsp; 15 points</div>
+    <div class="section-card part1" style="margin-top:14px;">
+      <div class="section-hd">
+        <div class="part-badge">1</div>
+        <div class="section-hd-text">
+          <h2>Inventory Classification and Reason Analysis</h2>
+          <p>Classify each item type; Part (d) uses your version's safety stock parameter</p>
+        </div>
+        <div class="pts-badge">15 pts</div>
+      </div>
+      <div class="section-bd">
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:16px;">Riverside Central Supply holds three distinct types of inventory items. For each item below, complete the requested analysis using Chapter 10 terminology.</p>
+
+        <div class="q-block">
+          <div class="q-num">Part 1a</div>
+          <div class="q-text">Sterile surgical gloves (in sealed boxes, ready for immediate use on nursing units): Classify this inventory type and explain the classification in one sentence.</div>
+          <span class="q-pts">3 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Part 1b</div>
+          <div class="q-text">Custom surgical trays being assembled by supply technicians (suture sets, drapes, and instruments are being packaged together into procedure-specific kits, but the kits are not yet sealed): Classify this inventory type and explain in one to two sentences why this classification differs from the gloves in Part 1a.</div>
+          <span class="q-pts">4 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Part 1c</div>
+          <div class="q-text">Rolls of IV tubing that arrived yesterday from the distributor but have not yet been issued to any unit: Classify this inventory type in one sentence.</div>
+          <span class="q-pts">3 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Part 1d · Version-specific</div>
+          <div class="q-text">
+            <p>Riverside's materials management director has implemented a policy of holding the number of days of safety stock shown in your version below for critical supplies.</p>
+          </div>
+
+          <div class="ver-tabs" style="margin-top:12px;">
+            <div class="ver-tab-hd">
+              <button class="ver-tab-btn" onclick="switchTab('p1d','a')" id="p1d-tab-a"><span class="vb ver-a">A</span> Version A</button>
+              <button class="ver-tab-btn" onclick="switchTab('p1d','b')" id="p1d-tab-b"><span class="vb ver-b">B</span> Version B</button>
+              <button class="ver-tab-btn" onclick="switchTab('p1d','c')" id="p1d-tab-c"><span class="vb ver-c">C</span> Version C</button>
+              <button class="ver-tab-btn" onclick="switchTab('p1d','d')" id="p1d-tab-d"><span class="vb ver-d">D</span> Version D</button>
+            </div>
+            <div class="ver-tab-panel" id="p1d-panel-a">
+              <table class="data-table"><tbody>
+                <tr><td>Your safety stock policy</td><td><strong>14 days</strong> of critical supply safety stock</td></tr>
+              </tbody></table>
+            </div>
+            <div class="ver-tab-panel" id="p1d-panel-b">
+              <table class="data-table"><tbody>
+                <tr><td>Your safety stock policy</td><td><strong>10 days</strong> of critical supply safety stock</td></tr>
+              </tbody></table>
+            </div>
+            <div class="ver-tab-panel" id="p1d-panel-c">
+              <table class="data-table"><tbody>
+                <tr><td>Your safety stock policy</td><td><strong>21 days</strong> of critical supply safety stock</td></tr>
+              </tbody></table>
+            </div>
+            <div class="ver-tab-panel" id="p1d-panel-d">
+              <table class="data-table"><tbody>
+                <tr><td>Your safety stock policy</td><td><strong>7 days</strong> of critical supply safety stock</td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <div class="q-text" style="margin-top:12px;">Using Chapter 10 terminology, which of the six reasons for holding inventory does this safety stock policy address? Explain in two sentences why this is the correct classification and what operational condition makes it necessary. (Use your version's specific number of days in your answer.)</div>
+          <span class="q-pts">5 pts</span>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- PART 2 -->
+  <div>
+    <div class="sec-div">Part 2 — Days-of-Supply and Inventory Turns &nbsp;·&nbsp; 25 points &nbsp;·&nbsp; Version-specific data</div>
+    <div class="section-card part2" style="margin-top:14px;">
+      <div class="section-hd">
+        <div class="part-badge">2</div>
+        <div class="section-hd-text">
+          <h2>Days-of-Supply and Inventory Turns</h2>
+          <p>Use your version's Central Supply operating data — show Little's Law formula and substituted values</p>
+        </div>
+        <div class="pts-badge">25 pts</div>
+      </div>
+      <div class="section-bd">
+
+        <div class="ver-tabs">
+          <div class="ver-tab-hd">
+            <button class="ver-tab-btn" onclick="switchTab('p2','a')" id="p2-tab-a"><span class="vb ver-a">A</span> Version A</button>
+            <button class="ver-tab-btn" onclick="switchTab('p2','b')" id="p2-tab-b"><span class="vb ver-b">B</span> Version B</button>
+            <button class="ver-tab-btn" onclick="switchTab('p2','c')" id="p2-tab-c"><span class="vb ver-c">C</span> Version C</button>
+            <button class="ver-tab-btn" onclick="switchTab('p2','d')" id="p2-tab-d"><span class="vb ver-d">D</span> Version D</button>
+          </div>
+          <div class="ver-tab-panel" id="p2-panel-a">
+            <p style="font-size:12px;color:var(--gray-600);margin-bottom:8px;">Riverside Central Supply — Annual Operating Data (Version A)</p>
+            <table class="data-table">
+              <thead><tr><th>Parameter</th><th style="text-align:right;">Your Version A Value</th></tr></thead>
+              <tbody>
+                <tr><td>Central Supply average inventory (I_CS)</td><td>$8.4 million</td></tr>
+                <tr><td>Annual cost-of-goods-issued (R_CS)</td><td>$100.8 million per year</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="ver-tab-panel" id="p2-panel-b">
+            <p style="font-size:12px;color:var(--gray-600);margin-bottom:8px;">Riverside Central Supply — Annual Operating Data (Version B)</p>
+            <table class="data-table">
+              <thead><tr><th>Parameter</th><th style="text-align:right;">Your Version B Value</th></tr></thead>
+              <tbody>
+                <tr><td>Central Supply average inventory (I_CS)</td><td>$6.2 million</td></tr>
+                <tr><td>Annual cost-of-goods-issued (R_CS)</td><td>$87.8 million per year</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="ver-tab-panel" id="p2-panel-c">
+            <p style="font-size:12px;color:var(--gray-600);margin-bottom:8px;">Riverside Central Supply — Annual Operating Data (Version C)</p>
+            <table class="data-table">
+              <thead><tr><th>Parameter</th><th style="text-align:right;">Your Version C Value</th></tr></thead>
+              <tbody>
+                <tr><td>Central Supply average inventory (I_CS)</td><td>$11.8 million</td></tr>
+                <tr><td>Annual cost-of-goods-issued (R_CS)</td><td>$118.0 million per year</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="ver-tab-panel" id="p2-panel-d">
+            <p style="font-size:12px;color:var(--gray-600);margin-bottom:8px;">Riverside Central Supply — Annual Operating Data (Version D)</p>
+            <table class="data-table">
+              <thead><tr><th>Parameter</th><th style="text-align:right;">Your Version D Value</th></tr></thead>
+              <tbody>
+                <tr><td>Central Supply average inventory (I_CS)</td><td>$5.0 million</td></tr>
+                <tr><td>Annual cost-of-goods-issued (R_CS)</td><td>$75.0 million per year</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="q-block">
+          <div class="q-num">Part 2a</div>
+          <div class="q-text">Using the Central Supply department's average inventory value and annual cost-of-goods-issued, compute annual inventory turns. Show Little's Law formula (Turns = R/I) and substitute your version's values.</div>
+          <span class="q-pts">6 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Part 2b</div>
+          <div class="q-text">Compute days-of-supply for Central Supply. Show the formula (DoS = I / (R/365)) and conversion steps.</div>
+          <span class="q-pts">5 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Part 2c</div>
+          <div class="q-text">Compute monthly inventory turns. Show your conversion from the annual turns computed in Part 2a.</div>
+          <span class="q-pts">4 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Part 2d</div>
+          <div class="q-text">Riverside's administration benchmarks Central Supply against the Drug and Proprietary Stores segment in Table 10.1 (5.26 annual turns / 69 days-of-supply). Is Central Supply's turns rate above, at, or below this benchmark? What does this mean operationally for Riverside's supply chain performance? (2–3 sentences.)</div>
+          <span class="q-pts">5 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Part 2e</div>
+          <div class="q-text">The Supply Chain Director proposes reducing average inventory by 20% while maintaining the same annual cost-of-goods-issued flow rate. Recompute inventory turns and days-of-supply after this reduction. Show all steps.</div>
+          <span class="q-pts">5 pts</span>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- PART 3 -->
+  <div>
+    <div class="sec-div">Part 3 — Financial Statement Analysis &nbsp;·&nbsp; 20 points &nbsp;·&nbsp; Version-specific data</div>
+    <div class="section-card part3" style="margin-top:14px;">
+      <div class="section-hd">
+        <div class="part-badge">3</div>
+        <div class="section-hd-text">
+          <h2>Financial Statement Analysis: Reading Riverside's Annual Report</h2>
+          <p>System-wide figures from the most recent audited annual report (simplified)</p>
+        </div>
+        <div class="pts-badge">20 pts</div>
+      </div>
+      <div class="section-bd">
+
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">The following data are excerpted from Riverside Health System's most recent audited annual report. <strong>Note: These are system-wide figures, not Central Supply only.</strong> Select your assigned version to see your data.</p>
+
+        <div class="ver-tabs">
+          <div class="ver-tab-hd">
+            <button class="ver-tab-btn" onclick="switchTab('p3','a')" id="p3-tab-a"><span class="vb ver-a">A</span> Version A</button>
+            <button class="ver-tab-btn" onclick="switchTab('p3','b')" id="p3-tab-b"><span class="vb ver-b">B</span> Version B</button>
+            <button class="ver-tab-btn" onclick="switchTab('p3','c')" id="p3-tab-c"><span class="vb ver-c">C</span> Version C</button>
+            <button class="ver-tab-btn" onclick="switchTab('p3','d')" id="p3-tab-d"><span class="vb ver-d">D</span> Version D</button>
+          </div>
+          <div class="ver-tab-panel" id="p3-panel-a">
+            <p style="font-size:12px;color:var(--gray-600);margin-bottom:8px;">Riverside Health System — Annual Report Excerpt (Version A)</p>
+            <table class="data-table">
+              <thead><tr><th>Line Item</th><th style="text-align:right;">Amount ($ millions)</th></tr></thead>
+              <tbody>
+                <tr><td>Net patient service revenue</td><td>$168.0M</td></tr>
+                <tr><td>Cost of supplies and services</td><td>$100.8M</td></tr>
+                <tr><td>Net income</td><td>$8.4M</td></tr>
+                <tr class="highlight-row"><td>Merchandise inventories (balance sheet)</td><td>$8.4M</td></tr>
+              </tbody>
+            </table>
+            <p style="font-size:12px;color:var(--amber);margin-top:8px;">A board member reviewing this report computed turns as $168.0M ÷ $8.4M = <strong>20.0×</strong> and called it "excellent performance." You will evaluate this claim in Part 3d.</p>
+          </div>
+          <div class="ver-tab-panel" id="p3-panel-b">
+            <p style="font-size:12px;color:var(--gray-600);margin-bottom:8px;">Riverside Health System — Annual Report Excerpt (Version B)</p>
+            <table class="data-table">
+              <thead><tr><th>Line Item</th><th style="text-align:right;">Amount ($ millions)</th></tr></thead>
+              <tbody>
+                <tr><td>Net patient service revenue</td><td>$131.2M</td></tr>
+                <tr><td>Cost of supplies and services</td><td>$87.8M</td></tr>
+                <tr><td>Net income</td><td>$7.0M</td></tr>
+                <tr class="highlight-row"><td>Merchandise inventories (balance sheet)</td><td>$6.2M</td></tr>
+              </tbody>
+            </table>
+            <p style="font-size:12px;color:var(--amber);margin-top:8px;">A board member reviewing this report computed turns as $131.2M ÷ $6.2M = <strong>21.2×</strong> and called it "excellent performance." You will evaluate this claim in Part 3d.</p>
+          </div>
+          <div class="ver-tab-panel" id="p3-panel-c">
+            <p style="font-size:12px;color:var(--gray-600);margin-bottom:8px;">Riverside Health System — Annual Report Excerpt (Version C)</p>
+            <table class="data-table">
+              <thead><tr><th>Line Item</th><th style="text-align:right;">Amount ($ millions)</th></tr></thead>
+              <tbody>
+                <tr><td>Net patient service revenue</td><td>$200.6M</td></tr>
+                <tr><td>Cost of supplies and services</td><td>$118.0M</td></tr>
+                <tr><td>Net income</td><td>$10.6M</td></tr>
+                <tr class="highlight-row"><td>Merchandise inventories (balance sheet)</td><td>$11.8M</td></tr>
+              </tbody>
+            </table>
+            <p style="font-size:12px;color:var(--amber);margin-top:8px;">A board member reviewing this report computed turns as $200.6M ÷ $11.8M = <strong>17.0×</strong> and called it "excellent performance." You will evaluate this claim in Part 3d.</p>
+          </div>
+          <div class="ver-tab-panel" id="p3-panel-d">
+            <p style="font-size:12px;color:var(--gray-600);margin-bottom:8px;">Riverside Health System — Annual Report Excerpt (Version D)</p>
+            <table class="data-table">
+              <thead><tr><th>Line Item</th><th style="text-align:right;">Amount ($ millions)</th></tr></thead>
+              <tbody>
+                <tr><td>Net patient service revenue</td><td>$120.0M</td></tr>
+                <tr><td>Cost of supplies and services</td><td>$75.0M</td></tr>
+                <tr><td>Net income</td><td>$5.0M</td></tr>
+                <tr class="highlight-row"><td>Merchandise inventories (balance sheet)</td><td>$5.0M</td></tr>
+              </tbody>
+            </table>
+            <p style="font-size:12px;color:var(--amber);margin-top:8px;">A board member reviewing this report computed turns as $120.0M ÷ $5.0M = <strong>24.0×</strong> and called it "excellent performance." You will evaluate this claim in Part 3d.</p>
+          </div>
+        </div>
+
+        <div class="q-block">
+          <div class="q-num">Part 3a</div>
+          <div class="q-text">Which line item from the table should be used as the flow rate (R) for computing inventory turns? Explain in one sentence why you selected that line item and not the others.</div>
+          <span class="q-pts">4 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Part 3b</div>
+          <div class="q-text">Compute Riverside Health System's annual inventory turns using the correct flow rate you identified in Part 3a. Show your formula and substituted values.</div>
+          <span class="q-pts">5 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Part 3c</div>
+          <div class="q-text">Compute days-of-supply for Riverside Health System. Show the conversion formula and all steps.</div>
+          <span class="q-pts">5 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Part 3d</div>
+          <div class="q-text">The board member's calculation (shown in your version's data panel above) uses a different number than what you computed in Part 3b. Identify the specific error in the board member's approach — what did they do wrong? Restate the correct turns figure from Part 3b. What is the ratio of the board member's (wrong) answer to your correct answer, and what does this ratio represent in terms of the company's financial structure? (3–4 sentences.)</div>
+          <span class="q-pts">6 pts</span>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- PART 4 -->
+  <div>
+    <div class="sec-div">Part 4 — Holding Cost Analysis &nbsp;·&nbsp; 25 points &nbsp;·&nbsp; Version-specific data</div>
+    <div class="section-card part4" style="margin-top:14px;">
+      <div class="section-hd">
+        <div class="part-badge">4</div>
+        <div class="section-hd-text">
+          <h2>Holding Cost Analysis</h2>
+          <p>Show formula and each step — read Part 4e carefully before computing</p>
+        </div>
+        <div class="pts-badge">25 pts</div>
+      </div>
+      <div class="section-bd">
+
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">Riverside Central Supply assigns an annual holding cost percentage to its inventory. This percentage reflects four components. Select your version to see your specific parameters.</p>
+
+        <div class="ver-tabs">
+          <div class="ver-tab-hd">
+            <button class="ver-tab-btn" onclick="switchTab('p4','a')" id="p4-tab-a"><span class="vb ver-a">A</span> Version A</button>
+            <button class="ver-tab-btn" onclick="switchTab('p4','b')" id="p4-tab-b"><span class="vb ver-b">B</span> Version B</button>
+            <button class="ver-tab-btn" onclick="switchTab('p4','c')" id="p4-tab-c"><span class="vb ver-c">C</span> Version C</button>
+            <button class="ver-tab-btn" onclick="switchTab('p4','d')" id="p4-tab-d"><span class="vb ver-d">D</span> Version D</button>
+          </div>
+          <div class="ver-tab-panel" id="p4-panel-a">
+            <p style="font-size:12px;color:var(--gray-600);margin-bottom:8px;">Holding Cost Parameters — Version A</p>
+            <table class="data-table">
+              <thead><tr><th>Parameter</th><th style="text-align:right;">Your Value</th></tr></thead>
+              <tbody>
+                <tr><td>Capital opportunity cost component</td><td>8% per year</td></tr>
+                <tr><td>Warehouse and refrigeration storage costs</td><td>7% per year</td></tr>
+                <tr><td>Regulatory compliance / expiration-risk (obsolescence)</td><td>8% per year</td></tr>
+                <tr><td>Spoilage and shrinkage</td><td>2% per year</td></tr>
+                <tr class="highlight-row"><td><strong>Annual holding cost % (HOLD_PCT)</strong></td><td><strong>25% per year</strong></td></tr>
+                <tr><td>IV antibiotic unit purchase cost</td><td>$85 per unit</td></tr>
+                <tr><td>Central Supply average inventory (I_CS)</td><td>$8.4 million</td></tr>
+                <tr><td>Target improved annual turns (NEW_TURNS)</td><td>15.0 turns per year</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="ver-tab-panel" id="p4-panel-b">
+            <p style="font-size:12px;color:var(--gray-600);margin-bottom:8px;">Holding Cost Parameters — Version B</p>
+            <table class="data-table">
+              <thead><tr><th>Parameter</th><th style="text-align:right;">Your Value</th></tr></thead>
+              <tbody>
+                <tr><td>Capital opportunity cost component</td><td>8% per year</td></tr>
+                <tr><td>Warehouse and refrigeration storage costs</td><td>7% per year</td></tr>
+                <tr><td>Regulatory compliance / expiration-risk (obsolescence)</td><td>5% per year</td></tr>
+                <tr><td>Spoilage and shrinkage</td><td>2% per year</td></tr>
+                <tr class="highlight-row"><td><strong>Annual holding cost % (HOLD_PCT)</strong></td><td><strong>22% per year</strong></td></tr>
+                <tr><td>IV antibiotic unit purchase cost</td><td>$120 per unit</td></tr>
+                <tr><td>Central Supply average inventory (I_CS)</td><td>$6.2 million</td></tr>
+                <tr><td>Target improved annual turns (NEW_TURNS)</td><td>18.0 turns per year</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="ver-tab-panel" id="p4-panel-c">
+            <p style="font-size:12px;color:var(--gray-600);margin-bottom:8px;">Holding Cost Parameters — Version C</p>
+            <table class="data-table">
+              <thead><tr><th>Parameter</th><th style="text-align:right;">Your Value</th></tr></thead>
+              <tbody>
+                <tr><td>Capital opportunity cost component</td><td>8% per year</td></tr>
+                <tr><td>Warehouse and refrigeration storage costs</td><td>7% per year</td></tr>
+                <tr><td>Regulatory compliance / expiration-risk (obsolescence)</td><td>11% per year</td></tr>
+                <tr><td>Spoilage and shrinkage</td><td>2% per year</td></tr>
+                <tr class="highlight-row"><td><strong>Annual holding cost % (HOLD_PCT)</strong></td><td><strong>28% per year</strong></td></tr>
+                <tr><td>IV antibiotic unit purchase cost</td><td>$60 per unit</td></tr>
+                <tr><td>Central Supply average inventory (I_CS)</td><td>$11.8 million</td></tr>
+                <tr><td>Target improved annual turns (NEW_TURNS)</td><td>13.0 turns per year</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="ver-tab-panel" id="p4-panel-d">
+            <p style="font-size:12px;color:var(--gray-600);margin-bottom:8px;">Holding Cost Parameters — Version D</p>
+            <table class="data-table">
+              <thead><tr><th>Parameter</th><th style="text-align:right;">Your Value</th></tr></thead>
+              <tbody>
+                <tr><td>Capital opportunity cost component</td><td>8% per year</td></tr>
+                <tr><td>Warehouse and refrigeration storage costs</td><td>7% per year</td></tr>
+                <tr><td>Regulatory compliance / expiration-risk (obsolescence)</td><td>3% per year</td></tr>
+                <tr><td>Spoilage and shrinkage</td><td>2% per year</td></tr>
+                <tr class="highlight-row"><td><strong>Annual holding cost % (HOLD_PCT)</strong></td><td><strong>20% per year</strong></td></tr>
+                <tr><td>IV antibiotic unit purchase cost</td><td>$150 per unit</td></tr>
+                <tr><td>Central Supply average inventory (I_CS)</td><td>$5.0 million</td></tr>
+                <tr><td>Target improved annual turns (NEW_TURNS)</td><td>20.0 turns per year</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="q-block">
+          <div class="q-num">Part 4a</div>
+          <div class="q-text">Confirm that your version's annual holding cost percentage adds up correctly. List all four components from your version's data table and sum them.</div>
+          <span class="q-pts">3 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Part 4b</div>
+          <div class="q-text">Riverside stocks a critical IV antibiotic at the purchase cost shown in your version's data table. Using your annual holding cost percentage, compute the cost to hold one unit of this antibiotic in inventory for a full year. Show: Annual HC per unit = Unit cost × HOLD_PCT.</div>
+          <span class="q-pts">4 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Part 4c</div>
+          <div class="q-text">Using the annual inventory turns you computed in Part 2a, compute the actual holding cost per unit of the IV antibiotic. Show both steps: (1) Actual HCP% = Annual HOLD_PCT ÷ Annual turns; (2) Actual HC per unit = Unit cost × Actual HCP%.</div>
+          <span class="q-pts">7 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Part 4d</div>
+          <div class="q-text">Riverside's administration is considering a policy change that would increase Central Supply's annual inventory turns to the NEW_TURNS value shown in your version's data table (by improving supply delivery frequency). Compute the new actual holding cost per unit of the IV antibiotic at the improved turns rate. By how much (in dollars per unit) does per-unit holding cost decrease?</div>
+          <span class="q-pts">6 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Part 4e — Read carefully</div>
+          <div class="q-text">
+            <p>Compute the total annual inventory holding cost in dollars across all of Central Supply's inventory at the <em>current</em> turns rate. Show: Total HC = I_CS × HOLD_PCT.</p>
+            <p style="margin-top:8px;">Now: if the NEW_TURNS target is achieved by reducing average inventory (while keeping the same annual cost-of-goods-issued flow rate), what would the new average inventory level need to be? Compute the new average inventory (I_new = R_CS ÷ NEW_TURNS), then compute total holding cost at that new inventory level. What is the annual dollar savings in total holding cost?</p>
+            <p style="margin-top:8px;">In one sentence, explain why the per-unit holding cost decreases when turns increase, but total holding cost only decreases when average inventory actually decreases.</p>
+          </div>
+          <span class="q-pts">5 pts</span>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- PART 5 -->
+  <div>
+    <div class="sec-div">Part 5 — Stockout Analysis and Inventory Policy Recommendation &nbsp;·&nbsp; 15 points &nbsp;·&nbsp; Same for all versions</div>
+    <div class="section-card part5" style="margin-top:14px;">
+      <div class="section-hd">
+        <div class="part-badge">5</div>
+        <div class="section-hd-text">
+          <h2>Stockout Analysis and Inventory Policy Recommendation</h2>
+          <p>Apply Chapter 10 Table 10.3 framework — same incidents for all versions</p>
+        </div>
+        <div class="pts-badge">15 pts</div>
+      </div>
+      <div class="section-bd">
+
+        <p style="font-size:13px;font-weight:600;color:var(--gray-700);margin-bottom:10px;">Riverside Central Supply recently experienced two stockout incidents during a 30-day period. Read both incidents carefully before answering.</p>
+
+        <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px;">
+          <div class="incident-block inc-a">
+            <div class="incident-label">Stockout Incident A — Standard Surgical Gloves (Size Medium)</div>
+            The department ran out of standard surgical gloves (size medium). Nursing units were notified and directed to use large gloves temporarily. No procedures were delayed. All units reported minor inconvenience but no clinical impact. The standard gloves were restocked within 48 hours.
+          </div>
+          <div class="incident-block inc-b">
+            <div class="incident-label">Stockout Incident B — Specialized Cardiac Pacing Catheter</div>
+            The department ran out of a specialized cardiac pacing catheter used in emergency cardiac procedures. One emergency procedure was delayed by 6 hours while the catheter was sourced from a competing hospital network. The patient experienced no permanent harm, but the incident was logged as a potential quality-of-care event. The clinical department director has formally complained and is evaluating alternative suppliers.
+          </div>
+        </div>
+
+        <div class="q-block">
+          <div class="q-num">Part 5a</div>
+          <div class="q-text">Using Chapter 10's Table 10.3 framework, classify each stockout incident by the customer response type it most closely represents. Name the Table 10.3 category explicitly for each incident. (One sentence per incident.)</div>
+          <span class="q-pts">4 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Part 5b</div>
+          <div class="q-text">For Stockout Incident B, estimate the relative severity of cost to Riverside. Your estimate should address: (i) the immediate operational cost of sourcing the catheter from a competing hospital; (ii) the reputational and relationship cost with the cardiac department; (iii) the risk that the cardiac department permanently switches to an alternative supplier for this category of supplies. (3–4 sentences.)</div>
+          <span class="q-pts">6 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Part 5c</div>
+          <div class="q-text">Based on your analysis of both incidents, write a two-to-three sentence recommendation to Riverside's Supply Chain Director about how inventory policy should differ between commodity supplies (like standard surgical gloves) and critical, specialized supplies (like cardiac catheters). Reference the Chapter 10 stockout cost framework explicitly in your recommendation.</div>
+          <span class="q-pts">5 pts</span>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- SUBMISSION CHECKLIST -->
+  <div>
+    <div class="sec-div">Submission Requirements</div>
+    <div class="section-card" style="margin-top:14px;">
+      <div class="section-hd" style="background:var(--gray-50);padding:13px 20px;border-bottom:1px solid var(--gray-200);">
+        <h2 style="font-size:14px;font-weight:700;color:var(--navy);">Before you submit, verify the following</h2>
+      </div>
+      <div class="section-bd">
+        <div class="submit-list">
+          <div class="submit-item">Your file is saved as <strong>PDF or Word (.docx)</strong>.</div>
+          <div class="submit-item">Your <strong>assigned version (A, B, C, or D)</strong> is written at the top of your document — first line, clearly labeled.</div>
+          <div class="submit-item">Part 1: All four sub-parts include a <strong>classification AND an explanation sentence</strong>. Bare classifications without explanation receive partial credit.</div>
+          <div class="submit-item">Part 2: All calculations show <strong>formula + substituted values + result</strong>. Part 2d includes a written interpretation comparing to the benchmark.</div>
+          <div class="submit-item">Part 3: Part 3a clearly identifies which line item is the correct flow rate <strong>before</strong> computing in 3b. Part 3d addresses the board member's specific wrong calculation from your version's data panel.</div>
+          <div class="submit-item">Part 4a explicitly lists all four components and shows they sum to your version's HOLD_PCT. Part 4e addresses both the per-unit question and the total holding cost question.</div>
+          <div class="submit-item">Part 5c references <strong>Table 10.3 explicitly</strong> — not just "stockout costs" in general.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GRADING SUMMARY -->
+  <div class="section-card">
+    <div style="background:var(--blue-xlt);padding:13px 20px;border-bottom:1px solid var(--gray-200);">
+      <h2 style="font-size:14px;font-weight:700;color:var(--navy);">Grading Summary · 100 points total</h2>
+    </div>
+    <table class="grade-table">
+      <thead><tr><th>Part</th><th>Content</th><th style="text-align:right;">Points</th><th>Primary LO</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Part 1</strong></td><td>Inventory Classification and Reason Analysis</td><td class="pts-right">15</td><td>LO8-1, LO8-2</td></tr>
+        <tr><td><strong>Part 2</strong></td><td>Days-of-Supply and Inventory Turns (version-specific)</td><td class="pts-right">25</td><td>LO8-3</td></tr>
+        <tr><td><strong>Part 3</strong></td><td>Financial Statement Analysis: COGS vs. Revenue (version-specific)</td><td class="pts-right">20</td><td>LO8-4</td></tr>
+        <tr><td><strong>Part 4</strong></td><td>Holding Cost Analysis (version-specific)</td><td class="pts-right">25</td><td>LO8-5</td></tr>
+        <tr><td><strong>Part 5</strong></td><td>Stockout Analysis and Inventory Policy Recommendation (all versions)</td><td class="pts-right">15</td><td>LO8-6</td></tr>
+        <tr class="total"><td colspan="2"><strong>Total</strong></td><td class="pts-right">100</td><td></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<script>
+function switchTab(part, ver) {
+  ['a','b','c','d'].forEach(v => {
+    const btn   = document.getElementById(part + '-tab-' + v);
+    const panel = document.getElementById(part + '-panel-' + v);
+    if (btn)   btn.classList.toggle('active', v === ver);
+    if (panel) panel.classList.toggle('active', v === ver);
+  });
+}
+</script>
+</body>
+</html>

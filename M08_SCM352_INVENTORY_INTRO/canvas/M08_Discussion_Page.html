@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Discussion: Inventory Everywhere — SCM 352 M08</title>
+<style>
+:root {
+  --navy:#1a3a5c;--blue:#2563a8;--blue-lt:#dbeafe;--blue-xlt:#eff6ff;
+  --gold:#f59e0b;--gold-lt:#fffbeb;--gold-bdr:#fde68a;
+  --green:#16a34a;--green-lt:#f0fdf4;--green-bdr:#bbf7d0;
+  --red:#dc2626;--red-lt:#fef2f2;--red-bdr:#fecaca;
+  --purple:#7c3aed;--purple-lt:#faf5ff;--purple-bdr:#ddd6fe;
+  --teal:#0891b2;--teal-lt:#f0fdfe;--teal-bdr:#a5f3fc;
+  --gray-50:#f9fafb;--gray-100:#f3f4f6;--gray-200:#e5e7eb;
+  --gray-400:#9ca3af;--gray-600:#4b5563;--gray-700:#374151;--gray-800:#1f2937;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--gray-50);color:var(--gray-800);line-height:1.6;}
+.page-header{background:var(--navy);color:white;padding:20px 28px;display:flex;align-items:flex-start;gap:16px;}
+.header-badge{background:var(--gold);color:var(--navy);font-weight:700;font-size:11px;padding:3px 9px;border-radius:4px;letter-spacing:.05em;text-transform:uppercase;white-space:nowrap;flex-shrink:0;}
+.header-text h1{font-size:20px;font-weight:700;margin-bottom:4px;}
+.header-text p{font-size:13px;color:rgba(255,255,255,.7);}
+.meta-strip{display:flex;gap:0;flex-wrap:wrap;border-bottom:2px solid var(--gray-200);background:white;}
+.meta-pill{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;padding:9px 16px;border-right:1px solid var(--gray-200);color:var(--gray-700);}
+.pip{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.pg-body{max-width:860px;margin:0 auto;padding:28px 24px 48px;display:flex;flex-direction:column;gap:24px;}
+.sec-div{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--gray-400);padding-bottom:10px;border-bottom:1px solid var(--gray-200);margin-bottom:-4px;}
+.card{background:white;border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;}
+.card-hd{padding:14px 20px;border-bottom:1px solid var(--gray-200);display:flex;align-items:center;gap:10px;}
+.card-hd h2{font-size:15px;font-weight:700;color:var(--navy);}
+.card-hd p{font-size:12px;color:var(--gray-600);margin-top:2px;}
+.card-bd{padding:20px;font-size:14px;line-height:1.7;color:var(--gray-700);}
+.card-bd p+p{margin-top:10px;}
+.alert{border-radius:10px;padding:13px 16px;font-size:13.5px;line-height:1.6;display:flex;gap:11px;align-items:flex-start;}
+.alert-icon{font-size:17px;flex-shrink:0;margin-top:1px;}
+.alert-body{flex:1;}
+.alert-body strong{display:block;margin-bottom:3px;}
+.alert-red{background:var(--red-lt);border:1.5px solid var(--red-bdr);}
+.alert-gold{background:var(--gold-lt);border:1.5px solid var(--gold-bdr);}
+.alert-blue{background:var(--blue-xlt);border:1.5px solid #bfdbfe;}
+.part{border:1.5px solid var(--gray-200);border-radius:10px;overflow:hidden;margin-bottom:14px;}
+.part:last-child{margin-bottom:0;}
+.part-header{padding:12px 16px;display:flex;align-items:center;gap:12px;border-bottom:1.5px solid var(--gray-200);}
+.part-num{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;flex-shrink:0;color:white;}
+.part-title{flex:1;font-size:14px;font-weight:700;color:var(--gray-800);}
+.part-pts{font-size:12px;font-weight:700;padding:3px 9px;border-radius:100px;white-space:nowrap;}
+.part-body{padding:14px 16px;font-size:13.5px;line-height:1.65;color:var(--gray-700);}
+.part-body p+p{margin-top:8px;}
+.example-note{font-size:12px;color:var(--gray-600);margin-top:10px;padding:8px 12px;background:var(--gray-50);border-radius:6px;border-left:3px solid var(--gray-300);}
+/* Part colors */
+.part-1 .part-header{background:var(--blue-xlt);border-color:#bfdbfe;} .part-1 .part-num{background:var(--blue);} .part-1 .part-pts{background:var(--blue-lt);color:var(--navy);}
+.part-2 .part-header{background:var(--purple-lt);border-color:var(--purple-bdr);} .part-2 .part-num{background:var(--purple);} .part-2 .part-pts{background:var(--purple-bdr);color:var(--purple);}
+.part-3 .part-header{background:var(--teal-lt);border-color:var(--teal-bdr);} .part-3 .part-num{background:var(--teal);} .part-3 .part-pts{background:var(--teal-bdr);color:var(--teal);}
+.part-4 .part-header{background:var(--green-lt);border-color:var(--green-bdr);} .part-4 .part-num{background:var(--green);} .part-4 .part-pts{background:var(--green-bdr);color:var(--green);}
+.pts-table{width:100%;border-collapse:collapse;font-size:13.5px;}
+.pts-table th{background:var(--navy);color:white;padding:9px 14px;text-align:left;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;}
+.pts-table td{padding:9px 14px;border-bottom:1px solid var(--gray-100);vertical-align:top;}
+.pts-table tr:last-child td{border-bottom:none;}
+.pts-table tr.total-row td{font-weight:700;background:var(--gray-50);font-size:14px;border-top:2px solid var(--gray-200);}
+.pts-num{font-weight:700;font-size:15px;color:var(--navy);text-align:right;white-space:nowrap;}
+.tip-list{list-style:none;padding:0;display:flex;flex-direction:column;gap:8px;}
+.tip-list li{display:flex;gap:10px;font-size:13.5px;line-height:1.55;color:var(--gray-700);}
+.tip-list li::before{content:'→';color:var(--gold);font-weight:700;flex-shrink:0;margin-top:1px;}
+.prohibited-list{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;}
+.prohibited-tag{font-size:12px;font-weight:600;padding:3px 10px;border-radius:100px;background:var(--red-lt);color:var(--red);border:1px solid var(--red-bdr);}
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div class="header-badge">SCM 352 · M08</div>
+  <div class="header-text">
+    <h1>Discussion: Inventory Everywhere</h1>
+    <p>Module M08 Discussion · 30 points · Item 9 of 12 · Initial post only — no reply required</p>
+  </div>
+</div>
+
+<div class="meta-strip">
+  <div class="meta-pill"><div class="pip" style="background:var(--blue)"></div> Initial post due Day 5 · 11:59 PM</div>
+  <div class="meta-pill"><div class="pip" style="background:var(--green)"></div> 30 points total</div>
+  <div class="meta-pill"><div class="pip" style="background:var(--gold)"></div> 30–40 minutes</div>
+  <div class="meta-pill"><div class="pip" style="background:var(--teal)"></div> LO8-1 · LO8-2 · LO8-3 · LO8-5 · LO8-6 · LO8-7</div>
+</div>
+
+<div class="pg-body">
+
+  <div class="card">
+    <div class="card-hd" style="background:var(--blue-xlt);">
+      <div><h2>What You Are Doing</h2><p>Apply Chapter 10 concepts to a real inventory system you have observed directly this week</p></div>
+    </div>
+    <div class="card-bd">
+      <p>Identify an organization — an employer, a business you interact with as a customer, or one you have read about this week — that holds physical inventory as a regular part of its operations. Your initial post applies four Chapter 10 analytical frameworks to that organization: inventory classification, turns/days-of-supply estimation, holding cost structure, and stockout severity.</p>
+      <p>This is not a research assignment. You do not need exact data. The goal is to apply the Chapter 10 framework with precision and specificity — generic statements about "holding inventory to meet demand" do not receive full credit regardless of how accurate they are.</p>
+    </div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:12px;">
+    <div class="alert alert-red">
+      <div class="alert-icon">🚫</div>
+      <div class="alert-body">
+        <strong>Do not name your business in your initial post.</strong>
+        Your post must be written so that classmates cannot identify the business from the name alone. Describe the industry, the product type, and the operational context. If your post names the business and a classmate correctly identifies it in a reply, a 10-point penalty applies to your initial post score. Exception: if the business is a large publicly traded chain (e.g., "a major pharmacy chain"), you may use the industry descriptor without naming the specific company.
+      </div>
+    </div>
+    <div class="alert alert-red">
+      <div class="alert-icon">🚫</div>
+      <div class="alert-body">
+        <strong>Do not use businesses from the textbook, slides, narration, or the prohibited list:</strong>
+        <div class="prohibited-list">
+          <span class="prohibited-tag">Monitor Sugar</span>
+          <span class="prohibited-tag">Kroger</span>
+          <span class="prohibited-tag">Macy's</span>
+          <span class="prohibited-tag">Costco</span>
+          <span class="prohibited-tag">Walmart</span>
+          <span class="prohibited-tag">Target</span>
+          <span class="prohibited-tag">Home Depot</span>
+          <span class="prohibited-tag">Any textbook example</span>
+          <span class="prohibited-tag">Any module lecture example</span>
+        </div>
+      </div>
+    </div>
+    <div class="alert alert-gold">
+      <div class="alert-icon">📅</div>
+      <div class="alert-body">
+        <strong>The business must be one you interacted with or observed this week.</strong>
+        Your post should reflect a direct observation — a store you visited, a supplier your employer uses, a news story you read this week, or an organization you work for. Posts that describe organizations without any connection to a current-week interaction will not receive full credit for Part 4 (Stockout Severity).
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="sec-div">Initial Post &nbsp;·&nbsp; Due Day 5 &nbsp;·&nbsp; 30 points · No reply required</div>
+    <div class="card" style="margin-top:16px;">
+      <div class="card-bd" style="padding:16px;">
+
+        <div class="part part-1">
+          <div class="part-header">
+            <div class="part-num">1</div>
+            <div class="part-title">Inventory Type and Reason</div>
+            <div class="part-pts">8 pts</div>
+          </div>
+          <div class="part-body">
+            <p>Describe the inventory this organization holds. Classify it as raw material, work-in-process (WIP), or finished goods — or a combination, if appropriate. Then identify the <strong>primary reason</strong> this inventory exists, choosing from the six reasons covered in Chapter 10 and the lecture: flow time, seasonality, batching, buffers, uncertain demand, or pricing. Explain your choice in two to three sentences.</p>
+            <p>If the organization holds more than one type of inventory, focus on the most operationally significant type and explain why it is the dominant category.</p>
+            <div class="example-note"><strong>Example of insufficient answer:</strong> "This grocery store holds finished goods inventory to meet customer demand." No framework application — receives minimal credit. <strong>Stronger:</strong> "The store's meat case holds finished goods inventory primarily due to uncertain demand — daily customer traffic is unpredictable and stockouts of fresh protein items face the highest severity of customer response."</div>
+          </div>
+        </div>
+
+        <div class="part part-2">
+          <div class="part-header">
+            <div class="part-num">2</div>
+            <div class="part-title">Measurement Estimate</div>
+            <div class="part-pts">8 pts</div>
+          </div>
+          <div class="part-body">
+            <p>Estimate either the <strong>days-of-supply</strong> or the <strong>inventory turns</strong> for your chosen organization. You do not need exact data — use publicly available information, industry benchmarks from Table 10.1 or Table 10.2 in Chapter 10, or your own reasoning from the organization's operational context.</p>
+            <p>State your estimate, explain how you arrived at it, and note at least one factor that would change it (higher or lower). If your estimate is based on a Chapter 10 table, cite the table explicitly (e.g., "Table 10.1 shows food stores average 10.78 turns/34 days; I estimate this organization is slightly above that because..."). If it is based on operational reasoning, show the logic.</p>
+            <div class="example-note"><strong>Receiving partial credit:</strong> "This pharmacy probably turns inventory about 5–6 times per year." That's a number without sourcing. Full credit requires: source (Table 10.1 drug stores = 5.26 turns), adjustment logic (why above/below), and a factor that would change it.</div>
+          </div>
+        </div>
+
+        <div class="part part-3">
+          <div class="part-header">
+            <div class="part-num">3</div>
+            <div class="part-title">Holding Cost Reflection</div>
+            <div class="part-pts">7 pts</div>
+          </div>
+          <div class="part-body">
+            <p>Identify which of the <strong>four holding cost components</strong> — opportunity cost of capital, storage cost (warehouse space, insurance), obsolescence/markdown risk, or spoilage/shrinkage — is likely the <strong>most significant</strong> for this organization's inventory.</p>
+            <p>Explain why in two sentences. Be specific to the product type, the industry, and the operational characteristics of the inventory you described in Part 1. A generic answer (e.g., "opportunity cost is always significant") will not receive full credit — the justification must be connected to this specific organization's situation.</p>
+            <div class="example-note"><strong>Example of full-credit answer:</strong> "For this specialty electronics retailer, obsolescence is the dominant holding cost component — product cycles are measured in months, and last-generation models must be deeply marked down when new versions release. Storage cost and spoilage are negligible for electronics."</div>
+          </div>
+        </div>
+
+        <div class="part part-4">
+          <div class="part-header">
+            <div class="part-num">4</div>
+            <div class="part-title">Stockout Severity</div>
+            <div class="part-pts">7 pts</div>
+          </div>
+          <div class="part-body">
+            <p>Describe what would happen if this organization ran out of its primary inventory item. Using the <strong>Chapter 10 framework (Table 10.3)</strong>, identify which of the four customer response types is most likely:</p>
+            <ul style="margin:8px 0 8px 20px;line-height:1.8;">
+              <li>Customer waits (low cost to the firm)</li>
+              <li>Customer buys a substitute from the same firm (moderate cost)</li>
+              <li>Customer loses this sale but returns in the future (high cost)</li>
+              <li>Customer permanently switches to a competitor (very high cost)</li>
+            </ul>
+            <p>Then state whether the organization should prioritize high inventory availability or lean toward lower inventory and accept some stockout risk — and explain why, using the severity classification from Table 10.3 as your justification.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-hd" style="background:var(--blue-xlt);">
+      <div><h2>Points Summary</h2><p>30 points total · 13% of Module M08 grade · Initial post only</p></div>
+    </div>
+    <table class="pts-table">
+      <thead><tr><th>Component</th><th>Criteria</th><th style="text-align:right;">Points</th></tr></thead>
+      <tbody>
+        <tr><td rowspan="4" style="font-weight:600;color:var(--navy);vertical-align:top;padding-top:12px;">Initial Post<br><span style="font-weight:400;font-size:12px;color:var(--gray-600);">No reply required</span></td>
+          <td>1 — Inventory type and primary reason (with explanation)</td><td class="pts-num">8</td></tr>
+        <tr><td>2 — Turns or DoS estimate with sourcing and adjustment logic</td><td class="pts-num">8</td></tr>
+        <tr><td>3 — Dominant holding cost component with product-specific justification</td><td class="pts-num">7</td></tr>
+        <tr><td>4 — Stockout severity classification and inventory policy recommendation</td><td class="pts-num">7</td></tr>
+        <tr class="total-row"><td colspan="2">Total</td><td class="pts-num">30</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-hd" style="background:var(--gold-lt);border-color:var(--gold-bdr);">
+      <div><h2 style="color:#92400e;">Tips for Full Credit</h2></div>
+    </div>
+    <div class="card-bd">
+      <ul class="tip-list">
+        <li>Start with a specific inventory item, not the organization in general. "A children's clothing retailer" is too broad; "the summer dress inventory at a children's clothing retailer" gives you specific holding cost and stockout characteristics to analyze.</li>
+        <li>For Part 2, if you don't have exact data, bracket your estimate: "I estimate 3–4 turns/year, toward the lower end of the apparel benchmark (4.57 turns, Table 10.1) because this retailer specializes in seasonal children's clothing with a narrower style range." This earns full credit; unsourced numbers do not.</li>
+        <li>For Part 3, the dominant holding cost component varies dramatically by product. Fresh produce = spoilage. Fashion apparel = obsolescence. Industrial equipment = opportunity cost on high-unit-cost items. Medical supplies = a mix of obsolescence (expiration) and storage (temperature control). Make the argument specific.</li>
+        <li>For Part 4, identify the actual Table 10.3 category by name and explain why the customer response fits that category. "The customer would leave and never return because specialty pet medications are not easily substituted and the customer's pet depends on continuous access" is a full-credit argument.</li>
+        <li>Proofread the naming rule: write "a regional home improvement warehouse chain" not "Home Depot." If you work for a company, describe the industry and product without naming the employer.</li>
+        <li>The best posts connect Parts 3 and 4 explicitly: if holding cost is dominated by obsolescence (high), a stockout might actually be less costly than sitting on excess inventory — that's a legitimate, high-credit insight. If stockout severity is very high (Table 10.3 category 4), high availability is justified even with high holding costs.</li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

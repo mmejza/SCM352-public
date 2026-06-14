@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Holding Cost Analyzer — SCM 352 M08</title>
+<style>
+:root {
+  --navy:       #1a3a5c;
+  --blue:       #2563a8;
+  --blue-lt:    #dbeafe;
+  --blue-xlt:   #eff6ff;
+  --gold:       #f59e0b;
+  --gold-lt:    #fffbeb;
+  --gold-bdr:   #fde68a;
+  --green:      #16a34a;
+  --green-lt:   #f0fdf4;
+  --green-bdr:  #bbf7d0;
+  --red:        #dc2626;
+  --red-lt:     #fef2f2;
+  --red-bdr:    #fecaca;
+  --amber:      #d97706;
+  --amber-lt:   #fffbeb;
+  --amber-bdr:  #fde68a;
+  --teal:       #0d7490;
+  --teal-lt:    #e0f7fa;
+  --teal-bdr:   #b2ebf2;
+  --gray-50:    #f9fafb;
+  --gray-100:   #f3f4f6;
+  --gray-200:   #e5e7eb;
+  --gray-300:   #d1d5db;
+  --gray-400:   #9ca3af;
+  --gray-600:   #4b5563;
+  --gray-700:   #374151;
+  --gray-800:   #1f2937;
+  --blue-pale:  #93c5fd;
+  --blue-hover: #1d4ed8;
+  --teal-hover: #0c6a7e;
+  --green-pale: #6ee7b7;
+  --green-dk:   #14532d;
+  --red-dk:     #7f1d1d;
+  --navy-text:  #1e3a5f;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--gray-50);color:var(--gray-800);font-size:15px;line-height:1.5;}
+
+.app-header{background:var(--navy);color:#fff;padding:16px 28px;display:flex;align-items:center;gap:14px;}
+.app-badge{background:var(--gold);color:var(--navy);font-size:11px;font-weight:700;letter-spacing:.05em;padding:3px 10px;border-radius:20px;white-space:nowrap;}
+.app-header h1{font-size:18px;font-weight:600;}
+.lo-badge{background:rgba(255,255,255,.12);font-size:11px;padding:2px 9px;border-radius:12px;color:rgba(255,255,255,.8);}
+
+.instr-bar{background:var(--gold-lt);border-left:4px solid var(--gold);padding:12px 24px;font-size:13px;line-height:1.65;color:var(--gray-700);}
+.instr-bar strong{color:var(--navy);}
+
+.app-body{max-width:860px;margin:24px auto;padding:0 20px 48px;}
+
+.card{background:#fff;border:1px solid var(--gray-200);border-radius:12px;padding:20px 24px;margin-bottom:16px;box-shadow:0 1px 6px rgba(0,0,0,.06);}
+.card-label{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--gray-400);margin-bottom:10px;}
+
+.scenario-selector{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;}
+.sc-btn{padding:7px 16px;border:2px solid var(--gray-200);background:#fff;border-radius:20px;cursor:pointer;font-size:13px;font-weight:500;color:var(--gray-700);transition:all .15s;}
+.sc-btn:hover{border-color:var(--blue);color:var(--blue);}
+.sc-btn.active{background:var(--blue);border-color:var(--blue);color:#fff;}
+.sc-btn.done::after{content:' ✓';}
+
+.progress-wrap{background:var(--gray-200);border-radius:20px;height:5px;margin-bottom:16px;}
+.progress-fill{background:var(--blue);height:5px;border-radius:20px;transition:width .35s;}
+
+.sc-panel{background:var(--navy);color:#fff;border-radius:10px;padding:18px 20px;margin-bottom:16px;}
+.sc-panel .sp-title{font-size:12px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;}
+.sc-panel .sp-desc{font-size:14px;color:rgba(255,255,255,.88);margin-bottom:14px;line-height:1.6;}
+.sp-params{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;}
+.sp-param{background:rgba(255,255,255,.07);border-radius:8px;padding:10px 12px;}
+.sp-param .p-label{font-size:11px;color:rgba(255,255,255,.5);margin-bottom:3px;}
+.sp-param .p-value{font-size:16px;font-weight:700;color:var(--blue-pale);}
+.sp-param .p-unit{font-size:11px;color:rgba(255,255,255,.45);}
+.sp-param.highlight{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.15);}
+
+.step-block{border:1px solid var(--gray-200);border-radius:10px;padding:18px 20px;margin-bottom:12px;opacity:.4;pointer-events:none;transition:opacity .2s;}
+.step-block.unlocked{opacity:1;pointer-events:auto;}
+.step-block.done{border-color:var(--green);background:var(--green-lt);}
+.step-block.improvement{border-color:var(--teal);background:var(--teal-lt);}
+.step-block.improvement.done{border-color:var(--green);background:var(--green-lt);}
+.step-hdr{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.step-num{width:28px;height:28px;border-radius:50%;background:var(--blue);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.step-block.done .step-num{background:var(--green);}
+.step-title{font-size:15px;font-weight:600;color:var(--navy);}
+.step-prompt{font-size:14px;color:var(--gray-600);margin-bottom:12px;line-height:1.6;}
+.formula{background:var(--gray-50);border:1px solid var(--gray-200);border-radius:8px;padding:9px 14px;font-family:'Courier New',monospace;font-size:14px;color:var(--navy);margin-bottom:14px;}
+
+.input-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap;}
+.input-row label{font-size:13px;color:var(--gray-600);min-width:200px;}
+.num-input{width:130px;padding:8px 12px;border:1.5px solid var(--gray-300);border-radius:8px;font-size:14px;}
+.num-input:focus{outline:none;border-color:var(--blue);}
+.input-unit{font-size:13px;color:var(--gray-400);}
+
+.opp-hint{font-size:12px;color:var(--gray-400);font-style:italic;margin-top:-6px;margin-bottom:10px;padding-left:212px;}
+
+.component-table{width:100%;border-collapse:collapse;margin-bottom:14px;font-size:13px;}
+.component-table th{text-align:left;padding:7px 10px;background:var(--gray-50);border:1px solid var(--gray-200);font-size:12px;color:var(--gray-600);font-weight:600;}
+.component-table td{padding:7px 10px;border:1px solid var(--gray-200);}
+.component-table tr:last-child td{font-weight:700;background:var(--blue-xlt);color:var(--navy);}
+
+.btn-check{background:var(--blue);color:#fff;padding:9px 22px;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;margin-top:4px;}
+.btn-check:hover{background:var(--blue-hover);}
+.btn-check.btn-teal{background:var(--teal);}
+.btn-check.btn-teal:hover{background:var(--teal-hover);}
+
+.fb{border-radius:8px;padding:12px 16px;font-size:14px;margin-top:12px;display:none;line-height:1.6;}
+.fb.show{display:block;}
+.fb.correct{background:var(--green-lt);border:1px solid var(--green-bdr);color:var(--green-dk);}
+.fb.wrong{background:var(--red-lt);border:1px solid var(--red-bdr);color:var(--red-dk);}
+.fb.info{background:var(--blue-lt);border:1px solid var(--blue-pale);color:var(--navy-text);}
+.think{background:var(--gold-lt);border:1.5px solid var(--gold-bdr);border-radius:8px;padding:12px 16px;margin-top:10px;font-size:13px;line-height:1.6;}
+.think-label{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--amber);margin-bottom:5px;}
+
+.bar-compare{display:flex;gap:16px;margin:14px 0;align-items:flex-end;}
+.bar-group{flex:1;text-align:center;}
+.bar-fill{border-radius:6px 6px 0 0;min-width:40px;display:inline-block;width:70%;}
+.bar-label{font-size:11px;color:var(--gray-600);margin-top:5px;}
+.bar-value{font-size:13px;font-weight:700;}
+.bar-baseline{border-top:2px solid var(--gray-300);margin-top:0;}
+
+.result-card{background:var(--navy);color:#fff;border-radius:10px;padding:22px 24px;display:none;margin-bottom:16px;}
+.result-card.show{display:block;}
+.rc-title{font-size:12px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.06em;margin-bottom:14px;}
+.result-row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.07);font-size:14px;}
+.result-row:last-child{border:none;}
+.result-row .r-label{color:rgba(255,255,255,.65);}
+.result-row .r-value{font-weight:700;color:var(--blue-pale);}
+.result-row .r-value.highlight{color:var(--green-pale);}
+.sc-nav{display:flex;justify-content:space-between;align-items:center;margin-top:16px;}
+.btn-ghost{background:transparent;border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.7);padding:8px 18px;border-radius:8px;font-size:13px;cursor:pointer;}
+.btn-ghost:hover{border-color:rgba(255,255,255,.5);color:#fff;}
+.btn-ghost:disabled{opacity:.3;cursor:not-allowed;}
+</style>
+</head>
+<body>
+
+<div class="app-header">
+  <span class="app-badge">SCM 352 · M08</span>
+  <h1>Holding Cost Analyzer</h1>
+  <span class="lo-badge">LO8-5</span>
+</div>
+
+<div class="instr-bar">
+  <p><strong>Do this:</strong> For each scenario, build the annual holding cost per unit from its four components, compute the annual holding cost percentage, then apply turns to find the actual cost per unit held through one complete inventory cycle.</p>
+  <p style="margin-top:5px;"><strong>Gate 2 connection:</strong> Gate 2 Q6 and Q7, and Case Part 4, require exactly this four-component build. Scenarios 2 and 5 add a turns-improvement analysis — the same type of comparison in Case Part 4(e). Pay close attention to the "total HC is independent of turns" insight when inventory level is held constant.</p>
+</div>
+
+<div class="app-body">
+
+  <div class="card">
+    <div class="card-label">Select a Scenario</div>
+    <div class="scenario-selector" id="sc-selector"></div>
+    <div class="progress-wrap"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
+    <div class="sc-panel" id="sc-panel"></div>
+  </div>
+
+  <div id="step1" class="step-block unlocked">
+    <div class="step-hdr"><div class="step-num">1</div><div class="step-title">Compute Opportunity Cost and Total Annual HC</div></div>
+    <div class="step-prompt" id="s1-prompt"></div>
+    <div class="formula" id="s1-formula"></div>
+    <div id="s1-fields"></div>
+    <button class="btn-check" onclick="checkStep(1)">Check</button>
+    <div class="fb" id="fb1"></div>
+  </div>
+
+  <div id="step2" class="step-block">
+    <div class="step-hdr"><div class="step-num">2</div><div class="step-title">Annual Holding Cost Percentage (HCP%)</div></div>
+    <div class="step-prompt" id="s2-prompt"></div>
+    <div class="formula">Annual HCP% = (Total Annual HC per unit ÷ Unit purchase cost) × 100</div>
+    <div id="s2-fields"></div>
+    <button class="btn-check" onclick="checkStep(2)">Check</button>
+    <div class="fb" id="fb2"></div>
+  </div>
+
+  <div id="step3" class="step-block">
+    <div class="step-hdr"><div class="step-num">3</div><div class="step-title">Actual Holding Cost per Unit per Turn Cycle</div></div>
+    <div class="step-prompt" id="s3-prompt"></div>
+    <div class="formula">Actual HCP% = Annual HCP% ÷ Annual turns │ Actual HC/unit = Unit cost × Actual HCP%</div>
+    <div id="s3-fields"></div>
+    <button class="btn-check" onclick="checkStep(3)">Check</button>
+    <div class="fb" id="fb3"></div>
+  </div>
+
+  <!-- Step 4 only shown for improvement scenarios (S2, S5) -->
+  <div id="step4" class="step-block improvement" style="display:none;">
+    <div class="step-hdr">
+      <div class="step-num" style="background:var(--teal);">4</div>
+      <div class="step-title" id="s4-title">Improvement Analysis</div>
+    </div>
+    <div class="step-prompt" id="s4-prompt"></div>
+    <div class="formula" id="s4-formula"></div>
+    <div id="s4-fields"></div>
+    <button class="btn-check btn-teal" onclick="checkStep(4)">Check</button>
+    <div class="fb" id="fb4"></div>
+  </div>
+
+  <div class="result-card" id="result-card">
+    <div class="rc-title">Scenario Complete — Summary</div>
+    <div id="result-rows"></div>
+    <div style="margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,.08);">
+      <div style="font-size:13px;color:rgba(255,255,255,.45);margin-bottom:10px;">Navigate scenarios</div>
+      <div class="sc-nav">
+        <button class="btn-ghost" id="btn-prev" onclick="navScenario(-1)">← Previous</button>
+        <span id="sc-count" style="font-size:13px;color:rgba(255,255,255,.45);"></span>
+        <button class="btn-ghost" id="btn-next" onclick="navScenario(1)">Next →</button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /app-body -->
+
+<script>
+// ═══════════════════════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════════════════════
+const SCENARIOS = [
+  {
+    id:1,
+    title:'Hospital Supply — IV Bags',
+    industry:'Healthcare / medical supplies',
+    desc:'A hospital supply chain manager is evaluating the true cost of holding IV bags in the hospital pharmacy. Holding costs are often hidden from standard budget reports — this exercise makes them visible.',
+    cost:8.00,
+    turns:12,
+    improvement:null,
+    components:{
+      storage:0.48,
+      oppRate:8,     // as %
+      oppDollar:0.64,
+      obsolescence:0.72,
+      spoilage:0.16,
+      total:2.00
+    },
+    hcp:25.0,
+    actualHcp:2.0833,
+    actualHcPerUnit:0.1667,
+    componentLabels:{
+      storage:'Storage and temperature-controlled space, insurance',
+      opp:'Opportunity cost of capital (8% × $8.00 unit cost)',
+      obs:'Obsolescence / expiration risk',
+      spo:'Spoilage / shrinkage'
+    },
+    correctHtml1:'Opportunity cost = 8% × $8.00 = <strong>$0.64/unit/year</strong>. Total annual HC = $0.48 + $0.64 + $0.72 + $0.16 = <strong>$2.00/unit/year</strong>. Notice that none of these costs appear as a line item in the hospital\'s purchasing budget — they are all opportunity and risk costs.',
+    correctHtml2:'Annual HCP% = $2.00 ÷ $8.00 × 100 = <strong>25.0%</strong>. This means for every dollar of IV bag cost held in inventory for one full year, the hospital bears $0.25 in holding costs.',
+    correctHtml3:'Actual HCP% = 25.0% ÷ 12 turns = <strong>2.083%</strong>. Actual HC/unit = $8.00 × 0.02083 = <strong>$0.167/unit</strong>. At 12 turns, the hospital cycles its IV bag inventory quickly enough that the per-unit holding cost is small — about 17 cents per bag.',
+    think:'IV bags have a relatively short shelf life (2–3 years for many types). The obsolescence component ($0.72) is actually larger than the storage component ($0.48) — reflecting that expiration risk matters more than physical storage cost in healthcare. This is different from most retail inventory.',
+    summary:[
+      {label:'Opportunity cost in $',val:'$0.64/unit/year (8% × $8.00)'},
+      {label:'Total annual HC per unit',val:'$2.00/unit/year'},
+      {label:'Annual HCP%',val:'25.0%'},
+      {label:'Actual HCP% (at 12 turns)',val:'2.08%'},
+      {label:'Actual HC/unit',val:'$0.167/unit per turn cycle'}
+    ]
+  },
+  {
+    id:2,
+    title:'Consumer Electronics — Flat Panel TV',
+    industry:'Electronics retail',
+    desc:'An electronics retailer holds flat panel TVs with high unit cost and high obsolescence risk. Management is evaluating whether improving turns from 4 to 6 per year is worth pursuing.',
+    cost:450.00,
+    turns:4,
+    improvement:{turns:6, label:'from 4 to 6 turns/year'},
+    components:{
+      storage:18.00,
+      oppRate:8,
+      oppDollar:36.00,
+      obsolescence:99.00,
+      spoilage:27.00,
+      total:180.00
+    },
+    hcp:40.0,
+    actualHcp:10.0,
+    actualHcPerUnit:45.00,
+    improvedHcp:6.6667,
+    improvedHcPerUnit:30.00,
+    savings:15.00,
+    componentLabels:{
+      storage:'Warehouse storage, insurance, security',
+      opp:'Opportunity cost of capital (8% × $450.00 unit cost)',
+      obs:'Obsolescence risk (rapid model cycles, markdown risk)',
+      spo:'Handling damage, theft, defects'
+    },
+    correctHtml1:'Opportunity cost = 8% × $450.00 = <strong>$36.00/unit/year</strong>. Total annual HC = $18.00 + $36.00 + $99.00 + $27.00 = <strong>$180.00/unit/year</strong>. Obsolescence ($99) dominates — the real enemy of electronics inventory is not storage cost but the risk of holding a model that gets replaced.',
+    correctHtml2:'Annual HCP% = $180.00 ÷ $450.00 × 100 = <strong>40.0%</strong>. A 40% annual holding cost percentage is high — it reflects the combination of substantial opportunity cost on a $450 asset plus heavy obsolescence risk in a fast-changing industry.',
+    correctHtml3:'Actual HCP% = 40.0% ÷ 4 = <strong>10.0%</strong>. Actual HC/unit = $450.00 × 0.10 = <strong>$45.00/unit</strong>. Every TV that passes through the supply chain costs $45 in holding cost during its 91-day stay (365/4). That is 10% of the purchase cost burned before the TV is even sold.',
+    correctHtml4:'At 6 turns: Actual HCP% = 40.0% ÷ 6 = <strong>6.667%</strong>. New HC/unit = $450 × 0.06667 = <strong>$30.00/unit</strong>. Savings per unit = $45.00 − $30.00 = <strong>$15.00/unit</strong>. If the retailer sells 10,000 TVs per year, improving from 4 to 6 turns saves $150,000 annually in holding costs — a significant return on better inventory management.',
+    think:'Total annual HC = I × h = Average inventory × Annual HC rate. If average inventory stays the same (same number of units on hand), total holding cost does not change even if turns improve. Turns improvement reduces holding cost only if it enables you to hold fewer units — i.e., to actually reduce I. This is the Case Part 4(e) insight.',
+    summary:[
+      {label:'Opportunity cost in $',val:'$36.00/unit/year (8% × $450)'},
+      {label:'Total annual HC per unit',val:'$180.00/unit/year'},
+      {label:'Annual HCP%',val:'40.0%'},
+      {label:'Actual HCP% (at 4 turns)',val:'10.0%'},
+      {label:'Actual HC/unit (at 4 turns)',val:'$45.00/unit'},
+      {label:'Actual HC/unit (at 6 turns)',val:'$30.00/unit'},
+      {label:'Savings per unit',val:'$15.00/unit (33% reduction)'}
+    ]
+  },
+  {
+    id:3,
+    title:'Apparel — Winter Coat',
+    industry:'Apparel retail',
+    desc:'A clothing retailer carries winter coats with strong fashion obsolescence risk and very low physical spoilage. Low turns reflect the seasonal demand pattern for cold-weather outerwear.',
+    cost:95.00,
+    turns:3,
+    improvement:null,
+    components:{
+      storage:5.70,
+      oppRate:8,
+      oppDollar:7.60,
+      obsolescence:15.20,
+      spoilage:0.00,
+      total:28.50
+    },
+    hcp:30.0,
+    actualHcp:10.0,
+    actualHcPerUnit:9.50,
+    componentLabels:{
+      storage:'Floor/rack space, markdowns on permanent fixtures, insurance',
+      opp:'Opportunity cost of capital (8% × $95.00 unit cost)',
+      obs:'Fashion obsolescence (styles change season to season)',
+      spo:'Spoilage/shrinkage (enter 0 — coats do not physically spoil)'
+    },
+    correctHtml1:'Opportunity cost = 8% × $95.00 = <strong>$7.60/unit/year</strong>. Total annual HC = $5.70 + $7.60 + $15.20 + $0.00 = <strong>$28.50/unit/year</strong>. Fashion obsolescence ($15.20) dominates — this winter coat will be marked down heavily or phased out if it does not sell this season.',
+    correctHtml2:'Annual HCP% = $28.50 ÷ $95.00 × 100 = <strong>30.0%</strong>.',
+    correctHtml3:'Actual HCP% = 30.0% ÷ 3 turns = <strong>10.0%</strong>. Actual HC/unit = $95.00 × 0.10 = <strong>$9.50/unit</strong>. Each coat that passes through the supply chain carries $9.50 in holding cost during its ~122-day season. Note: the coat sector typically accepts 3 turns as normal given the strongly seasonal demand pattern.',
+    think:'Winter coat inventory has essentially zero spoilage but very high obsolescence. A coat unsold at end of season must be deeply discounted. The obsolescence component in the holding cost formula is capturing this markdown probability. An apparel buyer who ignores obsolescence risk in their ordering model will systematically over-order.',
+    summary:[
+      {label:'Opportunity cost in $',val:'$7.60/unit/year (8% × $95)'},
+      {label:'Total annual HC per unit',val:'$28.50/unit/year'},
+      {label:'Annual HCP%',val:'30.0%'},
+      {label:'Actual HCP% (at 3 turns)',val:'10.0%'},
+      {label:'Actual HC/unit',val:'$9.50/unit per turn cycle'}
+    ]
+  },
+  {
+    id:4,
+    title:'Food Distributor — Canned Specialty Goods',
+    industry:'Food distribution / grocery wholesale',
+    desc:'A food distributor carries canned specialty goods with a 2-year shelf life. High turns are the norm in food distribution — this scenario illustrates how high turns dramatically reduce the per-unit holding cost burden.',
+    cost:12.00,
+    turns:18,
+    improvement:null,
+    components:{
+      storage:0.60,
+      oppRate:8,
+      oppDollar:0.96,
+      obsolescence:0.48,
+      spoilage:0.36,
+      total:2.40
+    },
+    hcp:20.0,
+    actualHcp:1.1111,
+    actualHcPerUnit:0.1333,
+    componentLabels:{
+      storage:'Warehouse storage, refrigeration (dry storage), insurance',
+      opp:'Opportunity cost of capital (8% × $12.00 unit cost)',
+      obs:'Obsolescence / expiration (canned goods 2-year shelf life)',
+      spo:'Spoilage, damage, and shrinkage'
+    },
+    correctHtml1:'Opportunity cost = 8% × $12.00 = <strong>$0.96/unit/year</strong>. Total annual HC = $0.60 + $0.96 + $0.48 + $0.36 = <strong>$2.40/unit/year</strong>. No single component dominates — a balanced holding cost profile typical of stable, non-perishable food products.',
+    correctHtml2:'Annual HCP% = $2.40 ÷ $12.00 × 100 = <strong>20.0%</strong>. Lower annual HCP% than the apparel or electronics scenarios — canned goods have lower obsolescence and storage cost per dollar of inventory.',
+    correctHtml3:'Actual HCP% = 20.0% ÷ 18 turns = <strong>1.111%</strong>. Actual HC/unit = $12.00 × 0.01111 = <strong>$0.133/unit</strong>. At 18 turns, the actual per-unit holding cost drops to just 13 cents — the power of high turns on thin-margin products. This is why grocery distributors obsess over turns velocity.',
+    think:'Compare this to the winter coat (same $9.50 per-unit HC, but the coat costs $95 vs. $12 — so HC as a % of product price is very similar). What differs is the units sold per year: a food distributor moving millions of cases at $0.13/unit × millions = still a very large total holding cost bill. Total HC = I × h — volume matters as much as per-unit rate.',
+    summary:[
+      {label:'Opportunity cost in $',val:'$0.96/unit/year (8% × $12)'},
+      {label:'Total annual HC per unit',val:'$2.40/unit/year'},
+      {label:'Annual HCP%',val:'20.0%'},
+      {label:'Actual HCP% (at 18 turns)',val:'1.11%'},
+      {label:'Actual HC/unit',val:'$0.133/unit per turn cycle'}
+    ]
+  },
+  {
+    id:5,
+    title:'Pharmaceutical — Specialty Drug',
+    industry:'Pharmaceutical distribution',
+    desc:'A pharmaceutical distributor holds a specialty biologic drug with high unit cost and significant cold-chain storage requirements. Management is evaluating whether improving turns from 6 to 9 per year is worth the investment in order-frequency systems.',
+    cost:200.00,
+    turns:6,
+    improvement:{turns:9, label:'from 6 to 9 turns/year'},
+    components:{
+      storage:14.00,
+      oppRate:8,
+      oppDollar:16.00,
+      obsolescence:28.00,
+      spoilage:12.00,
+      total:70.00
+    },
+    hcp:35.0,
+    actualHcp:5.8333,
+    actualHcPerUnit:11.67,
+    improvedHcp:3.8889,
+    improvedHcPerUnit:7.78,
+    savings:3.89,
+    componentLabels:{
+      storage:'Cold-chain storage, specialized handling, insurance ($14/unit/year)',
+      opp:'Opportunity cost of capital (8% × $200.00 unit cost)',
+      obs:'Obsolescence / expiration (specialty biologics expire)',
+      spo:'Temperature excursion / spoilage risk'
+    },
+    correctHtml1:'Opportunity cost = 8% × $200.00 = <strong>$16.00/unit/year</strong>. Total annual HC = $14.00 + $16.00 + $28.00 + $12.00 = <strong>$70.00/unit/year</strong>. Storage ($14) is much higher than canned goods in absolute terms — cold chain is expensive. Obsolescence ($28) is the largest component: specialty biologics have strict expiration windows.',
+    correctHtml2:'Annual HCP% = $70.00 ÷ $200.00 × 100 = <strong>35.0%</strong>. A 35% annual holding cost is substantial — driven by a combination of high storage infrastructure cost and high obsolescence/expiration risk for a biologic product.',
+    correctHtml3:'Actual HCP% = 35.0% ÷ 6 turns = <strong>5.833%</strong>. Actual HC/unit = $200.00 × 0.05833 = <strong>$11.67/unit</strong>. Each specialty drug unit that passes through the supply chain costs $11.67 in holding cost during its ~61-day cycle.',
+    correctHtml4:'At 9 turns: Actual HCP% = 35.0% ÷ 9 = <strong>3.889%</strong>. New HC/unit = $200 × 0.03889 = <strong>$7.78/unit</strong>. Savings per unit = $11.67 − $7.78 = <strong>$3.89/unit</strong>. For a distributor handling 50,000 units/year, improving from 6 to 9 turns saves $194,500 annually. Review the Case Part 4(e) insight: this savings only materializes if average inventory I actually decreases.',
+    think:'Case Part 4(e) asks whether total annual holding cost changes when turns improve. The answer: only if average inventory (I) changes. Total HC = I × h. If the distributor orders more frequently but holds the same number of units on hand, total HC = unchanged. The savings in this Step 4 represent the per-unit reduction — to get total savings, multiply by the number of units sold per year.',
+    summary:[
+      {label:'Opportunity cost in $',val:'$16.00/unit/year (8% × $200)'},
+      {label:'Total annual HC per unit',val:'$70.00/unit/year'},
+      {label:'Annual HCP%',val:'35.0%'},
+      {label:'Actual HCP% (at 6 turns)',val:'5.83%'},
+      {label:'Actual HC/unit (at 6 turns)',val:'$11.67/unit'},
+      {label:'Actual HC/unit (at 9 turns)',val:'$7.78/unit'},
+      {label:'Savings per unit',val:'$3.89/unit (33% reduction)'}
+    ]
+  }
+];
+
+// ═══════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════
+let scIdx = 0;
+let stepsDone = [false,false,false,false];
+let scenarioDone = {};
+
+function activeScenario(){ return SCENARIOS[scIdx]; }
+
+// ═══════════════════════════════════════════════════════
+// SELECTOR
+// ═══════════════════════════════════════════════════════
+function buildSelector(){
+  const div = document.getElementById('sc-selector');
+  div.innerHTML = '';
+  SCENARIOS.forEach((s,i)=>{
+    const b = document.createElement('button');
+    b.className = 'sc-btn' + (i===0?' active':'') + (scenarioDone[i]?' done':'');
+    b.textContent = s.id + ' — ' + s.title;
+    b.onclick = ()=>loadScenario(i);
+    b.id = 'scbtn'+i;
+    div.appendChild(b);
+  });
+}
+
+function updateSelectorActive(){
+  SCENARIOS.forEach((_,i)=>{
+    const b = document.getElementById('scbtn'+i);
+    if(!b) return;
+    b.className = 'sc-btn' + (i===scIdx?' active':'') + (scenarioDone[i]?' done':'');
+  });
+}
+
+// ═══════════════════════════════════════════════════════
+// LOAD SCENARIO
+// ═══════════════════════════════════════════════════════
+function loadScenario(idx){
+  scIdx = idx;
+  stepsDone = [false,false,false,false];
+  const s = activeScenario();
+  const c = s.components;
+
+  // Scenario panel
+  const params = [
+    {label:'Unit purchase cost',value:'$'+s.cost.toFixed(2),unit:'per unit'},
+    {label:'Annual inventory turns',value:s.turns+'',unit:'turns/year'},
+    {label:'Storage & insurance',value:'$'+c.storage.toFixed(2),unit:'/unit/year'},
+    {label:'Opportunity cost rate',value:c.oppRate+'%',unit:'of unit cost/year (you compute $)'},
+    {label:'Obsolescence risk',value:'$'+c.obsolescence.toFixed(2),unit:'/unit/year'},
+    {label:'Spoilage / shrinkage',value:'$'+c.spoilage.toFixed(2),unit:'/unit/year'}
+  ];
+  if(s.improvement){
+    params.push({label:'Proposed improvement',value:'Turns → '+s.improvement.turns,unit:s.improvement.label,highlight:true});
+  }
+
+  const paramHtml = params.map(p=>`
+    <div class="sp-param${p.highlight?' highlight':''}">
+      <div class="p-label">${p.label}</div>
+      <div class="p-value">${p.value}</div>
+      <div class="p-unit">${p.unit||''}</div>
+    </div>`).join('');
+
+  document.getElementById('sc-panel').innerHTML = `
+    <div class="sp-title">Scenario ${s.id} · ${s.industry}</div>
+    <div class="sp-desc">${s.desc}</div>
+    <div class="sp-params">${paramHtml}</div>`;
+
+  // Reset steps
+  for(let i=1;i<=4;i++){
+    const el = document.getElementById('step'+i);
+    el.classList.remove('unlocked','done');
+    clearFb(i);
+    el.style.display = '';
+  }
+  document.getElementById('step1').classList.add('unlocked');
+
+  // Step 1 content
+  document.getElementById('s1-prompt').textContent =
+    'The scenario panel gives you three cost components in dollar amounts and one as a percentage rate. Compute the opportunity cost in dollars, then sum all four components to get total annual HC per unit.';
+  document.getElementById('s1-formula').textContent =
+    'Opportunity cost ($) = Opportunity cost rate × Unit purchase cost | Total HC = Storage + Opportunity cost + Obsolescence + Spoilage';
+  document.getElementById('s1-fields').innerHTML = `
+    <div class="input-row">
+      <label>Opportunity cost ($ per unit/year)</label>
+      <input class="num-input" type="number" id="f1a" step="any" placeholder="Enter $">
+      <span class="input-unit">$/unit/year</span>
+    </div>
+    <div class="opp-hint">Tip: multiply the % rate × unit cost (e.g., 8% × $${s.cost.toFixed(2)} = ?)</div>
+    <div class="input-row">
+      <label>Total annual HC per unit</label>
+      <input class="num-input" type="number" id="f1b" step="any" placeholder="Enter $">
+      <span class="input-unit">$/unit/year</span>
+    </div>`;
+
+  // Step 2 content
+  document.getElementById('s2-prompt').textContent =
+    'Using the total annual HC from Step 1, compute the annual holding cost percentage (HCP%) relative to the unit purchase cost.';
+  document.getElementById('s2-fields').innerHTML = `
+    <div class="input-row">
+      <label>Annual HCP%</label>
+      <input class="num-input" type="number" id="f2a" step="any" placeholder="Enter %">
+      <span class="input-unit">% per year</span>
+    </div>`;
+
+  // Step 3 content
+  document.getElementById('s3-prompt').textContent =
+    'Now apply inventory turns. Dividing the annual HCP% by turns gives you the actual cost percentage for one inventory cycle. Multiply by unit cost to get the actual dollar cost per unit.';
+  document.getElementById('s3-fields').innerHTML = `
+    <div class="input-row">
+      <label>Actual HCP% (per turn cycle)</label>
+      <input class="num-input" type="number" id="f3a" step="any" placeholder="Enter %">
+      <span class="input-unit">%</span>
+    </div>
+    <div class="input-row">
+      <label>Actual HC per unit</label>
+      <input class="num-input" type="number" id="f3b" step="any" placeholder="Enter $">
+      <span class="input-unit">$/unit</span>
+    </div>`;
+
+  // Step 4 — improvement scenarios only
+  const step4 = document.getElementById('step4');
+  if(s.improvement){
+    step4.style.display = '';
+    document.getElementById('s4-title').textContent = 'Improvement Analysis — '+s.improvement.label;
+    document.getElementById('s4-prompt').textContent =
+      `Management proposes improving turns ${s.improvement.label}. Using the same annual HCP% computed in Step 2, compute the new actual HC/unit and the per-unit savings.`;
+    document.getElementById('s4-formula').textContent =
+      `New actual HCP% = Annual HCP% ÷ ${s.improvement.turns} turns | New HC/unit = $${s.cost.toFixed(2)} × new actual HCP% | Savings = old HC/unit − new HC/unit`;
+    document.getElementById('s4-fields').innerHTML = `
+      <div class="input-row">
+        <label>New actual HC/unit (at ${s.improvement.turns} turns)</label>
+        <input class="num-input" type="number" id="f4a" step="any" placeholder="Enter $">
+        <span class="input-unit">$/unit</span>
+      </div>
+      <div class="input-row">
+        <label>Savings per unit</label>
+        <input class="num-input" type="number" id="f4b" step="any" placeholder="Enter $">
+        <span class="input-unit">$/unit</span>
+      </div>`;
+  } else {
+    step4.style.display = 'none';
+  }
+
+  document.getElementById('result-card').classList.remove('show');
+  updateProgress(0);
+  updateSelectorActive();
+}
+
+// ═══════════════════════════════════════════════════════
+// CHECK STEPS
+// ═══════════════════════════════════════════════════════
+function near(v,ans,tol){ return Math.abs(v-ans) <= tol; }
+
+function checkStep(num){
+  const s = activeScenario();
+  const c = s.components;
+  let pass = false;
+  let stepsTotal = s.improvement ? 4 : 3;
+
+  if(num===1){
+    const oppV = parseFloat(document.getElementById('f1a').value);
+    const totV = parseFloat(document.getElementById('f1b').value);
+    if(isNaN(oppV)||isNaN(totV)){ showFb(1,'info','Enter values in both fields.'); return; }
+
+    // Intercept: opportunity cost entered as % instead of $
+    if(oppV > 1 && oppV < 100 && near(oppV, c.oppRate, 2)){
+      showFb(1,'wrong','It looks like you entered the rate percentage ('+c.oppRate+'%) instead of the dollar amount. Compute: '+c.oppRate+'% × $'+s.cost.toFixed(2)+' = $'+c.oppDollar.toFixed(2)+'.'); return;
+    }
+
+    const oppOk = near(oppV, c.oppDollar, Math.max(0.02, c.oppDollar*0.02));
+    const totOk = near(totV, c.total, Math.max(0.10, c.total*0.015));
+
+    if(!oppOk){
+      showFb(1,'wrong','Check the opportunity cost calculation: '+c.oppRate+'% × $'+s.cost.toFixed(2)+' = $'+(c.oppRate/100*s.cost).toFixed(2)+'. Got $'+oppV.toFixed(2)+'.'); return;
+    }
+    if(!totOk){
+      showFb(1,'wrong','Check the total: $'+c.storage+' + $'+c.oppDollar+' + $'+c.obsolescence+' + $'+c.spoilage+' = $'+c.total.toFixed(2)+'. Got $'+totV.toFixed(2)+'.'); return;
+    }
+    pass = true;
+    showFb(1,'correct',s.correctHtml1 + (s.think?`<div class="think"><div class="think-label">Think Deeper</div>${s.think}</div>`:''));
+  }
+
+  if(num===2){
+    const hcpV = parseFloat(document.getElementById('f2a').value);
+    if(isNaN(hcpV)){ showFb(2,'info','Enter a value.'); return; }
+    if(!near(hcpV, s.hcp, 0.15)){
+      showFb(2,'wrong','Annual HCP% = (Total HC / Unit cost) × 100 = ($'+s.components.total.toFixed(2)+' / $'+s.cost.toFixed(2)+') × 100. Check your arithmetic.'); return;
+    }
+    pass = true;
+    showFb(2,'correct',s.correctHtml2);
+  }
+
+  if(num===3){
+    const ahcpV = parseFloat(document.getElementById('f3a').value);
+    const ahcV  = parseFloat(document.getElementById('f3b').value);
+    if(isNaN(ahcpV)||isNaN(ahcV)){ showFb(3,'info','Enter values in both fields.'); return; }
+    const ahcpOk = near(ahcpV, s.actualHcp, Math.max(0.05, s.actualHcp*0.02));
+    const ahcOk  = near(ahcV,  s.actualHcPerUnit, Math.max(0.01, s.actualHcPerUnit*0.02));
+    if(!ahcpOk){
+      showFb(3,'wrong','Actual HCP% = Annual HCP% ÷ Annual turns = '+s.hcp+'% ÷ '+s.turns+' = '+(s.hcp/s.turns).toFixed(3)+'%. Got '+ahcpV+'.'); return;
+    }
+    if(!ahcOk){
+      showFb(3,'wrong','Actual HC/unit = Unit cost × Actual HCP% = $'+s.cost+' × '+(s.actualHcp/100).toFixed(5)+' = $'+s.actualHcPerUnit.toFixed(3)+'. Got $'+ahcV+'.'); return;
+    }
+    pass = true;
+    showFb(3,'correct',s.correctHtml3);
+  }
+
+  if(num===4 && s.improvement){
+    const nhcV   = parseFloat(document.getElementById('f4a').value);
+    const savV   = parseFloat(document.getElementById('f4b').value);
+    if(isNaN(nhcV)||isNaN(savV)){ showFb(4,'info','Enter values in both fields.'); return; }
+    const nhcOk = near(nhcV, s.improvedHcPerUnit, Math.max(0.05, s.improvedHcPerUnit*0.02));
+    const savOk = near(savV, s.savings, Math.max(0.05, s.savings*0.02));
+    if(!nhcOk){
+      showFb(4,'wrong','New HC/unit = $'+s.cost+' × ('+s.hcp+'% ÷ '+s.improvement.turns+') = $'+s.cost+' × '+(s.hcp/s.improvement.turns/100).toFixed(5)+' = $'+s.improvedHcPerUnit.toFixed(2)+'. Got $'+nhcV+'.'); return;
+    }
+    if(!savOk){
+      showFb(4,'wrong','Savings = Old HC/unit − New HC/unit = $'+s.actualHcPerUnit.toFixed(2)+' − $'+s.improvedHcPerUnit.toFixed(2)+' = $'+s.savings.toFixed(2)+'. Got $'+savV+'.'); return;
+    }
+    pass = true;
+    showFb(4,'correct',s.correctHtml4);
+  }
+
+  if(pass){
+    markDone(num);
+    updateProgress(stepsDone.filter(Boolean).length);
+    if(num < stepsTotal){
+      unlockStep(num+1);
+    } else {
+      scenarioDone[scIdx] = true;
+      updateSelectorActive();
+      showResult(s);
+    }
+  }
+}
+
+function showFb(num,type,html){
+  const el = document.getElementById('fb'+num);
+  el.className='fb '+type+' show';
+  el.innerHTML=html;
+}
+function clearFb(num){ const el=document.getElementById('fb'+num); el.className='fb'; el.innerHTML=''; }
+
+function markDone(num){
+  stepsDone[num-1]=true;
+  document.getElementById('step'+num).classList.add('done');
+}
+function unlockStep(num){
+  document.getElementById('step'+num).classList.add('unlocked');
+  document.getElementById('step'+num).scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+function updateProgress(done){
+  const total = activeScenario().improvement ? 4 : 3;
+  document.getElementById('prog-fill').style.width=(total>0?(done/total*100):0)+'%';
+}
+
+// ═══════════════════════════════════════════════════════
+// RESULT CARD
+// ═══════════════════════════════════════════════════════
+function showResult(s){
+  const rows = s.summary.map((r,i)=>`
+    <div class="result-row">
+      <span class="r-label">${r.label}</span>
+      <span class="r-value${i>=s.summary.length-2 && s.improvement?' highlight':''}">${r.val}</span>
+    </div>`).join('');
+
+  document.getElementById('result-rows').innerHTML = rows;
+  document.getElementById('sc-count').textContent = `Scenario ${scIdx+1} of ${SCENARIOS.length}`;
+  document.getElementById('btn-prev').disabled = scIdx===0;
+  document.getElementById('btn-next').disabled = scIdx===SCENARIOS.length-1;
+  const card = document.getElementById('result-card');
+  card.classList.add('show');
+  card.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function navScenario(dir){
+  const next = scIdx+dir;
+  if(next>=0 && next<SCENARIOS.length) loadScenario(next);
+}
+
+// ═══════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════
+buildSelector();
+loadScenario(0);
+</script>
+</body>
+</html>

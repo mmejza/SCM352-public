@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inventory Turns &amp; Days-of-Supply Calculator — SCM 352 M08</title>
+<style>
+:root {
+  --navy:       #1a3a5c;
+  --blue:       #2563a8;
+  --blue-lt:    #dbeafe;
+  --blue-xlt:   #eff6ff;
+  --gold:       #f59e0b;
+  --gold-lt:    #fffbeb;
+  --gold-bdr:   #fde68a;
+  --green:      #16a34a;
+  --green-lt:   #f0fdf4;
+  --green-bdr:  #bbf7d0;
+  --red:        #dc2626;
+  --red-lt:     #fef2f2;
+  --red-bdr:    #fecaca;
+  --amber:      #d97706;
+  --amber-lt:   #fffbeb;
+  --amber-bdr:  #fde68a;
+  --gray-50:    #f9fafb;
+  --gray-100:   #f3f4f6;
+  --gray-200:   #e5e7eb;
+  --gray-300:   #d1d5db;
+  --gray-400:   #9ca3af;
+  --gray-600:   #4b5563;
+  --gray-700:   #374151;
+  --gray-800:   #1f2937;
+  --blue-pale:  #93c5fd;
+  --blue-hover: #1d4ed8;
+  --green-dk:   #14532d;
+  --red-dk:     #7f1d1d;
+  --navy-text:  #1e3a5f;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--gray-50);color:var(--gray-800);font-size:15px;line-height:1.5;}
+
+.app-header{background:var(--navy);color:#fff;padding:16px 28px;display:flex;align-items:center;gap:14px;}
+.app-badge{background:var(--gold);color:var(--navy);font-size:11px;font-weight:700;letter-spacing:.05em;padding:3px 10px;border-radius:20px;white-space:nowrap;}
+.app-header h1{font-size:18px;font-weight:600;}
+.lo-badge{background:rgba(255,255,255,.12);font-size:11px;padding:2px 9px;border-radius:12px;color:rgba(255,255,255,.8);}
+
+.instr-bar{background:var(--gold-lt);border-left:4px solid var(--gold);padding:12px 24px;font-size:13px;line-height:1.65;color:var(--gray-700);}
+.instr-bar strong{color:var(--navy);}
+
+.mode-bar{background:#fff;border-bottom:2px solid var(--gray-200);padding:10px 24px;display:flex;align-items:center;gap:10px;}
+.mode-btn{padding:7px 20px;border:2px solid var(--gray-200);background:#fff;border-radius:20px;cursor:pointer;font-size:13px;font-weight:600;color:var(--gray-600);transition:all .15s;}
+.mode-btn:hover{border-color:var(--blue);color:var(--blue);}
+.mode-btn.active{background:var(--blue);border-color:var(--blue);color:#fff;}
+.mode-label{font-size:12px;color:var(--gray-400);margin-left:8px;}
+
+.app-body{max-width:860px;margin:24px auto;padding:0 20px 48px;}
+
+.card{background:#fff;border:1px solid var(--gray-200);border-radius:12px;padding:20px 24px;margin-bottom:16px;box-shadow:0 1px 6px rgba(0,0,0,.06);}
+.card-label{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--gray-400);margin-bottom:10px;}
+
+.scenario-selector{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;}
+.sc-btn{padding:7px 16px;border:2px solid var(--gray-200);background:#fff;border-radius:20px;cursor:pointer;font-size:13px;font-weight:500;color:var(--gray-700);transition:all .15s;}
+.sc-btn:hover{border-color:var(--blue);color:var(--blue);}
+.sc-btn.active{background:var(--blue);border-color:var(--blue);color:#fff;}
+.sc-btn.done::after{content:' ✓';}
+
+.progress-wrap{background:var(--gray-200);border-radius:20px;height:5px;margin-bottom:16px;}
+.progress-fill{background:var(--blue);height:5px;border-radius:20px;transition:width .35s;}
+
+.sc-panel{background:var(--navy);color:#fff;border-radius:10px;padding:18px 20px;margin-bottom:16px;}
+.sc-panel .sp-title{font-size:12px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;}
+.sc-panel .sp-desc{font-size:14px;color:rgba(255,255,255,.88);margin-bottom:14px;line-height:1.6;}
+.sp-params{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;}
+.sp-param{background:rgba(255,255,255,.07);border-radius:8px;padding:10px 12px;}
+.sp-param .p-label{font-size:11px;color:rgba(255,255,255,.5);margin-bottom:3px;}
+.sp-param .p-value{font-size:17px;font-weight:700;color:var(--blue-pale);}
+.sp-param .p-unit{font-size:11px;color:rgba(255,255,255,.45);}
+
+.step-block{border:1px solid var(--gray-200);border-radius:10px;padding:18px 20px;margin-bottom:12px;opacity:.4;pointer-events:none;transition:opacity .2s;}
+.step-block.unlocked{opacity:1;pointer-events:auto;}
+.step-block.done{border-color:var(--green);background:var(--green-lt);}
+.step-hdr{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.step-num{width:28px;height:28px;border-radius:50%;background:var(--blue);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.step-block.done .step-num{background:var(--green);}
+.step-title{font-size:15px;font-weight:600;color:var(--navy);}
+.step-prompt{font-size:14px;color:var(--gray-600);margin-bottom:12px;line-height:1.6;}
+.formula{background:var(--gray-50);border:1px solid var(--gray-200);border-radius:8px;padding:9px 14px;font-family:'Courier New',monospace;font-size:14px;color:var(--navy);margin-bottom:14px;}
+
+.input-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap;}
+.input-row label{font-size:13px;color:var(--gray-600);min-width:180px;}
+.num-input{width:130px;padding:8px 12px;border:1.5px solid var(--gray-300);border-radius:8px;font-size:14px;}
+.num-input:focus{outline:none;border-color:var(--blue);}
+.input-unit{font-size:13px;color:var(--gray-400);}
+
+.radio-group{display:flex;flex-direction:column;gap:8px;margin-bottom:14px;}
+.radio-opt{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border:1.5px solid var(--gray-200);border-radius:8px;cursor:pointer;transition:border-color .15s;}
+.radio-opt:hover{border-color:var(--blue);}
+.radio-opt.selected{border-color:var(--blue);background:var(--blue-xlt);}
+.radio-opt input[type=radio]{margin-top:2px;flex-shrink:0;}
+.radio-opt .opt-label{font-size:14px;color:var(--gray-800);}
+
+.btn-check{background:var(--blue);color:#fff;padding:9px 22px;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;margin-top:4px;}
+.btn-check:hover{background:var(--blue-hover);}
+
+.fb{border-radius:8px;padding:12px 16px;font-size:14px;margin-top:12px;display:none;line-height:1.6;}
+.fb.show{display:block;}
+.fb.correct{background:var(--green-lt);border:1px solid var(--green-bdr);color:var(--green-dk);}
+.fb.wrong{background:var(--red-lt);border:1px solid var(--red-bdr);color:var(--red-dk);}
+.fb.info{background:var(--blue-lt);border:1px solid var(--blue-pale);color:var(--navy-text);}
+.think{background:var(--gold-lt);border:1.5px solid var(--gold-bdr);border-radius:8px;padding:12px 16px;margin-top:10px;font-size:13px;line-height:1.6;}
+.think-label{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--amber);margin-bottom:5px;}
+
+.result-card{background:var(--navy);color:#fff;border-radius:10px;padding:22px 24px;display:none;margin-bottom:16px;}
+.result-card.show{display:block;}
+.rc-title{font-size:12px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.06em;margin-bottom:14px;}
+.result-row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.07);font-size:14px;}
+.result-row:last-child{border:none;}
+.result-row .r-label{color:rgba(255,255,255,.65);}
+.result-row .r-value{font-weight:700;color:var(--blue-pale);}
+.sc-nav{display:flex;justify-content:space-between;align-items:center;margin-top:16px;}
+.btn-ghost{background:transparent;border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.7);padding:8px 18px;border-radius:8px;font-size:13px;cursor:pointer;}
+.btn-ghost:hover{border-color:rgba(255,255,255,.5);color:#fff;}
+.btn-ghost:disabled{opacity:.3;cursor:not-allowed;}
+</style>
+</head>
+<body>
+
+<div class="app-header">
+  <span class="app-badge">SCM 352 · M08</span>
+  <h1>Inventory Turns &amp; Days-of-Supply Calculator</h1>
+  <span class="lo-badge">LO8-3</span>
+  <span class="lo-badge">LO8-4</span>
+</div>
+
+<div class="instr-bar">
+  <p><strong>Do this:</strong> Work through 8 scenarios — 4 using unit-based data, 4 using company financial statements. For each, compute days-of-supply and inventory turns step by step. Switch modes with the buttons below.</p>
+  <p style="margin-top:5px;"><strong>Gate 2 connection:</strong> Gate 2 Q3 (unit-based), Q4 (multi-period conversion), and Q5 (financial statements) test exactly these calculations. The most common errors — using annual rate as a daily rate, and using revenue instead of COGS — are highlighted in the feedback for each scenario.</p>
+</div>
+
+<div class="mode-bar">
+  <button class="mode-btn active" id="btn-unit" onclick="setMode('unit')">Unit Mode (Scenarios 1–4)</button>
+  <button class="mode-btn" id="btn-fin" onclick="setMode('financial')">Financial Statement Mode (Scenarios 5–8)</button>
+  <span class="mode-label">Select mode, then choose a scenario</span>
+</div>
+
+<div class="app-body">
+
+  <div class="card">
+    <div class="card-label" id="mode-label">Unit Mode — Given inventory and flow rate in physical units</div>
+    <div class="scenario-selector" id="sc-selector"></div>
+    <div class="progress-wrap"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
+    <div class="sc-panel" id="sc-panel"><!-- populated by JS --></div>
+  </div>
+
+  <!-- Step blocks — populated/reset by JS -->
+  <div id="step1" class="step-block unlocked">
+    <div class="step-hdr"><div class="step-num">1</div><div class="step-title" id="s1-title"></div></div>
+    <div class="step-prompt" id="s1-prompt"></div>
+    <div class="formula" id="s1-formula"></div>
+    <div id="s1-fields"></div>
+    <button class="btn-check" onclick="checkStep(1)">Check</button>
+    <div class="fb" id="fb1"></div>
+  </div>
+
+  <div id="step2" class="step-block">
+    <div class="step-hdr"><div class="step-num">2</div><div class="step-title" id="s2-title"></div></div>
+    <div class="step-prompt" id="s2-prompt"></div>
+    <div class="formula" id="s2-formula"></div>
+    <div id="s2-fields"></div>
+    <button class="btn-check" onclick="checkStep(2)">Check</button>
+    <div class="fb" id="fb2"></div>
+  </div>
+
+  <div id="step3" class="step-block">
+    <div class="step-hdr"><div class="step-num">3</div><div class="step-title" id="s3-title"></div></div>
+    <div class="step-prompt" id="s3-prompt"></div>
+    <div class="formula" id="s3-formula"></div>
+    <div id="s3-fields"></div>
+    <button class="btn-check" onclick="checkStep(3)">Check</button>
+    <div class="fb" id="fb3"></div>
+  </div>
+
+  <div id="step4" class="step-block">
+    <div class="step-hdr"><div class="step-num">4</div><div class="step-title" id="s4-title"></div></div>
+    <div class="step-prompt" id="s4-prompt"></div>
+    <div class="formula" id="s4-formula"></div>
+    <div id="s4-fields"></div>
+    <button class="btn-check" onclick="checkStep(4)">Check</button>
+    <div class="fb" id="fb4"></div>
+  </div>
+
+  <div class="result-card" id="result-card">
+    <div class="rc-title">Scenario Complete — Summary</div>
+    <div id="result-rows"></div>
+    <div style="margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,.08);">
+      <div style="font-size:13px;color:rgba(255,255,255,.45);margin-bottom:10px;">Navigate scenarios</div>
+      <div class="sc-nav">
+        <button class="btn-ghost" id="btn-prev" onclick="navScenario(-1)">← Previous</button>
+        <span id="sc-count" style="font-size:13px;color:rgba(255,255,255,.45);"></span>
+        <button class="btn-ghost" id="btn-next" onclick="navScenario(1)">Next →</button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /app-body -->
+
+<script>
+// ═══════════════════════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════════════════════
+const UNIT = [
+  {
+    id:1, title:'Midvale Auto Parts Distributor', diff:'easy',
+    desc:'Midvale Auto Parts Distributor maintains an average of 4,500 parts in its regional warehouse. The distributor ships 54,000 parts per year to independent repair shops.',
+    params:[
+      {label:'Average inventory',value:'4,500',unit:'parts'},
+      {label:'Annual flow rate',value:'54,000',unit:'parts/year'}
+    ],
+    steps:[
+      {
+        title:'Convert to Daily Flow Rate',
+        prompt:'Before computing days-of-supply, convert the annual flow rate to a daily rate. (The flow rate is given per year — divide by 365.)',
+        formula:'Daily rate = Annual rate ÷ 365',
+        fields:[{id:'f1a',label:'Daily flow rate',ans:147.945,tol:1.5,unit:'parts/day'}],
+        correctHtml:'Daily rate = 54,000 ÷ 365 = <strong>147.9 parts/day</strong>.',
+        wrongHtml:'Check: Annual rate ÷ 365 = 54,000 ÷ 365. The result should be around 147–148 parts/day.',
+        intercept:{test:v=>v>1000,msg:'Your answer is much larger than expected. The annual rate (54,000) should be divided by 365 to get a daily rate. Are you using 54,000 directly?'}
+      },
+      {
+        title:'Days-of-Supply',
+        prompt:'Using the daily flow rate from Step 1, compute days-of-supply.',
+        formula:'DoS = Inventory ÷ Daily flow rate',
+        fields:[{id:'f2a',label:'Days-of-supply',ans:30.42,tol:0.5,unit:'days'}],
+        correctHtml:'DoS = 4,500 ÷ 147.9 = <strong>30.4 days</strong>. Midvale holds about one month of parts supply.',
+        wrongHtml:'DoS = Inventory ÷ Daily rate = 4,500 ÷ 147.9. Check your Step 1 daily rate and try again.'
+      },
+      {
+        title:'Annual Inventory Turns',
+        prompt:'Compute annual inventory turns.',
+        formula:'Turns = Annual flow rate ÷ Average inventory',
+        fields:[{id:'f3a',label:'Annual turns',ans:12.0,tol:0.1,unit:'turns/year'}],
+        correctHtml:'Annual turns = 54,000 ÷ 4,500 = <strong>12.0 turns/year</strong>. Cross-check: 365 ÷ 12.0 = 30.4 days ✓',
+        wrongHtml:'Annual turns = Annual rate ÷ Inventory = 54,000 ÷ 4,500.',
+        think:'If Midvale cut average inventory to 3,000 parts (same flow rate): turns = 54,000/3,000 = 18.0 and DoS = 4,500/147.9 × (3,000/4,500) = 20.3 days. This type of recalculation appears in Case Part 2(e) for Riverside.'
+      },
+      {
+        title:'Weekly Inventory Turns',
+        prompt:'Convert annual turns to weekly turns.',
+        formula:'Weekly turns = Annual turns ÷ 52',
+        fields:[{id:'f4a',label:'Weekly turns',ans:0.2308,tol:0.005,unit:'turns/week'}],
+        correctHtml:'Weekly turns = 12.0 ÷ 52 = <strong>0.231 turns/week</strong>. Important: 1 ÷ 0.231 = 4.33 — this is WEEKS of supply, not days. Multiply by 7 to convert: 4.33 × 7 = 30.3 days ≈ 30.4 ✓',
+        wrongHtml:'Weekly turns = Annual turns ÷ 52 weeks/year = 12.0 ÷ 52.',
+        think:'Gate 2 Q4 asks you to evaluate a manager\'s statement about "days on the shelf" derived from weekly turns. 1/weekly turns gives WEEKS, not days — the most common time-unit conversion error.'
+      }
+    ],
+    summary:[
+      {label:'Daily flow rate',val:'147.9 parts/day'},
+      {label:'Days-of-supply',val:'30.4 days'},
+      {label:'Annual turns',val:'12.0 turns/year'},
+      {label:'Weekly turns',val:'0.231 turns/week'}
+    ]
+  },
+  {
+    id:2, title:'Regional Blood Bank', diff:'medium',
+    desc:'A regional blood bank maintains an average of 180 units of plasma in cold storage. The blood bank distributes 6 units per day across hospitals in its service region. (Note: the flow rate here is already given as a daily rate.)',
+    params:[
+      {label:'Average inventory',value:'180',unit:'plasma units'},
+      {label:'Daily flow rate',value:'6',unit:'units/day (given directly)'}
+    ],
+    steps:[
+      {
+        title:'Identify the Daily Flow Rate',
+        prompt:'The flow rate in this scenario is given as a daily rate — no conversion needed. Enter the daily rate as given in the scenario data above.',
+        formula:'Daily rate = (given directly — no conversion needed)',
+        fields:[{id:'f1a',label:'Daily flow rate',ans:6,tol:0.1,unit:'units/day'}],
+        correctHtml:'The daily rate is <strong>6 units/day</strong> — no conversion needed because the rate was given per day. Step 1 tests whether you recognize when a conversion is and is not required.',
+        wrongHtml:'Re-read the scenario: the flow rate is given as 6 units/day — no conversion to daily is needed. Enter 6.',
+        intercept:{test:v=>v>100,msg:'Check the flow rate unit in the scenario. It is already given per day — no conversion needed.'}
+      },
+      {
+        title:'Days-of-Supply',
+        prompt:'Compute days-of-supply.',
+        formula:'DoS = Inventory ÷ Daily flow rate',
+        fields:[{id:'f2a',label:'Days-of-supply',ans:30,tol:0.3,unit:'days'}],
+        correctHtml:'DoS = 180 ÷ 6 = <strong>30.0 days</strong>. The blood bank holds 30 days of plasma supply.',
+        wrongHtml:'DoS = 180 ÷ 6 = 30 days.'
+      },
+      {
+        title:'Annual Inventory Turns',
+        prompt:'Convert to annual turns. Hint: multiply daily rate by 365 to get annual flow, then divide by average inventory.',
+        formula:'Annual turns = (Daily rate × 365) ÷ Inventory',
+        fields:[{id:'f3a',label:'Annual turns',ans:12.167,tol:0.15,unit:'turns/year'}],
+        correctHtml:'Annual turns = (6 × 365) ÷ 180 = 2,190 ÷ 180 = <strong>12.2 turns/year</strong>. Or equivalently: 365 ÷ 30 = 12.2 ✓',
+        wrongHtml:'Annual turns = (Daily rate × 365) ÷ Average inventory = (6 × 365) ÷ 180.',
+        think:'Plasma has a shelf life of about 42 days. A 30-day DoS is within safety limits but leaves limited buffer. Holding cost for plasma includes significant refrigeration (storage) and expiration (spoilage) components — much higher holding cost than a durable auto part with the same turns rate.'
+      },
+      {
+        title:'Weekly Inventory Turns',
+        prompt:'Convert annual turns to weekly turns.',
+        formula:'Weekly turns = Annual turns ÷ 52',
+        fields:[{id:'f4a',label:'Weekly turns',ans:0.2340,tol:0.005,unit:'turns/week'}],
+        correctHtml:'Weekly turns = 12.167 ÷ 52 = <strong>0.234 turns/week</strong>.',
+        wrongHtml:'Weekly turns = Annual turns ÷ 52.'
+      }
+    ],
+    summary:[
+      {label:'Daily flow rate',val:'6 units/day (no conversion needed)'},
+      {label:'Days-of-supply',val:'30.0 days'},
+      {label:'Annual turns',val:'12.2 turns/year'},
+      {label:'Weekly turns',val:'0.234 turns/week'}
+    ]
+  },
+  {
+    id:3, title:'Northern States Vaccine Cold Storage', diff:'medium',
+    desc:'A state public health department maintains an average of 3,900 vaccine doses in a cold storage facility. The facility ships 150 doses per week to clinics across its service area.',
+    params:[
+      {label:'Average inventory',value:'3,900',unit:'doses'},
+      {label:'Weekly flow rate',value:'150',unit:'doses/week'}
+    ],
+    steps:[
+      {
+        title:'Convert Weekly Rate to Daily Rate',
+        prompt:'The flow rate is given per week. Convert it to a daily rate by dividing by 7.',
+        formula:'Daily rate = Weekly rate ÷ 7',
+        fields:[{id:'f1a',label:'Daily flow rate',ans:21.43,tol:0.3,unit:'doses/day'}],
+        correctHtml:'Daily rate = 150 ÷ 7 = <strong>21.43 doses/day</strong>.',
+        wrongHtml:'Daily rate = Weekly rate ÷ 7 days/week = 150 ÷ 7 ≈ 21.4 doses/day.',
+        intercept:{test:v=>v>500,msg:'Check whether you divided by 7. The flow rate is 150 doses per week, not per day.'}
+      },
+      {
+        title:'Days-of-Supply',
+        prompt:'Using the daily rate from Step 1, compute days-of-supply.',
+        formula:'DoS = Inventory ÷ Daily flow rate',
+        fields:[{id:'f2a',label:'Days-of-supply',ans:182,tol:2,unit:'days'}],
+        correctHtml:'DoS = 3,900 ÷ 21.43 = <strong>182 days</strong> (about 26 weeks). The facility holds 6 months of vaccine supply.',
+        wrongHtml:'DoS = 3,900 ÷ 21.43 = 182 days. Check your daily rate from Step 1.'
+      },
+      {
+        title:'Annual Inventory Turns',
+        prompt:'Compute annual inventory turns from the annual flow rate.',
+        formula:'Annual turns = (Weekly rate × 52) ÷ Inventory',
+        fields:[{id:'f3a',label:'Annual turns',ans:2.0,tol:0.05,unit:'turns/year'}],
+        correctHtml:'Annual turns = (150 × 52) ÷ 3,900 = 7,800 ÷ 3,900 = <strong>2.0 turns/year</strong>. Or: 365 ÷ 182 = 2.0 ✓',
+        wrongHtml:'Annual turns = (Weekly rate × 52) ÷ Average inventory = (150 × 52) ÷ 3,900.'
+      },
+      {
+        title:'Weekly Inventory Turns',
+        prompt:'Compute weekly turns — then check what 1/weekly turns gives you.',
+        formula:'Weekly turns = Weekly rate ÷ Inventory',
+        fields:[{id:'f4a',label:'Weekly turns',ans:0.03846,tol:0.003,unit:'turns/week'}],
+        correctHtml:'Weekly turns = 150 ÷ 3,900 = <strong>0.0385 turns/week</strong>. Now: 1 ÷ 0.0385 = 26.0 — that is 26 WEEKS of supply (= 182 days, not 26 days). This is Gate 2 Q4\'s key trap: the reciprocal of weekly turns is always WEEKS, never days.',
+        wrongHtml:'Weekly turns = 150 ÷ 3,900 = 0.0385, or equivalently: Annual turns ÷ 52 = 2.0 ÷ 52 = 0.0385.',
+        think:'A manager who reports "we have 26 days of supply" based on 1/weekly turns would be wrong by a factor of 7. This exact mistake is tested in Gate 2 Q4 part (d). The correct days-of-supply is 182 days.'
+      }
+    ],
+    summary:[
+      {label:'Daily flow rate',val:'21.4 doses/day'},
+      {label:'Days-of-supply',val:'182 days (26 weeks)'},
+      {label:'Annual turns',val:'2.0 turns/year'},
+      {label:'Weekly turns',val:'0.0385 turns/week (1/0.0385 = 26 weeks, not 26 days)'}
+    ]
+  },
+  {
+    id:4, title:'Eastfield University Bookstore', diff:'hard',
+    desc:'Eastfield University Bookstore maintains an average of 3,250 books in inventory throughout the academic year. The bookstore sells 26,000 books annually. Compute all three time-period turns conversions for this scenario.',
+    params:[
+      {label:'Average inventory',value:'3,250',unit:'books'},
+      {label:'Annual flow rate',value:'26,000',unit:'books/year'}
+    ],
+    steps:[
+      {
+        title:'Daily Rate and Days-of-Supply',
+        prompt:'Convert the annual flow rate to a daily rate, then compute days-of-supply.',
+        formula:'Daily rate = Annual rate ÷ 365 │ DoS = Inventory ÷ Daily rate',
+        fields:[
+          {id:'f1a',label:'Daily flow rate',ans:71.23,tol:0.8,unit:'books/day'},
+          {id:'f1b',label:'Days-of-supply',ans:45.6,tol:0.5,unit:'days'}
+        ],
+        correctHtml:'Daily rate = 26,000 ÷ 365 = <strong>71.23 books/day</strong>. DoS = 3,250 ÷ 71.23 = <strong>45.6 days</strong>. The bookstore holds about 6.5 weeks of inventory on average.',
+        wrongHtml:'Daily rate = 26,000 ÷ 365. DoS = 3,250 ÷ (daily rate). Check both calculations.'
+      },
+      {
+        title:'Annual Inventory Turns',
+        prompt:'Compute annual inventory turns.',
+        formula:'Annual turns = Annual flow rate ÷ Average inventory',
+        fields:[{id:'f2a',label:'Annual turns',ans:8.0,tol:0.1,unit:'turns/year'}],
+        correctHtml:'Annual turns = 26,000 ÷ 3,250 = <strong>8.0 turns/year</strong>. Cross-check: 365 ÷ 8.0 = 45.6 days ✓',
+        wrongHtml:'Annual turns = 26,000 ÷ 3,250.'
+      },
+      {
+        title:'Monthly Inventory Turns',
+        prompt:'Convert annual turns to monthly turns.',
+        formula:'Monthly turns = Annual turns ÷ 12',
+        fields:[{id:'f3a',label:'Monthly turns',ans:0.6667,tol:0.01,unit:'turns/month'}],
+        correctHtml:'Monthly turns = 8.0 ÷ 12 = <strong>0.667 turns/month</strong>. The bookstore cycles its inventory about once every 1.5 months.',
+        wrongHtml:'Monthly turns = Annual turns ÷ 12 months/year = 8.0 ÷ 12.'
+      },
+      {
+        title:'Weekly Inventory Turns',
+        prompt:'Convert annual turns to weekly turns. Then verify: does 1/weekly turns give weeks or days?',
+        formula:'Weekly turns = Annual turns ÷ 52',
+        fields:[{id:'f4a',label:'Weekly turns',ans:0.1538,tol:0.005,unit:'turns/week'}],
+        correctHtml:'Weekly turns = 8.0 ÷ 52 = <strong>0.154 turns/week</strong>. Check: 1 ÷ 0.154 = 6.5 — that is 6.5 WEEKS of supply = 6.5 × 7 = 45.5 days ≈ 45.6 ✓. Consistent across all time units.',
+        wrongHtml:'Weekly turns = 8.0 ÷ 52.',
+        think:'University bookstores have strong seasonality — most sales in the first two weeks of each semester. The 45.6-day average DoS masks this pattern. A December 31 balance sheet snapshot (after fall semester books have sold) would show very low remaining inventory, making turns look artificially high. This is the "snapshot vs. average" error discussed in Segment 2.'
+      }
+    ],
+    summary:[
+      {label:'Daily flow rate',val:'71.2 books/day'},
+      {label:'Days-of-supply',val:'45.6 days'},
+      {label:'Annual turns',val:'8.0 turns/year'},
+      {label:'Monthly turns',val:'0.667 turns/month'},
+      {label:'Weekly turns',val:'0.154 turns/week'}
+    ]
+  }
+];
+
+const FIN = [
+  {
+    id:5, title:'Sunridge Grocery Co.', diff:'easy',
+    sector:'Grocery / food stores',
+    desc:'Sunridge Grocery Co. is a publicly traded grocery chain. The following figures are from its most recent annual report. Compute inventory turns and benchmark against Table 10.1 from Chapter 10.',
+    params:[
+      {label:'Net revenue',value:'$3,600M'},
+      {label:'Cost of goods sold (COGS)',value:'$2,880M'},
+      {label:'Net income',value:'$108M'},
+      {label:'Merchandise inventory (balance sheet)',value:'$288M'}
+    ],
+    benchmark:{label:'Food stores (Table 10.1)',turns:10.78,dos:34},
+    wrongTurnsRevenue:12.5,
+    steps:[
+      {
+        title:'Select the Correct Flow Rate',
+        prompt:'Which line item from the annual report should be used as the flow rate (R) in the inventory turns formula? Select one and explain why.',
+        formula:'Turns = Flow Rate ÷ Inventory — but which flow rate?',
+        radio:{
+          name:'flowrate5',
+          options:[
+            {value:'revenue',label:'Net revenue ($3,600M) — total sales dollars billed to customers'},
+            {value:'cogs',label:'Cost of goods sold ($2,880M) — what the company paid to acquire the goods sold'},
+            {value:'ni',label:'Net income ($108M) — profit remaining after all expenses'}
+          ],
+          answer:'cogs'
+        },
+        correctHtml:'COGS ($2,880M) is correct. Merchandise inventory on the balance sheet is recorded in <strong>cost dollars</strong> — what Sunridge paid to acquire the goods. Revenue is in "sales dollars" (includes the retail markup). Little\'s Law requires all variables in the same unit. COGS and inventory are both in cost dollars. Using revenue would overstate turns by $3,600/$2,880 = 25%.',
+        wrongHtml:'Re-read the explanation. The key: inventory on the balance sheet is in cost dollars. Match the flow rate to that unit — use COGS, not revenue or net income.'
+      },
+      {
+        title:'Compute Annual Turns and Days-of-Supply',
+        prompt:'Using COGS as the flow rate, compute annual turns and days-of-supply.',
+        formula:'Turns = COGS ÷ Inventory │ DoS = 365 ÷ Turns',
+        fields:[
+          {id:'f2a',label:'Annual turns',ans:10.0,tol:0.1,unit:'turns/year'},
+          {id:'f2b',label:'Days-of-supply',ans:36.5,tol:0.5,unit:'days'}
+        ],
+        correctHtml:'Turns = $2,880M ÷ $288M = <strong>10.0 turns/year</strong>. DoS = 365 ÷ 10.0 = <strong>36.5 days</strong>. Revenue-based error would give: $3,600/$288 = 12.5 turns / 29.2 days — Sunridge would look 25% faster than it actually is.',
+        wrongHtml:'Turns = COGS ÷ Inventory = $2,880M ÷ $288M. DoS = 365 ÷ Turns.'
+      },
+      {
+        title:'Benchmark Comparison',
+        prompt:'Using Table 10.1 from Chapter 10: food stores average 10.78 turns / 34 days. How does Sunridge compare?',
+        formula:'Benchmark: Food stores = 10.78 turns / 34 days (Table 10.1)',
+        radio:{
+          name:'bench5',
+          options:[
+            {value:'above',label:'Above the benchmark — Sunridge outperforms the food store average'},
+            {value:'below',label:'Below the benchmark — Sunridge holds inventory slightly longer than peers'},
+            {value:'at',label:'At the benchmark — Sunridge is in line with the food store average'}
+          ],
+          answer:'below'
+        },
+        correctHtml:'Sunridge at <strong>10.0 turns / 36.5 days</strong> is slightly below the food store benchmark of 10.78 turns / 34 days. It holds inventory about 2.5 days longer than the sector average. This could reflect a deliberate service-level buffer or a modest efficiency gap — worth investigating but not alarming.',
+        wrongHtml:'Compare Sunridge\'s 10.0 turns to the food store benchmark of 10.78 turns. 10.0 &lt; 10.78, so Sunridge is below the average.'
+      }
+    ],
+    summary:[
+      {label:'Correct flow rate',val:'COGS ($2,880M), not revenue'},
+      {label:'Annual turns',val:'10.0 turns/year'},
+      {label:'Days-of-supply',val:'36.5 days'},
+      {label:'vs. Food stores benchmark (10.78 turns)',val:'Slightly below average'}
+    ]
+  },
+  {
+    id:6, title:'Pinnacle Electronics', diff:'medium',
+    sector:'Consumer electronics retailer',
+    desc:'Pinnacle Electronics is a consumer electronics chain. The following figures are from its most recent annual report. Note the gross margin level — it affects how much the revenue error inflates turns.',
+    params:[
+      {label:'Net revenue',value:'$1,200M'},
+      {label:'Cost of goods sold (COGS)',value:'$840M'},
+      {label:'Net income',value:'$36M'},
+      {label:'Merchandise inventory (balance sheet)',value:'$280M'}
+    ],
+    benchmark:{label:'Radio/TV/electronics retailers (Table 10.1)',turns:4.10,dos:89},
+    wrongTurnsRevenue:4.29,
+    steps:[
+      {
+        title:'Select the Correct Flow Rate',
+        prompt:'Which line item should be used as the flow rate?',
+        formula:'Turns = Flow Rate ÷ Inventory',
+        radio:{
+          name:'flowrate6',
+          options:[
+            {value:'revenue',label:'Net revenue ($1,200M)'},
+            {value:'cogs',label:'Cost of goods sold ($840M)'},
+            {value:'ni',label:'Net income ($36M)'}
+          ],
+          answer:'cogs'
+        },
+        correctHtml:'COGS ($840M) is correct. Inventory is in cost dollars; revenue is in sales dollars. Pinnacle\'s gross margin is ($1,200M − $840M)/$1,200M = 30%. Using revenue gives $1,200/$280 = 4.29 turns — inflated by 43% relative to the correct 3.0 turns.',
+        wrongHtml:'Inventory is recorded at cost. Use COGS to match units.'
+      },
+      {
+        title:'Compute Annual Turns and Days-of-Supply',
+        prompt:'Using COGS as the flow rate, compute annual turns and days-of-supply.',
+        formula:'Turns = COGS ÷ Inventory │ DoS = 365 ÷ Turns',
+        fields:[
+          {id:'f2a',label:'Annual turns',ans:3.0,tol:0.05,unit:'turns/year'},
+          {id:'f2b',label:'Days-of-supply',ans:121.7,tol:1.5,unit:'days'}
+        ],
+        correctHtml:'Turns = $840M ÷ $280M = <strong>3.0 turns/year</strong>. DoS = 365 ÷ 3.0 = <strong>121.7 days</strong>. The revenue-based error (4.29 turns) would have made Pinnacle look above the 4.10 benchmark — when in fact it is below.',
+        wrongHtml:'Turns = $840M ÷ $280M. DoS = 365 ÷ Turns.'
+      },
+      {
+        title:'Benchmark Comparison',
+        prompt:'Electronics benchmark (Table 10.1): 4.10 turns / 89 days. How does Pinnacle compare?',
+        formula:'Benchmark: Electronics retailers = 4.10 turns / 89 days (Table 10.1)',
+        radio:{
+          name:'bench6',
+          options:[
+            {value:'above',label:'Above the benchmark — Pinnacle outperforms electronics peers'},
+            {value:'at',label:'At or near the benchmark — Pinnacle is in line with peers'},
+            {value:'below',label:'Below the benchmark — Pinnacle holds inventory longer than peers'}
+          ],
+          answer:'below'
+        },
+        correctHtml:'Pinnacle at <strong>3.0 turns / 121.7 days</strong> is meaningfully below the electronics benchmark of 4.10 turns / 89 days. It holds inventory about 33 days longer than a typical electronics retailer. In a high-obsolescence industry where new product cycles are rapid, this elevated days-of-supply increases markdown risk.',
+        wrongHtml:'Compare 3.0 turns to 4.10 benchmark. 3.0 &lt; 4.10 → below the benchmark.'
+      }
+    ],
+    summary:[
+      {label:'Correct flow rate',val:'COGS ($840M)'},
+      {label:'Annual turns',val:'3.0 turns/year'},
+      {label:'Days-of-supply',val:'121.7 days'},
+      {label:'vs. Electronics benchmark (4.10 turns)',val:'Below average — holds 33 extra days vs. peers'}
+    ]
+  },
+  {
+    id:7, title:'Whitmore Jewelers', diff:'hard',
+    sector:'Jewelry retailer',
+    desc:'Whitmore Jewelers is a regional jewelry retailer. Jewelry retail has the lowest inventory turns of any retail segment. The COGS vs. revenue error is especially dangerous in high-margin industries.',
+    params:[
+      {label:'Net revenue',value:'$720M'},
+      {label:'Cost of goods sold (COGS)',value:'$504M'},
+      {label:'Net income',value:'$36M'},
+      {label:'Merchandise inventory (balance sheet)',value:'$420M'}
+    ],
+    benchmark:{label:'Jewelry stores (Table 10.1)',turns:1.68,dos:217},
+    wrongTurnsRevenue:1.71,
+    steps:[
+      {
+        title:'Select the Correct Flow Rate',
+        prompt:'Which line item should be used as the flow rate?',
+        formula:'Turns = Flow Rate ÷ Inventory',
+        radio:{
+          name:'flowrate7',
+          options:[
+            {value:'revenue',label:'Net revenue ($720M)'},
+            {value:'cogs',label:'Cost of goods sold ($504M)'},
+            {value:'ni',label:'Net income ($36M)'}
+          ],
+          answer:'cogs'
+        },
+        correctHtml:'COGS ($504M) is correct. Jewelry carries very high gross margins ($720M − $504M = $216M; 30% gross margin). Using revenue gives $720/$420 = 1.71 turns — almost identical to the benchmark of 1.68. The COGS-based answer (1.2 turns) tells a very different story: Whitmore is meaningfully below the benchmark, not at it.',
+        wrongHtml:'Use COGS. Jewelry has a high retail markup — using revenue produces a number that makes Whitmore look close to the benchmark when the true figure is well below it.'
+      },
+      {
+        title:'Compute Annual Turns and Days-of-Supply',
+        prompt:'Using COGS as the flow rate, compute annual turns and days-of-supply.',
+        formula:'Turns = COGS ÷ Inventory │ DoS = 365 ÷ Turns',
+        fields:[
+          {id:'f2a',label:'Annual turns',ans:1.2,tol:0.05,unit:'turns/year'},
+          {id:'f2b',label:'Days-of-supply',ans:304.2,tol:3,unit:'days'}
+        ],
+        correctHtml:'Turns = $504M ÷ $420M = <strong>1.2 turns/year</strong>. DoS = 365 ÷ 1.2 = <strong>304.2 days</strong>. Whitmore holds over 10 months of jewelry inventory on average.',
+        wrongHtml:'Turns = $504M ÷ $420M. DoS = 365 ÷ Turns.'
+      },
+      {
+        title:'Benchmark Comparison',
+        prompt:'Jewelry benchmark (Table 10.1): 1.68 turns / 217 days. How does Whitmore compare?',
+        formula:'Benchmark: Jewelry stores = 1.68 turns / 217 days (Table 10.1)',
+        radio:{
+          name:'bench7',
+          options:[
+            {value:'above',label:'Above the benchmark — Whitmore outperforms jewelry peers'},
+            {value:'at',label:'At or near the benchmark — Whitmore is in line with peers'},
+            {value:'below',label:'Below the benchmark — Whitmore holds inventory longer than peers'}
+          ],
+          answer:'below'
+        },
+        correctHtml:'Whitmore at <strong>1.2 turns / 304 days</strong> is well below the jewelry benchmark of 1.68 turns / 217 days — holding inventory 87 days longer than a typical jeweler. The revenue-based error (1.71 turns) would have suggested Whitmore is at the benchmark — exactly the wrong conclusion.',
+        wrongHtml:'Compare 1.2 turns to 1.68 benchmark. 1.2 &lt; 1.68 → below average.'
+      }
+    ],
+    summary:[
+      {label:'Correct flow rate',val:'COGS ($504M) — not revenue'},
+      {label:'Annual turns',val:'1.2 turns/year'},
+      {label:'Days-of-supply',val:'304.2 days (over 10 months)'},
+      {label:'vs. Jewelry benchmark (1.68 turns)',val:'Below average — holds 87 extra days vs. peers'}
+    ]
+  },
+  {
+    id:8, title:'Oakdale Pharmacy', diff:'medium',
+    sector:'Drug / pharmacy chain',
+    desc:'Oakdale Pharmacy operates a regional chain of drug stores. The drug/pharmacy segment has moderate turns. Compare to the benchmark to evaluate Oakdale\'s performance.',
+    params:[
+      {label:'Net revenue',value:'$1,560M'},
+      {label:'Cost of goods sold (COGS)',value:'$1,248M'},
+      {label:'Net income',value:'$62.4M'},
+      {label:'Merchandise inventory (balance sheet)',value:'$208M'}
+    ],
+    benchmark:{label:'Drug and proprietary stores (Table 10.1)',turns:5.26,dos:69},
+    wrongTurnsRevenue:7.5,
+    steps:[
+      {
+        title:'Select the Correct Flow Rate',
+        prompt:'Which line item should be used as the flow rate?',
+        formula:'Turns = Flow Rate ÷ Inventory',
+        radio:{
+          name:'flowrate8',
+          options:[
+            {value:'revenue',label:'Net revenue ($1,560M)'},
+            {value:'cogs',label:'Cost of goods sold ($1,248M)'},
+            {value:'ni',label:'Net income ($62.4M)'}
+          ],
+          answer:'cogs'
+        },
+        correctHtml:'COGS ($1,248M) is correct. Gross margin = ($1,560M − $1,248M)/$1,560M = 20%. Revenue-based error gives $1,560/$208 = 7.5 turns — 25% inflated relative to the correct 6.0 turns.',
+        wrongHtml:'Use COGS — inventory is in cost dollars.'
+      },
+      {
+        title:'Compute Annual Turns and Days-of-Supply',
+        prompt:'Using COGS as the flow rate, compute annual turns and days-of-supply.',
+        formula:'Turns = COGS ÷ Inventory │ DoS = 365 ÷ Turns',
+        fields:[
+          {id:'f2a',label:'Annual turns',ans:6.0,tol:0.1,unit:'turns/year'},
+          {id:'f2b',label:'Days-of-supply',ans:60.8,tol:0.8,unit:'days'}
+        ],
+        correctHtml:'Turns = $1,248M ÷ $208M = <strong>6.0 turns/year</strong>. DoS = 365 ÷ 6.0 = <strong>60.8 days</strong>.',
+        wrongHtml:'Turns = $1,248M ÷ $208M. DoS = 365 ÷ Turns.'
+      },
+      {
+        title:'Benchmark Comparison',
+        prompt:'Drug/proprietary stores benchmark (Table 10.1): 5.26 turns / 69 days. How does Oakdale compare?',
+        formula:'Benchmark: Drug and proprietary stores = 5.26 turns / 69 days (Table 10.1)',
+        radio:{
+          name:'bench8',
+          options:[
+            {value:'above',label:'Above the benchmark — Oakdale outperforms drug store peers'},
+            {value:'at',label:'At or near the benchmark — Oakdale is in line with peers'},
+            {value:'below',label:'Below the benchmark — Oakdale holds inventory longer than peers'}
+          ],
+          answer:'above'
+        },
+        correctHtml:'Oakdale at <strong>6.0 turns / 60.8 days</strong> is above the drug store benchmark of 5.26 turns / 69 days. It cycles inventory faster than the sector average — holding inventory about 8 days less than a typical drug retailer. This may reflect efficient supply chain management or a lean stocking strategy.',
+        wrongHtml:'Compare 6.0 turns to 5.26 benchmark. 6.0 &gt; 5.26 → above the benchmark.'
+      }
+    ],
+    summary:[
+      {label:'Correct flow rate',val:'COGS ($1,248M)'},
+      {label:'Annual turns',val:'6.0 turns/year'},
+      {label:'Days-of-supply',val:'60.8 days'},
+      {label:'vs. Drug stores benchmark (5.26 turns)',val:'Above average — efficient inventory management'}
+    ]
+  }
+];
+
+// ═══════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════
+let mode = 'unit';
+let scIdx = 0;
+let stepsDone = [false,false,false,false];
+let scenarioDone = {};  // keyed by mode+scIdx
+
+function activeList(){ return mode==='unit' ? UNIT : FIN; }
+function activeScenario(){ return activeList()[scIdx]; }
+function doneKey(){ return mode+scIdx; }
+
+// ═══════════════════════════════════════════════════════
+// MODE
+// ═══════════════════════════════════════════════════════
+function setMode(m){
+  mode = m;
+  scIdx = 0;
+  document.getElementById('btn-unit').classList.toggle('active', m==='unit');
+  document.getElementById('btn-fin').classList.toggle('active', m==='financial');
+  document.getElementById('mode-label').textContent = m==='unit'
+    ? 'Unit Mode — Given inventory and flow rate in physical units'
+    : 'Financial Statement Mode — Given company income statement and balance sheet';
+  buildSelector();
+  loadScenario(0);
+}
+
+// ═══════════════════════════════════════════════════════
+// SCENARIO SELECTOR
+// ═══════════════════════════════════════════════════════
+function buildSelector(){
+  const list = activeList();
+  const div = document.getElementById('sc-selector');
+  div.innerHTML = '';
+  list.forEach((s,i)=>{
+    const b = document.createElement('button');
+    b.className = 'sc-btn' + (i===0?' active':'') + (scenarioDone[mode+i]?' done':'');
+    b.textContent = s.id + ' — ' + s.title;
+    b.onclick = ()=>loadScenario(i);
+    b.id = 'scbtn'+i;
+    div.appendChild(b);
+  });
+}
+
+function updateSelectorActive(){
+  activeList().forEach((_,i)=>{
+    const b = document.getElementById('scbtn'+i);
+    if(!b) return;
+    b.className = 'sc-btn' + (i===scIdx?' active':'') + (scenarioDone[mode+i]?' done':'');
+  });
+}
+
+// ═══════════════════════════════════════════════════════
+// LOAD SCENARIO
+// ═══════════════════════════════════════════════════════
+function loadScenario(idx){
+  scIdx = idx;
+  stepsDone = [false,false,false,false];
+  const s = activeScenario();
+
+  // Scenario panel
+  const paramsHtml = s.params.map(p=>`
+    <div class="sp-param">
+      <div class="p-label">${p.label}</div>
+      <div class="p-value">${p.value}</div>
+      ${p.unit?`<div class="p-unit">${p.unit}</div>`:''}
+    </div>`).join('');
+  document.getElementById('sc-panel').innerHTML = `
+    <div class="sp-title">Scenario ${s.id} · ${s.sector||s.diff.charAt(0).toUpperCase()+s.diff.slice(1)}</div>
+    <div class="sp-desc">${s.desc}</div>
+    <div class="sp-params">${paramsHtml}</div>`;
+
+  // Reset all 4 step blocks
+  for(let i=1;i<=4;i++){
+    const el = document.getElementById('step'+i);
+    el.className = 'step-block' + (i===1?' unlocked':'');
+    clearFb(i);
+  }
+
+  // Render step content
+  const steps = s.steps;
+  for(let i=0;i<4;i++){
+    if(i>=steps.length){
+      document.getElementById('step'+(i+1)).style.display='none';
+    } else {
+      document.getElementById('step'+(i+1)).style.display='';
+      renderStep(i+1, steps[i], s);
+    }
+  }
+
+  document.getElementById('result-card').classList.remove('show');
+  updateProgress(0);
+  updateSelectorActive();
+}
+
+function renderStep(num, step, scenario){
+  document.getElementById('s'+num+'-title').textContent = step.title;
+  document.getElementById('s'+num+'-prompt').textContent = step.prompt;
+  document.getElementById('s'+num+'-formula').textContent = step.formula||'';
+
+  const fieldsDiv = document.getElementById('s'+num+'-fields');
+
+  // Radio group
+  if(step.radio){
+    const r = step.radio;
+    const opts = r.options.map(o=>`
+      <label class="radio-opt" id="ropt-${r.name}-${o.value}" onclick="selectRadio('${r.name}','${o.value}')">
+        <input type="radio" name="${r.name}" value="${o.value}">
+        <span class="opt-label">${o.label}</span>
+      </label>`).join('');
+    fieldsDiv.innerHTML = `<div class="radio-group">${opts}</div>`;
+  }
+
+  // Numeric fields
+  if(step.fields){
+    fieldsDiv.innerHTML = step.fields.map(f=>`
+      <div class="input-row">
+        <label>${f.label}</label>
+        <input class="num-input" type="number" id="${f.id}" step="any" placeholder="Enter value">
+        <span class="input-unit">${f.unit||''}</span>
+      </div>`).join('');
+  }
+}
+
+function selectRadio(name, value){
+  document.querySelectorAll(`[id^="ropt-${name}-"]`).forEach(el=>{
+    el.classList.toggle('selected', el.id === `ropt-${name}-${value}`);
+  });
+  const inp = document.querySelector(`input[name="${name}"][value="${value}"]`);
+  if(inp) inp.checked = true;
+}
+
+// ═══════════════════════════════════════════════════════
+// CHECK STEP
+// ═══════════════════════════════════════════════════════
+function checkStep(num){
+  const s = activeScenario();
+  const step = s.steps[num-1];
+  let pass = false;
+  let errorMsg = null;
+
+  // Validate radio
+  if(step.radio){
+    const r = step.radio;
+    const inp = document.querySelector(`input[name="${r.name}"]:checked`);
+    if(!inp){ showFb(num,'info','Select an option first.'); return; }
+    pass = inp.value === r.answer;
+  }
+
+  // Validate numeric fields
+  if(step.fields){
+    let allPass = true;
+    let msgs = [];
+    for(const f of step.fields){
+      const el = document.getElementById(f.id);
+      const v = parseFloat(el.value);
+      if(isNaN(v)){ showFb(num,'info','Enter a value in all fields.'); return; }
+      if(step.intercept && step.intercept.test && step.intercept.test(v)){
+        errorMsg = step.intercept.msg;
+        allPass = false; break;
+      }
+      if(Math.abs(v - f.ans) > f.tol){
+        allPass = false;
+        msgs.push(`${f.label}: expected ~${f.ans.toFixed(f.ans<1?3:1)}${f.unit?(' '+f.unit):''}`);
+      }
+    }
+    if(errorMsg){ showFb(num,'wrong',`<strong>Heads-up:</strong> ${errorMsg}`); return; }
+    pass = allPass;
+    if(!pass){ showFb(num,'wrong',step.wrongHtml + (msgs.length?`<br><span style="font-size:12px;color:var(--gray-600)">${msgs.join('; ')}</span>`:'')); return; }
+  }
+
+  if(pass){
+    showFb(num,'correct',step.correctHtml + (step.think?`<div class="think"><div class="think-label">Think Deeper</div>${step.think}</div>`:''));
+    markDone(num);
+    if(num < s.steps.length){
+      unlockStep(num+1);
+    } else {
+      scenarioDone[doneKey()] = true;
+      updateSelectorActive();
+      showResult(s);
+    }
+  } else {
+    showFb(num,'wrong',step.wrongHtml||'Check your calculation and try again.');
+  }
+}
+
+function showFb(num,type,html){
+  const el = document.getElementById('fb'+num);
+  el.className='fb '+type+' show';
+  el.innerHTML=html;
+}
+function clearFb(num){ const el=document.getElementById('fb'+num); el.className='fb'; el.innerHTML=''; }
+
+function markDone(num){
+  stepsDone[num-1]=true;
+  document.getElementById('step'+num).classList.add('done');
+  updateProgress(stepsDone.filter(Boolean).length);
+}
+
+function unlockStep(num){
+  document.getElementById('step'+num).classList.add('unlocked');
+  document.getElementById('step'+num).scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function updateProgress(done){
+  const total = activeScenario().steps.length;
+  document.getElementById('prog-fill').style.width = (total>0?(done/total*100):0)+'%';
+}
+
+// ═══════════════════════════════════════════════════════
+// RESULT CARD
+// ═══════════════════════════════════════════════════════
+function showResult(s){
+  const rows = s.summary.map(r=>`
+    <div class="result-row">
+      <span class="r-label">${r.label}</span>
+      <span class="r-value">${r.val}</span>
+    </div>`).join('');
+
+  const list = activeList();
+  const card = document.getElementById('result-card');
+  card.querySelector('#result-rows').innerHTML = rows;
+  document.getElementById('sc-count').textContent = `Scenario ${scIdx+1} of ${list.length}`;
+  document.getElementById('btn-prev').disabled = scIdx===0;
+  document.getElementById('btn-next').disabled = scIdx===list.length-1;
+  card.classList.add('show');
+  card.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function navScenario(dir){
+  const list = activeList();
+  const next = scIdx+dir;
+  if(next>=0 && next<list.length) loadScenario(next);
+}
+
+// ═══════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════
+buildSelector();
+loadScenario(0);
+</script>
+</body>
+</html>

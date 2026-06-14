@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Discussion Rubric — M08 — SCM 352</title>
+<style>
+:root{--navy:#1a3a5c;--blue:#2563a8;--blue-lt:#dbeafe;--blue-xlt:#eff6ff;--gold:#f59e0b;--gold-lt:#fffbeb;--gold-bdr:#fde68a;--green:#16a34a;--green-lt:#f0fdf4;--green-bdr:#bbf7d0;--red:#dc2626;--red-lt:#fef2f2;--red-bdr:#fecaca;--amber:#d97706;--amber-lt:#fffbeb;--amber-bdr:#fde68a;--orange:#ea580c;--orange-lt:#fff7ed;--orange-bdr:#fed7aa;--gray-50:#f9fafb;--gray-100:#f3f4f6;--gray-200:#e5e7eb;--gray-400:#9ca3af;--gray-600:#4b5563;--gray-700:#374151;--gray-800:#1f2937;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--gray-50);color:var(--gray-800);font-size:13px;line-height:1.5;}
+.pg-header{background:var(--navy);color:white;padding:18px 28px;display:flex;align-items:center;gap:14px;}
+.badge{background:var(--gold);color:var(--navy);font-weight:700;font-size:10px;padding:3px 8px;border-radius:4px;letter-spacing:.06em;text-transform:uppercase;flex-shrink:0;}
+.pg-header h1{font-size:17px;font-weight:700;}
+.pg-header p{font-size:12px;color:rgba(255,255,255,.6);margin-top:3px;}
+.hdr-right{margin-left:auto;font-size:12px;color:rgba(255,255,255,.5);text-align:right;line-height:1.7;}
+.pg-body{max-width:1060px;margin:0 auto;padding:24px 20px 60px;display:flex;flex-direction:column;gap:28px;}
+.sec-heading{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--gray-400);padding-bottom:10px;border-bottom:1px solid var(--gray-200);margin-bottom:4px;}
+.alert{border-radius:10px;padding:12px 16px;font-size:13px;line-height:1.6;display:flex;gap:10px;align-items:flex-start;}
+.alert-icon{font-size:17px;flex-shrink:0;margin-top:1px;}
+.alert-body{flex:1;}
+.alert-body strong{display:block;margin-bottom:3px;}
+.alert-red{background:var(--red-lt);border:1.5px solid var(--red-bdr);}
+.alert-gold{background:var(--gold-lt);border:1.5px solid var(--gold-bdr);}
+.alert-blue{background:var(--blue-xlt);border:1.5px solid #bfdbfe;}
+.score-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;}
+.score-card{background:white;border:1px solid var(--gray-200);border-radius:10px;padding:14px 16px;text-align:center;}
+.score-card .label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--gray-400);margin-bottom:6px;}
+.score-card .pts{font-size:28px;font-weight:800;color:var(--navy);letter-spacing:-.04em;line-height:1;}
+.score-card .sub{font-size:11px;color:var(--gray-600);margin-top:4px;}
+.rubric-wrap{border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;background:white;}
+.rubric-table{width:100%;border-collapse:collapse;font-size:12px;}
+.rubric-table thead tr th{padding:9px 11px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;vertical-align:bottom;}
+.th-crit{background:var(--navy);color:white;}
+.th-full{background:var(--green);color:white;}
+.th-part{background:var(--amber);color:white;}
+.th-min{background:var(--orange);color:white;}
+.th-none{background:var(--red);color:white;}
+.pts-label{display:block;font-size:14px;font-weight:800;margin-bottom:2px;letter-spacing:-.02em;}
+.rubric-table td{padding:10px 11px;border-bottom:1px solid var(--gray-100);border-right:1px solid var(--gray-100);vertical-align:top;line-height:1.5;}
+.rubric-table tr:last-child td{border-bottom:none;}
+.rubric-table td:last-child{border-right:none;}
+.td-crit{background:var(--gray-50);font-weight:700;color:var(--navy);font-size:12.5px;}
+.td-full{background:var(--green-lt);}
+.td-part{background:var(--amber-lt);}
+.td-min{background:var(--orange-lt);}
+.td-none{background:var(--red-lt);}
+.crit-pts{display:inline-block;margin-top:5px;font-size:11px;font-weight:700;padding:2px 8px;border-radius:100px;background:var(--blue-lt);color:var(--navy);}
+.crit-lo{display:block;font-size:10px;font-weight:600;color:var(--gray-400);margin-top:3px;letter-spacing:.03em;}
+.cell-pts{font-weight:800;font-size:12.5px;margin-bottom:4px;display:block;}
+.td-full .cell-pts{color:var(--green);}
+.td-part .cell-pts{color:var(--amber);}
+.td-min .cell-pts{color:var(--orange);}
+.td-none .cell-pts{color:var(--red);}
+.notes-list{display:flex;flex-direction:column;gap:10px;}
+.notes-list li{display:flex;gap:10px;font-size:13px;line-height:1.55;color:var(--gray-700);}
+.note-num{width:22px;height:22px;border-radius:50%;background:var(--navy);color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.speed-table{width:100%;border-collapse:collapse;font-size:12.5px;}
+.speed-table th{background:var(--navy);color:white;padding:8px 12px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;}
+.speed-table td{padding:8px 12px;border-bottom:1px solid var(--gray-100);}
+.speed-table tr:last-child td{border-bottom:none;}
+</style>
+</head>
+<body>
+
+<div class="pg-header">
+  <div class="badge">SCM 352 · M08</div>
+  <div>
+    <h1>Grading Rubric — Discussion: Inventory Everywhere</h1>
+    <p>Instructor use only · SpeedGrader reference · Do not distribute to students</p>
+  </div>
+  <div class="hdr-right">30 pts total<br>13% of Module M08</div>
+</div>
+
+<div class="pg-body">
+
+  <div class="score-grid">
+    <div class="score-card"><div class="label">Initial Post</div><div class="pts">30</div><div class="sub">4 criteria · No reply required</div></div>
+    <div class="score-card"><div class="label">Total</div><div class="pts">30</div><div class="sub">13% of Module grade</div></div>
+    <div class="score-card"><div class="label">Grading Time</div><div class="pts" style="font-size:20px;">2–4</div><div class="sub">min per student</div></div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:12px;">
+    <div class="alert alert-red">
+      <div class="alert-icon">🚫</div>
+      <div class="alert-body">
+        <strong>Naming Penalty — Initial Post</strong>
+        If a student names their business in their initial post AND a classmate could identify it from the name, apply a <strong>10-point deduction</strong> from the final post score. Exception: large, publicly traded chains described by industry descriptor only (e.g., "a major national pharmacy chain") do not trigger the penalty even if the company is identifiable. Apply before criterion scoring.
+      </div>
+    </div>
+    <div class="alert alert-gold">
+      <div class="alert-icon">⚠️</div>
+      <div class="alert-body">
+        <strong>Prohibited Businesses — Award 0 until corrected</strong>
+        Posts using the following should receive 0 and a resubmit request: Monitor Sugar, Kroger, Macy's, Costco, Walmart, Target, Home Depot, any textbook example from Chapter 10, any example from M08 lecture narration or slide deck. If a student's organization is not from this list but appears in their post without a current-week interaction noted, dock Part 4 Criterion 4 to Minimal at most.
+      </div>
+    </div>
+    <div class="alert alert-blue">
+      <div class="alert-icon">ℹ️</div>
+      <div class="alert-body">
+        <strong>Defensible Alternatives</strong>
+        Inventory type classification and holding cost component identification have legitimate ambiguity. Award full credit for either classification with a correct justification. If no justification is provided, award full credit only for the primary expected answer. Example: Raw material vs. finished goods for a "received but unissued" item — both can be correct; justification determines whether it's full or partial credit.
+      </div>
+    </div>
+  </div>
+
+  <!-- INITIAL POST RUBRIC -->
+  <div>
+    <div class="sec-heading">Initial Post Rubric &nbsp;·&nbsp; 30 points &nbsp;·&nbsp; No reply required</div>
+    <div class="rubric-wrap" style="margin-top:16px;">
+      <table class="rubric-table">
+        <colgroup><col style="width:18%"><col style="width:22%"><col style="width:20%"><col style="width:20%"><col style="width:20%"></colgroup>
+        <thead>
+          <tr>
+            <th class="th-crit">Criterion</th>
+            <th class="th-full"><span class="pts-label">Full Credit</span>All elements present</th>
+            <th class="th-part"><span class="pts-label">Partial</span>Missing one element</th>
+            <th class="th-min"><span class="pts-label">Minimal</span>Vague / incomplete</th>
+            <th class="th-none"><span class="pts-label">No Credit</span>Missing or wrong framework</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="td-crit">
+              1 — Inventory Type &amp; Reason
+              <span class="crit-pts">8 pts</span>
+              <span class="crit-lo">LO8-1 · LO8-2</span>
+            </td>
+            <td class="td-full">
+              <span class="cell-pts">8 pts</span>
+              Correctly classifies inventory as raw material, WIP, or finished goods (or a justified combination) with a specific product named. Identifies the primary reason from Ch.10's six reasons (flow time, seasonality, batching, buffers, uncertain demand, or pricing) and explains in 2–3 sentences tied to this organization's specific operational context — not a generic statement.
+            </td>
+            <td class="td-part">
+              <span class="cell-pts">6–7 pts</span>
+              Type classification is correct with specific product named. Reason from Ch.10 is identified but explanation is one sentence or could apply to any organization in the industry. OR: reason and explanation are strong but inventory type is ambiguous without justification.
+            </td>
+            <td class="td-min">
+              <span class="cell-pts">3–5 pts</span>
+              Inventory type partially correct or justification missing. Reason uses vague language ("to meet demand," "to avoid running out") without naming one of the six Ch.10 reasons explicitly. OR: only one of the two required elements (type or reason) is attempted.
+            </td>
+            <td class="td-none">
+              <span class="cell-pts">0–2 pts</span>
+              Inventory type misidentified with no justification. AND/OR reason not drawn from Ch.10 framework — answer describes inventory generally without applying classification concepts. Organization described is prohibited.
+            </td>
+          </tr>
+          <tr>
+            <td class="td-crit">
+              2 — Measurement Estimate
+              <span class="crit-pts">8 pts</span>
+              <span class="crit-lo">LO8-3</span>
+            </td>
+            <td class="td-full">
+              <span class="cell-pts">8 pts</span>
+              States a turns or DoS estimate. Sources it explicitly: either cites a Ch.10 Table 10.1 or 10.2 benchmark plus explains why this organization is above/below/at that benchmark, OR shows operational reasoning with an explicit logic chain (e.g., "I observed the shelf being restocked twice weekly — that implies roughly 2× weekly turns = 104/yr"). Names at least one factor that would change the estimate (higher or lower). All three elements present.
+            </td>
+            <td class="td-part">
+              <span class="cell-pts">6–7 pts</span>
+              Estimate provided with source OR adjustment factor, but not both. Example: cites Table 10.1 and gives estimate, but does not name a factor that would change it. OR: gives a well-reasoned estimate without a benchmark citation. Two of three elements present.
+            </td>
+            <td class="td-min">
+              <span class="cell-pts">3–5 pts</span>
+              Estimate provided as a bare assertion with no sourcing or reasoning ("About 6 turns/year" with no table citation, no operational logic, no adjustment factor). OR: wrong formula applied (e.g., uses revenue/inventory as turns for a non-financial context). One of three elements present.
+            </td>
+            <td class="td-none">
+              <span class="cell-pts">0–2 pts</span>
+              No estimate provided. OR: estimate is so vague as to be meaningless ("probably not very many times per year"). OR: turns and days-of-supply confused with each other (e.g., states "100 turns" for a grocery store where 100 would be days-of-supply).
+            </td>
+          </tr>
+          <tr>
+            <td class="td-crit">
+              3 — Holding Cost Reflection
+              <span class="crit-pts">7 pts</span>
+              <span class="crit-lo">LO8-5</span>
+            </td>
+            <td class="td-full">
+              <span class="cell-pts">7 pts</span>
+              Names one of the four Ch.10 holding cost components (opportunity cost of capital, storage/warehouse/insurance, obsolescence/markdown risk, spoilage/shrinkage) as the dominant component. Justification is product-specific: connects the cost type to the specific product's characteristics (e.g., perishability, fashion cycle, high unit cost, temperature control requirements). Could not be copy-pasted to a different product type and remain correct.
+            </td>
+            <td class="td-part">
+              <span class="cell-pts">5–6 pts</span>
+              Correct component from Ch.10 identified by name. Justification present but partially generic — names the industry but does not connect to this specific product's characteristics ("obsolescence is high for electronics" without identifying what specifically makes this product obsolete quickly). OR: two components named when one is asked, with only partial justification for the dominant one.
+            </td>
+            <td class="td-min">
+              <span class="cell-pts">3–4 pts</span>
+              Component named but justification is entirely generic — could apply to any business in any industry. OR: uses non-canonical terminology ("carrying cost," "storage fee") without identifying which of the four Ch.10 types it maps to. OR: lists all four components without identifying which is dominant.
+            </td>
+            <td class="td-none">
+              <span class="cell-pts">0–2 pts</span>
+              Wrong component identified for the described product type (e.g., "spoilage is highest for this electronics retailer" without any special justification). OR: does not reference Ch.10 holding cost framework at all — describes costs in purely financial terms without connecting to the four-component model.
+            </td>
+          </tr>
+          <tr>
+            <td class="td-crit">
+              4 — Stockout Severity
+              <span class="crit-pts">7 pts</span>
+              <span class="crit-lo">LO8-6</span>
+            </td>
+            <td class="td-full">
+              <span class="cell-pts">7 pts</span>
+              Names one of the four Table 10.3 customer response types explicitly (customer waits / customer substitutes / customer loses this sale / customer permanently switches). Provides specific reasoning for why that response type applies to this product in this organization — identifies product substitutability, urgency, customer loyalty, or switching cost. Makes a recommendation (high availability vs. lean inventory) with explicit Table 10.3 severity justification.
+            </td>
+            <td class="td-part">
+              <span class="cell-pts">5–6 pts</span>
+              Correct Table 10.3 response type identified by name. Recommendation made but without explicit severity justification, OR severity argument is generic ("stockouts are bad for customers"). OR: correct severity argument but response type is not named from Table 10.3 vocabulary.
+            </td>
+            <td class="td-min">
+              <span class="cell-pts">3–4 pts</span>
+              Describes what would happen if the organization ran out of inventory but does not name the Table 10.3 response type. Makes a recommendation without connecting it to the Ch.10 stockout severity framework. Answer describes outcome but not the analytical category.
+            </td>
+            <td class="td-none">
+              <span class="cell-pts">0–2 pts</span>
+              No Table 10.3 framework applied. Response conflates stockout response type with stockout probability (discusses "likelihood of running out" rather than "what customers do when the item is unavailable"). OR: recommendation contradicts the organization's described inventory situation.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- GRADING EFFICIENCY NOTES -->
+  <div>
+    <div class="sec-heading">Grading Efficiency Notes</div>
+    <div style="margin-top:16px;background:white;border:1px solid var(--gray-200);border-radius:12px;padding:20px;">
+      <ul class="notes-list">
+        <li><div class="note-num">1</div><span><strong>Grade by criterion, not by post.</strong> Read all Criterion 4 responses for the class before touching Criterion 3. This approach takes 2–4 min/student total; reading each post start-to-finish takes 5–8 min/student and leads to halo-effect scoring where a strong Criterion 1 inflates weak Criterion 4 scores.</span></li>
+        <li><div class="note-num">2</div><span><strong>Check for naming violations first.</strong> Before entering criterion scores in SpeedGrader, read the first paragraph of each post. If the organization is named by brand (e.g., "I work at Starbucks"), apply the 10-point penalty immediately and record it in the comment field. Score criteria independently — the penalty is separate from criterion-level deductions.</span></li>
+        <li><div class="note-num">3</div><span><strong>M08-specific error pattern — Criterion 2:</strong> Students frequently confuse the COGS/revenue distinction from the lecture and apply it incorrectly to their own organization. A student analyzing a small retail business who says "I estimate 8 turns using the store's sales revenue and average shelf inventory" — this is technically applying the correct formula but using revenue when they should use cost. Dock to Partial if they use revenue for a business where COGS would differ materially; award Full if their formula reasoning is correct and COGS vs. revenue is not material for their specific context.</span></li>
+        <li><div class="note-num">4</div><span><strong>M08-specific error pattern — Criterion 3:</strong> Students who list all four holding cost components rather than identifying the dominant one should receive Minimal (3–5) even if the correct one is mentioned in the list. The prompt asks for identification and justification of the most significant component — listing all four without ranking is not responsive. Look specifically for the word "most" or "primary" in their response.</span></li>
+        <li><div class="note-num">5</div><span><strong>AI-assist signals for M08:</strong> Posts that give precisely structured 25-word answers for each criterion but cite no specific current-week observation; mention Table 10.3 without naming which of the four response types; describe turns/DoS in vague language without citing Table 10.1 or 10.2; or use phrases like "applying the Chapter 10 framework" without demonstrating the framework. The naming-prohibition question creates an intentional friction point — AI-generated posts that name the business despite the instructions are another flag.</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- QUICK REFERENCE -->
+  <div>
+    <div class="sec-heading">Quick SpeedGrader Score Reference</div>
+    <div style="border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;background:white;margin-top:16px;">
+      <table class="speed-table">
+        <thead><tr><th>Score Range</th><th>What it indicates</th><th style="text-align:right;">Letter</th></tr></thead>
+        <tbody>
+          <tr><td style="font-weight:700;color:var(--green);">27–30</td><td>All four criteria met with specificity. Framework vocabulary (six reasons, four holding cost components, Table 10.3 response types) used correctly and tied to a specific, observable organization. Turns/DoS estimate sourced with benchmark reference.</td><td style="text-align:right;font-weight:700;">A</td></tr>
+          <tr><td style="font-weight:700;color:var(--amber);">24–26</td><td>Most criteria met. One or two elements vague — e.g., inventory type correct but reason explanation generic; or holding cost component named but justification not product-specific. Framework vocabulary mostly correct.</td><td style="text-align:right;font-weight:700;">B</td></tr>
+          <tr><td style="font-weight:700;color:var(--orange);">21–23</td><td>Some criteria incomplete. Criterion 2 has no sourcing; Criterion 3 lists components without ranking; Criterion 4 describes outcome without Table 10.3 vocabulary. Observable business connection unclear.</td><td style="text-align:right;font-weight:700;">C</td></tr>
+          <tr><td style="font-weight:700;color:var(--red);">Below 21</td><td>Multiple criteria misapplied or missing. No Ch.10 framework vocabulary. Describes inventory in everyday language without classification. Consider reaching out individually before releasing grade.</td><td style="text-align:right;font-weight:700;">D / F</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

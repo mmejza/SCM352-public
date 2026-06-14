@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Case Rubric — M08 — SCM 352</title>
+<style>
+:root{--navy:#1a3a5c;--blue:#2563a8;--blue-lt:#dbeafe;--blue-xlt:#eff6ff;--gold:#f59e0b;--gold-lt:#fffbeb;--gold-bdr:#fde68a;--green:#16a34a;--green-lt:#f0fdf4;--green-bdr:#bbf7d0;--red:#dc2626;--red-lt:#fef2f2;--red-bdr:#fecaca;--amber:#d97706;--amber-lt:#fffbeb;--amber-bdr:#fde68a;--orange:#ea580c;--orange-lt:#fff7ed;--orange-bdr:#fed7aa;--teal:#0891b2;--teal-lt:#f0fdfe;--teal-bdr:#a5f3fc;--gray-50:#f9fafb;--gray-100:#f3f4f6;--gray-200:#e5e7eb;--gray-400:#9ca3af;--gray-600:#4b5563;--gray-700:#374151;--gray-800:#1f2937;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--gray-50);color:var(--gray-800);font-size:13px;line-height:1.5;}
+.pg-header{background:var(--navy);color:white;padding:18px 28px;display:flex;align-items:center;gap:14px;}
+.badge{background:var(--gold);color:var(--navy);font-weight:700;font-size:10px;padding:3px 8px;border-radius:4px;letter-spacing:.06em;text-transform:uppercase;flex-shrink:0;}
+.pg-header h1{font-size:17px;font-weight:700;}
+.pg-header p{font-size:12px;color:rgba(255,255,255,.6);margin-top:3px;}
+.hdr-right{margin-left:auto;font-size:12px;color:rgba(255,255,255,.5);text-align:right;line-height:1.7;}
+.pg-body{max-width:1060px;margin:0 auto;padding:24px 20px 60px;display:flex;flex-direction:column;gap:28px;}
+.sec-heading{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--gray-400);padding-bottom:10px;border-bottom:1px solid var(--gray-200);margin-bottom:4px;}
+.alert{border-radius:10px;padding:12px 16px;font-size:13px;line-height:1.6;display:flex;gap:10px;align-items:flex-start;}
+.alert-icon{font-size:17px;flex-shrink:0;margin-top:1px;}
+.alert-body{flex:1;}
+.alert-body strong{display:block;margin-bottom:3px;}
+.alert-red{background:var(--red-lt);border:1.5px solid var(--red-bdr);}
+.alert-gold{background:var(--gold-lt);border:1.5px solid var(--gold-bdr);}
+.alert-blue{background:var(--blue-xlt);border:1.5px solid #bfdbfe;}
+.rubric-wrap{border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;background:white;}
+.rubric-table{width:100%;border-collapse:collapse;font-size:12px;}
+.rubric-table thead tr th{padding:9px 11px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;vertical-align:bottom;}
+.th-crit{background:var(--navy);color:white;}
+.th-full{background:var(--green);color:white;}
+.th-part{background:var(--amber);color:white;}
+.th-min{background:var(--orange);color:white;}
+.th-none{background:var(--red);color:white;}
+.pts-label{display:block;font-size:14px;font-weight:800;margin-bottom:2px;letter-spacing:-.02em;}
+.rubric-table td{padding:10px 11px;border-bottom:1px solid var(--gray-100);border-right:1px solid var(--gray-100);vertical-align:top;line-height:1.5;}
+.rubric-table tr:last-child td{border-bottom:none;}
+.rubric-table td:last-child{border-right:none;}
+.td-crit{background:var(--gray-50);font-weight:700;color:var(--navy);font-size:12.5px;}
+.td-full{background:var(--green-lt);}
+.td-part{background:var(--amber-lt);}
+.td-min{background:var(--orange-lt);}
+.td-none{background:var(--red-lt);}
+.crit-pts{display:inline-block;margin-top:5px;font-size:11px;font-weight:700;padding:2px 8px;border-radius:100px;background:var(--blue-lt);color:var(--navy);}
+.crit-lo{display:block;font-size:10px;font-weight:600;color:var(--gray-400);margin-top:3px;}
+.cell-pts{font-weight:800;font-size:12.5px;margin-bottom:4px;display:block;}
+.td-full .cell-pts{color:var(--green);}
+.td-part .cell-pts{color:var(--amber);}
+.td-min .cell-pts{color:var(--orange);}
+.td-none .cell-pts{color:var(--red);}
+.ak-table{width:100%;border-collapse:collapse;font-size:12px;}
+.ak-table th{background:var(--navy);color:white;padding:8px 12px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;}
+.ak-table td{padding:8px 12px;border-bottom:1px solid var(--gray-100);vertical-align:top;line-height:1.5;}
+.ak-table tr:last-child td{border-bottom:none;}
+.ver-a-row{background:#f0fdf4;} .ver-b-row{background:var(--blue-xlt);} .ver-c-row{background:#faf5ff;} .ver-d-row{background:var(--gold-lt);}
+.ak-badge{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:5px;font-size:11px;font-weight:800;}
+.ab-a{background:#dcfce7;color:#166534;} .ab-b{background:#dbeafe;color:#1e40af;} .ab-c{background:#faf5ff;color:#6b21a8;} .ab-d{background:#fef9c3;color:#854d0e;}
+.notes-list{display:flex;flex-direction:column;gap:8px;}
+.note-item{display:flex;gap:10px;font-size:13px;line-height:1.55;color:var(--gray-700);padding:9px 12px;background:var(--gray-50);border:1px solid var(--gray-200);border-radius:7px;}
+.note-num{width:22px;height:22px;border-radius:50%;background:var(--navy);color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.speed-table{width:100%;border-collapse:collapse;font-size:12.5px;}
+.speed-table th{background:var(--navy);color:white;padding:8px 12px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;}
+.speed-table td{padding:8px 12px;border-bottom:1px solid var(--gray-100);}
+.speed-table tr:last-child td{border-bottom:none;}
+.prop-note{font-size:11.5px;color:var(--gray-400);margin-top:6px;padding-left:4px;}
+.sample-box{margin-top:12px;background:white;border:1px solid var(--gray-200);border-radius:10px;padding:14px 16px;}
+.sample-lbl{font-size:11px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--gray-400);margin-bottom:10px;}
+.sample-answer{font-size:12.5px;line-height:1.6;color:var(--gray-700);padding:8px 12px;background:var(--gray-50);border-radius:6px;border-left:3px solid var(--green);margin-bottom:8px;}
+.sample-answer:last-child{margin-bottom:0;}
+.sample-answer .q-ref{font-size:10px;font-weight:700;color:var(--gray-400);letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px;}
+</style>
+</head>
+<body>
+
+<div class="pg-header">
+  <div class="badge">SCM 352 · M08</div>
+  <div>
+    <h1>Case Analysis Grading Rubric — Riverside Health System Central Supply</h1>
+    <p>Instructor use only · SpeedGrader reference · Do not distribute to students</p>
+  </div>
+  <div class="hdr-right">100 pts total<br>43% of Module M08</div>
+</div>
+
+<div class="pg-body">
+
+  <div style="display:flex;flex-direction:column;gap:10px;">
+    <div class="alert alert-red">
+      <div class="alert-icon">⚠️</div>
+      <div class="alert-body"><strong>Verify version before grading Parts 2, 3, and 4.</strong> Check student's assigned version (last digit of ID: 0–1→A, 2–3→B, 4–5→C, 6–9→D). Numeric answers matching a different version's key = flag for academic integrity review. Part 1 and Part 5 answers are the same for all versions.</div>
+    </div>
+    <div class="alert alert-gold">
+      <div class="alert-icon">⚙️</div>
+      <div class="alert-body">
+        <strong>Recommended grading order:</strong> Part 5 first (diagnostic — tests whether student read the case vs. just ran numbers), then Part 1 (no calculation, fastest per question), then Parts 3 and 4 together (COGS/revenue error often appears in both), then Part 2 last (calculation-heavy, most time). Estimated: 8–12 min per student for full case.
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== PART 1 ==================== -->
+  <div>
+    <div class="sec-heading">Part 1 Answer Key — Inventory Classification (All Versions, 15 pts)</div>
+    <div style="border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;margin-top:14px;background:white;">
+      <table class="ak-table">
+        <thead><tr><th style="width:8%">Sub-Q</th><th style="width:22%">Correct Classification</th><th>Key Reasoning (must appear)</th></tr></thead>
+        <tbody>
+          <tr><td><strong>1a</strong></td><td>Finished goods</td><td>Surgical gloves in sealed boxes require no further processing at Riverside; they are ready for immediate end-use by nursing staff. The transformation process is complete from Riverside's perspective.</td></tr>
+          <tr><td><strong>1b</strong></td><td>Work-in-process (WIP)</td><td>The surgical trays are inside Riverside's assembly process — the transformation from individual components to finished kits has begun but is not yet complete. Unlike the gloves, these items cannot yet be delivered to a nursing unit (sealing, labeling, sterilization verification still required). <em>Award full credit only if student explicitly contrasts with Part 1a.</em></td></tr>
+          <tr><td><strong>1c</strong></td><td>Raw material inventory</td><td>The IV tubing has not entered any transformation process at Riverside; it is the input awaiting use. <em>Accept "component inventory" as a defensible alternative with a correct justification — raw material is the canonical Ch.10 term.</em></td></tr>
+          <tr><td><strong>1d</strong></td><td>Uncertain (stochastic) demand</td><td>Safety stock directly addresses unpredictable demand variability. Demand for critical hospital supplies (blood products, emergency medications, surgical components) fluctuates based on patient census, emergency cases, and surgical schedule variation — all inherently unpredictable. Award full credit if student connects the specific number of safety days to the severity of a stockout (high severity → more safety days) — this demonstrates synthesis with Table 10.3 framework. Version-specific number (7, 10, 14, or 21 days) must appear in the response.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div>
+    <div class="sec-heading">Part 1 Rubric — 15 points</div>
+    <div class="rubric-wrap" style="margin-top:14px;">
+      <table class="rubric-table">
+        <colgroup><col style="width:18%"><col style="width:22%"><col style="width:20%"><col style="width:21%"><col style="width:19%"></colgroup>
+        <thead>
+          <tr><th class="th-crit">Criterion</th><th class="th-full"><span class="pts-label">Full Credit</span></th><th class="th-part"><span class="pts-label">Partial</span></th><th class="th-min"><span class="pts-label">Minimal</span></th><th class="th-none"><span class="pts-label">No Credit</span></th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="td-crit">1a — Gloves<span class="crit-pts">3 pts</span><span class="crit-lo">LO8-1</span></td>
+            <td class="td-full"><span class="cell-pts">3 pts</span>Correctly names "finished goods" with a one-sentence justification that references readiness for end-use and no further processing required.</td>
+            <td class="td-part"><span class="cell-pts">2 pts</span>Correct classification with no explanation, OR correct explanation with imprecise terminology ("finished product" acceptable).</td>
+            <td class="td-min"><span class="cell-pts">1 pt</span>Incorrect classification with partial logic, OR "finished goods" stated with an explanation that contradicts the classification.</td>
+            <td class="td-none"><span class="cell-pts">0 pts</span>Missing or incorrect classification. Common error: "raw material" because gloves are used to perform surgery (confuses Riverside's perspective with the procedure's perspective).</td>
+          </tr>
+          <tr>
+            <td class="td-crit">1b — Surgical trays<span class="crit-pts">4 pts</span><span class="crit-lo">LO8-1</span></td>
+            <td class="td-full"><span class="cell-pts">4 pts</span>Correctly names "WIP" and explicitly contrasts with Part 1a — explains that the transformation process is incomplete AND that the item cannot yet be delivered for end use.</td>
+            <td class="td-part"><span class="cell-pts">3 pts</span>Correct WIP classification with justification, but does not contrast with Part 1a, OR contrast present but one element of the explanation (transformation incomplete OR not deliverable) is missing.</td>
+            <td class="td-min"><span class="cell-pts">1–2 pts</span>WIP identified correctly but explanation is generic ("still being assembled") without connecting to the classification criteria from Chapter 10. OR: incorrect classification but justification partially applies WIP reasoning.</td>
+            <td class="td-none"><span class="cell-pts">0 pts</span>Missing or misclassified with no WIP reasoning. Common error: classifying as finished goods because "the hospital has them" rather than checking transformation-complete status.</td>
+          </tr>
+          <tr>
+            <td class="td-crit">1c — IV tubing<span class="crit-pts">3 pts</span><span class="crit-lo">LO8-1</span></td>
+            <td class="td-full"><span class="cell-pts">3 pts</span>Correctly names "raw material" (or "component inventory" with justification) and identifies that the item has not entered Riverside's transformation process.</td>
+            <td class="td-part"><span class="cell-pts">2 pts</span>Correct classification without explanation, OR "raw material" stated but explanation focuses on arrival (not on process status).</td>
+            <td class="td-min"><span class="cell-pts">1 pt</span>Incorrect classification but student shows partial understanding (e.g., classifies as finished goods but notes "hasn't been used yet").</td>
+            <td class="td-none"><span class="cell-pts">0 pts</span>Missing or incorrect with no relevant reasoning. Common error: "finished goods" because IV tubing is a completed manufactured product (confuses distributor's classification with Riverside's classification).</td>
+          </tr>
+          <tr>
+            <td class="td-crit">1d — Safety stock reason<span class="crit-pts">5 pts</span><span class="crit-lo">LO8-2</span></td>
+            <td class="td-full"><span class="cell-pts">5 pts</span>Names "uncertain (stochastic) demand" as the reason. Explanation connects the specific safety stock days (version-specific number) to demand unpredictability from patient census or emergency case variation. Bonus synthesis: connects higher safety days to higher stockout severity (not required but earns full credit).</td>
+            <td class="td-part"><span class="cell-pts">3–4 pts</span>Correct reason identified. Explanation present but does not use the version-specific number of days, OR explains the reason without connecting to hospital-specific demand variability sources. OR: correct reasoning but labels it "buffer stock" instead of "uncertain demand" (4 pts — close terminology).</td>
+            <td class="td-min"><span class="cell-pts">1–2 pts</span>Identifies safety stock as protective but does not identify the correct Ch.10 reason. OR: confuses "uncertain demand" with "buffers for variability" without distinguishing predictable vs. unpredictable variation.</td>
+            <td class="td-none"><span class="cell-pts">0 pts</span>No Ch.10 reason applied. OR: misidentifies as "seasonality" or "batching" without any explanation connecting to safety stock logic.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ==================== PART 2 ==================== -->
+  <div>
+    <div class="sec-heading">Part 2 Answer Keys — Days-of-Supply and Inventory Turns (Version-Specific, 25 pts)</div>
+    <div style="border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;margin-top:14px;background:white;">
+      <table class="ak-table">
+        <thead><tr><th>Ver.</th><th>2a — Annual Turns</th><th>2b — Days-of-Supply</th><th>2c — Monthly Turns</th><th>2d — vs. Benchmark</th><th>2e — Post 20% Reduction</th></tr></thead>
+        <tbody>
+          <tr class="ver-a-row"><td><span class="ak-badge ab-a">A</span></td><td>$100.8M ÷ $8.4M = <strong>12.0 turns</strong></td><td>$8.4M ÷ ($100.8M/365) = <strong>30.4 days</strong></td><td>12.0 ÷ 12 = <strong>1.00 turns/mo</strong></td><td>12.0 &gt; 5.26 → <strong>ABOVE benchmark</strong> (drug/proprietary stores)</td><td>New I = $8.4M × 0.8 = $6.72M; turns = $100.8M/$6.72M = <strong>15.0</strong>; DoS = <strong>24.3 days</strong></td></tr>
+          <tr class="ver-b-row"><td><span class="ak-badge ab-b">B</span></td><td>$87.8M ÷ $6.2M = <strong>14.2 turns</strong></td><td>$6.2M ÷ ($87.8M/365) = <strong>25.7 days</strong></td><td>14.2 ÷ 12 = <strong>1.18 turns/mo</strong></td><td>14.2 &gt; 5.26 → <strong>ABOVE benchmark</strong></td><td>New I = $6.2M × 0.8 = $4.96M; turns = $87.8M/$4.96M = <strong>17.7</strong>; DoS = <strong>20.6 days</strong></td></tr>
+          <tr class="ver-c-row"><td><span class="ak-badge ab-c">C</span></td><td>$118.0M ÷ $11.8M = <strong>10.0 turns</strong></td><td>$11.8M ÷ ($118.0M/365) = <strong>36.5 days</strong></td><td>10.0 ÷ 12 = <strong>0.833 turns/mo</strong></td><td>10.0 &gt; 5.26 → <strong>ABOVE benchmark</strong></td><td>New I = $11.8M × 0.8 = $9.44M; turns = $118.0M/$9.44M = <strong>12.5</strong>; DoS = <strong>29.2 days</strong></td></tr>
+          <tr class="ver-d-row"><td><span class="ak-badge ab-d">D</span></td><td>$75.0M ÷ $5.0M = <strong>15.0 turns</strong></td><td>$5.0M ÷ ($75.0M/365) = <strong>24.3 days</strong></td><td>15.0 ÷ 12 = <strong>1.25 turns/mo</strong></td><td>15.0 &gt; 5.26 → <strong>ABOVE benchmark</strong></td><td>New I = $5.0M × 0.8 = $4.0M; turns = $75.0M/$4.0M = <strong>18.75</strong>; DoS = <strong>19.5 days</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="prop-note">All four versions are above the Drug and Proprietary Stores benchmark (5.26 turns / 69 days). Operationally, this means Riverside's Central Supply is replenishing frequently relative to retail drug store norms — consistent with a hospital's need for high service levels and frequent distributor deliveries. Award full credit for 2d if student identifies "above" and gives a 1–2 sentence operational interpretation (not just "above is good").</p>
+  </div>
+
+  <div>
+    <div class="sec-heading">Part 2 Rubric — 25 points</div>
+    <div class="rubric-wrap" style="margin-top:14px;">
+      <table class="rubric-table">
+        <colgroup><col style="width:18%"><col style="width:22%"><col style="width:20%"><col style="width:21%"><col style="width:19%"></colgroup>
+        <thead>
+          <tr><th class="th-crit">Criterion</th><th class="th-full"><span class="pts-label">Full Credit</span></th><th class="th-part"><span class="pts-label">Partial</span></th><th class="th-min"><span class="pts-label">Minimal</span></th><th class="th-none"><span class="pts-label">No Credit</span></th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="td-crit">2a — Annual turns<span class="crit-pts">6 pts</span><span class="crit-lo">LO8-3</span></td>
+            <td class="td-full"><span class="cell-pts">6 pts</span>Shows Little's Law (Turns = R/I), correctly substitutes version-specific values, and states correct result. Units labeled.</td>
+            <td class="td-part"><span class="cell-pts">4–5 pts</span>Formula shown and values substituted but minor arithmetic error (award 4). OR: correct answer with no formula shown (award 5).</td>
+            <td class="td-min"><span class="cell-pts">2–3 pts</span>Formula inverted (I/R), OR correct formula with wrong values, OR correct answer from prior work with no shown steps.</td>
+            <td class="td-none"><span class="cell-pts">0–1 pt</span>No formula. Turns value not attempted or from a completely wrong method.</td>
+          </tr>
+          <tr>
+            <td class="td-crit">2b — Days-of-supply<span class="crit-pts">5 pts</span><span class="crit-lo">LO8-3</span></td>
+            <td class="td-full"><span class="cell-pts">5 pts</span>Shows DoS = I ÷ (R/365) with correct conversion. Result in days (not years). Correct version-specific answer.</td>
+            <td class="td-part"><span class="cell-pts">3–4 pts</span>Correct formula and values but arithmetic error (4 pts). OR: DoS formula correct but unit conversion missing or unclear (3 pts).</td>
+            <td class="td-min"><span class="cell-pts">1–2 pts</span>Uses 1/Turns × 365 (equivalent, accept as full). OR: uses R without converting to daily rate first. OR: correct setup but result in years.</td>
+            <td class="td-none"><span class="cell-pts">0 pts</span>No formula attempt or completely wrong approach.</td>
+          </tr>
+          <tr>
+            <td class="td-crit">2c — Monthly turns<span class="crit-pts">4 pts</span><span class="crit-lo">LO8-3</span></td>
+            <td class="td-full"><span class="cell-pts">4 pts</span>Divides annual turns by 12 with correct version-specific result. Explicitly shows the conversion step.</td>
+            <td class="td-part"><span class="cell-pts">3 pts</span>Correct answer without showing conversion step. OR: correct step with minor arithmetic error.</td>
+            <td class="td-min"><span class="cell-pts">1–2 pts</span>Divides by wrong number (e.g., 52 for weekly). OR: attempts to compute from I and monthly R without using annual turns.</td>
+            <td class="td-none"><span class="cell-pts">0 pts</span>No attempt. Or multiplies annual turns by 12.</td>
+          </tr>
+          <tr>
+            <td class="td-crit">2d — Benchmark evaluation<span class="crit-pts">5 pts</span><span class="crit-lo">LO8-3, LO8-7</span></td>
+            <td class="td-full"><span class="cell-pts">5 pts</span>Correctly identifies Drug and Proprietary Stores benchmark (5.26), states "above," and gives 1–2 sentences of operational interpretation (frequent replenishment, high service level orientation for a healthcare setting, or similar).</td>
+            <td class="td-part"><span class="cell-pts">3–4 pts</span>Correctly identifies above/at/below but interpretation is generic ("being above is good"). OR: correct operational interpretation but cites wrong benchmark segment.</td>
+            <td class="td-min"><span class="cell-pts">1–2 pts</span>Identifies correct direction (above) without benchmark number. OR: cites wrong benchmark but interpretation logic is otherwise correct.</td>
+            <td class="td-none"><span class="cell-pts">0 pts</span>No benchmark comparison attempted. OR: states wrong direction (below) without justification.</td>
+          </tr>
+          <tr>
+            <td class="td-crit">2e — Post-reduction<span class="crit-pts">5 pts</span><span class="crit-lo">LO8-3</span></td>
+            <td class="td-full"><span class="cell-pts">5 pts</span>Correctly reduces I by 20%, recomputes turns and DoS with new I, shows all steps. Both new turns and new DoS correct.</td>
+            <td class="td-part"><span class="cell-pts">3–4 pts</span>Correct method and new I but arithmetic error in turns or DoS. OR: new turns correct but DoS missing or wrong.</td>
+            <td class="td-min"><span class="cell-pts">1–2 pts</span>Reduces wrong quantity (e.g., reduces R instead of I). OR: correct I reduction but does not recompute DoS.</td>
+            <td class="td-none"><span class="cell-pts">0 pts</span>No attempt. OR: increases inventory instead of decreasing.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="prop-note">Propagation rule: If student makes an error in Part 2a (annual turns) that carries into Part 2b or 2c, penalize once at origin. Award full method credit for subsequent steps if consistent with student's own figures.</p>
+  </div>
+
+  <!-- ==================== PART 3 ==================== -->
+  <div>
+    <div class="sec-heading">Part 3 Answer Keys — Financial Statement Analysis (Version-Specific, 20 pts)</div>
+    <div style="border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;margin-top:14px;background:white;">
+      <table class="ak-table">
+        <thead><tr><th>Ver.</th><th>3a — Flow Rate</th><th>3b — Correct Turns</th><th>3c — DoS</th><th>3d — Board Member Error</th></tr></thead>
+        <tbody>
+          <tr class="ver-a-row"><td><span class="ak-badge ab-a">A</span></td><td>Cost of supplies and services ($100.8M) — inventory in cost dollars; revenue in sales dollars; units must match</td><td>$100.8M ÷ $8.4M = <strong>12.0 turns</strong></td><td>$8.4M ÷ ($100.8M/365) = <strong>30.4 days</strong></td><td>Board used revenue ($168M) → 20.0× (wrong). Error: revenue is in "sales dollars," inventory in "cost dollars." Ratio 20.0/12.0 = <strong>1.667×</strong> = Revenue/COGS markup ratio.</td></tr>
+          <tr class="ver-b-row"><td><span class="ak-badge ab-b">B</span></td><td>Cost of supplies and services ($87.8M) — same reasoning</td><td>$87.8M ÷ $6.2M = <strong>14.2 turns</strong></td><td>$6.2M ÷ ($87.8M/365) = <strong>25.7 days</strong></td><td>Board used revenue ($131.2M) → 21.2× (wrong). Ratio 21.2/14.2 ≈ <strong>1.49×</strong> = Revenue/COGS markup ratio. Accept slight rounding variation.</td></tr>
+          <tr class="ver-c-row"><td><span class="ak-badge ab-c">C</span></td><td>Cost of supplies and services ($118.0M) — same reasoning</td><td>$118.0M ÷ $11.8M = <strong>10.0 turns</strong></td><td>$11.8M ÷ ($118.0M/365) = <strong>36.5 days</strong></td><td>Board used revenue ($200.6M) → 17.0× (wrong). Ratio 17.0/10.0 = <strong>1.70×</strong> = Revenue/COGS markup ratio.</td></tr>
+          <tr class="ver-d-row"><td><span class="ak-badge ab-d">D</span></td><td>Cost of supplies and services ($75.0M) — same reasoning</td><td>$75.0M ÷ $5.0M = <strong>15.0 turns</strong></td><td>$5.0M ÷ ($75.0M/365) = <strong>24.3 days</strong></td><td>Board used revenue ($120M) → 24.0× (wrong). Ratio 24.0/15.0 = <strong>1.60×</strong> = Revenue/COGS markup ratio.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="prop-note">Note: Part 3 data is the same as Part 2 for all versions (I_CS = system inventory; R_CS = COGS). This is by design — "system-wide inventory" is simplified to equal Central Supply inventory in this case. Award full credit if student notes this is an approximation.</p>
+  </div>
+
+  <div>
+    <div class="sec-heading">Part 3 Rubric — 20 points</div>
+    <div class="rubric-wrap" style="margin-top:14px;">
+      <table class="rubric-table">
+        <colgroup><col style="width:18%"><col style="width:22%"><col style="width:20%"><col style="width:21%"><col style="width:19%"></colgroup>
+        <thead>
+          <tr><th class="th-crit">Criterion</th><th class="th-full"><span class="pts-label">Full Credit</span></th><th class="th-part"><span class="pts-label">Partial</span></th><th class="th-min"><span class="pts-label">Minimal</span></th><th class="th-none"><span class="pts-label">No Credit</span></th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="td-crit">3a — Flow rate selection<span class="crit-pts">4 pts</span><span class="crit-lo">LO8-4</span></td>
+            <td class="td-full"><span class="cell-pts">4 pts</span>Identifies "Cost of supplies and services" (COGS) as the correct flow rate. Explains in one sentence: inventory is in cost dollars; revenue is in sales dollars; Little's Law requires matching units.</td>
+            <td class="td-part"><span class="cell-pts">2–3 pts</span>Correct selection without explanation (3 pts). OR: correct with explanation that only says "it's more accurate" without identifying the unit-matching principle (2 pts).</td>
+            <td class="td-min"><span class="cell-pts">1 pt</span>Selects net income (irrelevant) with partial reasoning. OR: correctly rejects revenue but does not name COGS.</td>
+            <td class="td-none"><span class="cell-pts">0 pts</span>Selects revenue as flow rate. This is the single most important error in the module — do not award any credit if the student states revenue is the correct flow rate.</td>
+          </tr>
+          <tr>
+            <td class="td-crit">3b — Correct turns<span class="crit-pts">5 pts</span><span class="crit-lo">LO8-4</span></td>
+            <td class="td-full"><span class="cell-pts">5 pts</span>Uses COGS in formula. Shows substituted values. Correct version-specific answer.</td>
+            <td class="td-part"><span class="cell-pts">3–4 pts</span>Correct COGS used, formula shown, minor arithmetic error (4 pts). OR: COGS used, correct answer, no formula shown (3 pts).</td>
+            <td class="td-min"><span class="cell-pts">1–2 pts</span>Uses wrong flow rate (revenue or net income) but shows formula correctly. Propagation from 3a error.</td>
+            <td class="td-none"><span class="cell-pts">0 pts</span>No attempt. Award 0 if student computed in 3a that revenue is the correct flow rate and then used it here — penalize in both 3a and 3b.</td>
+          </tr>
+          <tr>
+            <td class="td-crit">3c — Days-of-supply<span class="crit-pts">5 pts</span><span class="crit-lo">LO8-4</span></td>
+            <td class="td-full"><span class="cell-pts">5 pts</span>Uses correct I and COGS-based R. Shows conversion formula. Correct version-specific answer in days.</td>
+            <td class="td-part"><span class="cell-pts">3–4 pts</span>Correct method with arithmetic error. OR: correct propagation from student's own 3b answer with correct method.</td>
+            <td class="td-min"><span class="cell-pts">1–2 pts</span>Divides I by incorrect flow rate (revenue) or inverts the formula.</td>
+            <td class="td-none"><span class="cell-pts">0 pts</span>No attempt.</td>
+          </tr>
+          <tr>
+            <td class="td-crit">3d — Board member error<span class="crit-pts">6 pts</span><span class="crit-lo">LO8-4</span></td>
+            <td class="td-full"><span class="cell-pts">6 pts</span>Identifies the specific error (used revenue instead of COGS). Provides the board member's wrong number from version data. Restates correct turns from 3b. Explains what the ratio represents (Revenue/COGS markup factor, cost-to-revenue ratio, or equivalent language).</td>
+            <td class="td-part"><span class="cell-pts">4–5 pts</span>Identifies error and restates correct turns (5 pts). OR: all elements but ratio explanation is vague ("the difference is the profit margin" — partially correct, award 4 pts).</td>
+            <td class="td-min"><span class="cell-pts">1–3 pts</span>Identifies that the board member used the wrong input but cannot name what the correct input should be. OR: correct analysis but uses student's own wrong turns from 3b without noting propagation.</td>
+            <td class="td-none"><span class="cell-pts">0 pts</span>Does not identify any error. OR: agrees with the board member's calculation.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ==================== PART 4 ==================== -->
+  <div>
+    <div class="sec-heading">Part 4 Answer Keys — Holding Cost Analysis (Version-Specific, 25 pts)</div>
+    <div style="border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;margin-top:14px;background:white;">
+      <table class="ak-table">
+        <thead><tr><th>Ver.</th><th>4a — Components Sum</th><th>4b — Annual HC/unit</th><th>4c — Actual HC/unit</th><th>4d — New HC/unit &amp; Decrease</th><th>4e — Total HC &amp; Savings</th></tr></thead>
+        <tbody>
+          <tr class="ver-a-row"><td><span class="ak-badge ab-a">A</span></td><td>8+7+8+2 = <strong>25%</strong> ✓</td><td>$85 × 25% = <strong>$21.25</strong>/unit/yr</td><td>Actual HCP = 25%/12 = 2.083%; HC = $85 × 2.083% = <strong>$1.77</strong>/unit</td><td>$85 × (25%/15) = $85 × 1.667% = <strong>$1.42</strong>/unit; decrease = <strong>$0.35</strong>/unit</td><td>Current: $8.4M × 25% = $2.10M; I_new = $100.8M/15 = $6.72M; New HC = $6.72M × 25% = $1.68M; <strong>Savings = $0.42M/yr</strong></td></tr>
+          <tr class="ver-b-row"><td><span class="ak-badge ab-b">B</span></td><td>8+7+5+2 = <strong>22%</strong> ✓</td><td>$120 × 22% = <strong>$26.40</strong>/unit/yr</td><td>Actual HCP = 22%/14.2 = 1.549%; HC = $120 × 1.549% = <strong>$1.86</strong>/unit</td><td>$120 × (22%/18) = $120 × 1.222% = <strong>$1.47</strong>/unit; decrease = <strong>$0.39</strong>/unit</td><td>Current: $6.2M × 22% = $1.364M; I_new = $87.8M/18 = $4.878M; New HC = $4.878M × 22% = $1.073M; <strong>Savings ≈ $0.29M/yr</strong></td></tr>
+          <tr class="ver-c-row"><td><span class="ak-badge ab-c">C</span></td><td>8+7+11+2 = <strong>28%</strong> ✓</td><td>$60 × 28% = <strong>$16.80</strong>/unit/yr</td><td>Actual HCP = 28%/10 = 2.800%; HC = $60 × 2.800% = <strong>$1.68</strong>/unit</td><td>$60 × (28%/13) = $60 × 2.154% = <strong>$1.29</strong>/unit; decrease = <strong>$0.39</strong>/unit</td><td>Current: $11.8M × 28% = $3.304M; I_new = $118.0M/13 = $9.077M; New HC = $9.077M × 28% = $2.542M; <strong>Savings ≈ $0.76M/yr</strong></td></tr>
+          <tr class="ver-d-row"><td><span class="ak-badge ab-d">D</span></td><td>8+7+3+2 = <strong>20%</strong> ✓</td><td>$150 × 20% = <strong>$30.00</strong>/unit/yr</td><td>Actual HCP = 20%/15 = 1.333%; HC = $150 × 1.333% = <strong>$2.00</strong>/unit</td><td>$150 × (20%/20) = $150 × 1.0% = <strong>$1.50</strong>/unit; decrease = <strong>$0.50</strong>/unit</td><td>Current: $5.0M × 20% = $1.0M; I_new = $75.0M/20 = $3.75M; New HC = $3.75M × 20% = $0.75M; <strong>Savings = $0.25M/yr</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="prop-note">Part 4e key insight: Total annual holding cost = I × HOLD_PCT (independent of turns when I is fixed). The savings in Part 4e occur because the NEW_TURNS rate requires LOWER inventory (I_new &lt; I_CS). Per-unit cost decreases with higher turns even at fixed I; total cost decreases only when I is actually reduced. Award full credit for Part 4e sentence if student articulates this distinction correctly, regardless of exact phrasing.</p>
+  </div>
+
+  <div>
+    <div class="sec-heading">Part 4 Rubric — 25 points</div>
+    <div class="rubric-wrap" style="margin-top:14px;">
+      <table class="rubric-table">
+        <colgroup><col style="width:18%"><col style="width:22%"><col style="width:20%"><col style="width:21%"><col style="width:19%"></colgroup>
+        <thead>
+          <tr><th class="th-crit">Criterion</th><th class="th-full"><span class="pts-label">Full Credit</span></th><th class="th-part"><span class="pts-label">Partial</span></th><th class="th-min"><span class="pts-label">Minimal</span></th><th class="th-none"><span class="pts-label">No Credit</span></th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="td-crit">4a — Components<span class="crit-pts">3 pts</span><span class="crit-lo">LO8-5</span></td>
+            <td class="td-full"><span class="cell-pts">3 pts</span>Lists all four components with version-correct percentages. Shows addition explicitly. Sum matches HOLD_PCT.</td>
+            <td class="td-part"><span class="cell-pts">2 pts</span>Correct sum but missing one component name. OR: All four components listed but arithmetic error (sum ≠ HOLD_PCT).</td>
+            <td class="td-min"><span class="cell-pts">1 pt</span>Only 2–3 components listed. OR: sum shown without components.</td>
+            <td class="td-none"><span class="cell-pts">0 pts</span>No attempt. OR: uses wrong version's percentages.</td>
+          </tr>
+          <tr>
+            <td class="td-crit">4b — Annual HC/unit<span class="crit-pts">4 pts</span><span class="crit-lo">LO8-5</span></td>
+            <td class="td-full"><span class="cell-pts">4 pts</span>Shows formula: Unit cost × HOLD_PCT. Uses version-correct values. Correct result with $ label.</td>
+            <td class="td-part"><span class="cell-pts">3 pts</span>Correct formula and values but arithmetic error. OR: correct answer with no formula.</td>
+            <td class="td-min"><span class="cell-pts">1–2 pts</span>Multiplies by wrong percentage (not HOLD_PCT). OR: divides unit cost by turns (applying actual HCP% directly — premature).</td>
+            <td class="td-none"><span class="cell-pts">0 pts</span>No attempt. OR: uses revenue/inventory as unit cost basis.</td>
+          </tr>
+          <tr>
+            <td class="td-crit">4c — Actual HC/unit<span class="crit-pts">7 pts</span><span class="crit-lo">LO8-5</span></td>
+            <td class="td-full"><span class="cell-pts">7 pts</span>Shows both steps explicitly: (1) Actual HCP% = HOLD_PCT ÷ annual turns; (2) Actual HC/unit = unit cost × Actual HCP%. Both version-correct values used. Both results correct.</td>
+            <td class="td-part"><span class="cell-pts">5–6 pts</span>Both steps shown, one arithmetic error (5 pts). OR: Step 1 correct, Step 2 missing or conceptually wrong (6 pts — partial understanding).</td>
+            <td class="td-min"><span class="cell-pts">2–4 pts</span>Applies HOLD_PCT directly to unit cost without dividing by turns (most common error — confuses annual with actual). OR: divides unit cost by turns without the percentage conversion step.</td>
+            <td class="td-none"><span class="cell-pts">0–1 pt</span>No attempt. OR: copies result from 4b without modification.</td>
+          </tr>
+          <tr>
+            <td class="td-crit">4d — New HC/unit<span class="crit-pts">6 pts</span><span class="crit-lo">LO8-5</span></td>
+            <td class="td-full"><span class="cell-pts">6 pts</span>Applies version-correct NEW_TURNS. Shows: New actual HC/unit = unit cost × (HOLD_PCT/NEW_TURNS). Computes decrease correctly (old − new).</td>
+            <td class="td-part"><span class="cell-pts">4–5 pts</span>Correct method and NEW_TURNS used, arithmetic error in final result (5 pts). OR: new HC correct but decrease computed wrong (4 pts).</td>
+            <td class="td-min"><span class="cell-pts">1–3 pts</span>Uses wrong NEW_TURNS value (wrong version). OR: applies annual HCP (not actual HCP) at new turns — same conceptual error as 4c. Propagation of 4c error into 4d: penalize once in 4c, award full method credit in 4d if consistent.</td>
+            <td class="td-none"><span class="cell-pts">0 pts</span>No attempt. OR: claims holding cost increases with higher turns.</td>
+          </tr>
+          <tr>
+            <td class="td-crit">4e — Total HC insight<span class="crit-pts">5 pts</span><span class="crit-lo">LO8-5</span></td>
+            <td class="td-full"><span class="cell-pts">5 pts</span>Correctly computes current total HC (I_CS × HOLD_PCT). Correctly computes I_new = R_CS/NEW_TURNS. Correctly computes new total HC. Computes savings. One-sentence explanation correctly distinguishes per-unit reduction (turns effect) from total reduction (inventory level effect).</td>
+            <td class="td-part"><span class="cell-pts">3–4 pts</span>Calculations correct but explanation missing or incomplete (4 pts). OR: I_new computation missing — student computes total HC at I_CS with new turns (gets zero savings, which is actually the correct partial insight — award 3 pts if they note total HC is unchanged when I is fixed).</td>
+            <td class="td-min"><span class="cell-pts">1–2 pts</span>Only current total HC computed. OR: student claims total HC = per-unit HC × units without applying I_new logic.</td>
+            <td class="td-none"><span class="cell-pts">0 pts</span>No attempt. OR: fundamentally wrong approach (e.g., multiplies per-unit HC by a number of units that isn't defined).</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="prop-note">Propagation rule for Part 4: If student's Part 2a turns are wrong and they propagate consistently into Part 4c–4e, penalize once in Part 2a. For Parts 4c, 4d, and 4e, award full method credit for correct use of their own (propagated) turns value.</p>
+  </div>
+
+  <!-- ==================== PART 5 ==================== -->
+  <div>
+    <div class="sec-heading">Part 5 Answer Key + Rubric — Stockout Analysis (All Versions, 15 pts)</div>
+    <div class="sample-box" style="margin-top:14px;">
+      <div class="sample-lbl">Part 5 Answer Key — Same for All Versions</div>
+      <div class="sample-answer">
+        <div class="q-ref">5a — Incident A Classification</div>
+        <strong>Table 10.3 category: Customer purchases a substitute item (moderate cost).</strong> Standard surgical gloves in size large were a functional substitute with no clinical impact and no lost sales. The customer (nursing unit) inconvenienced but not lost. Moderate cost to Riverside.
+      </div>
+      <div class="sample-answer">
+        <div class="q-ref">5a — Incident B Classification</div>
+        <strong>Table 10.3 category: Customer loses the sale and may lose the customer permanently (very high cost).</strong> The cardiac procedure was delayed 6 hours; the item had to be sourced externally from a competitor. A formal complaint was filed and alternative suppliers are being evaluated — this is a signal of permanent customer defection risk. Very high severity.
+      </div>
+      <div class="sample-answer">
+        <div class="q-ref">5b — Incident B Severity (model answer)</div>
+        The immediate operational cost is small — sourcing a single catheter from a competing hospital is a temporary workaround, likely a few hundred to a few thousand dollars above normal procurement cost. The reputational cost is more significant: the quality-of-care event log creates institutional record and increases scrutiny on Central Supply from hospital administration and the clinical department. The permanent defection risk is the most costly element — if the cardiac department switches to an alternative supplier for catheter procurement, Riverside loses recurring revenue from that product category and potentially the relationship with the department for adjacent supply categories.
+      </div>
+      <div class="sample-answer">
+        <div class="q-ref">5c — Recommendation (model answer)</div>
+        Riverside should maintain a higher days-of-supply (lower turns) for critical, specialized supplies where stockouts create very-high-severity customer responses — the Chapter 10 Table 10.3 framework indicates that when customers permanently switch suppliers after a stockout, the long-run cost vastly exceeds any holding cost savings from lean inventory. For commodity supplies like standard surgical gloves, where customers can substitute within the same facility without any clinical or relationship impact, lower inventory and higher turns are appropriate because the stockout severity is only moderate (category 2). Differentiating inventory policy by stockout severity is the direct application of the Chapter 10 principle.
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="sec-heading">Part 5 Rubric — 15 points</div>
+    <div class="rubric-wrap" style="margin-top:14px;">
+      <table class="rubric-table">
+        <colgroup><col style="width:18%"><col style="width:22%"><col style="width:20%"><col style="width:21%"><col style="width:19%"></colgroup>
+        <thead>
+          <tr><th class="th-crit">Criterion</th><th class="th-full"><span class="pts-label">Full Credit</span></th><th class="th-part"><span class="pts-label">Partial</span></th><th class="th-min"><span class="pts-label">Minimal</span></th><th class="th-none"><span class="pts-label">No Credit</span></th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="td-crit">5a — Classify both incidents<span class="crit-pts">4 pts</span><span class="crit-lo">LO8-6</span></td>
+            <td class="td-full"><span class="cell-pts">4 pts</span>Both incidents classified with explicit Table 10.3 category name. Incident A = substitute (moderate). Incident B = very high cost / permanent customer loss risk. One sentence per incident.</td>
+            <td class="td-part"><span class="cell-pts">2–3 pts</span>Both incidents addressed, but Table 10.3 language not explicit — describes outcome without naming the category (3 pts). OR: one incident correctly classified with Table 10.3 name, one generic (2 pts).</td>
+            <td class="td-min"><span class="cell-pts">1 pt</span>Describes what happened in both incidents without any Table 10.3 framework applied. OR: classifies both as "lost sales" without distinguishing severity levels.</td>
+            <td class="td-none"><span class="cell-pts">0 pts</span>No attempt. OR: classifies Incident A as more severe than Incident B.</td>
+          </tr>
+          <tr>
+            <td class="td-crit">5b — Incident B severity<span class="crit-pts">6 pts</span><span class="crit-lo">LO8-6</span></td>
+            <td class="td-full"><span class="cell-pts">6 pts</span>Addresses all three elements: (i) immediate sourcing cost (small/moderate), (ii) reputational/relationship cost with cardiac department (significant — quality event log, formal complaint), (iii) permanent defection risk (very high — alternative suppliers being evaluated). 3–4 sentences.</td>
+            <td class="td-part"><span class="cell-pts">4–5 pts</span>Two of three elements addressed with specific reasoning (5 pts). OR: all three elements mentioned but one underdeveloped (4 pts).</td>
+            <td class="td-min"><span class="cell-pts">2–3 pts</span>Only one element addressed. OR: describes severity as "very high" without connecting to any of the three cost dimensions.</td>
+            <td class="td-none"><span class="cell-pts">0–1 pt</span>No attempt. OR: concludes Incident B has low severity. OR: focuses only on patient harm (which was explicitly none in the case).</td>
+          </tr>
+          <tr>
+            <td class="td-crit">5c — Recommendation<span class="crit-pts">5 pts</span><span class="crit-lo">LO8-6</span></td>
+            <td class="td-full"><span class="cell-pts">5 pts</span>Recommends differentiated inventory policy: higher DoS (lower turns) for critical, specialized supplies; lower inventory / higher turns for commodity supplies. Explicitly references Table 10.3 stockout cost framework as the justification. 2–3 sentences. Not generic ("carry more of critical items") — must connect the policy difference to severity classification.</td>
+            <td class="td-part"><span class="cell-pts">3–4 pts</span>Differentiated policy recommended without explicit Table 10.3 reference (4 pts). OR: Table 10.3 referenced but both incidents treated with same policy recommendation (3 pts).</td>
+            <td class="td-min"><span class="cell-pts">1–2 pts</span>Recommends higher inventory overall without differentiating by type. OR: Table 10.3 mentioned in passing without informing the recommendation.</td>
+            <td class="td-none"><span class="cell-pts">0 pts</span>No recommendation made. OR: recommends lowering inventory for critical supplies.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- GRADING NOTES -->
+  <div>
+    <div class="sec-heading">Grading Efficiency Notes</div>
+    <div style="margin-top:14px;" class="notes-list">
+      <div class="note-item"><div class="note-num">1</div><span><strong>Grade Part 5 first across all submissions.</strong> Part 5 is the fastest indicator of whether a student read the case at all vs. ran numbers from a formula sheet. A student who misclassifies Incident A as more severe than Incident B almost certainly did not read the incidents carefully — flag for closer review of Parts 1–4.</span></div>
+      <div class="note-item"><div class="note-num">2</div><span><strong>AI-detection signals:</strong> Version-correct numeric answers in Parts 2–4 with no intermediate steps shown. Answers to Part 4e that ignore the I_new computation and claim "total HC is unchanged" (partially correct insight but likely AI-generated without understanding). Part 5c recommendations that say "balance inventory investment with holding costs" without specifically naming stockout severity categories from Table 10.3.</span></div>
+      <div class="note-item"><div class="note-num">3</div><span><strong>Part 3d version-specific trap:</strong> The Revenue/COGS ratio is version-specific. If a student computes the correct ratio for their version, they almost certainly understood the error — even if their phrasing is imprecise. Accept "gross margin markup" or "cost-to-price ratio" as synonymous with Revenue/COGS as long as the direction is correct (Revenue &gt; COGS, making turns appear artificially high).</span></div>
+      <div class="note-item"><div class="note-num">4</div><span><strong>Part 4c most common error:</strong> Applying HOLD_PCT directly to unit cost (computing annual HC/unit from 4b instead of actual HC/unit). This gives an answer 10–20× the correct value for most versions. If the student's Part 4c answer equals their Part 4b answer divided by 1 (no turns adjustment), they skipped the critical step — award Minimal.</span></div>
+      <div class="note-item"><div class="note-num">5</div><span><strong>Part 4e pedagogical note:</strong> If a student correctly states that total HC is unchanged when I is fixed (zero savings at fixed I), award 3 pts for Partial — this is the correct intermediate insight. Full credit requires they then compute I_new and the actual savings from reducing inventory to achieve NEW_TURNS. Both insights are part of the expected answer.</span></div>
+      <div class="note-item"><div class="note-num">6</div><span><strong>Version D note for feedback:</strong> Version D (15.0 turns, 20% HOLD_PCT) is the most operationally realistic for a hospital system and produces the smallest per-unit holding cost ($2.00 current vs. $1.50 at new turns). When returning grades to Version D students, note that their scenario reflects best-in-class hospital supply chain performance — a useful context anchor for the course going forward.</span></div>
+    </div>
+  </div>
+
+  <!-- QUICK SCORE REFERENCE -->
+  <div>
+    <div class="sec-heading">Quick Score Reference</div>
+    <div style="border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;background:white;margin-top:14px;">
+      <table class="speed-table">
+        <thead><tr><th>Score</th><th>What it signals</th><th style="text-align:right;">Letter</th></tr></thead>
+        <tbody>
+          <tr><td style="font-weight:700;color:var(--green);">90–100</td><td>All parts complete with specificity. Version-specific calculations correct with work shown in Parts 2–4. Part 4e demonstrates the total HC insight. Part 5c differentiates policy by Table 10.3 severity.</td><td style="text-align:right;font-weight:700;">A</td></tr>
+          <tr><td style="font-weight:700;color:var(--amber);">75–89</td><td>Most parts strong. One or two minor gaps (e.g., 4e missing I_new step, or 5a missing Table 10.3 category name). Conceptual understanding of COGS vs. revenue solid.</td><td style="text-align:right;font-weight:700;">B</td></tr>
+          <tr><td style="font-weight:700;color:var(--orange);">60–74</td><td>Some parts complete. Revenue-instead-of-COGS error in Part 3. Annual HCP applied without turns adjustment in Part 4c. Part 5 describes incidents without framework vocabulary.</td><td style="text-align:right;font-weight:700;">C</td></tr>
+          <tr><td style="font-weight:700;color:var(--red);">Below 60</td><td>Multiple parts missing or fundamentally misapplied. Formula inversion in Part 2a. Part 3a selects revenue as flow rate. Part 4c skips turns adjustment. Consider individual follow-up before returning grade.</td><td style="text-align:right;font-weight:700;">D / F</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

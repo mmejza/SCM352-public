@@ -11,7 +11,7 @@
   --blue-lt:    #dbeafe;
   --blue-xlt:   #eff6ff;
   --gold:       #f59e0b;
-  --gold-lt:    #fffbeb;
+  --gold-lt:    whitebeb;
   --gold-bdr:   #fde68a;
   --green:      #16a34a;
   --green-lt:   #f0fdf4;
@@ -20,7 +20,7 @@
   --red-lt:     #fef2f2;
   --red-bdr:    #fecaca;
   --amber:      #d97706;
-  --amber-lt:   #fffbeb;
+  --amber-lt:   whitebeb;
   --amber-bdr:  #fde68a;
   --teal:       #0d7490;
   --teal-lt:    #e0f7fa;
@@ -44,7 +44,7 @@
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--gray-50);color:var(--gray-800);font-size:15px;line-height:1.5;}
 
-.app-header{background:var(--navy);color:#fff;padding:16px 28px;display:flex;align-items:center;gap:14px;}
+.app-header{background:var(--navy);color:white;padding:16px 28px;display:flex;align-items:center;gap:14px;}
 .app-badge{background:var(--gold);color:var(--navy);font-size:11px;font-weight:700;letter-spacing:.05em;padding:3px 10px;border-radius:20px;white-space:nowrap;}
 .app-header h1{font-size:18px;font-weight:600;}
 .lo-badge{background:rgba(255,255,255,.12);font-size:11px;padding:2px 9px;border-radius:12px;color:rgba(255,255,255,.8);}
@@ -54,19 +54,19 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
 
 .app-body{max-width:860px;margin:24px auto;padding:0 20px 48px;}
 
-.card{background:#fff;border:1px solid var(--gray-200);border-radius:12px;padding:20px 24px;margin-bottom:16px;box-shadow:0 1px 6px rgba(0,0,0,.06);}
+.card{background:white;border:1px solid var(--gray-200);border-radius:12px;padding:20px 24px;margin-bottom:16px;box-shadow:0 1px 6px rgba(0,0,0,.06);}
 .card-label{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--gray-400);margin-bottom:10px;}
 
 .scenario-selector{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;}
-.sc-btn{padding:7px 16px;border:2px solid var(--gray-200);background:#fff;border-radius:20px;cursor:pointer;font-size:13px;font-weight:500;color:var(--gray-700);transition:all .15s;}
+.sc-btn{padding:7px 16px;border:2px solid var(--gray-200);background:white;border-radius:20px;cursor:pointer;font-size:13px;font-weight:500;color:var(--gray-700);transition:all .15s;}
 .sc-btn:hover{border-color:var(--blue);color:var(--blue);}
-.sc-btn.active{background:var(--blue);border-color:var(--blue);color:#fff;}
+.sc-btn.active{background:var(--blue);border-color:var(--blue);color:white;}
 .sc-btn.done::after{content:' ✓';}
 
 .progress-wrap{background:var(--gray-200);border-radius:20px;height:5px;margin-bottom:16px;}
 .progress-fill{background:var(--blue);height:5px;border-radius:20px;transition:width .35s;}
 
-.sc-panel{background:var(--navy);color:#fff;border-radius:10px;padding:18px 20px;margin-bottom:16px;}
+.sc-panel{background:var(--navy);color:white;border-radius:10px;padding:18px 20px;margin-bottom:16px;}
 .sc-panel .sp-title{font-size:12px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;}
 .sc-panel .sp-desc{font-size:14px;color:rgba(255,255,255,.88);margin-bottom:14px;line-height:1.6;}
 .sp-params{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;}
@@ -82,7 +82,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
 .step-block.improvement{border-color:var(--teal);background:var(--teal-lt);}
 .step-block.improvement.done{border-color:var(--green);background:var(--green-lt);}
 .step-hdr{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
-.step-num{width:28px;height:28px;border-radius:50%;background:var(--blue);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.step-num{width:28px;height:28px;border-radius:50%;background:var(--blue);color:white;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 .step-block.done .step-num{background:var(--green);}
 .step-title{font-size:15px;font-weight:600;color:var(--navy);}
 .step-prompt{font-size:14px;color:var(--gray-600);margin-bottom:12px;line-height:1.6;}
@@ -101,7 +101,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
 .component-table td{padding:7px 10px;border:1px solid var(--gray-200);}
 .component-table tr:last-child td{font-weight:700;background:var(--blue-xlt);color:var(--navy);}
 
-.btn-check{background:var(--blue);color:#fff;padding:9px 22px;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;margin-top:4px;}
+.btn-check{background:var(--blue);color:white;padding:9px 22px;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;margin-top:4px;}
 .btn-check:hover{background:var(--blue-hover);}
 .btn-check.btn-teal{background:var(--teal);}
 .btn-check.btn-teal:hover{background:var(--teal-hover);}
@@ -121,7 +121,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
 .bar-value{font-size:13px;font-weight:700;}
 .bar-baseline{border-top:2px solid var(--gray-300);margin-top:0;}
 
-.result-card{background:var(--navy);color:#fff;border-radius:10px;padding:22px 24px;display:none;margin-bottom:16px;}
+.result-card{background:var(--navy);color:white;border-radius:10px;padding:22px 24px;display:none;margin-bottom:16px;}
 .result-card.show{display:block;}
 .rc-title{font-size:12px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.06em;margin-bottom:14px;}
 .result-row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.07);font-size:14px;}
@@ -131,7 +131,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
 .result-row .r-value.highlight{color:var(--green-pale);}
 .sc-nav{display:flex;justify-content:space-between;align-items:center;margin-top:16px;}
 .btn-ghost{background:transparent;border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.7);padding:8px 18px;border-radius:8px;font-size:13px;cursor:pointer;}
-.btn-ghost:hover{border-color:rgba(255,255,255,.5);color:#fff;}
+.btn-ghost:hover{border-color:rgba(255,255,255,.5);color:white;}
 .btn-ghost:disabled{opacity:.3;cursor:not-allowed;}
 </style>
 </head>

@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Supply Chain Strategy Classifier — SCM 352 M09</title>
+<style>
+:root {
+  --navy:       #1a3a5c;
+  --blue:       #2563a8;
+  --blue-lt:    #dbeafe;
+  --blue-xlt:   #eff6ff;
+  --blue-bdr:   #bfdbfe;
+  --gold:       #f59e0b;
+  --gold-lt:    #fffbeb;
+  --gold-bdr:   #fde68a;
+  --gold-dark:  #92400e;
+  --green:      #16a34a;
+  --green-lt:   #f0fdf4;
+  --green-bdr:  #bbf7d0;
+  --green-dk:   #14532d;
+  --red:        #dc2626;
+  --red-lt:     #fef2f2;
+  --red-bdr:    #fecaca;
+  --red-dk:     #7f1d1d;
+  --amber:      #d97706;
+  --amber-lt:   #fffbeb;
+  --amber-bdr:  #fde68a;
+  --teal:       #0891b2;
+  --teal-lt:    #f0fdfe;
+  --teal-bdr:   #a5f3fc;
+  --purple:     #7c3aed;
+  --purple-lt:  #faf5ff;
+  --purple-bdr: #ddd6fe;
+  --gray-50:    #f9fafb;
+  --gray-100:   #f3f4f6;
+  --gray-200:   #e5e7eb;
+  --gray-300:   #d1d5db;
+  --gray-400:   #9ca3af;
+  --gray-600:   #4b5563;
+  --gray-700:   #374151;
+  --gray-800:   #1f2937;
+  --blue-pale:  #93c5fd;
+  --blue-hover: #1d4ed8;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--gray-50);color:var(--gray-800);font-size:15px;line-height:1.5;}
+
+.app-header{background:var(--navy);color:white;padding:16px 28px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+.app-badge{background:var(--gold);color:var(--navy);font-size:11px;font-weight:700;letter-spacing:.05em;padding:3px 10px;border-radius:20px;white-space:nowrap;}
+.app-header h1{font-size:18px;font-weight:600;}
+.lo-badge{background:rgba(255,255,255,.12);font-size:11px;padding:2px 9px;border-radius:12px;color:rgba(255,255,255,.8);}
+
+.instr-bar{background:var(--gold-lt);border-left:4px solid var(--gold);padding:12px 24px;font-size:13px;line-height:1.65;color:var(--gray-700);}
+.instr-bar strong{color:var(--navy);}
+
+.sc-nav-bar{background:white;border-bottom:2px solid var(--gray-200);padding:10px 24px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+.sc-btn{padding:6px 13px;border:2px solid var(--gray-200);background:white;border-radius:20px;cursor:pointer;font-size:12px;font-weight:500;color:var(--gray-700);transition:all .15s;}
+.sc-btn:hover{border-color:var(--blue);color:var(--blue);}
+.sc-btn.active{background:var(--blue);border-color:var(--blue);color:white;}
+.sc-btn.done::after{content:' ✓';}
+.sc-btn.active.done::after{color:white;}
+.sc-label{font-size:12px;color:var(--gray-400);font-weight:600;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap;}
+
+.app-body{max-width:900px;margin:24px auto;padding:0 20px 56px;}
+
+.vignette-card{background:white;border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;margin-bottom:16px;box-shadow:0 1px 6px rgba(0,0,0,.06);}
+.vig-header{background:var(--navy);color:white;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+.vig-title{font-size:15px;font-weight:600;}
+.vig-counter{font-size:12px;color:rgba(255,255,255,.5);}
+.diff-tag{font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:3px 9px;border-radius:100px;}
+.diff-easy{background:var(--green-lt);color:var(--green);}
+.diff-medium{background:var(--amber-lt);color:var(--amber);}
+.diff-hard{background:var(--red-lt);color:var(--red);}
+
+.vig-body{padding:20px;}
+.vig-text{font-size:14px;line-height:1.75;color:var(--gray-800);background:var(--blue-lt);border-left:4px solid var(--blue);padding:14px 16px;border-radius:0 8px 8px 0;margin-bottom:20px;}
+
+.stage-block{border:1px solid var(--gray-200);border-radius:10px;padding:18px 20px;margin-bottom:12px;opacity:.4;pointer-events:none;transition:opacity .2s;}
+.stage-block.unlocked{opacity:1;pointer-events:auto;}
+.stage-block.done{border-color:var(--green);background:var(--green-lt);}
+.stage-hdr{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.stage-num{width:28px;height:28px;border-radius:50%;background:var(--blue);color:white;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.stage-block.done .stage-num{background:var(--green);}
+.stage-title{font-size:15px;font-weight:600;color:var(--navy);}
+.stage-prompt{font-size:14px;color:var(--gray-600);margin-bottom:14px;line-height:1.6;}
+
+.choice-grid{display:grid;gap:10px;margin-bottom:14px;}
+.choice-grid.two{grid-template-columns:1fr 1fr;}
+.choice-grid.three{grid-template-columns:1fr 1fr 1fr;}
+@media(max-width:600px){.choice-grid.two,.choice-grid.three{grid-template-columns:1fr;}}
+.choice-card{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;border:2px solid var(--gray-200);border-radius:10px;cursor:pointer;transition:border-color .15s,background .15s;background:white;user-select:none;}
+.choice-card:hover{border-color:var(--blue);background:var(--gray-50);}
+.choice-card.selected{border-color:var(--blue);background:var(--blue-xlt);}
+.choice-card input[type=radio]{margin-top:3px;flex-shrink:0;}
+.choice-label{font-size:14px;font-weight:600;color:var(--gray-800);}
+.choice-sub{font-size:12px;color:var(--gray-600);margin-top:2px;line-height:1.4;}
+
+.btn-check{background:var(--blue);color:white;padding:9px 22px;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;}
+.btn-check:hover{background:var(--blue-hover);}
+
+.fb{border-radius:8px;padding:12px 16px;font-size:14px;margin-top:12px;display:none;line-height:1.6;}
+.fb.show{display:block;}
+.fb.correct{background:var(--green-lt);border:1px solid var(--green-bdr);color:var(--green-dk);}
+.fb.wrong{background:var(--red-lt);border:1px solid var(--red-bdr);color:var(--red-dk);}
+.think{background:var(--gold-lt);border:1.5px solid var(--gold-bdr);border-radius:8px;padding:12px 16px;margin-top:10px;font-size:13px;line-height:1.6;}
+.think-label{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--amber);margin-bottom:5px;}
+
+.reveal-panel{display:none;margin-top:16px;background:var(--navy);color:white;border-radius:10px;padding:20px 22px;}
+.reveal-panel.show{display:block;}
+.rp-title{font-size:11px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px;}
+.rp-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.07);font-size:14px;}
+.rp-row:last-child{border:none;}
+.rp-label{color:rgba(255,255,255,.65);}
+.rp-value{font-weight:700;color:var(--blue-pale);}
+.rp-analysis{font-size:13px;color:rgba(255,255,255,.8);margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,.07);line-height:1.6;}
+.rp-nav{display:flex;justify-content:space-between;align-items:center;margin-top:14px;}
+.btn-ghost{background:transparent;border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.7);padding:8px 18px;border-radius:8px;font-size:13px;cursor:pointer;}
+.btn-ghost:hover{border-color:rgba(255,255,255,.5);color:white;}
+.btn-ghost:disabled{opacity:.3;cursor:not-allowed;}
+
+.progress-wrap{background:var(--gray-200);border-radius:20px;height:5px;margin-bottom:16px;}
+.progress-fill{background:var(--blue);height:5px;border-radius:20px;transition:width .35s;}
+</style>
+</head>
+<body>
+
+<div class="app-header">
+  <span class="app-badge">SCM 352 · M09</span>
+  <h1>Supply Chain Strategy Classifier</h1>
+  <span class="lo-badge">LO9-4</span>
+  <span class="lo-badge">LO9-5</span>
+</div>
+
+<div class="instr-bar">
+  <p><strong>Do this:</strong> Read each business scenario and classify it in three stages: (1) demand predictability, (2) supply chain strategy, (3) production strategy. Justify your classification at each stage before checking.</p>
+  <p style="margin-top:5px;"><strong>Gate 2 connection:</strong> Gate 2 Q4 and Q5 require exactly this classification logic. Case Part 1 asks you to classify Riverside Health System's supply chain using this framework.</p>
+</div>
+
+<div class="sc-nav-bar">
+  <span class="sc-label">Scenario:</span>
+  <button class="sc-btn active" id="sc0" onclick="loadScenario(0)">1</button>
+  <button class="sc-btn" id="sc1" onclick="loadScenario(1)">2</button>
+  <button class="sc-btn" id="sc2" onclick="loadScenario(2)">3</button>
+  <button class="sc-btn" id="sc3" onclick="loadScenario(3)">4</button>
+  <button class="sc-btn" id="sc4" onclick="loadScenario(4)">5</button>
+  <button class="sc-btn" id="sc5" onclick="loadScenario(5)">6</button>
+  <button class="sc-btn" id="sc6" onclick="loadScenario(6)">7</button>
+  <button class="sc-btn" id="sc7" onclick="loadScenario(7)">8</button>
+</div>
+
+<div class="app-body">
+  <div class="progress-wrap"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
+
+  <div class="vignette-card" id="vig-card">
+    <div class="vig-header">
+      <div>
+        <div class="vig-title" id="vig-title"></div>
+        <div class="vig-counter" id="vig-counter"></div>
+      </div>
+      <div class="diff-tag" id="diff-tag"></div>
+    </div>
+    <div class="vig-body">
+      <div class="vig-text" id="vig-text"></div>
+
+      <!-- Stage 1: Demand -->
+      <div class="stage-block unlocked" id="stage1">
+        <div class="stage-hdr"><div class="stage-num">1</div><div class="stage-title">Classify Demand Predictability</div></div>
+        <div class="stage-prompt">Based on the scenario description, is this product's demand predictable or unpredictable?</div>
+        <div class="choice-grid two" id="demand-options"></div>
+        <button class="btn-check" onclick="checkStage(1)">Check Stage 1</button>
+        <div class="fb" id="fb1"></div>
+      </div>
+
+      <!-- Stage 2: SC Strategy -->
+      <div class="stage-block" id="stage2">
+        <div class="stage-hdr"><div class="stage-num">2</div><div class="stage-title">Select Supply Chain Strategy</div></div>
+        <div class="stage-prompt" id="s2-prompt"></div>
+        <div class="choice-grid two" id="strategy-options"></div>
+        <button class="btn-check" onclick="checkStage(2)">Check Stage 2</button>
+        <div class="fb" id="fb2"></div>
+      </div>
+
+      <!-- Stage 3: Production Strategy -->
+      <div class="stage-block" id="stage3">
+        <div class="stage-hdr"><div class="stage-num">3</div><div class="stage-title">Select Production Strategy</div></div>
+        <div class="stage-prompt" id="s3-prompt"></div>
+        <div class="choice-grid three" id="production-options"></div>
+        <button class="btn-check" onclick="checkStage(3)">Check Stage 3</button>
+        <div class="fb" id="fb3"></div>
+      </div>
+
+      <div class="reveal-panel" id="reveal-panel">
+        <div class="rp-title">Classification Complete — Full Analysis</div>
+        <div id="rp-rows"></div>
+        <div class="rp-analysis" id="rp-analysis"></div>
+        <div class="rp-nav">
+          <button class="btn-ghost" id="btn-prev" onclick="navScenario(-1)">← Previous</button>
+          <span id="rp-count" style="font-size:13px;color:rgba(255,255,255,.45);"></span>
+          <button class="btn-ghost" id="btn-next" onclick="navScenario(1)">Next →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const SCENARIOS = [
+  {
+    title:'Morton Salt Company', industry:'Commodity Industrial', diff:'easy',
+    vignette:'Morton Salt sells table salt and industrial de-icing salt in bulk to grocery chains, industrial buyers, and municipal governments under annual contracts. Production runs 24/7. The same product formulation has been sold for over 100 years. Municipal customers order 3-year forward contracts for de-icing material.',
+    demand:'Predictable',
+    demandJustify:'Annual contracts with known volumes; no seasonal demand surprise; commodity product with 100-year stable demand.',
+    demandWrongFeedback:'Salt demand is highly predictable. Annual contracts and long-standing institutional purchasing create near-perfect demand visibility.',
+    strategy:'Efficient',
+    strategyPrompt:'Salt has predictable demand. Which supply chain strategy fits a product where cost minimization is the primary objective and demand uncertainty is negligible?',
+    strategyJustify:'Predictable demand → efficient supply chain. Long production runs, high asset utilization, low safety stock, commodity pricing.',
+    strategyWrongFeedback:'Predictable demand products benefit from efficient supply chains that minimize cost. Responsive capacity adds cost without adding value when demand is already known.',
+    production:'MTS',
+    productionPrompt:'Morton produces salt and holds it in finished goods inventory. Customers order from stock. At what stage does the customer order arrive?',
+    productionJustify:'Product is produced before any specific customer order. Customers select from available stock. Decoupling point = after production.',
+    productionWrongFeedback:'Morton produces and holds finished goods before any specific order. This is Make-to-Stock (MTS). ATO would mean assembly happens after the order; MTO would mean no production at all until an order arrives.',
+    analysis:'Salt is the canonical efficient-MTS scenario. Demand is contractual, product is undifferentiated, cost minimization is the only design objective. Responsive capacity and MTO/ATO approaches would add cost with zero benefit. Key assessment question: could Morton switch to an efficient supply chain if it was already responsive? Yes — because there is no demand uncertainty to hedge against.'
+  },
+  {
+    title:'Apex Custom Sneaker Brand', industry:'Limited-Edition Fashion', diff:'hard',
+    vignette:'Apex releases 12 limited-edition sneaker drops per year. Each drop is a unique colorway produced in quantities of 500–2,000 pairs. Release dates are announced 3 weeks in advance; sellout pace is unknown until the drop goes live. Once sold out, products are never restocked.',
+    demand:'Unpredictable',
+    demandJustify:'Unknown sellout pace per drop; no historical repeat orders; product is discontinued after sellout.',
+    demandWrongFeedback:'Each drop is a unique product with no demand history. Sellout pace is entirely unknown until the drop occurs — this is unpredictable demand by definition.',
+    strategy:'Responsive',
+    strategyPrompt:'Demand is highly uncertain. Which supply chain strategy minimizes the risk of producing too much (unsold inventory) or too little (lost sales)?',
+    strategyJustify:'Unpredictable demand → responsive strategy. Minimize production lead time; produce in smaller batches; enable late adjustments.',
+    strategyWrongFeedback:'Efficient supply chains optimize for cost — they require demand predictability to avoid large inventory mismatches. Limited-edition drops with unknown sellout pace need responsiveness: the ability to adjust production quantities as demand signals emerge.',
+    production:'MTO',
+    productionPrompt:'Apex produces each colorway once and in limited quantities tied to each specific drop announcement. No inventory is held before the drop is confirmed. What production strategy does this describe?',
+    productionJustify:'Production begins only after the drop decision is made (equivalent to an order). No finished goods inventory is held speculatively.',
+    productionWrongFeedback:'MTS would mean holding sneaker inventory before knowing which colorways will be in demand — dangerous for limited-edition products. ATO implies modular component stocks plus late assembly. MTO best fits: production commitment follows the drop decision, not a forecast.',
+    analysis:'Limited-edition drops are the hardest classification case. The product is manufactured in fixed quantities (not truly MTO per order), but the production decision follows demand signal (the drop announcement). This is closer to MTO logic than MTS: no speculative finished goods inventory, production sized to the drop decision rather than a demand forecast. Key contrast: a commodity sneaker (standard colorways, year-round availability) would be MTS/efficient. Same product category, different strategy — entirely determined by the demand environment.'
+  },
+  {
+    title:'Riverside Hospital Linen Service', industry:'Institutional Healthcare', diff:'easy',
+    vignette:'Riverside Health System operates an on-site linen service supplying hospital gowns, bed sheets, and surgical drapes to 8 clinical units. Usage is contractually defined based on patient census, which is stable within ±8% month-to-month. All linen items are standardized (no customization).',
+    demand:'Predictable',
+    demandJustify:'Contractual usage tied to stable patient census; standardized items with no variety; ±8% variance is low for institutional healthcare.',
+    demandWrongFeedback:'Patient census is stable and usage is contractually defined. This is predictable demand. ±8% variance in an institutional setting is a known, manageable range — not the kind of uncertainty that requires responsive capacity.',
+    strategy:'Efficient',
+    strategyPrompt:'Linen demand is contractually stable. Which strategy minimizes cost for a commodity item with no variety and low demand uncertainty?',
+    strategyJustify:'Predictable demand + standardized product → efficient supply chain. High utilization laundering cycle, low safety stock, bulk linen procurement.',
+    strategyWrongFeedback:'Responsive supply chains add cost to handle demand uncertainty. When demand is contractually predictable, efficiency is the correct objective. Building responsive linen capacity would add laundering cycle costs with no benefit.',
+    production:'MTS',
+    productionPrompt:'Linen is laundered on a fixed cycle and restocked to each unit based on census. Units draw from available stock throughout the day. When does the specific "order" arrive relative to production?',
+    productionJustify:'Clean linen is produced (laundered) ahead of unit demand based on the census schedule. Units draw from existing clean stock.',
+    productionWrongFeedback:'Linen is laundered before specific unit requests — it is in stock when needed. This is MTS: production (laundering) happens before the specific order, and units consume from the finished goods pool.',
+    analysis:'Hospital linen seems complex but is actually a clean efficient-MTS scenario. The demand is contractual, the product is standardized, and the "production" (laundering) is scheduled ahead of demand. The key teaching: even in healthcare, not everything needs responsive supply chains. Linen is a commodity input with predictable usage — it should be managed with cost efficiency, not crisis-mode responsiveness. Save responsive capacity for surgical supplies and critical medicines.'
+  },
+  {
+    title:'Hartmann Custom Wedding Cakes', industry:'Custom Bespoke Food', diff:'easy',
+    vignette:'Hartmann Patisserie creates custom wedding and celebration cakes. Every order is unique in design, flavor, size, and decoration. The bakery accepts orders 3–6 months in advance. No product is started until the customer order is confirmed and design finalized.',
+    demand:'Unpredictable',
+    demandJustify:'Every order is unique with no repeat pattern; no production begins without confirmed order; design specification varies per customer.',
+    demandWrongFeedback:'Custom cakes are by definition unique to each order. There is no demand signal until the customer places and confirms an order — every product is unpredictable in its specific requirements.',
+    strategy:'Responsive',
+    strategyPrompt:'Every order is unique. Which strategy is required when the product cannot be standardized and demand arrives as individual custom orders?',
+    strategyJustify:'Unique custom products → responsive strategy. Capacity held ready; production begins on confirmation; no speculative production.',
+    strategyWrongFeedback:'An efficient supply chain produces standard products in advance. A custom bakery cannot produce ahead of order because product specifications are unique per customer. Responsive strategy: hold capacity, not finished goods.',
+    production:'MTO',
+    productionPrompt:'Hartmann begins production only after the order is confirmed and design finalized. No cake components are pre-assembled speculatively. What production strategy does this describe?',
+    productionJustify:'No production until customer order confirmed. Full production lead time from order receipt. This is the definition of Make-to-Order.',
+    productionWrongFeedback:'MTS would require producing cakes before knowing what flavor, design, or size the customer wants — impossible for custom products. ATO implies pre-made modular components. MTO is correct: Hartmann begins from raw ingredients only after the specific order is confirmed.',
+    analysis:'Custom wedding cakes are the cleanest MTO example in consumer services. Every dimension of the product (flavor, tier count, decoration) is customer-specified. The decoupling point is at raw materials — nothing is committed until the order is received. The relevant trade-off: Hartmann could "ATO" by pre-making and holding standard sponge cake layers (component-level inventory), reducing lead time while maintaining customer-specific finishing. Many bakeries do exactly this.'
+  },
+  {
+    title:'GenPharma Generic Drug Manufacturer', industry:'Pharmaceutical Manufacturing', diff:'medium',
+    vignette:'GenPharma manufactures generic pharmaceuticals sold to hospital formularies and pharmacy chains under multi-year supply agreements. Product formulations are FDA-approved and do not change. Hospital purchasing departments place orders on 60-day forecasting cycles.',
+    demand:'Predictable',
+    demandJustify:'Multi-year supply agreements; formulary demand is institutionally set; 60-day order cycles provide advance demand visibility.',
+    demandWrongFeedback:'Generic pharmaceutical demand is driven by formulary decisions and institutional contracts — both of which are highly predictable. Once a hospital formulary lists a generic, demand is stable for the agreement period.',
+    strategy:'Efficient',
+    strategyPrompt:'Drug demand is formulary-defined and contractual. Which strategy minimizes cost for a tightly regulated product with stable, predictable institutional demand?',
+    strategyJustify:'Predictable formulary demand → efficient supply chain. Long production runs, FDA batch compliance, high asset utilization.',
+    strategyWrongFeedback:'Generic pharmaceutical manufacturing benefits from efficient supply chains: large batches, stable demand, and regulatory compliance requirements all favor long runs and predictable schedules. Responsive capacity adds cost without addressing any actual uncertainty in this scenario.',
+    production:'MTS',
+    productionPrompt:'GenPharma manufactures drug batches and holds them in validated finished goods inventory. Hospitals order from available stock on 60-day cycles. When does the hospital order arrive relative to production?',
+    productionJustify:'Drugs are manufactured in batches before specific hospital orders, held in finished goods, and shipped from stock on 60-day cycles.',
+    productionWrongFeedback:'GenPharma produces drug batches speculatively (based on formulary forecasts) and ships from finished goods stock. This is MTS. ATO would mean some final formulation step happens after the order; MTO would mean no production until the order arrives — incompatible with pharmaceutical batch manufacturing lead times.',
+    analysis:'Generic pharmaceuticals are efficient-MTS, but the case has nuance: regulatory compliance requires batch documentation and stability testing, which creates minimum batch sizes and holding periods. These constraints reinforce MTS logic — the product must be made ahead of demand because lead times cannot be compressed to match order-to-ship expectations. The comparison to specialty pharmaceuticals (MTO or ATO, responsive) illustrates how the same industry can contain radically different supply chain types.'
+  },
+  {
+    title:'Dell Build-to-Order Computers', industry:'Configure-to-Order Technology', diff:'medium',
+    vignette:'Dell sells personal computers that customers configure online — selecting processor, RAM, storage, and display. Dell holds standardized subassemblies (motherboards, drives, displays) from suppliers. After order receipt, Dell assembles the specific configuration in its factory and ships within 3–5 days.',
+    demand:'Unpredictable',
+    demandJustify:'Each configuration is unique per customer order; configuration mix (which processor, how much RAM) is not known until order received.',
+    demandWrongFeedback:'While total computer demand may be forecasted, the specific configuration each customer will order is unknown until the order arrives. Dell cannot know in advance how many 32GB vs 64GB configurations will be requested — this is demand unpredictability at the SKU level.',
+    strategy:'Responsive',
+    strategyPrompt:'Specific configurations are unknown until orders arrive. Dell must be able to fulfill any combination within 3–5 days. Which strategy enables that responsiveness?',
+    strategyJustify:'Unknown per-order configuration + short fulfillment expectation → responsive strategy. Component inventory provides the buffer; assembly happens post-order.',
+    strategyWrongFeedback:'Efficient supply chains forecast and produce finished goods. Dell cannot produce finished computers in advance because the exact configuration is unknown. Responsive strategy with component-level inventory is the mechanism that enables 3–5 day fulfillment on unlimited configurations.',
+    production:'ATO',
+    productionPrompt:'Dell holds standardized components (common across configurations), then assembles the specific customer configuration after order receipt. The components are stocked speculatively; the final product is not. What production strategy does this describe?',
+    productionJustify:'Components (subassemblies) held in inventory = push phase. Assembly to specific customer configuration after order = pull phase. The decoupling point is at the component level: ATO.',
+    productionWrongFeedback:'MTS would mean holding finished computers pre-configured — but Dell cannot know which configurations to hold. MTO would mean starting from raw materials after each order — too slow for 3-5 day fulfillment. ATO is the correct answer: hold components, assemble to order. Dell pioneered this model.',
+    analysis:'Dell\'s ATO model is the canonical supply chain design case. The insight: standardized components can be forecasted and stocked even when finished product configurations cannot. The decoupling point sits at the component level — speculation (push) stops there and pull begins. This allows Dell to offer unlimited configurations with 3-5 day fulfillment. Note that "ATO" is not limited to electronics — any product with configurable options and common components (custom furniture, hospital procedure kits) can use this logic.'
+  },
+  {
+    title:'Office Depot Copy Paper Distribution', industry:'B2B Office Supply', diff:'easy',
+    vignette:'Office Depot distributes copy paper to corporate accounts and small businesses on auto-replenishment contracts. Customers set a minimum inventory level; when stock drops below the threshold, an automatic purchase order is generated. Same product (white paper, 500 sheets/ream) ordered every cycle.',
+    demand:'Predictable',
+    demandJustify:'Auto-replenishment generates predictable order patterns; same product purchased repeatedly; contract accounts with volume commitments.',
+    demandWrongFeedback:'Auto-replenishment purchasing eliminates demand uncertainty: orders are generated algorithmically when inventory drops to a threshold. The same product is ordered on a predictable cycle.',
+    strategy:'Efficient',
+    strategyPrompt:'Copy paper demand is generated by algorithm on a fixed threshold. Which strategy minimizes cost for a commodity item with algorithmic, predictable demand?',
+    strategyJustify:'Algorithmic demand + commodity product → efficient supply chain. Maximize throughput, minimize per-unit cost, long production runs.',
+    strategyWrongFeedback:'Responsive capacity adds cost for the ability to handle uncertainty. Copy paper under auto-replenishment has zero demand uncertainty — the order quantity and timing are determined by customer-set thresholds. Efficiency is the only relevant objective.',
+    production:'MTS',
+    productionPrompt:'Office Depot holds copy paper in distribution center inventory and ships from stock when auto-replenishment orders arrive. Production (paper manufacturing) happened before any specific customer order. What strategy does this describe?',
+    productionJustify:'Finished goods held in DC stock. Customer orders satisfied from existing inventory. This is MTS.',
+    productionWrongFeedback:'Copy paper is manufactured before any specific customer order and held in DC stock. Orders are fulfilled from existing finished goods — MTS by definition. ATO and MTO require something to happen after the order arrives; copy paper distribution does not.',
+    analysis:'Copy paper is the clearest efficient-MTS example. Nothing in this scenario requires flexibility, responsiveness, or customization. The auto-replenishment system is itself a tool for making demand even more predictable than market conditions would otherwise require. This is supply chain design working correctly: the ordering system and the supply chain design are aligned around predictability and cost efficiency.'
+  },
+  {
+    title:'Nordstrom Seasonal Fashion Line', industry:'Fashion Retail', diff:'hard',
+    vignette:'Nordstrom\'s private-label clothing line releases seasonal collections (spring/summer and fall/winter). Products are ordered 16 weeks before the season opens. Each item has a 12-week selling window. Items that do not sell at full price are marked down at week 10. Production quantities must be committed before demand is known.',
+    demand:'Unpredictable',
+    demandJustify:'Fashion demand is inherently uncertain; trend-driven; 16-week lead time means all production decisions are made before any selling signal is available.',
+    demandWrongFeedback:'Fashion demand is uncertain by nature. A 16-week lead time means Nordstrom must commit production quantities before knowing which items, colors, or sizes will actually sell. There is no demand signal until customers respond to the collection — this is unpredictable demand.',
+    strategy:'Responsive',
+    strategyPrompt:'Demand is unknown at production time. Nordstrom needs to minimize unsold inventory (markdown loss) and stockouts (lost sales). Which strategy addresses this correctly?',
+    strategyJustify:'Unknown demand + markdown cost + stockout cost → responsive strategy. Minimize lead time; enable in-season adjustments; use postponement if feasible.',
+    strategyWrongFeedback:'Efficient supply chains produce large batches pre-season based on forecasts. With 12-week selling windows and 16-week lead times, efficiency creates a structural mismatch: you cannot adjust once the season is in motion. Responsive strategy attempts to shorten lead times and enable in-season production adjustments to reduce markdown losses.',
+    production:'MTO',
+    productionPrompt:'Nordstrom commits production at the beginning of each season based on the season launch decision. No finished garments are held before the season is confirmed. What production strategy best describes this?',
+    productionJustify:'Season launch decision = the equivalent of an order. No inventory held from prior season. Production quantity determined by launch decision, not by ongoing demand pulls. This is MTO at the season level.',
+    productionWrongFeedback:'MTS for fashion would mean holding finished garments speculatively across seasons — unusual and risky. ATO implies modular components (fabric cuts, for example) held pre-season with finishing done after order. MTO fits best: each seasonal collection is produced as a discrete batch following the season-launch decision, with no pre-season finished goods inventory.',
+    analysis:'Fashion retail is the hardest scenario because it uses MTO logic at a seasonal level rather than per-unit. The "order" is the season launch decision. This is the Segment 2 Error 1 case made concrete: a 16-week lead time with 12-week selling windows creates a structural inability to react to demand — all uncertainty must be absorbed through initial order quantity decisions. The correct fix is to reduce lead time (Zara\'s approach), not to optimize forecast accuracy for a fundamentally uncertain demand signal.'
+  }
+];
+
+let current = 0;
+let stagesDone = {1:false,2:false,3:false};
+
+function loadScenario(idx){
+  current = idx;
+  const s = SCENARIOS[idx];
+  document.querySelectorAll('.sc-btn').forEach((b,i)=>b.classList.toggle('active',i===idx));
+  document.getElementById('vig-title').textContent = s.title;
+  document.getElementById('vig-counter').textContent = `Scenario ${idx+1} of ${SCENARIOS.length} — ${s.industry}`;
+  const dt = document.getElementById('diff-tag');
+  dt.className = 'diff-tag diff-'+s.diff;
+  dt.textContent = s.diff.charAt(0).toUpperCase()+s.diff.slice(1);
+  document.getElementById('vig-text').textContent = s.vignette;
+
+  // Stage 2 prompt
+  document.getElementById('s2-prompt').textContent = s.strategyPrompt;
+  // Stage 3 prompt
+  document.getElementById('s3-prompt').textContent = s.productionPrompt;
+
+  // Build choice grids
+  document.getElementById('demand-options').innerHTML = buildRadio('demand',[
+    {id:'pred',label:'Predictable Demand',sub:'Stable; forecastable; low variance'},
+    {id:'unpred',label:'Unpredictable Demand',sub:'Volatile; trend-driven; high variance'}
+  ]);
+  document.getElementById('strategy-options').innerHTML = buildRadio('strategy',[
+    {id:'eff',label:'Efficient Supply Chain',sub:'Minimize cost; optimize utilization'},
+    {id:'resp',label:'Responsive Supply Chain',sub:'Maximize availability; minimize stockout risk'}
+  ]);
+  document.getElementById('production-options').innerHTML = buildRadio('production',[
+    {id:'mts',label:'Make-to-Stock (MTS)',sub:'Produce before order; ship from stock'},
+    {id:'ato',label:'Assemble-to-Order (ATO)',sub:'Hold components; assemble after order'},
+    {id:'mto',label:'Make-to-Order (MTO)',sub:'No production until order confirmed'}
+  ]);
+
+  // Reset stages
+  resetStages();
+  document.getElementById('reveal-panel').classList.remove('show');
+  document.getElementById('prog-fill').style.width = '0%';
+}
+
+function buildRadio(name,opts){
+  return opts.map(o=>`<label class="choice-card" id="opt-${name}-${o.id}" onclick="selectChoice('${name}','${o.id}')">
+    <input type="radio" name="${name}" id="radio-${name}-${o.id}" value="${o.id}">
+    <div><div class="choice-label">${o.label}</div><div class="choice-sub">${o.sub}</div></div>
+  </label>`).join('');
+}
+
+function selectChoice(name,id){
+  document.querySelectorAll(`[id^="opt-${name}-"]`).forEach(el=>el.classList.remove('selected'));
+  document.getElementById(`opt-${name}-${id}`).classList.add('selected');
+  document.getElementById(`radio-${name}-${id}`).checked = true;
+}
+
+function resetStages(){
+  [1,2,3].forEach(n=>{
+    stagesDone[n]=false;
+    const s=document.getElementById('stage'+n);
+    s.classList.remove('unlocked','done');
+    if(n===1) s.classList.add('unlocked');
+    const fb=document.getElementById('fb'+n);
+    fb.classList.remove('show','correct','wrong');
+    fb.innerHTML='';
+  });
+}
+
+function checkStage(n){
+  const s = SCENARIOS[current];
+  const fb = document.getElementById('fb'+n);
+  fb.classList.remove('show','correct','wrong');
+
+  if(n===1){
+    const sel = document.querySelector('input[name=demand]:checked');
+    if(!sel){markWrong(1,'Select a demand classification before checking.');return;}
+    const isPred = sel.value==='pred';
+    const correct = s.demand==='Predictable' ? isPred : !isPred;
+    if(correct){
+      markCorrect(1,`✓ ${s.demand}. ${s.demandJustify}`,null,2);
+    } else {
+      markWrong(1,s.demandWrongFeedback);
+    }
+  } else if(n===2){
+    const sel = document.querySelector('input[name=strategy]:checked');
+    if(!sel){markWrong(2,'Select a supply chain strategy before checking.');return;}
+    const isEff = sel.value==='eff';
+    const correct = s.strategy==='Efficient' ? isEff : !isEff;
+    if(correct){
+      markCorrect(2,`✓ ${s.strategy} supply chain. ${s.strategyJustify}`,null,3);
+    } else {
+      markWrong(2,s.strategyWrongFeedback);
+    }
+  } else if(n===3){
+    const sel = document.querySelector('input[name=production]:checked');
+    if(!sel){markWrong(3,'Select a production strategy before checking.');return;}
+    const correct = sel.value===s.production.toLowerCase().replace('-to-','-to-').replace('make-to-stock','mts').replace('assemble-to-order','ato').replace('make-to-order','mto');
+    const correctMap = {MTS:'mts',ATO:'ato',MTO:'mto'};
+    if(sel.value===correctMap[s.production]){
+      markCorrect(3,`✓ ${s.production}. ${s.productionJustify}`,null,null);
+      showReveal();
+    } else {
+      markWrong(3,s.productionWrongFeedback);
+    }
+  }
+}
+
+function markCorrect(n,msg,think,unlockNext){
+  const fb=document.getElementById('fb'+n);
+  fb.classList.add('show','correct');
+  fb.innerHTML=`<strong>✓ Correct.</strong> ${msg}`;
+  document.getElementById('stage'+n).classList.add('done');
+  stagesDone[n]=true;
+  if(unlockNext){
+    document.getElementById('stage'+unlockNext).classList.add('unlocked');
+  }
+  const done=Object.values(stagesDone).filter(Boolean).length;
+  document.getElementById('prog-fill').style.width=(done*33.3)+'%';
+}
+
+function markWrong(n,msg){
+  const fb=document.getElementById('fb'+n);
+  fb.classList.add('show','wrong');
+  fb.innerHTML=`<strong>Not quite.</strong> ${msg}`;
+}
+
+function showReveal(){
+  const s = SCENARIOS[current];
+  const rows=[
+    {label:'Demand Type',val:s.demand},
+    {label:'Supply Chain Strategy',val:s.strategy+' Supply Chain'},
+    {label:'Production Strategy',val:s.production}
+  ];
+  document.getElementById('rp-rows').innerHTML=rows.map(r=>`<div class="rp-row"><span class="rp-label">${r.label}</span><span class="rp-value">${r.val}</span></div>`).join('');
+  document.getElementById('rp-analysis').innerHTML=`<strong style="color:rgba(255,255,255,.6);font-size:11px;text-transform:uppercase;letter-spacing:.05em;">Strategic Analysis</strong><br><br>${s.analysis}`;
+  document.getElementById('btn-prev').disabled=current===0;
+  document.getElementById('btn-next').disabled=current===SCENARIOS.length-1;
+  document.getElementById('rp-count').textContent=`${current+1} of ${SCENARIOS.length}`;
+  document.getElementById('reveal-panel').classList.add('show');
+  document.getElementById('sc'+current).classList.add('done');
+  document.getElementById('prog-fill').style.width='100%';
+}
+
+function navScenario(dir){
+  loadScenario(current+dir);
+}
+
+loadScenario(0);
+</script>
+</body>
+</html>

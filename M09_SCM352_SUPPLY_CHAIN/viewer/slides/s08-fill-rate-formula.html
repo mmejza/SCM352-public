@@ -1,0 +1,50 @@
+<section class="slide-page" data-title="Fill Rate: Formula and Interpretation" data-lo="LO9-2" data-notes="Fill rate measures the fraction of demand that is satisfied from available inventory — without backorders or lost sales. Distinct from service level (which is binary per order cycle). Gate 2 Q2 and Case Part 2 both require fill rate computation. The distinction between fill rate and service level is a common exam confusion point.">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">LO9-2</span>
+      <span class="le-course">SCM 352 · Module 09</span>
+    </div>
+    <span class="le-pagenum">8 / 20</span>
+  </div>
+  <div class="le-titleblock">
+    <div class="le-title">Fill Rate: <span>Formula and Interpretation</span></div>
+    <div class="le-sub">What fraction of demand is satisfied from stock — not from backorders</div>
+  </div>
+  <div class="le-body">
+    <div class="callout navy" style="margin-bottom:calc(10px * var(--slide-scale));padding:calc(12px * var(--slide-scale)) calc(16px * var(--slide-scale));text-align:center;">
+      <div class="callout-label" style="color:var(--teal);">Fill Rate Formula</div>
+      <div style="font-size:calc(20px * var(--slide-scale));font-weight:700;color:white;margin:calc(8px * var(--slide-scale)) 0;">
+        Fill Rate = Orders Filled from Stock ÷ Total Orders Received
+      </div>
+      <p class="formula-caption" style="color:rgba(255,255,255,.75);">Expressed as a percentage. Both terms count order lines, not units, unless otherwise specified.</p>
+    </div>
+    <div class="two-col" style="gap:calc(10px * var(--slide-scale));">
+      <div>
+        <div class="callout teal" style="margin-bottom:calc(8px * var(--slide-scale));">
+          <div class="callout-label">Worked Example</div>
+          <p class="slide-copy">Riverside Hospital placed 4,200 orders for surgical gloves in Q4. 4,074 were filled from available inventory. 126 required emergency sourcing (not from stock).</p>
+          <p class="slide-copy" style="margin-top:calc(6px * var(--slide-scale));font-weight:600;">Fill Rate = 4,074 ÷ 4,200 = 97.0%</p>
+          <p class="variable-note" style="margin-top:calc(4px * var(--slide-scale));">Interpretation: 3% of orders required a stockout response — backorder, emergency purchase, or substitution.</p>
+        </div>
+        <div class="callout teal" style="background:var(--teal-lt);">
+          <div class="callout-label">Benchmark Context</div>
+          <p class="slide-copy">Hospital supply fill rates: critical care items &gt;99%; surgical consumables &gt;97%; administrative supplies &gt;95%. Items below category benchmark warrant safety stock review.</p>
+        </div>
+      </div>
+      <div>
+        <div class="callout amber">
+          <div class="callout-label">Fill Rate vs. Service Level</div>
+          <p class="slide-copy"><strong>Fill rate</strong> = % of demand units/orders satisfied from stock (continuous measure).</p>
+          <p class="slide-copy" style="margin-top:calc(6px * var(--slide-scale));"><strong>Cycle service level</strong> = % of order cycles with no stockout (binary: either the cycle had a stockout or it didn't).</p>
+          <p class="variable-note" style="margin-top:calc(6px * var(--slide-scale));">They are not numerically equal. A 97% fill rate does not mean 97% of cycles are stockout-free — a single cycle may have partial fills on multiple orders. This module uses fill rate throughout.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="le-footer">
+    <div class="le-lo-pills"><span class="le-lo-pill">LO9-2</span></div>
+    <div><span class="le-gate-note">Gate 2 Q2 · Case Part 2 · Ch. 11 §11.2</span></div>
+  </div>
+</section>

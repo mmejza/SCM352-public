@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Supply Chain Metrics Calculator — SCM 352 M09</title>
+<style>
+:root {
+  --navy:       #1a3a5c;
+  --blue:       #2563a8;
+  --blue-lt:    #dbeafe;
+  --blue-xlt:   #eff6ff;
+  --blue-bdr:   #bfdbfe;
+  --gold:       #f59e0b;
+  --gold-lt:    #fffbeb;
+  --gold-bdr:   #fde68a;
+  --gold-dark:  #92400e;
+  --green:      #16a34a;
+  --green-lt:   #f0fdf4;
+  --green-bdr:  #bbf7d0;
+  --green-dk:   #14532d;
+  --red:        #dc2626;
+  --red-lt:     #fef2f2;
+  --red-bdr:    #fecaca;
+  --red-dk:     #7f1d1d;
+  --amber:      #d97706;
+  --amber-lt:   #fffbeb;
+  --amber-bdr:  #fde68a;
+  --gray-50:    #f9fafb;
+  --gray-100:   #f3f4f6;
+  --gray-200:   #e5e7eb;
+  --gray-300:   #d1d5db;
+  --gray-400:   #9ca3af;
+  --gray-600:   #4b5563;
+  --gray-700:   #374151;
+  --gray-800:   #1f2937;
+  --blue-pale:  #93c5fd;
+  --blue-hover: #1d4ed8;
+  --navy-text:  #1e3a5f;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--gray-50);color:var(--gray-800);font-size:15px;line-height:1.5;}
+
+.app-header{background:var(--navy);color:white;padding:16px 28px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+.app-badge{background:var(--gold);color:var(--navy);font-size:11px;font-weight:700;letter-spacing:.05em;padding:3px 10px;border-radius:20px;white-space:nowrap;}
+.app-header h1{font-size:18px;font-weight:600;}
+.lo-badge{background:rgba(255,255,255,.12);font-size:11px;padding:2px 9px;border-radius:12px;color:rgba(255,255,255,.8);}
+
+.instr-bar{background:var(--gold-lt);border-left:4px solid var(--gold);padding:12px 24px;font-size:13px;line-height:1.65;color:var(--gray-700);}
+.instr-bar strong{color:var(--navy);}
+
+.sc-nav-bar{background:white;border-bottom:2px solid var(--gray-200);padding:10px 24px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.sc-btn{padding:7px 16px;border:2px solid var(--gray-200);background:white;border-radius:20px;cursor:pointer;font-size:13px;font-weight:500;color:var(--gray-700);transition:all .15s;}
+.sc-btn:hover{border-color:var(--blue);color:var(--blue);}
+.sc-btn.active{background:var(--blue);border-color:var(--blue);color:white;}
+.sc-btn.done::after{content:' ✓';color:var(--green);}
+.sc-btn.active.done::after{color:white;}
+.sc-label{font-size:12px;color:var(--gray-400);font-weight:600;text-transform:uppercase;letter-spacing:.04em;}
+
+.app-body{max-width:860px;margin:24px auto;padding:0 20px 56px;}
+
+.progress-wrap{background:var(--gray-200);border-radius:20px;height:5px;margin-bottom:16px;}
+.progress-fill{background:var(--blue);height:5px;border-radius:20px;transition:width .35s;}
+
+.card{background:white;border:1px solid var(--gray-200);border-radius:12px;padding:20px 24px;margin-bottom:16px;box-shadow:0 1px 6px rgba(0,0,0,.06);}
+.sc-panel{background:var(--navy);color:white;border-radius:10px;padding:18px 20px;margin-bottom:16px;}
+.sp-title{font-size:11px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;}
+.sp-desc{font-size:14px;color:rgba(255,255,255,.88);margin-bottom:14px;line-height:1.6;}
+.sp-params{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;}
+.sp-param{background:rgba(255,255,255,.07);border-radius:8px;padding:10px 12px;}
+.sp-param .p-label{font-size:11px;color:rgba(255,255,255,.5);margin-bottom:3px;}
+.sp-param .p-value{font-size:17px;font-weight:700;color:var(--blue-pale);}
+.sp-param .p-unit{font-size:11px;color:rgba(255,255,255,.45);}
+
+.step-block{border:1px solid var(--gray-200);border-radius:10px;padding:18px 20px;margin-bottom:12px;opacity:.4;pointer-events:none;transition:opacity .2s;}
+.step-block.unlocked{opacity:1;pointer-events:auto;}
+.step-block.done{border-color:var(--green);background:var(--green-lt);}
+.step-hdr{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.step-num{width:28px;height:28px;border-radius:50%;background:var(--blue);color:white;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.step-block.done .step-num{background:var(--green);}
+.step-title{font-size:15px;font-weight:600;color:var(--navy);}
+.step-prompt{font-size:14px;color:var(--gray-600);margin-bottom:12px;line-height:1.6;}
+.formula{background:var(--gray-50);border:1px solid var(--gray-200);border-radius:8px;padding:9px 14px;font-family:'Courier New',monospace;font-size:14px;color:var(--navy);margin-bottom:14px;}
+
+.input-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap;}
+.input-row label{font-size:13px;color:var(--gray-600);min-width:180px;}
+.num-input{width:130px;padding:8px 12px;border:1.5px solid var(--gray-300);border-radius:8px;font-size:14px;}
+.num-input:focus{outline:none;border-color:var(--blue);}
+.input-unit{font-size:13px;color:var(--gray-400);}
+
+.interp-row{margin-bottom:14px;}
+.interp-label{font-size:13px;color:var(--gray-600);margin-bottom:8px;}
+.radio-group{display:flex;flex-direction:column;gap:8px;}
+.radio-opt{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border:1.5px solid var(--gray-200);border-radius:8px;cursor:pointer;transition:border-color .15s;}
+.radio-opt:hover{border-color:var(--blue);}
+.radio-opt.selected{border-color:var(--blue);background:var(--blue-xlt);}
+.radio-opt input{margin-top:2px;flex-shrink:0;}
+.opt-label{font-size:14px;color:var(--gray-800);}
+
+.btn-check{background:var(--blue);color:white;padding:9px 22px;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;margin-top:4px;}
+.btn-check:hover{background:var(--blue-hover);}
+
+.fb{border-radius:8px;padding:12px 16px;font-size:14px;margin-top:12px;display:none;line-height:1.6;}
+.fb.show{display:block;}
+.fb.correct{background:var(--green-lt);border:1px solid var(--green-bdr);color:var(--green-dk);}
+.fb.wrong{background:var(--red-lt);border:1px solid var(--red-bdr);color:var(--red-dk);}
+.think{background:var(--gold-lt);border:1.5px solid var(--gold-bdr);border-radius:8px;padding:12px 16px;margin-top:10px;font-size:13px;line-height:1.6;}
+.think-label{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--amber);margin-bottom:5px;}
+
+.result-card{background:var(--navy);color:white;border-radius:10px;padding:22px 24px;display:none;margin-bottom:16px;}
+.result-card.show{display:block;}
+.rc-title{font-size:12px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.06em;margin-bottom:14px;}
+.result-row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.07);font-size:14px;}
+.result-row:last-child{border:none;}
+.r-label{color:rgba(255,255,255,.65);}
+.r-value{font-weight:700;color:var(--blue-pale);}
+.sc-nav{display:flex;justify-content:space-between;align-items:center;margin-top:16px;}
+.btn-ghost{background:transparent;border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.7);padding:8px 18px;border-radius:8px;font-size:13px;cursor:pointer;}
+.btn-ghost:hover{border-color:rgba(255,255,255,.5);color:white;}
+.btn-ghost:disabled{opacity:.3;cursor:not-allowed;}
+</style>
+</head>
+<body>
+
+<div class="app-header">
+  <span class="app-badge">SCM 352 · M09</span>
+  <h1>Supply Chain Metrics Calculator</h1>
+  <span class="lo-badge">LO9-2</span>
+</div>
+
+<div class="instr-bar">
+  <p><strong>Do this:</strong> Work through 5 industry scenarios. For each, compute inventory turns and days of supply step by step, then interpret the result against the industry benchmark.</p>
+  <p style="margin-top:5px;"><strong>Gate 2 connection:</strong> Gate 2 Q1 (versioned) and Case Part 2 test exactly these calculations. The most common errors — using revenue instead of COGS, and misreading the benchmark comparison — are highlighted in the feedback.</p>
+</div>
+
+<div class="sc-nav-bar">
+  <span class="sc-label">Scenario:</span>
+  <button class="sc-btn active" id="sc0" onclick="loadScenario(0)">1 · Grocery</button>
+  <button class="sc-btn" id="sc1" onclick="loadScenario(1)">2 · Electronics</button>
+  <button class="sc-btn" id="sc2" onclick="loadScenario(2)">3 · Hospital</button>
+  <button class="sc-btn" id="sc3" onclick="loadScenario(3)">4 · Auto Parts</button>
+  <button class="sc-btn" id="sc4" onclick="loadScenario(4)">5 · Fashion</button>
+</div>
+
+<div class="app-body">
+  <div class="card" style="padding:0;overflow:hidden;">
+    <div class="sc-panel" id="sc-panel"></div>
+  </div>
+  <div class="progress-wrap"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
+
+  <div id="step1" class="step-block unlocked">
+    <div class="step-hdr"><div class="step-num">1</div><div class="step-title">Identify the Formula Components</div></div>
+    <div class="step-prompt">Enter the two values you will use to compute inventory turns. (Both are given in the scenario data above — read them carefully.)</div>
+    <div class="formula">Inventory Turns = COGS ÷ Average Inventory</div>
+    <div class="input-row"><label>Annual COGS ($M)</label><input class="num-input" id="f1a" type="number" step="0.01"><span class="input-unit">million USD</span></div>
+    <div class="input-row"><label>Average Inventory ($M)</label><input class="num-input" id="f1b" type="number" step="0.01"><span class="input-unit">million USD</span></div>
+    <button class="btn-check" onclick="checkStep(1)">Check</button>
+    <div class="fb" id="fb1"></div>
+  </div>
+
+  <div id="step2" class="step-block">
+    <div class="step-hdr"><div class="step-num">2</div><div class="step-title">Compute Inventory Turns</div></div>
+    <div class="step-prompt" id="s2-prompt"></div>
+    <div class="formula" id="s2-formula"></div>
+    <div class="input-row"><label>Inventory Turns</label><input class="num-input" id="f2a" type="number" step="0.01"><span class="input-unit">turns/year</span></div>
+    <button class="btn-check" onclick="checkStep(2)">Check</button>
+    <div class="fb" id="fb2"></div>
+  </div>
+
+  <div id="step3" class="step-block">
+    <div class="step-hdr"><div class="step-num">3</div><div class="step-title">Compute Days of Supply</div></div>
+    <div class="step-prompt" id="s3-prompt"></div>
+    <div class="formula">Days of Supply = 365 ÷ Inventory Turns</div>
+    <div class="input-row"><label>Days of Supply</label><input class="num-input" id="f3a" type="number" step="0.1"><span class="input-unit">days</span></div>
+    <button class="btn-check" onclick="checkStep(3)">Check</button>
+    <div class="fb" id="fb3"></div>
+  </div>
+
+  <div id="step4" class="step-block">
+    <div class="step-hdr"><div class="step-num">4</div><div class="step-title">Interpret vs. Industry Benchmark</div></div>
+    <div class="step-prompt" id="s4-prompt"></div>
+    <div class="formula" id="s4-benchmark"></div>
+    <div class="interp-row">
+      <div class="interp-label">Select the correct interpretation:</div>
+      <div class="radio-group" id="interp-options"></div>
+    </div>
+    <button class="btn-check" onclick="checkStep(4)">Check</button>
+    <div class="fb" id="fb4"></div>
+  </div>
+
+  <div class="result-card" id="result-card">
+    <div class="rc-title">Scenario Complete — Summary</div>
+    <div id="result-rows"></div>
+    <div style="margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,.08);">
+      <div class="sc-nav">
+        <button class="btn-ghost" id="btn-prev" onclick="navScenario(-1)">← Previous</button>
+        <span id="sc-count" style="font-size:13px;color:rgba(255,255,255,.45);"></span>
+        <button class="btn-ghost" id="btn-next" onclick="navScenario(1)">Next →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const SCENARIOS = [
+  {
+    id:0, industry:'Grocery (Fresh Produce)', diff:'easy',
+    desc:'FreshMart Regional Grocery operates 42 produce departments across the Pacific Northwest. Fresh produce is ordered daily from regional distributors and farms. Management tracks supply chain performance using the metrics below.',
+    params:[
+      {label:'Annual COGS',value:'$36.5M',unit:'cost basis'},
+      {label:'Average Inventory',value:'$0.5M',unit:'cost basis'},
+      {label:'Benchmark Turns',value:'52',unit:'turns/year'}
+    ],
+    cogs:36.5, avgInv:0.5, benchmark:52,
+    turns:73, dos:5.0,
+    turnsFmt:'36.5 ÷ 0.5 = 73.0 turns/year',
+    dosFmt:'365 ÷ 73.0 = 5.0 days',
+    aboveBenchmark:true,
+    interpOptions:[
+      {id:'a', text:'FreshMart is above the 52-turn benchmark. With only 5 days of supply, a 1-week supplier disruption would exhaust inventory before replenishment. High turns is operationally necessary for perishables but creates extreme disruption vulnerability.', correct:true},
+      {id:'b', text:'FreshMart is above benchmark, which means the supply chain is well-managed with no risk.', correct:false},
+      {id:'c', text:'FreshMart is below the 52-turn benchmark. This indicates insufficient inventory management for a fresh produce operation.', correct:false}
+    ],
+    interpFeedback:'Correct. 73 turns significantly exceeds the 52-turn benchmark, which reflects best practice for high-perishability produce. But 5 days of supply is the flip side — FreshMart needs near-perfect daily replenishment. This is an efficient supply chain design appropriate for predictable fresh produce demand, but it is brittle under disruption.',
+    interpWrongFeedback:'FreshMart\'s 73 turns exceeds the 52-turn benchmark (above benchmark). The correct interpretation requires both noting the benchmark position AND analyzing the disruption implication. Look for the option that identifies both the above-benchmark position and the 5-day supply vulnerability.',
+    teachingMoment:'Why does a grocery store need 52+ turns? Perishability: at lower turns, produce would expire before sale. High turns is not optional here — it is structurally required. The benchmark is calibrated to shelf life, not to efficiency preferences.',
+    contextNote:'Fresh produce'
+  },
+  {
+    id:1, industry:'Electronics Retailer', diff:'medium',
+    desc:'CircuitWorld operates 18 consumer electronics stores. Inventory includes televisions, laptops, audio equipment, and accessories. Financial data is from the most recent fiscal year.',
+    params:[
+      {label:'Annual COGS',value:'$120M',unit:'cost basis'},
+      {label:'Average Inventory',value:'$10M',unit:'cost basis'},
+      {label:'Benchmark Turns',value:'8',unit:'turns/year'}
+    ],
+    cogs:120, avgInv:10, benchmark:8,
+    turns:12, dos:30.4,
+    turnsFmt:'120 ÷ 10 = 12.0 turns/year',
+    dosFmt:'365 ÷ 12.0 = 30.4 days',
+    aboveBenchmark:true,
+    interpOptions:[
+      {id:'a', text:'CircuitWorld is above the 8-turn benchmark at 12 turns. This is a positive sign for working capital efficiency, but 30 days of supply means any supply disruption lasting more than one month would cause stockouts on popular items.', correct:true},
+      {id:'b', text:'CircuitWorld is above benchmark. This is entirely positive — high turns always indicates superior supply chain management.', correct:false},
+      {id:'c', text:'CircuitWorld is below the 8-turn benchmark, indicating the firm carries too much inventory relative to its peers.', correct:false}
+    ],
+    interpFeedback:'Correct. 12 turns is above the 8-turn benchmark — a positive sign for working capital efficiency. But "above benchmark is good" is not a complete analysis. Electronics face high obsolescence risk: a 30-day supply buffer means holding 30 days of inventory that could lose value if a newer model is announced. The correct interpretation notes the benchmark position AND the category-specific holding cost implication.',
+    interpWrongFeedback:'CircuitWorld\'s 12 turns exceeds the 8-turn benchmark (above benchmark). Eliminate any option that says "below benchmark." Then evaluate whether "always positive" is analytically complete — does above-benchmark performance have risks in electronics?',
+    teachingMoment:'Electronics benchmark is 8 turns because product cycles are fast. A firm running 12 turns is cycling inventory efficiently. But the holding cost for electronics is high — obsolescence risk is the dominant component. A firm that achieves 12 turns by stocking items that get discontinued still faces write-off risk.',
+    contextNote:'Electronics'
+  },
+  {
+    id:2, industry:'Hospital Supply Chain', diff:'medium',
+    desc:'Riverside Regional Hospital operates a central supply room serving 8 surgical suites and 4 inpatient units. Surgical consumables (sutures, drapes, gloves) are sourced from two primary distributors with 3–5 day lead times.',
+    params:[
+      {label:'Annual COGS',value:'$18.25M',unit:'cost basis'},
+      {label:'Average Inventory',value:'$1.5M',unit:'cost basis'},
+      {label:'Benchmark Turns',value:'6',unit:'turns/year'}
+    ],
+    cogs:18.25, avgInv:1.5, benchmark:6,
+    turns:12.17, dos:30.0,
+    turnsFmt:'18.25 ÷ 1.5 = 12.17 turns/year',
+    dosFmt:'365 ÷ 12.17 = 30.0 days',
+    aboveBenchmark:true,
+    interpOptions:[
+      {id:'a', text:'Riverside is significantly above the 6-turn benchmark at 12.2 turns, which at first appears positive. However, surgical supplies are high-criticality items. 30 days of supply is above the 3–5 day lead time, but a supply chain disruption lasting longer than 30 days would directly affect surgical operations. Whether 12.2 turns is appropriate requires asking whether 30 days is sufficient buffer given criticality.', correct:true},
+      {id:'b', text:'Riverside is above the 6-turn benchmark, which confirms the hospital is managing inventory optimally.', correct:false},
+      {id:'c', text:'Riverside is below the 6-turn benchmark and should reduce inventory to improve efficiency.', correct:false}
+    ],
+    interpFeedback:'Correct. Riverside is at 12.2 turns — double the 6-turn benchmark. This looks efficient, but the benchmark analysis requires the next step: is 30 days of supply adequate for high-criticality surgical supplies? The 6-turn benchmark reflects an industry that holds more inventory relative to sales — likely because stockout costs for surgical items are extremely high. Running at 2× benchmark may optimize cost but underweight resilience.',
+    interpWrongFeedback:'Riverside\'s 12.2 turns is above the 6-turn benchmark. Eliminate options stating "below benchmark." Then evaluate whether "above benchmark = optimal" — does holding surgical supplies require more inventory buffer than the efficiency benchmark suggests?',
+    teachingMoment:'This is the Segment 1 lecture example made concrete. The 6-turn benchmark reflects the industry\'s judgment about the right buffer for surgical supply criticality. Riverside at 12.2 turns is operating leaner than the industry — the question is whether the 30-day buffer is adequate given their specific disruption risk environment.',
+    contextNote:'Surgical supplies'
+  },
+  {
+    id:3, industry:'Auto Parts Distributor', diff:'easy',
+    desc:'Cascade Auto Supply distributes replacement parts to 340 independent repair shops in the Pacific Northwest. The product mix is 70% maintenance parts (predictable demand) and 30% collision parts (unpredictable demand).',
+    params:[
+      {label:'Annual COGS',value:'$73M',unit:'cost basis'},
+      {label:'Average Inventory',value:'$10M',unit:'cost basis'},
+      {label:'Benchmark Turns',value:'5',unit:'turns/year'}
+    ],
+    cogs:73, avgInv:10, benchmark:5,
+    turns:7.3, dos:50.0,
+    turnsFmt:'73 ÷ 10 = 7.3 turns/year',
+    dosFmt:'365 ÷ 7.3 = 50.0 days',
+    aboveBenchmark:true,
+    interpOptions:[
+      {id:'a', text:'Cascade is above the 5-turn benchmark at 7.3 turns. With 50 days of supply, it holds more than a month and a half of buffer. For auto parts with mixed demand predictability, 7.3 turns indicates efficient inventory management while maintaining adequate coverage for both predictable and unpredictable demand.', correct:true},
+      {id:'b', text:'Cascade is below the 5-turn benchmark. This indicates the firm is carrying excess inventory that should be reduced.', correct:false},
+      {id:'c', text:'Cascade is above benchmark but should target even higher turns to maximize efficiency.', correct:false}
+    ],
+    interpFeedback:'Correct. 7.3 turns exceeds the 5-turn benchmark, and 50 days of supply provides adequate buffer for both maintenance parts (high predictability) and collision parts (high unpredictability). The 5-turn benchmark is calibrated for the full product mix including unpredictable demand categories. At 7.3 turns, Cascade is above benchmark — a positive sign given stable demand in the majority of its product line.',
+    interpWrongFeedback:'Cascade\'s 7.3 turns is above the 5-turn benchmark. "Higher turns always better" ignores the unpredictable 30% of the product mix — collision parts may require more buffer than a maximum-turns strategy allows.',
+    teachingMoment:'Mixed demand portfolios require portfolio thinking about inventory turns. The 70% maintenance segment could run very high turns. The 30% collision segment needs buffer. A single turns metric hides this tension — breaking the calculation by product segment would reveal it.',
+    contextNote:'Auto parts'
+  },
+  {
+    id:4, industry:'Fashion Retailer', diff:'hard',
+    desc:'Modo Fashion operates 23 specialty clothing stores. Products are seasonal (12-week selling window per collection), sourced primarily from overseas factories with 16-week lead times. Revenue = $90M; COGS = $60M (gross margin ~33%).',
+    params:[
+      {label:'Annual COGS',value:'$60M',unit:'cost basis — use COGS, not revenue'},
+      {label:'Average Inventory',value:'$15M',unit:'cost basis'},
+      {label:'Benchmark Turns',value:'4',unit:'turns/year'}
+    ],
+    cogs:60, avgInv:15, benchmark:4,
+    turns:4.0, dos:91.25,
+    turnsFmt:'60 ÷ 15 = 4.0 turns/year',
+    dosFmt:'365 ÷ 4.0 = 91.25 days',
+    aboveBenchmark:false,
+    interpOptions:[
+      {id:'a', text:'Modo is exactly at the 4-turn benchmark. With a 16-week (112-day) lead time and only 91 days of supply, Modo cannot replenish mid-season — all inventory decisions must be made before demand is known. At-benchmark performance with this supply chain structure signals a mismatch: the efficient supply chain design cannot respond to fashion\'s inherent demand uncertainty.', correct:true},
+      {id:'b', text:'Modo is at the benchmark — this is optimal performance for a fashion retailer.', correct:false},
+      {id:'c', text:'If Modo used revenue ($90M) instead of COGS ($60M) as the numerator, the result would be 6 turns — but this overstates performance by 50%. The correct calculation uses COGS.', correct:false}
+    ],
+    interpFeedback:'Correct. Modo is exactly at the 4-turn benchmark, which sounds acceptable — but the structural analysis reveals the problem. With a 16-week lead time and only 91 days (13 weeks) of supply, Modo cannot replenish in response to actual demand. Everything must be purchased pre-season. This is the efficient-supply-chain-for-unpredictable-demand misalignment from Segment 2. At-benchmark turns in this context indicates a structural design problem, not satisfactory performance.',
+    interpWrongFeedback:'Notice that option C describes using revenue instead of COGS — this is actually a calculation error example, not the correct interpretation. Modo\'s turns using COGS = 4.0 exactly. The correct interpretation asks what benchmark-level turns means given a 16-week lead time constraint.',
+    teachingMoment:'The revenue error is deliberately embedded as option C. If you computed turns using $90M revenue: 90 ÷ 15 = 6.0 turns — 50% too high. This is the most common financial-statement error. This scenario is also the Segment 2 Example 1 (fashion apparel with 16-week lead time) made concrete.',
+    contextNote:'Fashion retail'
+  }
+];
+
+let current = 0;
+let stepsCompleted = [0,0,0,0,0];
+
+function loadScenario(idx){
+  current = idx;
+  const s = SCENARIOS[idx];
+  document.querySelectorAll('.sc-btn').forEach((b,i)=>b.classList.toggle('active',i===idx));
+
+  // Panel
+  let paramHtml = s.params.map(p=>`<div class="sp-param"><div class="p-label">${p.label}</div><div class="p-value">${p.value}</div><div class="p-unit">${p.unit}</div></div>`).join('');
+  document.getElementById('sc-panel').innerHTML=`<div class="sp-title">Scenario ${idx+1} — ${s.industry}</div><div class="sp-desc">${s.desc}</div><div class="sp-params">${paramHtml}</div>`;
+
+  // Step 2 prompt/formula
+  document.getElementById('s2-prompt').textContent=`Using the values from Step 1, calculate inventory turns. Divide COGS by Average Inventory.`;
+  document.getElementById('s2-formula').textContent=`Inventory Turns = ${s.cogs}M ÷ ${s.avgInv}M = ?`;
+
+  // Step 3 prompt
+  document.getElementById('s3-prompt').textContent=`Using your inventory turns from Step 2, calculate days of supply.`;
+
+  // Step 4
+  document.getElementById('s4-prompt').textContent=`Industry benchmark: ${s.benchmark} turns/year. Your result: ${s.turns.toFixed(1)} turns / ${s.dos.toFixed(1)} days. Which interpretation is correct?`;
+  document.getElementById('s4-benchmark').textContent=`Benchmark: ${s.benchmark} turns/year | Your result: ${s.turns.toFixed(1)} turns = ${s.dos.toFixed(1)} days of supply`;
+
+  const optContainer = document.getElementById('interp-options');
+  optContainer.innerHTML = s.interpOptions.map((o,i)=>`
+    <label class="radio-opt" id="opt-${o.id}" onclick="selectOpt('${o.id}')">
+      <input type="radio" name="interp" id="radio-${o.id}" value="${o.id}">
+      <span class="opt-label">${o.text}</span>
+    </label>`).join('');
+
+  // Reset steps
+  resetSteps();
+  ['f1a','f1b','f2a','f3a'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  document.getElementById('prog-fill').style.width='0%';
+  document.getElementById('result-card').classList.remove('show');
+}
+
+function selectOpt(id){
+  document.querySelectorAll('.radio-opt').forEach(o=>o.classList.remove('selected'));
+  document.getElementById('opt-'+id).classList.add('selected');
+  document.getElementById('radio-'+id).checked=true;
+}
+
+function resetSteps(){
+  [1,2,3,4].forEach(n=>{
+    const s=document.getElementById('step'+n);
+    s.classList.remove('unlocked','done');
+    if(n===1) s.classList.add('unlocked');
+    const fb=document.getElementById('fb'+n);
+    fb.classList.remove('show','correct','wrong');
+    fb.innerHTML='';
+  });
+}
+
+function checkStep(n){
+  const s = SCENARIOS[current];
+  const fb = document.getElementById('fb'+n);
+  fb.classList.remove('show','correct','wrong');
+
+  if(n===1){
+    const a=parseFloat(document.getElementById('f1a').value);
+    const b=parseFloat(document.getElementById('f1b').value);
+    const aOk=Math.abs(a-s.cogs)<0.05;
+    const bOk=Math.abs(b-s.avgInv)<0.05;
+    if(aOk&&bOk){
+      markCorrect(1,`✓ COGS = $${s.cogs}M, Average Inventory = $${s.avgInv}M — correct values identified.`,null);
+    } else {
+      let msg='Check your values. ';
+      if(!aOk) msg+=`COGS should be $${s.cogs}M (cost basis, not revenue). `;
+      if(!bOk) msg+=`Average Inventory should be $${s.avgInv}M. `;
+      if(current===4&&!aOk&&Math.abs(a-90)<1) msg+='Remember: use COGS ($60M), not revenue ($90M). Using revenue would inflate turns by 50%.';
+      markWrong(1,msg);
+    }
+  } else if(n===2){
+    const v=parseFloat(document.getElementById('f2a').value);
+    if(Math.abs(v-s.turns)<0.15){
+      markCorrect(2,`✓ ${s.turnsFmt}. ${s.turns.toFixed(1)} turns/year.`,null);
+    } else {
+      markWrong(2,`Inventory Turns = COGS ÷ Average Inventory = ${s.cogs}M ÷ ${s.avgInv}M. Expected ~${s.turns.toFixed(1)} turns/year.`);
+    }
+  } else if(n===3){
+    const v=parseFloat(document.getElementById('f3a').value);
+    if(Math.abs(v-s.dos)<0.5){
+      markCorrect(3,`✓ ${s.dosFmt} of supply.`,null);
+    } else {
+      markWrong(3,`Days of Supply = 365 ÷ Turns = 365 ÷ ${s.turns.toFixed(1)}. Expected ~${s.dos.toFixed(1)} days.`);
+    }
+  } else if(n===4){
+    const sel=document.querySelector('input[name=interp]:checked');
+    if(!sel){markWrong(4,'Select an interpretation option before checking.');return;}
+    const chosen=s.interpOptions.find(o=>o.id===sel.value);
+    if(chosen&&chosen.correct){
+      fb.classList.add('show','correct');
+      fb.innerHTML=`<strong>✓ Correct.</strong> ${s.interpFeedback}<div class="think"><div class="think-label">Teaching Moment — ${s.contextNote}</div>${s.teachingMoment}</div>`;
+      document.getElementById('step4').classList.add('done');
+      showResult();
+    } else {
+      fb.classList.add('show','wrong');
+      fb.innerHTML=`<strong>Not quite.</strong> ${s.interpWrongFeedback}`;
+    }
+  }
+}
+
+function markCorrect(n,msg,think){
+  const fb=document.getElementById('fb'+n);
+  fb.classList.add('show','correct');
+  fb.innerHTML=`<strong>✓ Correct.</strong> ${msg}${think?`<div class="think"><div class="think-label">Think Deeper</div>${think}</div>`:''}`;
+  document.getElementById('step'+n).classList.add('done');
+  if(n<4){
+    const next=document.getElementById('step'+(n+1));
+    next.classList.add('unlocked');
+  }
+  updateProgress(n);
+}
+
+function markWrong(n,msg){
+  const fb=document.getElementById('fb'+n);
+  fb.classList.add('show','wrong');
+  fb.innerHTML=`<strong>Not quite.</strong> ${msg}`;
+}
+
+function updateProgress(step){
+  document.getElementById('prog-fill').style.width=(step*25)+'%';
+}
+
+function showResult(){
+  const s=SCENARIOS[current];
+  const rows=[
+    {label:'Inventory Turns',val:`${s.turns.toFixed(1)} turns/year`},
+    {label:'Days of Supply',val:`${s.dos.toFixed(1)} days`},
+    {label:'Benchmark Turns',val:`${s.benchmark} turns/year`},
+    {label:'Benchmark Position',val:s.aboveBenchmark?'Above benchmark':'At or below benchmark'}
+  ];
+  document.getElementById('result-rows').innerHTML=rows.map(r=>`<div class="result-row"><span class="r-label">${r.label}</span><span class="r-value">${r.val}</span></div>`).join('');
+  document.getElementById('btn-prev').disabled=current===0;
+  document.getElementById('btn-next').disabled=current===SCENARIOS.length-1;
+  document.getElementById('sc-count').textContent=`${current+1} of ${SCENARIOS.length}`;
+  document.getElementById('result-card').classList.add('show');
+  document.getElementById('sc'+current).classList.add('done');
+  document.getElementById('prog-fill').style.width='100%';
+}
+
+function navScenario(dir){
+  loadScenario(current+dir);
+}
+
+loadScenario(0);
+</script>
+</body>
+</html>

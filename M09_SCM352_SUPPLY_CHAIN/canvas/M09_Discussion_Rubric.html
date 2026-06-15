@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Discussion Rubric — M09 — SCM 352</title>
+<style>
+:root{--navy:#1a3a5c;--blue:#2563a8;--blue-lt:#dbeafe;--blue-xlt:#eff6ff;--gold:#f59e0b;--gold-lt:#fffbeb;--gold-bdr:#fde68a;--green:#16a34a;--green-lt:#f0fdf4;--green-bdr:#bbf7d0;--red:#dc2626;--red-lt:#fef2f2;--red-bdr:#fecaca;--amber:#d97706;--amber-lt:#fffbeb;--amber-bdr:#fde68a;--orange:#ea580c;--orange-lt:#fff7ed;--orange-bdr:#fed7aa;--gray-50:#f9fafb;--gray-100:#f3f4f6;--gray-200:#e5e7eb;--gray-400:#9ca3af;--gray-600:#4b5563;--gray-700:#374151;--gray-800:#1f2937;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--gray-50);color:var(--gray-800);font-size:13px;line-height:1.5;}
+.pg-header{background:var(--navy);color:white;padding:18px 28px;display:flex;align-items:center;gap:14px;}
+.badge{background:var(--gold);color:var(--navy);font-weight:700;font-size:10px;padding:3px 8px;border-radius:4px;letter-spacing:.06em;text-transform:uppercase;flex-shrink:0;}
+.pg-header h1{font-size:17px;font-weight:700;}
+.pg-header p{font-size:12px;color:rgba(255,255,255,.6);margin-top:3px;}
+.hdr-right{margin-left:auto;font-size:12px;color:rgba(255,255,255,.5);text-align:right;line-height:1.7;}
+.pg-body{max-width:1060px;margin:0 auto;padding:24px 20px 60px;display:flex;flex-direction:column;gap:28px;}
+.sec-heading{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--gray-400);padding-bottom:10px;border-bottom:1px solid var(--gray-200);margin-bottom:4px;}
+.alert{border-radius:10px;padding:12px 16px;font-size:13px;line-height:1.6;display:flex;gap:10px;align-items:flex-start;}
+.alert-icon{font-size:17px;flex-shrink:0;margin-top:1px;}
+.alert-body{flex:1;}
+.alert-body strong{display:block;margin-bottom:3px;}
+.alert-red{background:var(--red-lt);border:1.5px solid var(--red-bdr);}
+.alert-gold{background:var(--gold-lt);border:1.5px solid var(--gold-bdr);}
+.alert-blue{background:var(--blue-xlt);border:1.5px solid #bfdbfe;}
+.score-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;}
+.score-card{background:white;border:1px solid var(--gray-200);border-radius:10px;padding:14px 16px;text-align:center;}
+.score-card .label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--gray-400);margin-bottom:6px;}
+.score-card .pts{font-size:28px;font-weight:800;color:var(--navy);letter-spacing:-.04em;line-height:1;}
+.score-card .sub{font-size:11px;color:var(--gray-600);margin-top:4px;}
+.rubric-wrap{border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;background:white;}
+.rubric-table{width:100%;border-collapse:collapse;font-size:12px;}
+.rubric-table thead tr th{padding:9px 11px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;vertical-align:bottom;}
+.th-crit{background:var(--navy);color:white;}
+.th-full{background:var(--green);color:white;}
+.th-part{background:var(--amber);color:white;}
+.th-min{background:var(--orange);color:white;}
+.th-none{background:var(--red);color:white;}
+.pts-label{display:block;font-size:14px;font-weight:800;margin-bottom:2px;letter-spacing:-.02em;}
+.rubric-table td{padding:10px 11px;border-bottom:1px solid var(--gray-100);border-right:1px solid var(--gray-100);vertical-align:top;line-height:1.5;}
+.rubric-table tr:last-child td{border-bottom:none;}
+.rubric-table td:last-child{border-right:none;}
+.td-crit{background:var(--gray-50);font-weight:700;color:var(--navy);font-size:12.5px;}
+.td-full{background:var(--green-lt);}
+.td-part{background:var(--amber-lt);}
+.td-min{background:var(--orange-lt);}
+.td-none{background:var(--red-lt);}
+.crit-pts{display:inline-block;margin-top:5px;font-size:11px;font-weight:700;padding:2px 8px;border-radius:100px;background:var(--blue-lt);color:var(--navy);}
+.crit-lo{display:block;font-size:10px;font-weight:600;color:var(--gray-400);margin-top:3px;letter-spacing:.03em;}
+.cell-pts{font-weight:800;font-size:12.5px;margin-bottom:4px;display:block;}
+.td-full .cell-pts{color:var(--green);}
+.td-part .cell-pts{color:var(--amber);}
+.td-min .cell-pts{color:var(--orange);}
+.td-none .cell-pts{color:var(--red);}
+.notes-list{display:flex;flex-direction:column;gap:10px;}
+.notes-list li{display:flex;gap:10px;font-size:13px;line-height:1.55;color:var(--gray-700);}
+.note-num{width:22px;height:22px;border-radius:50%;background:var(--navy);color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.speed-table{width:100%;border-collapse:collapse;font-size:12.5px;}
+.speed-table th{background:var(--navy);color:white;padding:8px 12px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;}
+.speed-table td{padding:8px 12px;border-bottom:1px solid var(--gray-100);}
+.speed-table tr:last-child td{border-bottom:none;}
+</style>
+</head>
+<body>
+
+<div class="pg-header">
+  <div class="badge">SCM 352 · M09</div>
+  <div>
+    <h1>Grading Rubric — Discussion: Supply Chain Trade-offs in the Real World</h1>
+    <p>Instructor use only · SpeedGrader reference · Do not distribute to students</p>
+  </div>
+  <div class="hdr-right">30 pts total<br>13% of Module M09</div>
+</div>
+
+<div class="pg-body">
+
+  <div class="score-grid">
+    <div class="score-card"><div class="label">Initial Post</div><div class="pts">30</div><div class="sub">4 criteria · No reply required</div></div>
+    <div class="score-card"><div class="label">Total</div><div class="pts">30</div><div class="sub">13% of Module grade</div></div>
+    <div class="score-card"><div class="label">Grading Time</div><div class="pts" style="font-size:20px;">2–4</div><div class="sub">min per student</div></div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:12px;">
+    <div class="alert alert-red">
+      <div class="alert-icon">🚫</div>
+      <div class="alert-body">
+        <strong>Naming Penalty — Initial Post</strong>
+        If a student names their business in their initial post, apply a <strong>10-point deduction</strong> from their final score. Do not deduct before totaling the rubric score.
+      </div>
+    </div>
+    <div class="alert alert-gold">
+      <div class="alert-icon">⚠️</div>
+      <div class="alert-body">
+        <strong>Prohibited Businesses</strong>
+        Posts using prohibited firms (Zara, Dell, Amazon, HP, Nike, Riverside Health System, GloveCo, any business from Ch. 11 textbook examples, any business from lecture apps) should receive 0 until a corrected post is submitted. Ask the student to repost with a different product.
+      </div>
+    </div>
+    <div class="alert alert-blue">
+      <div class="alert-icon">ℹ️</div>
+      <div class="alert-body">
+        <strong>Defensible Alternatives</strong>
+        Some supply chain classifications have legitimate ambiguity. Award full credit for either answer with a correct justification. If no justification is present, award credit only for the primary answer.
+      </div>
+    </div>
+    <div class="alert alert-gold">
+      <div class="alert-icon">📌</div>
+      <div class="alert-body">
+        <strong>Point Distribution Note</strong>
+        Architecture Section 8 states "4 criteria at 6 pts each" (= 24 pts), but the Discussion total is 30 pts. This rubric distributes 30 pts as 9/7/7/7, weighting Part 1 (Supply Chain Structure) at 9 pts because it requires four distinct node identifications with value explanations. Confirm point distribution with course coordinator before publishing the Canvas rubric.
+      </div>
+    </div>
+  </div>
+
+  <!-- INITIAL POST RUBRIC -->
+  <div>
+    <div class="sec-heading">Initial Post Rubric &nbsp;·&nbsp; 30 points</div>
+    <div class="rubric-wrap" style="margin-top:16px;">
+      <table class="rubric-table">
+        <colgroup><col style="width:19%"><col style="width:21%"><col style="width:20%"><col style="width:21%"><col style="width:19%"></colgroup>
+        <thead>
+          <tr>
+            <th class="th-crit">Criterion</th>
+            <th class="th-full"><span class="pts-label">Full Credit</span>All elements present</th>
+            <th class="th-part"><span class="pts-label">Partial</span>Missing one element</th>
+            <th class="th-min"><span class="pts-label">Minimal</span>Vague or incomplete</th>
+            <th class="th-none"><span class="pts-label">No Credit</span>Missing or wrong</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="td-crit">
+              Part 1 — Supply Chain Structure
+              <span class="crit-pts">9 pts</span>
+              <span class="crit-lo">LO9-1</span>
+            </td>
+            <td class="td-full"><span class="cell-pts">9 pts</span>All four nodes identified (tier-1 supplier, tier-2 supplier, focal firm, downstream channel) and each node's value contribution explained in at least one specific sentence.</td>
+            <td class="td-part"><span class="cell-pts">6–7 pts</span>Three nodes identified with value explanation, or all four identified but one or two value explanations are missing or circular ("the focal firm adds value by making the product").</td>
+            <td class="td-min"><span class="cell-pts">3–5 pts</span>Fewer than three nodes identified, or nodes named without any value explanation, or supply chain described in generic terms without naming specific roles.</td>
+            <td class="td-none"><span class="cell-pts">0–2 pts</span>Only the focal firm identified, or supply chain description is absent or entirely incorrect (e.g., describes a business process rather than a supply chain).</td>
+          </tr>
+          <tr>
+            <td class="td-crit">
+              Part 2 — Performance Metric Assessment
+              <span class="crit-pts">7 pts</span>
+              <span class="crit-lo">LO9-2</span>
+            </td>
+            <td class="td-full"><span class="cell-pts">7 pts</span>One of the three metrics named correctly and justified with a product-specific characteristic (not generic). Explains why the other two metrics are less central for this specific product.</td>
+            <td class="td-part"><span class="cell-pts">4–6 pts</span>Correct metric identified with a product-specific reason, but the explanation of why the other two are less important is missing or asserted without reasoning.</td>
+            <td class="td-min"><span class="cell-pts">2–3 pts</span>Metric named but justification is generic ("fill rate matters because reliability matters") without tying to a specific product characteristic, or the wrong metric is named with a partially coherent argument.</td>
+            <td class="td-none"><span class="cell-pts">0–1 pts</span>No metric named, or metric named with no justification, or all three metrics listed as equally important.</td>
+          </tr>
+          <tr>
+            <td class="td-crit">
+              Part 3 — Strategy Diagnosis
+              <span class="crit-pts">7 pts</span>
+              <span class="crit-lo">LO9-4</span>
+            </td>
+            <td class="td-full"><span class="cell-pts">7 pts</span>Demand classified as predictable or unpredictable, correct strategy recommended (efficient or responsive), and two distinct pieces of observable evidence cited. Evidence is observable (availability, variety, pricing, purchasing pattern) — not a restatement of the classification.</td>
+            <td class="td-part"><span class="cell-pts">4–6 pts</span>Correct demand classification and strategy recommendation, but only one piece of evidence, or second piece of evidence is a restatement rather than an independent observation.</td>
+            <td class="td-min"><span class="cell-pts">2–3 pts</span>Demand classification present but strategy recommendation is wrong, or strategy stated without demand classification, or "evidence" consists of generic assertions with no observable grounding.</td>
+            <td class="td-none"><span class="cell-pts">0–1 pts</span>No demand classification, no strategy recommendation, or both are incorrect without coherent reasoning.</td>
+          </tr>
+          <tr>
+            <td class="td-crit">
+              Part 4 — Trade-off Identification
+              <span class="crit-pts">7 pts</span>
+              <span class="crit-lo">LO9-4</span>
+            </td>
+            <td class="td-full"><span class="cell-pts">7 pts</span>Specific trade-off named (not generic "cost vs. quality"). Firm's apparent choice described based on observable evidence. Student judgment stated with a one-to-two sentence supply chain rationale.</td>
+            <td class="td-part"><span class="cell-pts">4–6 pts</span>Trade-off identified and firm's choice described, but student judgment is absent or asserted without supply chain reasoning, or the trade-off is described but not framed as a tension (e.g., "the firm does X and Y" without naming what is sacrificed).</td>
+            <td class="td-min"><span class="cell-pts">2–3 pts</span>Trade-off named but described in generic terms (e.g., "they balance cost and quality") without identifying what the firm appears to have chosen or what is sacrificed.</td>
+            <td class="td-none"><span class="cell-pts">0–1 pts</span>No trade-off identified, or trade-off described as non-existent, or response is a summary of the product features without analytical content.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- GRADING EFFICIENCY NOTES -->
+  <div>
+    <div class="sec-heading">Grading Efficiency Notes</div>
+    <div style="margin-top:16px;background:white;border:1px solid var(--gray-200);border-radius:12px;padding:20px;">
+      <ul class="notes-list">
+        <li><div class="note-num">1</div><span><strong>Batch by criterion, not by student.</strong> Read all students' Part 1 responses first, then all Part 2, etc. This is faster than reading each full post. Score on a sticky note as you go; enter in SpeedGrader at the end of each batch.</span></li>
+        <li><div class="note-num">2</div><span><strong>Naming check is a 10-second scan:</strong> search the post for brand names in the first two sentences. Most students who name the firm do it immediately. Apply the 10-point deduction after totaling the rubric score — not as a rubric criterion.</span></li>
+        <li><div class="note-num">3</div><span><strong>Part 3 most common error:</strong> students correctly classify demand (e.g., "predictable") but then recommend the wrong strategy ("therefore responsive"). This is a full-credit kill for strategy but should not pull down the demand-classification credit. Score demand classification and strategy recommendation separately when borderline.</span></li>
+        <li><div class="note-num">4</div><span><strong>Part 1 most common error:</strong> students name all four nodes but describe "value added" in circular terms ("the tier-1 supplier adds value by supplying the focal firm"). A circular explanation earns partial credit at best — require that value means something a customer or downstream party would pay for.</span></li>
+        <li><div class="note-num">5</div><span><strong>AI-assist signals:</strong> generic Part 1 descriptions using textbook-style language ("the tier-1 supplier provides raw materials") without any product-specific inference; Part 4 identifies a textbook trade-off (cost vs. responsiveness) without describing anything observable about the specific product. Flag for academic integrity if all four parts use framework vocabulary precisely but no personal observation is present anywhere.</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- QUICK REFERENCE -->
+  <div>
+    <div class="sec-heading">Quick SpeedGrader Score Reference</div>
+    <div style="margin-top:16px;background:white;border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;">
+      <table class="speed-table">
+        <thead><tr><th>Score Range</th><th>What it indicates</th><th style="text-align:right;">Letter</th></tr></thead>
+        <tbody>
+          <tr><td style="font-weight:700;color:var(--green);">27–30</td><td>All four criteria met with specificity. Framework vocabulary correct and applied to observable evidence. Personal inference evident in Part 1 and Part 4.</td><td style="text-align:right;font-weight:700;">A</td></tr>
+          <tr><td style="font-weight:700;color:var(--amber);">24–26</td><td>Most criteria met. One or two elements vague. Vocabulary mostly correct. Trade-off or evidence slightly underdeveloped.</td><td style="text-align:right;font-weight:700;">B</td></tr>
+          <tr><td style="font-weight:700;color:var(--orange);">21–23</td><td>Some criteria incomplete. Generic language without observable grounding. Strategy diagnosis present but not supported with evidence. Part 1 misses one or two nodes.</td><td style="text-align:right;font-weight:700;">C</td></tr>
+          <tr><td style="font-weight:700;color:var(--red);">Below 21</td><td>Multiple criteria missing or misapplied. No observable evidence in any part. Consider reaching out before returning grade.</td><td style="text-align:right;font-weight:700;">D / F</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

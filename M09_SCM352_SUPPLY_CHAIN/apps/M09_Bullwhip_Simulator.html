@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bullwhip Effect Simulator — SCM 352 M09</title>
+<style>
+:root {
+  --navy:       #1a3a5c;
+  --blue:       #2563a8;
+  --blue-lt:    #dbeafe;
+  --blue-xlt:   #eff6ff;
+  --blue-bdr:   #bfdbfe;
+  --gold:       #f59e0b;
+  --gold-lt:    #fffbeb;
+  --gold-bdr:   #fde68a;
+  --gold-dark:  #92400e;
+  --green:      #16a34a;
+  --green-lt:   #f0fdf4;
+  --green-bdr:  #bbf7d0;
+  --green-dk:   #14532d;
+  --red:        #dc2626;
+  --red-lt:     #fef2f2;
+  --red-bdr:    #fecaca;
+  --red-dk:     #7f1d1d;
+  --amber:      #d97706;
+  --amber-lt:   #fffbeb;
+  --amber-bdr:  #fde68a;
+  --teal:       #0891b2;
+  --teal-lt:    #f0fdfe;
+  --teal-bdr:   #a5f3fc;
+  --gray-50:    #f9fafb;
+  --gray-100:   #f3f4f6;
+  --gray-200:   #e5e7eb;
+  --gray-300:   #d1d5db;
+  --gray-400:   #9ca3af;
+  --gray-600:   #4b5563;
+  --gray-700:   #374151;
+  --gray-800:   #1f2937;
+  --blue-pale:  #93c5fd;
+  --blue-hover: #1d4ed8;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--gray-50);color:var(--gray-800);font-size:15px;line-height:1.5;}
+
+.app-header{background:var(--navy);color:white;padding:16px 28px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+.app-badge{background:var(--gold);color:var(--navy);font-size:11px;font-weight:700;letter-spacing:.05em;padding:3px 10px;border-radius:20px;white-space:nowrap;}
+.app-header h1{font-size:18px;font-weight:600;}
+.lo-badge{background:rgba(255,255,255,.12);font-size:11px;padding:2px 9px;border-radius:12px;color:rgba(255,255,255,.8);}
+
+.instr-bar{background:var(--gold-lt);border-left:4px solid var(--gold);padding:12px 24px;font-size:13px;line-height:1.65;color:var(--gray-700);}
+.instr-bar strong{color:var(--navy);}
+
+.preset-bar{background:white;border-bottom:2px solid var(--gray-200);padding:10px 24px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.preset-btn{padding:7px 16px;border:2px solid var(--gray-200);background:white;border-radius:20px;cursor:pointer;font-size:13px;font-weight:500;color:var(--gray-700);transition:all .15s;}
+.preset-btn:hover{border-color:var(--blue);color:var(--blue);}
+.preset-btn.active{background:var(--blue);border-color:var(--blue);color:white;}
+.preset-label{font-size:12px;color:var(--gray-400);font-weight:600;text-transform:uppercase;letter-spacing:.04em;}
+
+.app-body{max-width:1000px;margin:24px auto;padding:0 20px 56px;}
+
+.sim-card{background:white;border:1px solid var(--gray-200);border-radius:12px;margin-bottom:16px;box-shadow:0 1px 6px rgba(0,0,0,.06);overflow:hidden;}
+.sim-header{background:var(--navy);color:white;padding:14px 20px;}
+.sim-title{font-size:15px;font-weight:600;margin-bottom:3px;}
+.sim-sub{font-size:12px;color:rgba(255,255,255,.6);}
+
+.controls-row{padding:14px 20px;background:var(--gray-50);border-bottom:1px solid var(--gray-200);display:flex;gap:20px;flex-wrap:wrap;align-items:flex-end;}
+.ctrl-group{display:flex;flex-direction:column;gap:5px;}
+.ctrl-label{font-size:12px;font-weight:600;color:var(--gray-600);text-transform:uppercase;letter-spacing:.04em;}
+.ctrl-val{font-size:14px;font-weight:700;color:var(--navy);min-width:40px;text-align:center;}
+input[type=range]{width:160px;accent-color:var(--blue);}
+.btn-run{background:var(--blue);color:white;padding:9px 22px;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;align-self:flex-end;}
+.btn-run:hover{background:var(--blue-hover);}
+
+.sim-body{padding:20px;}
+
+/* Chart */
+.chart-area{margin-bottom:20px;}
+.chart-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--gray-600);margin-bottom:8px;}
+.bar-chart{display:flex;gap:3px;align-items:flex-end;height:140px;padding:8px 0;border-bottom:2px solid var(--gray-200);overflow-x:auto;}
+.bar-group{display:flex;flex-direction:column;align-items:center;gap:2px;flex-shrink:0;width:44px;}
+.bar-wrap{display:flex;gap:2px;align-items:flex-end;height:120px;}
+.bar{width:16px;border-radius:3px 3px 0 0;transition:height .4s;min-height:2px;}
+.bar.demand{background:var(--blue);}
+.bar.retailer{background:var(--amber);}
+.bar.dist{background:var(--red);}
+.bar-wk{font-size:10px;color:var(--gray-400);margin-top:3px;}
+.chart-legend{display:flex;gap:16px;margin-top:8px;flex-wrap:wrap;}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--gray-600);}
+.legend-dot{width:12px;height:12px;border-radius:2px;}
+.legend-dot.demand{background:var(--blue);}
+.legend-dot.retailer{background:var(--amber);}
+.legend-dot.dist{background:var(--red);}
+
+/* Data table */
+.data-table{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:16px;}
+.data-table th{background:var(--navy);color:white;padding:8px 10px;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.05em;}
+.data-table td{padding:7px 10px;border-bottom:1px solid var(--gray-100);vertical-align:middle;}
+.data-table tr:nth-child(even) td{background:var(--gray-50);}
+.data-table .ratio-cell{font-weight:700;}
+.ratio-low{color:var(--green);}
+.ratio-mid{color:var(--amber);}
+.ratio-high{color:var(--red);}
+
+/* Metrics panel */
+.metrics-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:16px;}
+.metric-card{background:var(--navy);color:white;border-radius:10px;padding:14px 16px;}
+.mc-label{font-size:11px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px;}
+.mc-value{font-size:22px;font-weight:700;color:var(--blue-pale);}
+.mc-sub{font-size:11px;color:rgba(255,255,255,.45);margin-top:2px;}
+
+/* Analysis */
+.analysis-block{background:var(--gold-lt);border:1px solid var(--gold-bdr);border-radius:10px;padding:16px 18px;margin-bottom:16px;}
+.analysis-title{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--amber);margin-bottom:8px;}
+.analysis-text{font-size:13px;color:var(--gray-800);line-height:1.7;}
+
+/* Quiz */
+.quiz-block{border:1px solid var(--gray-200);border-radius:10px;padding:18px 20px;margin-bottom:12px;}
+.quiz-q{font-size:14px;font-weight:600;color:var(--navy);margin-bottom:12px;line-height:1.5;}
+.radio-group{display:flex;flex-direction:column;gap:8px;margin-bottom:12px;}
+.radio-opt{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border:1.5px solid var(--gray-200);border-radius:8px;cursor:pointer;transition:border-color .15s;}
+.radio-opt:hover{border-color:var(--blue);}
+.radio-opt.selected{border-color:var(--blue);background:var(--blue-xlt);}
+.radio-opt input{margin-top:2px;flex-shrink:0;}
+.opt-label{font-size:13px;color:var(--gray-800);}
+.btn-check{background:var(--blue);color:white;padding:8px 20px;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;}
+.btn-check:hover{background:var(--blue-hover);}
+.fb{border-radius:8px;padding:12px 16px;font-size:13px;margin-top:12px;display:none;line-height:1.6;}
+.fb.show{display:block;}
+.fb.correct{background:var(--green-lt);border:1px solid var(--green-bdr);color:var(--green-dk);}
+.fb.wrong{background:var(--red-lt);border:1px solid var(--red-bdr);color:var(--red-dk);}
+</style>
+</head>
+<body>
+
+<div class="app-header">
+  <span class="app-badge">SCM 352 · M09</span>
+  <h1>Bullwhip Effect Simulator</h1>
+  <span class="lo-badge">LO9-3</span>
+</div>
+
+<div class="instr-bar">
+  <p><strong>Do this:</strong> Select a preset to see how a specific bullwhip root cause amplifies demand signals across supply chain tiers. Use the Student-Controlled mode to experiment with demand volatility and ordering policy parameters. Then answer the diagnostic questions.</p>
+  <p style="margin-top:5px;"><strong>Gate 2 connection:</strong> Gate 2 Q6 requires you to identify a bullwhip root cause from ordering data and propose a mitigation. Case Part 3 uses the GloveCo data table shown in Preset 3.</p>
+</div>
+
+<div class="preset-bar">
+  <span class="preset-label">Mode:</span>
+  <button class="preset-btn active" onclick="loadPreset(0)">Preset 1 — Order Batching</button>
+  <button class="preset-btn" onclick="loadPreset(1)">Preset 2 — Shortage Gaming</button>
+  <button class="preset-btn" onclick="loadPreset(2)">Preset 3 — GloveCo Case Data</button>
+  <button class="preset-btn" onclick="loadPreset(3)">Student-Controlled</button>
+</div>
+
+<div class="app-body">
+
+  <!-- Controls (Student-Controlled only) -->
+  <div id="controls-panel" style="display:none;" class="sim-card">
+    <div class="sim-header">
+      <div class="sim-title">Simulation Parameters</div>
+      <div class="sim-sub">Adjust demand volatility and distributor safety stock buffer, then run the simulation.</div>
+    </div>
+    <div class="controls-row">
+      <div class="ctrl-group">
+        <div class="ctrl-label">Demand Volatility (% swing)</div>
+        <input type="range" id="vol-slider" min="5" max="50" value="15" oninput="updateCtrl('vol',this.value)">
+        <div class="ctrl-val" id="vol-val">15%</div>
+      </div>
+      <div class="ctrl-group">
+        <div class="ctrl-label">Distributor Safety Factor</div>
+        <input type="range" id="ss-slider" min="1.0" max="3.0" step="0.1" value="1.5" oninput="updateCtrl('ss',this.value)">
+        <div class="ctrl-val" id="ss-val">1.5×</div>
+      </div>
+      <div class="ctrl-group">
+        <div class="ctrl-label">Order Batch Interval (weeks)</div>
+        <input type="range" id="batch-slider" min="1" max="4" step="1" value="1" oninput="updateCtrl('batch',this.value)">
+        <div class="ctrl-val" id="batch-val">1 wk</div>
+      </div>
+      <button class="btn-run" onclick="runStudentSim()">Run Simulation</button>
+    </div>
+  </div>
+
+  <!-- Main simulation display -->
+  <div class="sim-card">
+    <div class="sim-header">
+      <div class="sim-title" id="sim-title">Preset 1 — Order Batching</div>
+      <div class="sim-sub" id="sim-sub">10-week window showing how weekly batch ordering distorts manufacturer demand signal</div>
+    </div>
+    <div class="sim-body">
+
+      <!-- Chart -->
+      <div class="chart-area">
+        <div class="chart-title">Orders by Tier — Weekly Volume</div>
+        <div class="bar-chart" id="bar-chart"></div>
+        <div class="chart-legend">
+          <div class="legend-item"><div class="legend-dot demand"></div>End-Customer Demand</div>
+          <div class="legend-item"><div class="legend-dot retailer"></div>Retailer → Distributor Orders</div>
+          <div class="legend-item"><div class="legend-dot dist"></div>Distributor → Manufacturer Orders</div>
+        </div>
+      </div>
+
+      <!-- Metrics -->
+      <div class="metrics-row" id="metrics-row"></div>
+
+      <!-- Data table -->
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Week</th>
+            <th>End-Customer Demand</th>
+            <th>Retailer Order to Dist.</th>
+            <th>Distributor Order to Mfr.</th>
+            <th>Dist. Order / Demand Ratio</th>
+          </tr>
+        </thead>
+        <tbody id="data-tbody"></tbody>
+      </table>
+
+      <!-- Analysis -->
+      <div class="analysis-block">
+        <div class="analysis-title" id="analysis-title">Root Cause Analysis</div>
+        <div class="analysis-text" id="analysis-text"></div>
+      </div>
+
+      <!-- Quiz -->
+      <div id="quiz-container"></div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+const PRESETS = [
+  {
+    title:'Preset 1 — Order Batching',
+    sub:'Retailer orders weekly; distributor orders monthly (every 4 weeks). Watch the signal the manufacturer receives.',
+    rootCause:'Order Batching',
+    demand:[500,500,500,500,500,500,500,500,500,500],
+    retailer:[500,500,500,500,500,500,500,500,500,500],
+    dist:[0,0,0,2000,0,0,0,2000,0,0],
+    analysis:'Demand is perfectly stable at 500 units/week. The retailer passes orders through normally. But the distributor places monthly batch orders (every 4 weeks) to minimize transaction costs — resulting in 2,000-unit spikes at weeks 4 and 8 and zero orders at all other weeks. The manufacturer sees only the distributor\'s orders and cannot distinguish "batch order timing" from "real demand variation." The manufacturer experiences 0–2,000 demand swings on a product where true demand is flat at 500/week. Mitigation: switch distributor to weekly ordering (may require reducing per-order transaction costs through EDI/automation).',
+    quiz:[
+      {
+        q:'The distributor orders every 4 weeks. What is the amplification ratio at peak (week 4 or 8) compared to actual weekly demand?',
+        opts:['1.0× — no amplification','2.0× — moderate amplification','4.0× — high amplification','8.0× — extreme amplification'],
+        correct:2,
+        feedback:'Distributor order = 2,000; actual weekly demand = 500. Ratio = 2,000 ÷ 500 = 4.0×. This amplification occurs purely from batching behavior, not from any change in actual demand.'
+      }
+    ]
+  },
+  {
+    title:'Preset 2 — Shortage Gaming',
+    sub:'Manufacturer allocates proportionally during a shortage. Watch distributors inflate orders and then cancel.',
+    rootCause:'Shortage Gaming (Rationing Game)',
+    demand:[500,510,520,530,540,550,540,520,500,500],
+    retailer:[500,510,520,530,540,550,540,520,500,500],
+    dist:[500,510,780,1060,1620,2750,0,0,0,500],
+    analysis:'Demand rises modestly (+10% over 5 weeks). At week 3, the manufacturer begins allocation — distributors receive only 50% of their orders. Distributors respond by doubling their orders to receive their true need under 50% allocation. Orders spiral: by week 6, the distributor is ordering 2,750 units/week for a product with 550 units/week true demand. When the manufacturer announces the shortage is over (week 7), distributors cancel their inflated orders immediately — placing zero orders for 3 weeks to draw down the excess inventory they received. The manufacturer now has 5× overcapacity for a product with stable demand. Mitigation: switch from proportional allocation to fixed-order allocation (cap at historical baseline); share true demand data upstream.',
+    quiz:[
+      {
+        q:'At week 6, the distributor orders 2,750 units. Actual end-customer demand that week is 550 units. What is the order/demand ratio, and what root cause does this exemplify?',
+        opts:['2.0× — Order batching','5.0× — Shortage gaming (rational response to allocation)','1.0× — No bullwhip present','10.0× — Demand signal processing'],
+        correct:1,
+        feedback:'Ratio = 2,750 ÷ 550 = 5.0×. This is shortage gaming: the distributor inflates orders because it knows the manufacturer will allocate proportionally. Ordering 2,750 to receive ~1,375 is rational at the firm level — catastrophic at the system level.'
+      }
+    ]
+  },
+  {
+    title:'Preset 3 — GloveCo Case Data',
+    sub:'Actual ordering data from the Case Part 3 analysis. Identify the root cause.',
+    rootCause:'Multiple Causes (Demand Signal Processing + Shortage Gaming)',
+    demand:[500,510,530,560,600,590,575,560,550,540],
+    retailer:[500,510,530,560,600,590,575,560,550,540],
+    dist:[500,510,700,1100,1800,2200,800,0,0,400],
+    analysis:'This is the GloveCo distribution center data from Case Part 3. End-customer demand rose 20% (500→600 peak), a moderate increase. But the DC\'s ordering behavior shows two interacting root causes: (1) Demand signal processing — the DC forecasted the demand increase as ongoing and added safety stock, leading to overordering in weeks 3–6; (2) Shortage gaming — fearing allocation from the glove manufacturer (who was at capacity), the DC inflated orders further in weeks 5–6. When demand stabilized and allocation fears resolved, the DC placed zero orders for two weeks (weeks 8–9) to draw down excess inventory. The combined peak ratio is 2,200 ÷ 590 = 3.73× actual demand at week 6. For Case Part 3: identify BOTH root causes and propose a mitigation for each.',
+    quiz:[
+      {
+        q:'Weeks 8 and 9 show zero orders from the DC despite 550–560 units/week of actual demand. What explains this pattern?',
+        opts:['The manufacturer stopped accepting orders','The DC is drawing down excess inventory accumulated from the overordering in weeks 3–6','Actual demand fell to zero','A system error prevented order transmission'],
+        correct:1,
+        feedback:'Correct. The DC overordered in weeks 3–6, accumulating significant excess inventory. In weeks 8–9, the DC satisfies actual demand by drawing down that excess stock rather than placing new orders. This zero-order period is the supply chain recovering from the bullwhip overshoot — a predictable consequence of shortage gaming and overforecasting.'
+      }
+    ]
+  }
+];
+
+let currentPreset = 0;
+let studentParams = {vol:15, ss:1.5, batch:1};
+
+function updateCtrl(which, val){
+  if(which==='vol'){document.getElementById('vol-val').textContent=val+'%';studentParams.vol=parseFloat(val);}
+  else if(which==='ss'){document.getElementById('ss-val').textContent=val+'×';studentParams.ss=parseFloat(val);}
+  else if(which==='batch'){document.getElementById('batch-val').textContent=val+' wk';studentParams.batch=parseInt(val);}
+}
+
+function loadPreset(idx){
+  document.querySelectorAll('.preset-btn').forEach((b,i)=>b.classList.toggle('active',i===idx));
+  currentPreset=idx;
+  if(idx===3){
+    document.getElementById('controls-panel').style.display='block';
+    runStudentSim();
+  } else {
+    document.getElementById('controls-panel').style.display='none';
+    const p=PRESETS[idx];
+    renderSim(p.title,p.sub,p.demand,p.retailer,p.dist,p.analysis,p.rootCause,p.quiz);
+  }
+}
+
+function runStudentSim(){
+  const vol=studentParams.vol/100;
+  const ss=studentParams.ss;
+  const batch=studentParams.batch;
+  const BASE=500;
+  const wks=10;
+  const demand=[];
+  for(let i=0;i<wks;i++){
+    const swing=Math.sin(i*0.8)*vol*BASE;
+    demand.push(Math.round(Math.max(100,BASE+swing)));
+  }
+  const retailer=[...demand];
+  const dist=[];
+  let batchAccum=0;
+  for(let i=0;i<wks;i++){
+    batchAccum+=retailer[i]*ss;
+    if((i+1)%batch===0||i===wks-1){
+      dist.push(Math.round(batchAccum));
+      for(let j=0;j<batch-1&&dist.length<wks;j++) dist.push(0);
+      batchAccum=0;
+    } else {
+      dist.push(0);
+    }
+  }
+  while(dist.length<wks) dist.push(0);
+  const maxRatio=(Math.max(...dist)/Math.max(...demand)).toFixed(1);
+  const analysis=`<strong>Your Parameters:</strong> Demand volatility ${studentParams.vol}%, distributor safety factor ${studentParams.ss}×, batch interval ${studentParams.batch} week(s).<br><br>Peak distributor order/demand ratio: <strong>${maxRatio}×</strong>. ${maxRatio>=3?'High amplification — the bullwhip is strong. Reducing the batch interval or safety factor would reduce the signal distortion reaching the manufacturer.':maxRatio>=2?'Moderate amplification. Experiment with reducing the batch interval or safety factor.':'Low amplification. With these parameters, the bullwhip effect is minimal. Try increasing volatility or batch interval to see amplification emerge.'}`;
+  const quiz=[{
+    q:`With demand volatility at ${studentParams.vol}% and a batch interval of ${studentParams.batch} week(s), what happens to the bullwhip amplification if you double the batch interval?`,
+    opts:['Amplification roughly doubles (more batching = larger lumps)','Amplification stays the same','Amplification halves (fewer orders = less distortion)','Amplification disappears completely'],
+    correct:0,
+    feedback:'Doubling the batch interval creates larger order lumps at the distributor, which are received by the manufacturer as higher-amplitude spikes. More batching = more amplification. The fix is moving toward continuous-flow ordering (batch interval = 1 week), supported by lower per-order transaction costs through automation.'
+  }];
+  renderSim('Student-Controlled Simulation','Experiment with demand volatility, safety factor, and batch interval to observe bullwhip amplification.',demand,retailer,dist,analysis,'Student-Controlled (Observe and Analyze)',quiz);
+}
+
+function renderSim(title,sub,demand,retailer,dist,analysis,rootCause,quiz){
+  document.getElementById('sim-title').textContent=title;
+  document.getElementById('sim-sub').textContent=sub;
+
+  // Build chart
+  const maxVal=Math.max(...demand,...retailer,...dist,1);
+  const maxH=120;
+  let chartHtml='';
+  for(let i=0;i<demand.length;i++){
+    const dH=Math.round((demand[i]/maxVal)*maxH);
+    const rH=Math.round((retailer[i]/maxVal)*maxH);
+    const diH=Math.round((dist[i]/maxVal)*maxH);
+    chartHtml+=`<div class="bar-group">
+      <div class="bar-wrap">
+        <div class="bar demand" style="height:${dH}px" title="Demand: ${demand[i]}"></div>
+        <div class="bar retailer" style="height:${rH}px" title="Retailer: ${retailer[i]}"></div>
+        <div class="bar dist" style="height:${diH}px" title="Distributor: ${dist[i]}"></div>
+      </div>
+      <div class="bar-wk">Wk ${i+1}</div>
+    </div>`;
+  }
+  document.getElementById('bar-chart').innerHTML=chartHtml;
+
+  // Metrics
+  const avgDemand=demand.reduce((a,b)=>a+b,0)/demand.length;
+  const stdDemand=Math.sqrt(demand.map(v=>(v-avgDemand)**2).reduce((a,b)=>a+b,0)/demand.length);
+  const avgDist=dist.reduce((a,b)=>a+b,0)/dist.length;
+  const nonZeroDist=dist.filter(v=>v>0);
+  const peakRatio=nonZeroDist.length?Math.max(...dist)/Math.max(...demand):1;
+  const cvDemand=((stdDemand/avgDemand)*100).toFixed(0);
+  document.getElementById('metrics-row').innerHTML=`
+    <div class="metric-card"><div class="mc-label">Avg End Demand</div><div class="mc-value">${Math.round(avgDemand)}</div><div class="mc-sub">units/week</div></div>
+    <div class="metric-card"><div class="mc-label">Demand CV%</div><div class="mc-value">${cvDemand}%</div><div class="mc-sub">coefficient of variation</div></div>
+    <div class="metric-card"><div class="mc-label">Peak Order/Demand Ratio</div><div class="mc-value">${peakRatio.toFixed(1)}×</div><div class="mc-sub">bullwhip amplification</div></div>
+    <div class="metric-card"><div class="mc-label">Root Cause</div><div class="mc-value" style="font-size:13px;line-height:1.3;">${rootCause}</div><div class="mc-sub">&nbsp;</div></div>`;
+
+  // Table
+  let tbodyHtml='';
+  for(let i=0;i<demand.length;i++){
+    const ratio=demand[i]>0?(dist[i]/demand[i]).toFixed(2):'-';
+    const ratioNum=parseFloat(ratio);
+    const ratioClass=ratioNum<1.2?'ratio-low':ratioNum<2.5?'ratio-mid':'ratio-high';
+    tbodyHtml+=`<tr>
+      <td>${i+1}</td>
+      <td>${demand[i]}</td>
+      <td>${retailer[i]}</td>
+      <td>${dist[i]}</td>
+      <td class="ratio-cell ${ratioClass}">${ratio}</td>
+    </tr>`;
+  }
+  document.getElementById('data-tbody').innerHTML=tbodyHtml;
+
+  // Analysis
+  document.getElementById('analysis-title').textContent='Analysis — '+rootCause;
+  document.getElementById('analysis-text').innerHTML=analysis;
+
+  // Quiz
+  let quizHtml='';
+  quiz.forEach((q,qi)=>{
+    const qid='q'+qi;
+    quizHtml+=`<div class="quiz-block">
+      <div class="quiz-q">${q.q}</div>
+      <div class="radio-group">
+        ${q.opts.map((o,oi)=>`<label class="radio-opt" id="qopt-${qid}-${oi}" onclick="selectQ('${qid}',${oi})">
+          <input type="radio" name="${qid}" value="${oi}">
+          <span class="opt-label">${o}</span>
+        </label>`).join('')}
+      </div>
+      <button class="btn-check" onclick="checkQ('${qid}',${q.correct},'${encodeURIComponent(q.feedback)}')">Check Answer</button>
+      <div class="fb" id="fb-${qid}"></div>
+    </div>`;
+  });
+  document.getElementById('quiz-container').innerHTML=quizHtml;
+}
+
+function selectQ(qid,idx){
+  document.querySelectorAll(`[id^="qopt-${qid}-"]`).forEach(el=>el.classList.remove('selected'));
+  document.getElementById(`qopt-${qid}-${idx}`).classList.add('selected');
+}
+
+function checkQ(qid,correct,feedbackEnc){
+  const sel=document.querySelector(`input[name="${qid}"]:checked`);
+  const fb=document.getElementById('fb-'+qid);
+  fb.classList.remove('show','correct','wrong');
+  if(!sel){fb.classList.add('show','wrong');fb.innerHTML='Select an answer before checking.';return;}
+  const feedback=decodeURIComponent(feedbackEnc);
+  if(parseInt(sel.value)===correct){
+    fb.classList.add('show','correct');
+    fb.innerHTML='<strong>✓ Correct.</strong> '+feedback;
+  } else {
+    fb.classList.add('show','wrong');
+    fb.innerHTML='<strong>Not quite.</strong> '+feedback;
+  }
+}
+
+loadPreset(0);
+</script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+{
+  "title": "Supply Chain Management",
+  "moduleLabel": "SCM 352 · M09 Lecture Slides",
+  "slides": [
+    "slides/s01-title.html",
+    "slides/s02-learning-objectives.html",
+    "slides/s03-gate-content.html",
+    "slides/s04-scm-definition.html",
+    "slides/s05-supply-chain-tiers.html",
+    "slides/s06-inventory-turns-formula.html",
+    "slides/s07-days-of-supply-formula.html",
+    "slides/s08-fill-rate-formula.html",
+    "slides/s09-hospital-data-setup.html",
+    "slides/s10-hospital-data-solution.html",
+    "slides/s11-bullwhip-concept.html",
+    "slides/s12-bullwhip-evidence.html",
+    "slides/s13-bullwhip-causes.html",
+    "slides/s14-efficient-vs-responsive.html",
+    "slides/s15-demand-uncertainty-matrix.html",
+    "slides/s16-mts-ato-mto.html",
+    "slides/s17-decoupling-point.html",
+    "slides/s18-postponement-concept.html",
+    "slides/s19-risk-pooling.html",
+    "slides/s20-supplier-relationships.html"
+  ]
+}

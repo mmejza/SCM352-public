@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Discussion: Supply Chain Trade-offs in the Real World — SCM 352 M09</title>
+<style>
+:root {
+  --navy:#1a3a5c;--blue:#2563a8;--blue-lt:#dbeafe;--blue-xlt:#eff6ff;
+  --gold:#f59e0b;--gold-lt:#fffbeb;--gold-bdr:#fde68a;
+  --green:#16a34a;--green-lt:#f0fdf4;--green-bdr:#bbf7d0;
+  --red:#dc2626;--red-lt:#fef2f2;--red-bdr:#fecaca;
+  --purple:#7c3aed;--purple-lt:#faf5ff;--purple-bdr:#ddd6fe;
+  --teal:#0891b2;--teal-lt:#f0fdfe;--teal-bdr:#a5f3fc;
+  --gray-50:#f9fafb;--gray-100:#f3f4f6;--gray-200:#e5e7eb;
+  --gray-400:#9ca3af;--gray-600:#4b5563;--gray-700:#374151;--gray-800:#1f2937;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--gray-50);color:var(--gray-800);line-height:1.6;}
+.page-header{background:var(--navy);color:white;padding:20px 28px;display:flex;align-items:flex-start;gap:16px;}
+.header-badge{background:var(--gold);color:var(--navy);font-weight:700;font-size:11px;padding:3px 9px;border-radius:4px;letter-spacing:.05em;text-transform:uppercase;white-space:nowrap;flex-shrink:0;}
+.header-text h1{font-size:20px;font-weight:700;margin-bottom:4px;}
+.header-text p{font-size:13px;color:rgba(255,255,255,.7);}
+.meta-strip{display:flex;gap:0;flex-wrap:wrap;border-bottom:2px solid var(--gray-200);background:white;}
+.meta-pill{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;padding:9px 16px;border-right:1px solid var(--gray-200);color:var(--gray-700);}
+.pip{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.pg-body{max-width:860px;margin:0 auto;padding:28px 24px 48px;display:flex;flex-direction:column;gap:24px;}
+.sec-div{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--gray-400);padding-bottom:10px;border-bottom:1px solid var(--gray-200);margin-bottom:-4px;}
+.card{background:white;border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;}
+.card-hd{padding:14px 20px;border-bottom:1px solid var(--gray-200);display:flex;align-items:center;gap:10px;}
+.card-hd h2{font-size:15px;font-weight:700;color:var(--navy);}
+.card-hd p{font-size:12px;color:var(--gray-600);margin-top:2px;}
+.card-bd{padding:20px;}
+.alert{border-radius:10px;padding:13px 16px;font-size:13.5px;line-height:1.6;display:flex;gap:11px;align-items:flex-start;}
+.alert-icon{font-size:17px;flex-shrink:0;margin-top:1px;}
+.alert-body{flex:1;}
+.alert-body strong{display:block;margin-bottom:3px;}
+.alert-red{background:var(--red-lt);border:1.5px solid var(--red-bdr);}
+.alert-gold{background:var(--gold-lt);border:1.5px solid var(--gold-bdr);}
+.alert-blue{background:var(--blue-xlt);border:1.5px solid #bfdbfe;}
+.part{border:1.5px solid var(--gray-200);border-radius:10px;overflow:hidden;margin-bottom:14px;}
+.part:last-child{margin-bottom:0;}
+.part-header{padding:12px 16px;display:flex;align-items:center;gap:12px;border-bottom:1.5px solid var(--gray-200);}
+.part-num{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;flex-shrink:0;color:white;}
+.part-title{flex:1;font-size:14px;font-weight:700;color:var(--gray-800);}
+.part-pts{font-size:12px;font-weight:700;padding:3px 9px;border-radius:100px;white-space:nowrap;}
+.part-body{padding:14px 16px;font-size:13.5px;line-height:1.65;color:var(--gray-700);}
+.part-body p+p{margin-top:8px;}
+.example-note{font-size:12px;color:var(--gray-600);margin-top:10px;padding:9px 12px;background:var(--gray-50);border-radius:6px;border-left:3px solid #d1d5db;}
+.part-1 .part-header{background:var(--blue-xlt);border-color:#bfdbfe;} .part-1 .part-num{background:var(--blue);} .part-1 .part-pts{background:var(--blue-lt);color:var(--navy);}
+.part-2 .part-header{background:var(--purple-lt);border-color:var(--purple-bdr);} .part-2 .part-num{background:var(--purple);} .part-2 .part-pts{background:var(--purple-bdr);color:var(--purple);}
+.part-3 .part-header{background:var(--teal-lt);border-color:var(--teal-bdr);} .part-3 .part-num{background:var(--teal);} .part-3 .part-pts{background:var(--teal-bdr);color:var(--teal);}
+.part-4 .part-header{background:var(--green-lt);border-color:var(--green-bdr);} .part-4 .part-num{background:var(--green);} .part-4 .part-pts{background:var(--green-bdr);color:var(--green);}
+.pts-table{width:100%;border-collapse:collapse;font-size:13.5px;}
+.pts-table th{background:var(--navy);color:white;padding:9px 14px;text-align:left;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;}
+.pts-table td{padding:9px 14px;border-bottom:1px solid var(--gray-100);vertical-align:top;}
+.pts-table tr:last-child td{border-bottom:none;}
+.pts-table tr.total-row td{font-weight:700;background:var(--gray-50);font-size:14px;border-top:2px solid var(--gray-200);}
+.pts-num{font-weight:700;font-size:15px;color:var(--navy);text-align:right;white-space:nowrap;}
+.tip-list{list-style:none;padding:0;display:flex;flex-direction:column;gap:8px;}
+.tip-list li{display:flex;gap:10px;font-size:13.5px;line-height:1.55;color:var(--gray-700);}
+.tip-list li::before{content:'→';color:var(--gold);font-weight:700;flex-shrink:0;margin-top:1px;}
+.prohibited-list{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;}
+.prohibited-tag{font-size:12px;font-weight:600;padding:3px 10px;border-radius:100px;background:var(--red-lt);color:var(--red);border:1px solid var(--red-bdr);}
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div class="header-badge">SCM 352 · M09</div>
+  <div class="header-text">
+    <h1>Discussion: Supply Chain Trade-offs in the Real World</h1>
+    <p>Module M09 Discussion · 30 points · Item 10 of 12</p>
+  </div>
+</div>
+
+<div class="meta-strip">
+  <div class="meta-pill"><div class="pip" style="background:#2563a8"></div> Initial post due: following module close</div>
+  <div class="meta-pill"><div class="pip" style="background:#16a34a"></div> 30 points total</div>
+  <div class="meta-pill"><div class="pip" style="background:#f59e0b"></div> 30–40 minutes</div>
+  <div class="meta-pill"><div class="pip" style="background:#0891b2"></div> LO9-1 · LO9-2 · LO9-4</div>
+</div>
+
+<div class="pg-body">
+
+  <div class="card">
+    <div class="card-hd" style="background:var(--blue-xlt);">
+      <div><h2>What You Are Doing</h2><p>Applying supply chain frameworks to a product from your own life — not a textbook example.</p></div>
+    </div>
+    <div class="card-bd" style="font-size:13.5px;line-height:1.7;color:var(--gray-700);">
+      <p>Identify a product you purchase regularly — something you buy from a store, online, or through a subscription service. Using the frameworks from Chapter 11, the lecture videos, and the slide deck, write an initial post that analyzes the supply chain behind that product.</p>
+      <p style="margin-top:10px;">Your post must cover all four parts below. Points are not awarded partially within a part — use the rubric in SpeedGrader for the exact criteria. There is no peer reply requirement for this discussion.</p>
+    </div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:10px;">
+    <div class="alert alert-red">
+      <div class="alert-icon">🚫</div>
+      <div class="alert-body">
+        <strong>Do not name your business in your post.</strong>
+        Describing the supply chain is required. Naming the company is not — and is penalized. A 10-point deduction applies if your initial post identifies the firm by name.
+      </div>
+    </div>
+    <div class="alert alert-gold">
+      <div class="alert-icon">⚠️</div>
+      <div class="alert-body">
+        <strong>Do not use any product or firm from the textbook, lecture videos, slides, apps, or any previous module's discussion.</strong>
+        <div class="prohibited-list">
+          <span class="prohibited-tag">Zara</span>
+          <span class="prohibited-tag">Dell</span>
+          <span class="prohibited-tag">Amazon</span>
+          <span class="prohibited-tag">HP</span>
+          <span class="prohibited-tag">Nike</span>
+          <span class="prohibited-tag">Riverside Health System</span>
+          <span class="prohibited-tag">GloveCo</span>
+          <span class="prohibited-tag">Any firm from App scenarios</span>
+          <span class="prohibited-tag">Any product from Ch. 11</span>
+        </div>
+        <p style="margin-top:8px;font-size:12.5px;">Posts using prohibited firms will receive 0 until a corrected post is submitted.</p>
+      </div>
+    </div>
+    <div class="alert alert-blue">
+      <div class="alert-icon">ℹ️</div>
+      <div class="alert-body">
+        <strong>Use framework vocabulary precisely.</strong>
+        Terms like "inventory turns," "fill rate," "efficient vs. responsive," "arm's-length," and "postponement" should be used with their Chapter 11 definitions — not colloquially. Your post demonstrates your ability to apply the concepts, not just name them.
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="sec-div">Your Initial Post — 4 Required Parts</div>
+
+    <div style="margin-top:18px;display:flex;flex-direction:column;gap:0;">
+
+      <div class="part part-1">
+        <div class="part-header">
+          <div class="part-num">1</div>
+          <div class="part-title">Supply Chain Structure</div>
+          <div class="part-pts">9 pts</div>
+        </div>
+        <div class="part-body">
+          <p>Identify the product and describe what you can infer about its supply chain. Name at least one likely <strong>tier-1 supplier</strong>, one likely <strong>tier-2 supplier</strong>, the <strong>focal firm</strong> (the company whose product you buy), and the <strong>downstream channel</strong> (how it reaches you).</p>
+          <p>For each node you name, explain in one sentence what value it adds to the chain. You are not expected to have inside knowledge — reasonable inference from the product's category, packaging, or industry is appropriate.</p>
+          <div class="example-note">Example structure (do not copy this): "The focal firm assembles [product type]. Its tier-1 supplier likely provides [key input]. A tier-2 supplier provides [material to tier-1]. The product reaches me through [channel], which adds value by [reason]."</div>
+        </div>
+      </div>
+
+      <div class="part part-2">
+        <div class="part-header">
+          <div class="part-num">2</div>
+          <div class="part-title">Performance Metric Assessment</div>
+          <div class="part-pts">7 pts</div>
+        </div>
+        <div class="part-body">
+          <p>Based on the product's characteristics (perishability, price, variety, demand stability), which supply chain performance metric — <strong>inventory turns</strong>, <strong>days of supply</strong>, or <strong>fill rate</strong> — is most important to monitor for this product?</p>
+          <p>Explain why that metric matters more than the other two for this specific product and supply chain. Your explanation must reference at least one specific characteristic of the product — not just say "because reliability is important."</p>
+          <div class="example-note">Full credit requires: (1) the correct metric named, (2) an explanation that ties the metric to a specific product characteristic, and (3) a reason why the other two metrics are less central for this product.</div>
+        </div>
+      </div>
+
+      <div class="part part-3">
+        <div class="part-header">
+          <div class="part-num">3</div>
+          <div class="part-title">Strategy Diagnosis</div>
+          <div class="part-pts">7 pts</div>
+        </div>
+        <div class="part-body">
+          <p>Is this product's demand <strong>predictable</strong> or <strong>unpredictable</strong>? Based on that assessment, should the firm running this supply chain use an <strong>efficient</strong> or <strong>responsive</strong> supply chain strategy?</p>
+          <p>Provide two specific pieces of evidence from what you observe about this product's availability, variety, pricing, or purchasing behavior that support your demand classification. Evidence means something you can see or infer — not a restatement of the classification.</p>
+          <div class="example-note">Full credit requires: (1) a clear demand classification, (2) the correct strategy recommendation, and (3) two pieces of observable evidence that support the demand classification — not just the strategy conclusion.</div>
+        </div>
+      </div>
+
+      <div class="part part-4">
+        <div class="part-header">
+          <div class="part-num">4</div>
+          <div class="part-title">Trade-off Identification</div>
+          <div class="part-pts">7 pts</div>
+        </div>
+        <div class="part-body">
+          <p>Identify one supply chain trade-off the firm running this product's supply chain faces — for example, a tension between cost and responsiveness, between inventory efficiency and fill rate, or between supplier relationship cost and supply security.</p>
+          <p>Describe what the firm appears to have chosen in resolving that trade-off (based on what you observe about the product's availability, pricing, variety, or lead time), and state whether you think it made the right trade-off. Justify your judgment in one to two sentences.</p>
+          <div class="example-note">Full credit requires: (1) a specific, named trade-off, (2) an observable description of the firm's apparent choice, and (3) your judgment on whether it was the right choice with a brief supply chain reason.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div>
+    <div class="sec-div">Points Breakdown</div>
+    <div class="card" style="margin-top:14px;">
+      <table class="pts-table">
+        <thead><tr><th>Part</th><th>Criterion</th><th style="text-align:right;">Points</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Part 1</strong></td><td>Supply Chain Structure — 4 nodes identified with value explanation</td><td class="pts-num">9</td></tr>
+          <tr><td><strong>Part 2</strong></td><td>Performance Metric Assessment — correct metric with product-specific justification</td><td class="pts-num">7</td></tr>
+          <tr><td><strong>Part 3</strong></td><td>Strategy Diagnosis — demand classification with two pieces of observable evidence</td><td class="pts-num">7</td></tr>
+          <tr><td><strong>Part 4</strong></td><td>Trade-off Identification — specific trade-off, firm's apparent choice, your judgment</td><td class="pts-num">7</td></tr>
+          <tr class="total-row"><td colspan="2"><strong>Initial Post Total</strong></td><td class="pts-num">30</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:12px;color:var(--gray-400);margin-top:8px;padding-left:4px;">No peer reply required. Discussion closes at the end of the following module's week.</p>
+  </div>
+
+  <div>
+    <div class="sec-div">Writing Tips</div>
+    <div class="card" style="margin-top:14px;">
+      <div class="card-bd">
+        <ul class="tip-list">
+          <li>Write your supply chain inference in Part 1 before deciding which metric to highlight in Part 2 — the structure analysis will usually reveal which metric matters most.</li>
+          <li>For Part 2, think about what happens when the metric goes wrong: a grocery store that loses fill rate on produce loses customers that day; an electronics store that loses turns holds obsolete inventory for months. Which failure mode is worse for your product?</li>
+          <li>For Part 3, "two pieces of evidence" means two things you can actually observe — not two ways to say the same thing. Price consistency and shelf availability are different observations. High price and "premium product" are not.</li>
+          <li>For Part 4, a good trade-off has a cost: if the firm chose low cost over responsiveness, what does it lose? If it chose responsiveness over cost, what does it spend? Make the cost explicit.</li>
+          <li>Length: aim for 350–500 words total across all four parts. Longer posts do not earn more credit. Shorter posts rarely cover all criteria fully.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

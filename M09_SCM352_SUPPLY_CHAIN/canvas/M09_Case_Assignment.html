@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Case Analysis M09 — Riverside Health System — SCM 352</title>
+<style>
+:root{--navy:#1a3a5c;--blue:#2563a8;--blue-lt:#dbeafe;--blue-xlt:#eff6ff;--gold:#f59e0b;--gold-lt:#fffbeb;--gold-bdr:#fde68a;--green:#16a34a;--green-lt:#f0fdf4;--green-bdr:#bbf7d0;--red:#dc2626;--red-lt:#fef2f2;--red-bdr:#fecaca;--amber:#d97706;--amber-lt:#fffbeb;--amber-bdr:#fde68a;--purple:#7c3aed;--purple-lt:#faf5ff;--purple-bdr:#ddd6fe;--teal:#0891b2;--teal-lt:#f0fdfe;--teal-bdr:#a5f3fc;--gray-50:#f9fafb;--gray-100:#f3f4f6;--gray-200:#e5e7eb;--gray-300:#d1d5db;--gray-400:#9ca3af;--gray-600:#4b5563;--gray-700:#374151;--gray-800:#1f2937;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--gray-50);color:var(--gray-800);line-height:1.65;font-size:14px;}
+.pg-header{background:var(--navy);color:white;padding:24px 28px;}
+.pg-header-eyebrow{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
+.pg-header h1{font-size:22px;font-weight:700;letter-spacing:-.01em;margin-bottom:6px;}
+.pg-header p{font-size:13px;color:rgba(255,255,255,.68);}
+.meta-strip{background:white;border-bottom:2px solid var(--gray-200);display:flex;gap:0;overflow-x:auto;}
+.meta-cell{padding:11px 20px;border-right:1px solid var(--gray-200);flex-shrink:0;}
+.meta-cell:last-child{border-right:none;}
+.meta-lbl{font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--gray-400);margin-bottom:2px;}
+.meta-val{font-size:13px;font-weight:700;color:var(--navy);}
+.pg-body{max-width:860px;margin:0 auto;padding:28px 22px 60px;display:flex;flex-direction:column;gap:28px;}
+.version-banner{background:var(--navy);border-radius:12px;overflow:hidden;border:2px solid var(--navy);}
+.version-banner-hd{padding:13px 20px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,255,255,.15);}
+.version-banner-hd h2{font-size:14px;font-weight:700;color:white;}
+.version-banner-hd p{font-size:12px;color:rgba(255,255,255,.6);margin-top:2px;}
+.version-table{width:100%;border-collapse:collapse;font-size:13px;}
+.version-table th{padding:9px 16px;text-align:left;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:rgba(255,255,255,.55);border-bottom:1px solid rgba(255,255,255,.1);}
+.version-table td{padding:10px 16px;border-bottom:1px solid rgba(255,255,255,.07);color:rgba(255,255,255,.85);}
+.version-table tr:last-child td{border-bottom:none;}
+.ver-badge{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:6px;font-size:13px;font-weight:800;}
+.ver-a{background:#dcfce7;color:#166534;} .ver-b{background:#dbeafe;color:#1e40af;} .ver-c{background:#faf5ff;color:#6b21a8;} .ver-d{background:#fef9c3;color:#854d0e;}
+.alert{border-radius:10px;padding:13px 16px;font-size:13.5px;line-height:1.6;display:flex;gap:11px;align-items:flex-start;}
+.alert-icon{font-size:17px;flex-shrink:0;margin-top:1px;}
+.alert-body{flex:1;}
+.alert-body strong{display:block;margin-bottom:3px;}
+.alert-red{background:var(--red-lt);border:1.5px solid var(--red-bdr);}
+.alert-gold{background:var(--gold-lt);border:1.5px solid var(--gold-bdr);}
+.alert-blue{background:var(--blue-xlt);border:1.5px solid #bfdbfe;}
+.sec-div{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--gray-400);padding-bottom:10px;border-bottom:1px solid var(--gray-200);margin-bottom:-4px;}
+.section-card{background:white;border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;}
+.section-hd{padding:14px 20px;border-bottom:1px solid var(--gray-200);display:flex;align-items:center;gap:12px;}
+.part-badge{display:flex;align-items:center;justify-content:center;min-width:36px;height:36px;border-radius:8px;font-size:12px;font-weight:800;flex-shrink:0;}
+.section-hd-text h2{font-size:15px;font-weight:700;color:var(--navy);}
+.section-hd-text p{font-size:12px;color:var(--gray-600);margin-top:2px;}
+.pts-badge{margin-left:auto;flex-shrink:0;font-size:13px;font-weight:700;padding:4px 12px;border-radius:100px;}
+.section-bd{padding:20px;}
+.part1 .section-hd{background:var(--blue-xlt);} .part1 .part-badge{background:var(--blue);color:white;} .part1 .pts-badge{background:var(--blue-lt);color:var(--navy);}
+.part2 .section-hd{background:var(--green-lt);} .part2 .part-badge{background:var(--green);color:white;} .part2 .pts-badge{background:var(--green-bdr);color:var(--green);}
+.part3 .section-hd{background:var(--purple-lt);} .part3 .part-badge{background:var(--purple);color:white;} .part3 .pts-badge{background:var(--purple-bdr);color:var(--purple);}
+.part4 .section-hd{background:var(--teal-lt);} .part4 .part-badge{background:var(--teal);color:white;} .part4 .pts-badge{background:var(--teal-bdr);color:var(--teal);}
+.part5 .section-hd{background:var(--amber-lt);} .part5 .part-badge{background:var(--amber);color:white;} .part5 .pts-badge{background:var(--amber-bdr);color:var(--amber);}
+.ver-tabs{border:1.5px solid var(--gray-200);border-radius:10px;overflow:hidden;margin:16px 0;}
+.ver-tab-hd{display:flex;border-bottom:1.5px solid var(--gray-200);background:var(--gray-50);}
+.ver-tab-btn{flex:1;padding:10px 0;border:none;background:none;cursor:pointer;font-size:13px;font-weight:700;color:var(--gray-400);border-right:1px solid var(--gray-200);transition:all 0.15s;display:flex;align-items:center;justify-content:center;gap:6px;}
+.ver-tab-btn:last-child{border-right:none;}
+.ver-tab-btn:hover{color:var(--navy);background:white;}
+.ver-tab-btn.active{color:var(--navy);background:white;box-shadow:inset 0 -2px 0 var(--blue);}
+.ver-tab-btn .vb{width:20px;height:20px;border-radius:4px;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;}
+.ver-tab-panel{display:none;padding:16px;}
+.ver-tab-panel.active{display:block;}
+.data-table{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px;}
+.data-table th{background:var(--navy);color:white;padding:9px 13px;text-align:left;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;}
+.data-table td{padding:9px 13px;border-bottom:1px solid var(--gray-100);}
+.data-table tr:last-child td{border-bottom:none;}
+.data-table td:first-child{font-weight:700;color:var(--gray-700);}
+.q-block{margin-bottom:14px;padding:14px 16px;border:1.5px solid var(--gray-200);border-radius:8px;background:var(--gray-50);}
+.q-block:last-child{margin-bottom:0;}
+.q-num{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--gray-400);margin-bottom:5px;}
+.q-text{font-size:13.5px;line-height:1.65;color:var(--gray-700);}
+.q-pts{display:inline-block;margin-top:7px;font-size:11px;font-weight:700;padding:2px 9px;border-radius:100px;background:var(--blue-lt);color:var(--navy);}
+.om-table{width:100%;border-collapse:collapse;font-size:13px;margin:12px 0;}
+.om-table th{background:var(--navy);color:white;padding:9px 13px;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;text-align:left;}
+.om-table td{padding:10px 13px;border-bottom:1px solid var(--gray-100);vertical-align:top;}
+.om-table tr:last-child td{border-bottom:none;}
+.scenario-box{background:var(--gray-50);border:1.5px solid var(--gray-200);border-left:4px solid var(--teal);border-radius:0 8px 8px 0;padding:16px 18px;font-size:13.5px;line-height:1.75;color:var(--gray-700);margin:12px 0;}
+.submit-list{display:flex;flex-direction:column;gap:6px;}
+.submit-item{display:flex;gap:10px;align-items:flex-start;padding:9px 13px;background:var(--gray-50);border:1px solid var(--gray-200);border-radius:7px;font-size:13px;line-height:1.5;color:var(--gray-700);}
+.submit-item::before{content:'☐';font-size:16px;flex-shrink:0;color:var(--gray-400);margin-top:-1px;}
+.grade-table{width:100%;border-collapse:collapse;font-size:13px;}
+.grade-table th{background:var(--navy);color:white;padding:9px 13px;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;text-align:left;}
+.grade-table td{padding:9px 13px;border-bottom:1px solid var(--gray-100);}
+.grade-table tr:last-child td{border-bottom:none;}
+.grade-table tr.total td{font-weight:700;background:var(--blue-xlt);color:var(--navy);font-size:14px;}
+.pts-right{text-align:right;font-weight:700;font-size:15px;color:var(--navy);}
+</style>
+</head>
+<body>
+
+<div class="pg-header">
+  <div class="pg-header-eyebrow">SCM 352 · Module M09 · Case Analysis</div>
+  <h1>Riverside Health System: Designing a Hospital Supply Chain</h1>
+  <p>Parameterized case — 4 versions · 100 points · Due Day 6 at 11:59 PM</p>
+</div>
+
+<div class="meta-strip">
+  <div class="meta-cell"><div class="meta-lbl">Points</div><div class="meta-val">100</div></div>
+  <div class="meta-cell"><div class="meta-lbl">Due</div><div class="meta-val">Day 6 · 11:59 PM</div></div>
+  <div class="meta-cell"><div class="meta-lbl">Format</div><div class="meta-val">PDF or Word</div></div>
+  <div class="meta-cell"><div class="meta-lbl">Attempts</div><div class="meta-val">1</div></div>
+  <div class="meta-cell"><div class="meta-lbl">Allowed resources</div><div class="meta-val">Ch. 11 · Lectures · Apps · Slides</div></div>
+  <div class="meta-cell"><div class="meta-lbl">Parts</div><div class="meta-val">5</div></div>
+</div>
+
+<div class="pg-body">
+
+  <!-- VERSION ASSIGNMENT -->
+  <div class="version-banner">
+    <div class="version-banner-hd">
+      <div><h2>Find Your Assigned Version</h2><p>Use the last digit of your student ID. Submit only your assigned version's Part 2 data.</p></div>
+    </div>
+    <table class="version-table">
+      <thead><tr><th>Last digit of student ID</th><th>Your version</th><th>Part 2 identifier</th></tr></thead>
+      <tbody>
+        <tr><td>0, 1, or 2</td><td><span class="ver-badge ver-a">A</span></td><td>Category A COGS: $36.5M · Avg Inv: $2.5M</td></tr>
+        <tr><td>3, 4, or 5</td><td><span class="ver-badge ver-b">B</span></td><td>Category A COGS: $54.75M · Avg Inv: $4.5M</td></tr>
+        <tr><td>6 or 7</td><td><span class="ver-badge ver-c">C</span></td><td>Category A COGS: $27.375M · Avg Inv: $1.5M</td></tr>
+        <tr><td>8 or 9</td><td><span class="ver-badge ver-d">D</span></td><td>Category A COGS: $73.0M · Avg Inv: $6.0M</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- RULES -->
+  <div style="display:flex;flex-direction:column;gap:10px;">
+    <div class="alert alert-red">
+      <div class="alert-icon">🚫</div>
+      <div class="alert-body"><strong>Do not collaborate on version-specific calculations.</strong>Part 2 uses data unique to your version. Submitting another version's numbers constitutes academic dishonesty regardless of whether the rest of the submission is your own work.</div>
+    </div>
+    <div class="alert alert-gold">
+      <div class="alert-icon">📋</div>
+      <div class="alert-body"><strong>Show all calculation steps with labeled intermediate values.</strong>Answers without supporting work will not receive full credit, even if numerically correct. For every formula, state the formula first, then substitute values, then state the result.</div>
+    </div>
+    <div class="alert alert-blue">
+      <div class="alert-icon">ℹ️</div>
+      <div class="alert-body"><strong>Parts 1, 3, 4, and 5 are identical for all versions.</strong> Only Part 2 contains version-specific numerical data. You may discuss the concepts and frameworks in Parts 1, 3, 4, and 5 with classmates, but your written responses must be entirely your own.</div>
+    </div>
+  </div>
+
+  <!-- BACKGROUND -->
+  <div>
+    <div class="sec-div">Background — All Versions</div>
+    <div class="section-card" style="margin-top:14px;">
+      <div class="section-bd" style="font-size:13.5px;line-height:1.75;color:var(--gray-700);">
+        <p>Riverside Health System operates a network of 18 clinical facilities and surgical centers across the Mountain West. It sources medical supplies directly from manufacturers, holds centralized inventory in two regional distribution centers, and fulfills orders from its clinical departments and surgical units. Riverside's board of directors and clinical leadership are demanding improved performance on inventory efficiency, fill rate, and supply chain resilience — and have commissioned an independent review of the system's supply chain design.</p>
+        <p style="margin-top:12px;">You are an operations analyst hired to evaluate Riverside's supply chain and recommend structural changes. This case continues the Riverside Health System scenario from previous modules — you are now analyzing Riverside's supply chain at the system level, examining how it designs supplier relationships, manages inventory across its 18 clinical facilities, and structures its supply chain strategy for two very different product categories.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- PART 1 — universal -->
+  <div>
+    <div class="sec-div">Part 1 — All Versions · No version-specific data</div>
+    <div class="section-card part1" style="margin-top:14px;">
+      <div class="section-hd">
+        <div class="part-badge">1</div>
+        <div class="section-hd-text">
+          <h2>Supply Chain Strategy Assessment</h2>
+          <p>Efficient vs. responsive · Supplier relationship strategy · Strategic risk — LO9-1, LO9-4, LO9-7</p>
+        </div>
+        <div class="pts-badge">20 pts</div>
+      </div>
+      <div class="section-bd">
+        <div class="scenario-box">
+          Riverside manages two primary supply categories:<br><br>
+          <strong>Category A — Standard commodity supplies</strong> (gloves, bandages, syringes): used across all facilities on standing annual contracts; demand is highly predictable and stable; 12 qualified manufacturers available.<br><br>
+          <strong>Category B — Specialty surgical implants</strong> (orthopedic, cardiac): ordered per surgical case; demand is irregular and driven by surgical schedules and surgeon preferences; 2–3 qualified manufacturers per implant type; substitution is not possible without surgeon approval.
+        </div>
+        <div style="display:flex;flex-direction:column;gap:12px;margin-top:4px;">
+          <div class="q-block">
+            <div class="q-num">Part 1(a)</div>
+            <div class="q-text">For each category, classify the appropriate supply chain strategy as <strong>efficient</strong> or <strong>responsive</strong>. Justify each classification using the demand predictability framework from Chapter 11.</div>
+            <span class="q-pts">8 pts</span>
+          </div>
+          <div class="q-block">
+            <div class="q-num">Part 1(b)</div>
+            <div class="q-text">For each category, recommend a supplier relationship strategy — <strong>arm's-length</strong>, <strong>partnership</strong>, or <strong>vertical integration</strong>. Explain what specific factor in each category's supply situation drives your recommendation.</div>
+            <span class="q-pts">6 pts</span>
+          </div>
+          <div class="q-block">
+            <div class="q-num">Part 1(c)</div>
+            <div class="q-text">Riverside currently uses the same supplier contract structure and the same inventory policy for both categories. What is the strategic risk of this undifferentiated approach?</div>
+            <span class="q-pts">6 pts</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PART 2 — version-specific -->
+  <div>
+    <div class="sec-div">Part 2 — Version-specific · Select your version tab below</div>
+    <div class="section-card part2" style="margin-top:14px;">
+      <div class="section-hd">
+        <div class="part-badge">2</div>
+        <div class="section-hd-text">
+          <h2>Supply Chain Performance Metrics</h2>
+          <p>Inventory turns · Days of supply · Fill rate · Benchmark comparison — LO9-2</p>
+        </div>
+        <div class="pts-badge">25 pts</div>
+      </div>
+      <div class="section-bd">
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:4px;">Select your assigned version to see your data. All versions answer the same questions (a)–(d) below the tabs.</p>
+
+        <div class="ver-tabs">
+          <div class="ver-tab-hd">
+            <button class="ver-tab-btn active" data-ver="A"><span class="vb ver-a">A</span> Version A</button>
+            <button class="ver-tab-btn" data-ver="B"><span class="vb ver-b">B</span> Version B</button>
+            <button class="ver-tab-btn" data-ver="C"><span class="vb ver-c">C</span> Version C</button>
+            <button class="ver-tab-btn" data-ver="D"><span class="vb ver-d">D</span> Version D</button>
+          </div>
+
+          <div class="ver-tab-panel active" data-ver="A">
+            <p style="font-size:12px;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;">Version A · Last digit: 0, 1, or 2</p>
+            <table class="data-table">
+              <thead><tr><th>Parameter</th><th>Category A — Commodity Supplies</th><th>Category B — Specialty Implants</th></tr></thead>
+              <tbody>
+                <tr><td>Annual COGS</td><td>$36.5 million</td><td>$18.25 million</td></tr>
+                <tr><td>Average inventory value</td><td>$2.5 million</td><td>$6.0 million</td></tr>
+                <tr><td>Industry benchmark turns</td><td>12 turns/year</td><td>4 turns/year</td></tr>
+                <tr><td>Total orders (year)</td><td colspan="2">4,200 orders</td></tr>
+                <tr><td>Fulfilled from on-hand stock</td><td colspan="2">4,074 orders</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="ver-tab-panel" data-ver="B">
+            <p style="font-size:12px;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;">Version B · Last digit: 3, 4, or 5</p>
+            <table class="data-table">
+              <thead><tr><th>Parameter</th><th>Category A — Commodity Supplies</th><th>Category B — Specialty Implants</th></tr></thead>
+              <tbody>
+                <tr><td>Annual COGS</td><td>$54.75 million</td><td>$12.0 million</td></tr>
+                <tr><td>Average inventory value</td><td>$4.5 million</td><td>$4.0 million</td></tr>
+                <tr><td>Industry benchmark turns</td><td>12 turns/year</td><td>4 turns/year</td></tr>
+                <tr><td>Total orders (year)</td><td colspan="2">3,600 orders</td></tr>
+                <tr><td>Fulfilled from on-hand stock</td><td colspan="2">3,456 orders</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="ver-tab-panel" data-ver="C">
+            <p style="font-size:12px;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;">Version C · Last digit: 6 or 7</p>
+            <table class="data-table">
+              <thead><tr><th>Parameter</th><th>Category A — Commodity Supplies</th><th>Category B — Specialty Implants</th></tr></thead>
+              <tbody>
+                <tr><td>Annual COGS</td><td>$27.375 million</td><td>$24.0 million</td></tr>
+                <tr><td>Average inventory value</td><td>$1.5 million</td><td>$6.0 million</td></tr>
+                <tr><td>Industry benchmark turns</td><td>12 turns/year</td><td>4 turns/year</td></tr>
+                <tr><td>Total orders (year)</td><td colspan="2">5,100 orders</td></tr>
+                <tr><td>Fulfilled from on-hand stock</td><td colspan="2">4,998 orders</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="ver-tab-panel" data-ver="D">
+            <p style="font-size:12px;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;">Version D · Last digit: 8 or 9</p>
+            <table class="data-table">
+              <thead><tr><th>Parameter</th><th>Category A — Commodity Supplies</th><th>Category B — Specialty Implants</th></tr></thead>
+              <tbody>
+                <tr><td>Annual COGS</td><td>$73.0 million</td><td>$9.0 million</td></tr>
+                <tr><td>Average inventory value</td><td>$6.0 million</td><td>$3.0 million</td></tr>
+                <tr><td>Industry benchmark turns</td><td>12 turns/year</td><td>4 turns/year</td></tr>
+                <tr><td>Total orders (year)</td><td colspan="2">2,800 orders</td></tr>
+                <tr><td>Fulfilled from on-hand stock</td><td colspan="2">2,688 orders</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <p style="font-size:12px;color:var(--gray-600);margin-bottom:12px;">Use your version's data above to answer all four questions below. Assume 365 days per year.</p>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <div class="q-block">
+            <div class="q-num">Part 2(a)</div>
+            <div class="q-text">Calculate <strong>inventory turns</strong> and <strong>days of supply</strong> for both Category A (commodity supplies) and Category B (specialty implants). Show the formula and work for each calculation.</div>
+            <span class="q-pts">10 pts</span>
+          </div>
+          <div class="q-block">
+            <div class="q-num">Part 2(b)</div>
+            <div class="q-text">Compare each category's inventory turns to its industry benchmark. For each category, state whether Riverside is above, at, or below benchmark, and explain what that implies about its inventory management in that category.</div>
+            <span class="q-pts">6 pts</span>
+          </div>
+          <div class="q-block">
+            <div class="q-num">Part 2(c)</div>
+            <div class="q-text">Calculate Riverside's overall order fill rate using your version's order data. Show the formula and computation.</div>
+            <span class="q-pts">4 pts</span>
+          </div>
+          <div class="q-block">
+            <div class="q-num">Part 2(d)</div>
+            <div class="q-text">Riverside's clinical service agreements require a minimum <strong>98% fill rate</strong> for all supply categories. Is Riverside in compliance based on your version's data? What supply chain action — if any — would you recommend?</div>
+            <span class="q-pts">5 pts</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PART 3 — universal -->
+  <div>
+    <div class="sec-div">Part 3 — All Versions · Same data for all versions</div>
+    <div class="section-card part3" style="margin-top:14px;">
+      <div class="section-hd">
+        <div class="part-badge">3</div>
+        <div class="section-hd-text">
+          <h2>Bullwhip Effect Diagnosis</h2>
+          <p>Root cause identification · Quantitative analysis · Operational remedy — LO9-3</p>
+        </div>
+        <div class="pts-badge">20 pts</div>
+      </div>
+      <div class="section-bd">
+        <p style="font-size:13.5px;line-height:1.7;color:var(--gray-700);">Riverside Health System has observed the following ordering pattern from its commodity glove supplier (GloveCo) over the past 10 weeks. Riverside's actual weekly demand from its clinical facilities for gloves has been stable at approximately <strong>4,000 cases/week</strong> throughout this period.</p>
+        <table class="om-table" style="margin-top:14px;">
+          <thead><tr><th>Week</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th></tr></thead>
+          <tbody>
+            <tr><td>Riverside orders to GloveCo (cases)</td><td>5,200</td><td>3,100</td><td>6,400</td><td>2,800</td><td>5,800</td><td>3,200</td><td>6,100</td><td>2,900</td><td>5,600</td><td>3,300</td></tr>
+          </tbody>
+        </table>
+        <div style="display:flex;flex-direction:column;gap:12px;margin-top:16px;">
+          <div class="q-block">
+            <div class="q-num">Part 3(a)</div>
+            <div class="q-text">Calculate the <strong>average weekly order</strong> placed to GloveCo and the <strong>range</strong> (max − min) over the 10-week period. Compare both to the underlying demand of 4,000 cases/week. What does the range tell you about upstream demand variability relative to end-consumer demand?</div>
+            <span class="q-pts">6 pts</span>
+          </div>
+          <div class="q-block">
+            <div class="q-num">Part 3(b)</div>
+            <div class="q-text">Identify the most likely root cause of this ordering pattern from the four bullwhip causes in Chapter 11. Explain the specific mechanism that would produce this alternating high-low pattern.</div>
+            <span class="q-pts">7 pts</span>
+          </div>
+          <div class="q-block">
+            <div class="q-num">Part 3(c)</div>
+            <div class="q-text">Propose one specific operational change Riverside could make to reduce the bullwhip effect in this product category. Explain how the change directly addresses the root cause you identified in Part 3(b).</div>
+            <span class="q-pts">7 pts</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PART 4 — universal -->
+  <div>
+    <div class="sec-div">Part 4 — All Versions · Same scenario for all versions</div>
+    <div class="section-card part4" style="margin-top:14px;">
+      <div class="section-hd">
+        <div class="part-badge">4</div>
+        <div class="section-hd-text">
+          <h2>Postponement and Production Strategy</h2>
+          <p>Decoupling point · Risk pooling · MTS vs. MTO justification — LO9-5, LO9-6</p>
+        </div>
+        <div class="pts-badge">20 pts</div>
+      </div>
+      <div class="section-bd">
+        <div class="scenario-box">
+          Riverside Health System assembles and distributes custom "surgical kits" — pre-packaged collections of instruments and supplies for specific surgical procedures. Currently, kits are assembled at the manufacturer's facility in 12 configurations (6 procedure types × 2 Riverside facility specifications) and shipped to Riverside's distribution center as finished inventory.<br><br>
+          The manufacturer has proposed a <strong>postponement arrangement</strong>: ship generic base kits (assembled from common instruments) to Riverside's DC; Riverside adds the facility-specific items and packaging at the DC upon order receipt.
+        </div>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <div class="q-block">
+            <div class="q-num">Part 4(a)</div>
+            <div class="q-text">Describe what changes about the <strong>inventory decoupling point</strong> under this postponement arrangement. Where does it sit before postponement, and where does it sit after?</div>
+            <span class="q-pts">5 pts</span>
+          </div>
+          <div class="q-block">
+            <div class="q-num">Part 4(b)</div>
+            <div class="q-text">Identify <strong>two specific benefits</strong> Riverside would gain from this postponement strategy. Be precise — state how each benefit improves an identifiable supply chain outcome. Do not list generic "efficiency" benefits.</div>
+            <span class="q-pts">6 pts</span>
+          </div>
+          <div class="q-block">
+            <div class="q-num">Part 4(c)</div>
+            <div class="q-text">Identify <strong>one operational capability</strong> Riverside's DC would need to acquire to implement this strategy, and <strong>one specific risk</strong> it would need to manage. The risk must be distinct from the capability gap — do not restate the same concern twice.</div>
+            <span class="q-pts">5 pts</span>
+          </div>
+          <div class="q-block">
+            <div class="q-num">Part 4(d)</div>
+            <div class="q-text">Riverside currently uses a <strong>Make-to-Stock</strong> strategy for generic supply items and a <strong>Make-to-Order</strong> strategy for custom surgical implants. In two sentences, explain why each strategy is appropriate for its respective product category using the <strong>decoupling point concept</strong> from Chapter 11.</div>
+            <span class="q-pts">4 pts</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PART 5 — universal -->
+  <div>
+    <div class="sec-div">Part 5 — All Versions · Synthesis memo</div>
+    <div class="section-card part5" style="margin-top:14px;">
+      <div class="section-hd">
+        <div class="part-badge">5</div>
+        <div class="section-hd-text">
+          <h2>Synthesis and Recommendation</h2>
+          <p>Strategic recommendation · Performance target · Residual risk — LO9-1 through LO9-7</p>
+        </div>
+        <div class="pts-badge">15 pts</div>
+      </div>
+      <div class="section-bd">
+        <p style="font-size:13.5px;line-height:1.7;color:var(--gray-700);margin-bottom:16px;">Based on your analysis in Parts 1–4, write a short recommendation memo to Riverside Health System's Chief Operating Officer. Address all three items below.</p>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <div class="q-block">
+            <div class="q-num">Part 5(a)</div>
+            <div class="q-text">Identify the <strong>single most important supply chain design change</strong> Riverside should make in the next 12 months, and explain why it is the highest priority. Your recommendation must be structural (a specific supply chain design decision) — not a generic process improvement.</div>
+            <span class="q-pts">5 pts</span>
+          </div>
+          <div class="q-block">
+            <div class="q-num">Part 5(b)</div>
+            <div class="q-text">Identify the <strong>performance metric</strong> you would use to track whether this change is producing results, and state a specific <strong>target value</strong> for that metric. Justify why that target is the right benchmark for Riverside's situation.</div>
+            <span class="q-pts">5 pts</span>
+          </div>
+          <div class="q-block">
+            <div class="q-num">Part 5(c)</div>
+            <div class="q-text">Identify <strong>one supply chain risk</strong> that Riverside faces that your Part 5(a) recommendation does not address, and describe one action Riverside should take to manage that risk. The risk must be distinct from the problem your Part 5(a) recommendation solves.</div>
+            <span class="q-pts">5 pts</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUBMISSION CHECKLIST -->
+  <div>
+    <div class="sec-div">Before You Submit</div>
+    <div style="margin-top:14px;" class="submit-list">
+      <div class="submit-item">Confirm your version (last digit of student ID → A, B, C, or D) and use only that version's Part 2 data.</div>
+      <div class="submit-item">Show formulas and labeled intermediate values for all calculations in Part 2. State the formula, substitute values, then state the result.</div>
+      <div class="submit-item">Part 1 recommendations are grounded in the specific supply characteristics described — not generic strategy terms.</div>
+      <div class="submit-item">Part 3(b) names a specific Chapter 11 root cause and explains the mechanism, not just the name.</div>
+      <div class="submit-item">Part 5(b) states a specific numeric target for the metric, not just the metric name.</div>
+      <div class="submit-item">Submit as a single PDF or Word file. Label each part clearly (Part 1a, Part 1b, etc.).</div>
+    </div>
+  </div>
+
+  <!-- GRADE TABLE -->
+  <div>
+    <div class="sec-div">Point Summary</div>
+    <div style="border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;margin-top:14px;background:white;">
+      <table class="grade-table">
+        <thead><tr><th>Part</th><th>Topic</th><th>Versioned?</th><th style="text-align:right;">Points</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Part 1</strong></td><td>Supply Chain Strategy Assessment</td><td style="color:var(--gray-400);">Universal</td><td style="text-align:right;font-weight:700;">20</td></tr>
+          <tr><td><strong>Part 2</strong></td><td>Supply Chain Performance Metrics</td><td style="color:var(--amber);font-weight:700;">Version-specific</td><td style="text-align:right;font-weight:700;">25</td></tr>
+          <tr><td><strong>Part 3</strong></td><td>Bullwhip Effect Diagnosis</td><td style="color:var(--gray-400);">Universal</td><td style="text-align:right;font-weight:700;">20</td></tr>
+          <tr><td><strong>Part 4</strong></td><td>Postponement and Production Strategy</td><td style="color:var(--gray-400);">Universal</td><td style="text-align:right;font-weight:700;">20</td></tr>
+          <tr><td><strong>Part 5</strong></td><td>Synthesis and Recommendation</td><td style="color:var(--gray-400);">Universal</td><td style="text-align:right;font-weight:700;">15</td></tr>
+          <tr class="total"><td colspan="3"><strong>Total</strong></td><td style="text-align:right;font-size:16px;">100</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<script>
+document.querySelectorAll('.ver-tab-btn').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    var ver = this.getAttribute('data-ver');
+    var wrap = this.closest('.ver-tabs');
+    wrap.querySelectorAll('.ver-tab-btn').forEach(function(b) { b.classList.remove('active'); });
+    wrap.querySelectorAll('.ver-tab-panel').forEach(function(p) { p.classList.remove('active'); });
+    this.classList.add('active');
+    wrap.querySelector('.ver-tab-panel[data-ver="' + ver + '"]').classList.add('active');
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<section class="slide-page" data-title="Postponement: The Risk-Pooling Effect" data-lo="LO9-6" data-notes="Reveal/insight slide on risk pooling — the mathematical mechanism that makes postponement work. Aggregated demand is less variable than individual SKU demand (standard deviation of sum grows slower than sum of standard deviations). This is why holding generic stock and differentiating late reduces total safety stock needed while maintaining the same service level. Gate 2 Q3 tests whether students can calculate the safety stock reduction.">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">LO9-6</span>
+      <span class="le-course">SCM 352 · Module 09</span>
+    </div>
+    <span class="le-pagenum">19 / 20</span>
+  </div>
+  <div class="le-titleblock">
+    <div class="le-title">Postponement: <span>The Risk-Pooling Effect</span></div>
+    <div class="le-sub">Why aggregated demand is less uncertain than the sum of individual forecasts</div>
+  </div>
+  <div class="le-body">
+    <div class="callout navy" style="margin-bottom:calc(10px * var(--slide-scale));padding:calc(12px * var(--slide-scale)) calc(16px * var(--slide-scale));">
+      <div class="callout-label" style="color:var(--teal);">The Core Insight</div>
+      <p class="slide-copy" style="color:rgba(255,255,255,.85);">When demand for individual SKUs is <strong style="color:white;">not perfectly positively correlated</strong>, pooling them into a single generic SKU reduces total demand variability. Safety stock is proportional to demand variability — so risk pooling reduces total safety stock needed while holding the same service level.</p>
+    </div>
+    <div class="two-col" style="gap:calc(10px * var(--slide-scale));margin-bottom:calc(10px * var(--slide-scale));">
+      <div class="callout teal">
+        <div class="callout-label">Numerical Illustration</div>
+        <p class="slide-copy">Riverside stocks 4 kit types independently. Each has σ = 50 units/week demand. Safety stock for each (at 95% service) = 1.645 × 50 = 82 units.</p>
+        <p class="slide-copy" style="margin-top:calc(6px * var(--slide-scale));"><strong>Separate SKUs:</strong> Total safety stock = 4 × 82 = <strong style="color:var(--red);">328 units</strong></p>
+        <p class="slide-copy" style="margin-top:calc(6px * var(--slide-scale));">If demands are uncorrelated, pooled σ = √(4 × 50²) = 100 units. Safety stock for pooled generic = 1.645 × 100 = <strong style="color:var(--pos);">165 units</strong></p>
+        <p class="variable-note" style="margin-top:calc(6px * var(--slide-scale));font-weight:600;">Risk pooling saves 328 − 165 = 163 units of safety stock (50% reduction)</p>
+      </div>
+      <div>
+        <div class="callout amber" style="margin-bottom:calc(8px * var(--slide-scale));">
+          <div class="callout-label">When Risk Pooling Works Best</div>
+          <ul style="padding-left:calc(14px * var(--slide-scale));margin-top:calc(4px * var(--slide-scale));">
+            <li class="slide-copy">Many SKUs with uncorrelated or negatively correlated demand</li>
+            <li class="slide-copy">High demand variability at the individual SKU level</li>
+            <li class="slide-copy">Low differentiation cost (assembly is fast and cheap)</li>
+            <li class="slide-copy">Final differentiation step is late and simple</li>
+          </ul>
+        </div>
+        <div class="callout teal" style="background:var(--teal-lt);">
+          <div class="callout-label">When It Doesn't Work</div>
+          <ul style="padding-left:calc(14px * var(--slide-scale));margin-top:calc(4px * var(--slide-scale));">
+            <li class="slide-copy">Highly correlated SKU demands — pooling gives less benefit</li>
+            <li class="slide-copy">Differentiation step is expensive or slow — postponement costs exceed savings</li>
+            <li class="slide-copy">Few SKUs — pooling effect is small</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="le-footer">
+    <div class="le-lo-pills"><span class="le-lo-pill">LO9-6</span></div>
+    <div><span class="le-gate-note">Gate 2 Q3 (versioned) · Case Part 4</span></div>
+  </div>
+</section>

@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Case Rubric — M09 — SCM 352</title>
+<style>
+:root{--navy:#1a3a5c;--blue:#2563a8;--blue-lt:#dbeafe;--blue-xlt:#eff6ff;--blue-bdr:#bfdbfe;--blue-dk:#1e40af;--gold:#f59e0b;--gold-lt:#fffbeb;--gold-bdr:#fde68a;--gold-dark:#92400e;--green:#16a34a;--green-lt:#f0fdf4;--green-bdr:#bbf7d0;--green-100:#dcfce7;--green-dk2:#166534;--red:#dc2626;--red-lt:#fef2f2;--red-bdr:#fecaca;--amber:#d97706;--amber-lt:#fffbeb;--amber-bdr:#fde68a;--orange:#ea580c;--orange-lt:#fff7ed;--orange-bdr:#fed7aa;--purple-lt:#faf5ff;--purple-dk:#6b21a8;--amber-100:#fef9c3;--amber-dk2:#854d0e;--gray-50:#f9fafb;--gray-100:#f3f4f6;--gray-200:#e5e7eb;--gray-400:#9ca3af;--gray-600:#4b5563;--gray-700:#374151;--gray-800:#1f2937;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--gray-50);color:var(--gray-800);font-size:13px;line-height:1.5;}
+.pg-header{background:var(--navy);color:white;padding:18px 28px;display:flex;align-items:center;gap:14px;}
+.badge{background:var(--gold);color:var(--navy);font-weight:700;font-size:10px;padding:3px 8px;border-radius:4px;letter-spacing:.06em;text-transform:uppercase;flex-shrink:0;}
+.pg-header h1{font-size:17px;font-weight:700;}
+.pg-header p{font-size:12px;color:rgba(255,255,255,.6);margin-top:3px;}
+.hdr-right{margin-left:auto;font-size:12px;color:rgba(255,255,255,.5);text-align:right;line-height:1.7;}
+.pg-body{max-width:1060px;margin:0 auto;padding:24px 20px 60px;display:flex;flex-direction:column;gap:28px;}
+.sec-heading{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--gray-400);padding-bottom:10px;border-bottom:1px solid var(--gray-200);margin-bottom:4px;}
+.alert{border-radius:10px;padding:12px 16px;font-size:13px;line-height:1.6;display:flex;gap:10px;align-items:flex-start;}
+.alert-icon{font-size:17px;flex-shrink:0;margin-top:1px;}
+.alert-body{flex:1;}
+.alert-body strong{display:block;margin-bottom:3px;}
+.alert-red{background:var(--red-lt);border:1.5px solid var(--red-bdr);}
+.alert-gold{background:var(--gold-lt);border:1.5px solid var(--gold-bdr);}
+.alert-blue{background:var(--blue-xlt);border:1.5px solid var(--blue-bdr);}
+.rubric-wrap{border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;background:white;}
+.rubric-table{width:100%;border-collapse:collapse;font-size:12px;}
+.rubric-table thead tr th{padding:9px 11px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;vertical-align:bottom;}
+.th-crit{background:var(--navy);color:white;}
+.th-full{background:var(--green);color:white;}
+.th-part{background:var(--amber);color:white;}
+.th-min{background:var(--orange);color:white;}
+.th-none{background:var(--red);color:white;}
+.pts-label{display:block;font-size:14px;font-weight:800;margin-bottom:2px;letter-spacing:-.02em;}
+.rubric-table td{padding:10px 11px;border-bottom:1px solid var(--gray-100);border-right:1px solid var(--gray-100);vertical-align:top;line-height:1.5;}
+.rubric-table tr:last-child td{border-bottom:none;}
+.rubric-table td:last-child{border-right:none;}
+.td-crit{background:var(--gray-50);font-weight:700;color:var(--navy);font-size:12.5px;}
+.td-full{background:var(--green-lt);}
+.td-part{background:var(--amber-lt);}
+.td-min{background:var(--orange-lt);}
+.td-none{background:var(--red-lt);}
+.crit-pts{display:inline-block;margin-top:5px;font-size:11px;font-weight:700;padding:2px 8px;border-radius:100px;background:var(--blue-lt);color:var(--navy);}
+.crit-lo{display:block;font-size:10px;font-weight:600;color:var(--gray-400);margin-top:3px;}
+.cell-pts{font-weight:800;font-size:12.5px;margin-bottom:4px;display:block;}
+.td-full .cell-pts{color:var(--green);}
+.td-part .cell-pts{color:var(--amber);}
+.td-min .cell-pts{color:var(--orange);}
+.td-none .cell-pts{color:var(--red);}
+.ak-table{width:100%;border-collapse:collapse;font-size:12px;}
+.ak-table th{background:var(--navy);color:white;padding:8px 12px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;}
+.ak-table td{padding:8px 12px;border-bottom:1px solid var(--gray-100);vertical-align:top;line-height:1.5;}
+.ak-table tr:last-child td{border-bottom:none;}
+.ver-a-row{background:var(--green-lt);} .ver-b-row{background:var(--blue-xlt);} .ver-c-row{background:var(--purple-lt);} .ver-d-row{background:var(--gold-lt);}
+.ak-badge{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:5px;font-size:11px;font-weight:800;}
+.ab-a{background:var(--green-100);color:var(--green-dk2);} .ab-b{background:var(--blue-lt);color:var(--blue-dk);} .ab-c{background:var(--purple-lt);color:var(--purple-dk);} .ab-d{background:var(--amber-100);color:var(--amber-dk2);}
+.notes-list{display:flex;flex-direction:column;gap:8px;}
+.note-item{display:flex;gap:10px;font-size:13px;line-height:1.55;color:var(--gray-700);padding:9px 12px;background:var(--gray-50);border:1px solid var(--gray-200);border-radius:7px;}
+.note-num{width:22px;height:22px;border-radius:50%;background:var(--navy);color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.speed-table{width:100%;border-collapse:collapse;font-size:12.5px;}
+.speed-table th{background:var(--navy);color:white;padding:8px 12px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;}
+.speed-table td{padding:8px 12px;border-bottom:1px solid var(--gray-100);}
+.speed-table tr:last-child td{border-bottom:none;}
+.sample-box{margin-top:12px;background:white;border:1px solid var(--gray-200);border-radius:10px;padding:14px 16px;}
+.sample-hd{font-size:11px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--gray-400);margin-bottom:10px;}
+.sample-body{font-size:12.5px;line-height:1.6;color:var(--gray-700);display:flex;flex-direction:column;gap:8px;}
+</style>
+</head>
+<body>
+
+<div class="pg-header">
+  <div class="badge">SCM 352 · M09</div>
+  <div>
+    <h1>Case Analysis Grading Rubric — Riverside Health System: Designing a Hospital Supply Chain</h1>
+    <p>Instructor use only · SpeedGrader reference · Do not distribute to students</p>
+  </div>
+  <div class="hdr-right">100 pts total<br>43% of Module M09</div>
+</div>
+
+<div class="pg-body">
+
+  <div style="display:flex;flex-direction:column;gap:10px;">
+    <div class="alert alert-red">
+      <div class="alert-icon">⚠️</div>
+      <div class="alert-body"><strong>Verify version before grading Part 2.</strong> Check student's assigned version using the canonical key: last digit 0,1,2 → Version A · 3,4,5 → Version B · 6,7 → Version C · 8,9 → Version D. Numeric answers matching a different version = flag for review. Parts 1, 3, 4, and 5 are universal — same correct answers for all versions.</div>
+    </div>
+    <div class="alert alert-gold">
+      <div class="alert-icon">⚙️</div>
+      <div class="alert-body">
+        <strong>Recommended grading order:</strong>
+        Scan Part 5 first (2 min — most diagnostic for student depth and strategic thinking). Then Part 2 (version calculations, fastest to verify numerically). Then Part 1 (strategy classification against key). Then Parts 3 and 4 together (both analytical framework application, no version differences).
+      </div>
+    </div>
+  </div>
+
+  <!-- PART 1: UNIVERSAL ANSWER KEY -->
+  <div>
+    <div class="sec-heading">Part 1 Answer Key — Supply Chain Strategy Assessment (Universal — All Versions)</div>
+    <div style="border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;margin-top:14px;background:white;">
+      <table class="ak-table">
+        <thead>
+          <tr>
+            <th style="width:8%">Part</th>
+            <th style="width:30%">Question</th>
+            <th>Full-Credit Answer</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>1(a)</strong></td>
+            <td>Strategy classification for Category A and B</td>
+            <td><strong>Category A: Efficient.</strong> 12 interchangeable suppliers, stable and predictable demand, commodity product; minimize cost through long-term contracts, high inventory turns, bulk ordering. <strong>Category B: Responsive.</strong> Irregular demand driven by surgical schedules and surgeon preferences; 2–3 specialized suppliers; no substitution without surgeon approval; minimize stockouts through higher inventory and supplier flexibility rather than cost minimization.</td>
+          </tr>
+          <tr>
+            <td><strong>1(b)</strong></td>
+            <td>Supplier relationship for Category A and B</td>
+            <td><strong>Category A: Arm's-length.</strong> 12 available suppliers, commodity specifications, low switching cost; competitive bidding maximizes price efficiency with no coordination benefit from a closer relationship. <strong>Category B: Partnership.</strong> Specialized suppliers, surgeon-specific preferences, high switching cost; information sharing on surgical scheduling reduces stockout risk; mutual commitment protects supply security for critical, irreplaceable items.</td>
+          </tr>
+          <tr>
+            <td><strong>1(c)</strong></td>
+            <td>Strategic risk of undifferentiated approach</td>
+            <td>Treating Category B (responsive) items with efficient supply chain logic produces unacceptable stockout rates for surgical implants — a patient safety risk. Treating Category A (efficient) items with responsive logic wastes capital on unnecessary safety stock for commodities with predictable demand. The undifferentiated approach creates inventory excess in one category and supply risk in the other simultaneously — a structural misalignment that no single policy can resolve.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- PART 1 RUBRIC -->
+  <div>
+    <div class="sec-heading">Part 1 Rubric — 20 points</div>
+    <div class="rubric-wrap" style="margin-top:14px;">
+      <table class="rubric-table">
+        <colgroup><col style="width:19%"><col style="width:22%"><col style="width:20%"><col style="width:20%"><col style="width:19%"></colgroup>
+        <thead>
+          <tr>
+            <th class="th-crit">Criterion</th>
+            <th class="th-full"><span class="pts-label">Full Credit</span></th>
+            <th class="th-part"><span class="pts-label">Partial</span></th>
+            <th class="th-min"><span class="pts-label">Minimal</span></th>
+            <th class="th-none"><span class="pts-label">No Credit</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="td-crit">1(a) — Strategy Classification<span class="crit-pts">8 pts</span><span class="crit-lo">LO9-4</span></td>
+            <td class="td-full"><span class="cell-pts">8 pts</span>Both categories correctly classified (A=efficient, B=responsive) with demand-characteristic justification citing specific supply facts (12 suppliers, predictable vs. irregular demand, substitution constraint).</td>
+            <td class="td-part"><span class="cell-pts">5–7 pts</span>Both classifications correct but one justification is generic ("efficient because of cost") without connecting to Riverside-specific supply characteristics. Or one classification correct with full justification, one partially correct.</td>
+            <td class="td-min"><span class="cell-pts">2–4 pts</span>One correct classification with any justification, or both correct with no justification, or classifications reversed with a coherent (but wrong) argument.</td>
+            <td class="td-none"><span class="cell-pts">0–1 pts</span>Both classifications incorrect, or no classifications provided, or "efficient" applied to Category B without any supply chain reasoning.</td>
+          </tr>
+          <tr>
+            <td class="td-crit">1(b) — Relationship Strategy<span class="crit-pts">6 pts</span><span class="crit-lo">LO9-7</span></td>
+            <td class="td-full"><span class="cell-pts">6 pts</span>Arm's-length for A (citing 12 suppliers, commodity specs, low switching cost) and Partnership for B (citing specialized suppliers, surgeon preference lock-in, high switching cost, or surgical scheduling information sharing). Full credit for VI recommendation on B with strong switching-cost argument.</td>
+            <td class="td-part"><span class="cell-pts">3–5 pts</span>Both relationship types correct but one justification asserts the recommendation without citing a specific supply factor. Or A correct and B partially correct (e.g., recommends partnership for B but cites generic "critical supply" without Riverside facts).</td>
+            <td class="td-min"><span class="cell-pts">1–2 pts</span>One recommendation correct with any justification; or both named correctly with no justification; or partnership recommended for A without addressing the 12-supplier competitive dynamic.</td>
+            <td class="td-none"><span class="cell-pts">0 pts</span>Both recommendations absent or incorrect. Arm's-length for Category B without any acknowledgment of switching costs or surgeon-preference lock-in = 0.</td>
+          </tr>
+          <tr>
+            <td class="td-crit">1(c) — Strategic Risk<span class="crit-pts">6 pts</span><span class="crit-lo">LO9-4</span></td>
+            <td class="td-full"><span class="cell-pts">6 pts</span>Identifies the dual failure: efficient-policy applied to Category B → surgical implant stockouts (patient safety risk); responsive-policy applied to Category A → excess safety stock (capital waste). Response must identify both failure modes and connect each to a specific supply chain consequence.</td>
+            <td class="td-part"><span class="cell-pts">3–5 pts</span>Identifies one of the two failure modes clearly (either the B stockout risk or the A overcapitalization), but not both. Or identifies both risks in generic terms without connecting to Riverside's specific supply structure.</td>
+            <td class="td-min"><span class="cell-pts">1–2 pts</span>States that undifferentiated policy is bad without identifying a specific failure mode, or identifies a risk not related to the efficient/responsive mismatch (e.g., "communication problems between departments").</td>
+            <td class="td-none"><span class="cell-pts">0 pts</span>No risk identified, or states that the undifferentiated approach is acceptable.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- PART 2 ANSWER KEY — VERSION-SPECIFIC -->
+  <div>
+    <div class="sec-heading">Part 2 Answer Keys — Performance Metrics (Version-Specific) · 25 points</div>
+    <div style="border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;margin-top:14px;background:white;">
+      <table class="ak-table">
+        <thead>
+          <tr>
+            <th style="width:4%">Ver.</th>
+            <th style="width:22%">Cat A: Turns / Days / vs. Benchmark</th>
+            <th style="width:22%">Cat B: Turns / Days / vs. Benchmark</th>
+            <th style="width:20%">Fill Rate / Compliance</th>
+            <th>Recommended Action (Part 2d)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="ver-a-row">
+            <td><span class="ak-badge ab-a">A</span></td>
+            <td>$36.5M ÷ $2.5M = <strong>14.6 turns</strong><br>365 ÷ 14.6 = <strong>25.0 days</strong><br><em>Above benchmark of 12 — lean; disruption risk</em></td>
+            <td>$18.25M ÷ $6.0M = <strong>3.04 turns</strong><br>365 ÷ 3.04 = <strong>120.1 days</strong><br><em>Below benchmark of 4 — holding excess specialty inventory</em></td>
+            <td>4,074 ÷ 4,200 = <strong>97.0%</strong><br>98% minimum not met → <strong>Not compliant</strong></td>
+            <td>Increase safety stock for high-stockout items OR negotiate shorter supplier lead times. Identify which specific item categories are generating the 3% backorder rate.</td>
+          </tr>
+          <tr class="ver-b-row">
+            <td><span class="ak-badge ab-b">B</span></td>
+            <td>$54.75M ÷ $4.5M = <strong>12.17 turns</strong><br>365 ÷ 12.17 = <strong>30.0 days</strong><br><em>Above benchmark of 12 — on target</em></td>
+            <td>$12.0M ÷ $4.0M = <strong>3.0 turns</strong><br>365 ÷ 3.0 = <strong>121.7 days</strong><br><em>Below benchmark of 4 — holding excess specialty inventory</em></td>
+            <td>3,456 ÷ 3,600 = <strong>96.0%</strong><br>98% minimum not met → <strong>Not compliant</strong></td>
+            <td>Increase safety stock for highest-backorder items OR partner with Category B suppliers on surgical scheduling data sharing to reduce lead time. Category B excess inventory is a separate issue — address by right-sizing specialty implant safety stock to case volume.</td>
+          </tr>
+          <tr class="ver-c-row">
+            <td><span class="ak-badge ab-c">C</span></td>
+            <td>$27.375M ÷ $1.5M = <strong>18.25 turns</strong><br>365 ÷ 18.25 = <strong>20.0 days</strong><br><em>Above benchmark of 12 — very lean; high disruption risk</em></td>
+            <td>$24.0M ÷ $6.0M = <strong>4.0 turns</strong><br>365 ÷ 4.0 = <strong>91.25 days</strong><br><em>At benchmark of 4 — on target</em></td>
+            <td>4,998 ÷ 5,100 = <strong>98.0%</strong><br>98% minimum met → <strong>Compliant</strong></td>
+            <td>Monitor only; compliant at exactly 98%. Note: Category A inventory is very lean (18.25 turns, 20-day supply); any supply disruption over 20 days would cause stockouts. Recommend monitoring single-source dependencies in Category A.</td>
+          </tr>
+          <tr class="ver-d-row">
+            <td><span class="ak-badge ab-d">D</span></td>
+            <td>$73.0M ÷ $6.0M = <strong>12.17 turns</strong><br>365 ÷ 12.17 = <strong>30.0 days</strong><br><em>Above benchmark of 12 — on target</em></td>
+            <td>$9.0M ÷ $3.0M = <strong>3.0 turns</strong><br>365 ÷ 3.0 = <strong>121.7 days</strong><br><em>Below benchmark of 4 — holding excess specialty inventory</em></td>
+            <td>2,688 ÷ 2,800 = <strong>96.0%</strong><br>98% minimum not met → <strong>Not compliant</strong></td>
+            <td>Same as Version B. Increase safety stock for commodity items generating backorders OR improve supplier lead times. Investigate Category B excess inventory (121 days is significantly above the 4-turn benchmark).</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:11.5px;color:var(--gray-400);margin-top:6px;padding-left:4px;">Common Part 2 error: revenue substituted for COGS in turns calculation → produces inflated turns. Any turns figure more than 2× the expected value for a given version is a likely COGS/revenue substitution. Check denominator choice before marking wrong.</p>
+  </div>
+
+  <!-- PART 2 RUBRIC -->
+  <div>
+    <div class="sec-heading">Part 2 Rubric — 25 points</div>
+    <div class="rubric-wrap" style="margin-top:14px;">
+      <table class="rubric-table">
+        <colgroup><col style="width:19%"><col style="width:22%"><col style="width:20%"><col style="width:20%"><col style="width:19%"></colgroup>
+        <thead>
+          <tr>
+            <th class="th-crit">Criterion</th>
+            <th class="th-full"><span class="pts-label">Full Credit</span></th>
+            <th class="th-part"><span class="pts-label">Partial</span></th>
+            <th class="th-min"><span class="pts-label">Minimal</span></th>
+            <th class="th-none"><span class="pts-label">No Credit</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="td-crit">2(a) — Inventory Metrics Both Categories<span class="crit-pts">10 pts</span><span class="crit-lo">LO9-2</span></td>
+            <td class="td-full"><span class="cell-pts">10 pts</span>Correct turns and days of supply for both Category A and B, formula stated, values substituted, result labeled. All four computed values match version key within rounding tolerance (±0.1 turns, ±0.5 days).</td>
+            <td class="td-part"><span class="cell-pts">6–9 pts</span>One of the four values (A turns, A days, B turns, B days) has an arithmetic error. Formula correct, setup correct, one computational mistake. Award full method credit for dependent steps if student uses their own erroneous value consistently.</td>
+            <td class="td-min"><span class="cell-pts">2–5 pts</span>Formula stated correctly but major setup error (revenue used instead of COGS, denominator inverted, or wrong version's data used). Or all four values computed but no formula shown. Or correct for one category only.</td>
+            <td class="td-none"><span class="cell-pts">0–1 pts</span>No computation attempted, or computation for only one metric (e.g., only turns, not days of supply), or values match a different version's answer key.</td>
+          </tr>
+          <tr>
+            <td class="td-crit">2(b) — Benchmark Comparison<span class="crit-pts">6 pts</span><span class="crit-lo">LO9-2</span></td>
+            <td class="td-full"><span class="cell-pts">6 pts</span>Both categories compared to their benchmark. Each comparison states above/at/below and draws an implication for inventory management in that category (not just "we need to improve" — a specific supply chain implication). Version C must note that Category B is exactly at benchmark, not above or below.</td>
+            <td class="td-part"><span class="cell-pts">3–5 pts</span>Both above/at/below correct but implications are generic ("below benchmark means we should improve") without identifying a specific inventory consequence. Or one comparison correct with full implication, one missing.</td>
+            <td class="td-min"><span class="cell-pts">1–2 pts</span>One comparison correct without implication, or both comparisons present but conclusions reversed (e.g., calls below-benchmark result "good").</td>
+            <td class="td-none"><span class="cell-pts">0 pts</span>No benchmark comparison, or comparison made to wrong benchmark values.</td>
+          </tr>
+          <tr>
+            <td class="td-crit">2(c) — Fill Rate<span class="crit-pts">4 pts</span><span class="crit-lo">LO9-2</span></td>
+            <td class="td-full"><span class="cell-pts">4 pts</span>Fill rate = fulfilled orders ÷ total orders. Formula stated. Correct numerator and denominator for student's version. Result expressed as percentage (correct to nearest 0.1%).</td>
+            <td class="td-part"><span class="cell-pts">2–3 pts</span>Formula correct, computation has minor arithmetic error. Or correct result but no formula stated. Or denominator error (using fulfilled as denominator) with otherwise correct setup.</td>
+            <td class="td-min"><span class="cell-pts">1 pts</span>Correct percentage value stated without formula or computation, or formula inverted (total ÷ fulfilled).</td>
+            <td class="td-none"><span class="cell-pts">0 pts</span>No computation, or uses different version's order data, or fill rate defined as something other than fulfilled/total.</td>
+          </tr>
+          <tr>
+            <td class="td-crit">2(d) — Compliance + Recommendation<span class="crit-pts">5 pts</span><span class="crit-lo">LO9-2</span></td>
+            <td class="td-full"><span class="cell-pts">5 pts</span>Correct compliance determination (No for A, B, D; Yes for C). Recommended action is supply-chain-structural — not "try harder" — and addresses the fill rate shortfall specifically. Version C: "monitor only" accepted with a resilience note; full credit for Version C students who also identify the disruption risk of 18.25 turns in Category A.</td>
+            <td class="td-part"><span class="cell-pts">2–4 pts</span>Compliance determination correct but recommended action is generic ("improve supply chain performance") or targets the wrong metric (e.g., recommends reducing inventory turns when fill rate is the problem). Or recommendation is appropriate but compliance determination is wrong.</td>
+            <td class="td-min"><span class="cell-pts">1 pts</span>States compliance status without any recommended action, or recommended action is entirely unrelated to fill rate.</td>
+            <td class="td-none"><span class="cell-pts">0 pts</span>No compliance determination, or compliance determination is wrong with no reasoning.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:11.5px;color:var(--gray-400);margin-top:6px;padding-left:4px;">Propagation rule: If a student makes an arithmetic error in Part 2(a) that carries into 2(b), penalize once at origin. Award full method credit for 2(b) if the student uses their own erroneous turns figure consistently to reach a comparison conclusion.</p>
+  </div>
+
+  <!-- PART 3 RUBRIC + SAMPLE ANSWERS -->
+  <div>
+    <div class="sec-heading">Part 3 Rubric — 20 points &nbsp;·&nbsp; Bullwhip Effect Diagnosis (All Versions)</div>
+    <div class="rubric-wrap" style="margin-top:14px;">
+      <table class="rubric-table">
+        <colgroup><col style="width:19%"><col style="width:22%"><col style="width:20%"><col style="width:20%"><col style="width:19%"></colgroup>
+        <thead>
+          <tr>
+            <th class="th-crit">Criterion</th>
+            <th class="th-full"><span class="pts-label">Full Credit</span></th>
+            <th class="th-part"><span class="pts-label">Partial</span></th>
+            <th class="th-min"><span class="pts-label">Minimal</span></th>
+            <th class="th-none"><span class="pts-label">No Credit</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="td-crit">3(a) — Quantitative Analysis<span class="crit-pts">6 pts</span><span class="crit-lo">LO9-3</span></td>
+            <td class="td-full"><span class="cell-pts">6 pts</span>Average = 4,440 cases/week (sum 44,400 ÷ 10). Range = 3,600 cases (6,400 − 2,800). Comparison explicitly states that clinical demand is stable at 4,000/week while Riverside's orders vary by ±90% — identifying the amplification.</td>
+            <td class="td-part"><span class="cell-pts">3–5 pts</span>Correct average and range with arithmetic shown, but comparison to end-consumer demand is missing or states "there is variability" without quantifying the amplification. Or one of average/range has a minor arithmetic error.</td>
+            <td class="td-min"><span class="cell-pts">1–2 pts</span>Average or range computed but not both, or correct values stated without any computation shown, or comparison to consumer demand absent.</td>
+            <td class="td-none"><span class="cell-pts">0 pts</span>No computation attempted, or wrong data used (e.g., Part 2 data).</td>
+          </tr>
+          <tr>
+            <td class="td-crit">3(b) — Root Cause Identification<span class="crit-pts">7 pts</span><span class="crit-lo">LO9-3</span></td>
+            <td class="td-full"><span class="cell-pts">7 pts</span>Names one of the four Chapter 11 root causes (demand signal processing, order batching, forward buying, or rationing game) and explains the specific mechanism that produces an alternating high-low weekly pattern. The mechanism must connect the cause to the data pattern — not just define the cause.</td>
+            <td class="td-part"><span class="cell-pts">4–6 pts</span>Correct root cause named but mechanism explanation is generic (defines the cause without explaining why it produces this specific alternating pattern). Or plausible mechanism but wrong root cause label from the Chapter 11 taxonomy.</td>
+            <td class="td-min"><span class="cell-pts">1–3 pts</span>"Bullwhip effect" named as the cause without identifying a root cause, or two causes named without explaining which fits the pattern better and why.</td>
+            <td class="td-none"><span class="cell-pts">0 pts</span>No root cause identified, or root cause from outside the Chapter 11 four-cause taxonomy without justification.</td>
+          </tr>
+          <tr>
+            <td class="td-crit">3(c) — Operational Recommendation<span class="crit-pts">7 pts</span><span class="crit-lo">LO9-3</span></td>
+            <td class="td-full"><span class="cell-pts">7 pts</span>Recommendation is specific and structural (not "improve communication"). Directly addresses the root cause identified in 3(b). Explanation states how the change removes or reduces the mechanism identified in 3(b). Accept any of: eliminate promotional pricing trigger, implement VMI with clinical demand data sharing, adopt stable contract pricing, require daily rather than weekly orders from GloveCo.</td>
+            <td class="td-part"><span class="cell-pts">4–6 pts</span>Specific recommendation that would reduce bullwhip but explanation of how it addresses the specific root cause is weak or generic. Or recommendation does not match the root cause in 3(b) (e.g., recommends VMI when the identified cause was order batching).</td>
+            <td class="td-min"><span class="cell-pts">1–3 pts</span>"Share more information" or "improve forecasting" without a specific implementation. Or recommendation addresses a different supply chain problem than the bullwhip ordering pattern.</td>
+            <td class="td-none"><span class="cell-pts">0 pts</span>No recommendation, or recommendation would make the bullwhip effect worse.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="sample-box">
+      <div class="sample-hd">Sample Full-Credit Answers — Part 3(b) and 3(c) (for grader calibration)</div>
+      <div class="sample-body">
+        <p><strong>3(b) — Forward buying:</strong> "The most likely root cause is forward buying. GloveCo may offer bi-weekly or periodic promotions or volume discounts. When a discount window opens, Riverside orders large quantities (weeks 1, 3, 5, 7, 9). During non-discount weeks, Riverside draws down existing stock and orders the minimum (weeks 2, 4, 6, 8, 10). The promotional trigger, not clinical demand, drives the alternating pattern."</p>
+        <p><strong>3(b) — Demand signal processing:</strong> "The most likely root cause is demand signal processing. Riverside uses a rolling forecast that incorporates its own recent orders. After a high-order week, the model forecasts lower demand (pending restock), generating a low order. After a low-order week, safety stock is partially depleted, so the model generates a high order in the next period. The reactive forecast model creates self-reinforcing oscillations."</p>
+        <p><strong>3(c) matching forward buying:</strong> "Negotiate a stable, fixed contract price with GloveCo, eliminating the periodic discount trigger. Under stable pricing, there is no incentive to time purchases to promotional windows — Riverside orders based on clinical consumption, not price optimization. This directly removes the forward-buying mechanism."</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- PART 4 RUBRIC -->
+  <div>
+    <div class="sec-heading">Part 4 Rubric — 20 points &nbsp;·&nbsp; Postponement and Production Strategy (All Versions)</div>
+    <div class="rubric-wrap" style="margin-top:14px;">
+      <table class="rubric-table">
+        <colgroup><col style="width:19%"><col style="width:22%"><col style="width:20%"><col style="width:20%"><col style="width:19%"></colgroup>
+        <thead>
+          <tr>
+            <th class="th-crit">Criterion</th>
+            <th class="th-full"><span class="pts-label">Full Credit</span></th>
+            <th class="th-part"><span class="pts-label">Partial</span></th>
+            <th class="th-min"><span class="pts-label">Minimal</span></th>
+            <th class="th-none"><span class="pts-label">No Credit</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="td-crit">4(a) — Decoupling Point<span class="crit-pts">5 pts</span><span class="crit-lo">LO9-5, LO9-6</span></td>
+            <td class="td-full"><span class="cell-pts">5 pts</span>Before: decoupling point at manufacturer's finished-goods stage (12 distinct SKUs shipped to DC). After: decoupling point shifts upstream to generic base kit; DC holds one aggregate SKU and differentiates by facility specification upon order receipt. Both before AND after described.</td>
+            <td class="td-part"><span class="cell-pts">2–4 pts</span>One state described correctly (either before or after, but not both). Or both described but "upstream" and "downstream" confused (decoupling point moving upstream = closer to raw materials, not closer to customer).</td>
+            <td class="td-min"><span class="cell-pts">1 pts</span>"Differentiation is delayed" stated without describing where the decoupling point sits before or after.</td>
+            <td class="td-none"><span class="cell-pts">0 pts</span>No description of decoupling point, or decoupling point described as moving downstream (toward the customer).</td>
+          </tr>
+          <tr>
+            <td class="td-crit">4(b) — Two Benefits<span class="crit-pts">6 pts</span><span class="crit-lo">LO9-6</span></td>
+            <td class="td-full"><span class="cell-pts">6 pts</span>Two distinct benefits named — each connected to an identifiable supply chain outcome. Accept: risk pooling (one aggregate pool less uncertain than 12 SKUs → less safety stock), inventory flexibility (base kit serves any configuration → no wrong-configuration stranding), reduced obsolescence (generic base kit does not expire as a specific configuration). Benefits must be two separate mechanisms, not two phrasings of the same idea.</td>
+            <td class="td-part"><span class="cell-pts">3–5 pts</span>Two benefits named but one is essentially a restatement of the other (e.g., "less safety stock" and "lower inventory costs" treated as distinct). Or one strong benefit and one vague one ("more efficient overall").</td>
+            <td class="td-min"><span class="cell-pts">1–2 pts</span>One benefit named correctly, or two named but both are generic ("saves money," "reduces complexity") without connecting to a supply chain mechanism.</td>
+            <td class="td-none"><span class="cell-pts">0 pts</span>No benefits identified, or benefits confused with risks.</td>
+          </tr>
+          <tr>
+            <td class="td-crit">4(c) — Capability + Risk<span class="crit-pts">5 pts</span><span class="crit-lo">LO9-6</span></td>
+            <td class="td-full"><span class="cell-pts">5 pts</span>Capability is specific and operational (DC staff trained for kit customization + QA validation, or sterile assembly area, or configuration verification process). Risk is distinct from the capability gap — not a restatement. Full credit for any risk specific to surgical kit assembly at the DC stage (quality error close to patient, higher consequence; sterility compliance; configuration documentation errors).</td>
+            <td class="td-part"><span class="cell-pts">2–4 pts</span>Both present but risk essentially restates the capability gap ("if they don't have the capability, there is a risk of errors"). Or one is specific and one is generic.</td>
+            <td class="td-min"><span class="cell-pts">1 pts</span>One of capability or risk identified, not both. Or both so generic that no surgical kit context is present.</td>
+            <td class="td-none"><span class="cell-pts">0 pts</span>No capability or risk identified.</td>
+          </tr>
+          <tr>
+            <td class="td-crit">4(d) — MTS/MTO Justification<span class="crit-pts">4 pts</span><span class="crit-lo">LO9-5</span></td>
+            <td class="td-full"><span class="cell-pts">4 pts</span>MTS for generic supplies: predictable demand → decoupling point at finished goods → immediate fulfillment. MTO for custom implants: demand unknown until surgeon-specific order received → decoupling at raw materials/subassembly → no finished goods held. Both must use "decoupling point" concept explicitly.</td>
+            <td class="td-part"><span class="cell-pts">2–3 pts</span>Both strategies named and demand characteristics cited correctly, but decoupling point concept not explicitly used — substitutes "begins production after order" or similar without the Chapter 11 terminology.</td>
+            <td class="td-min"><span class="cell-pts">1 pts</span>One strategy justified with decoupling point, one not. Or both strategies conflated (e.g., "both are appropriate because Riverside needs flexibility").</td>
+            <td class="td-none"><span class="cell-pts">0 pts</span>No justification, or decoupling point concept absent from both.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- PART 5 RUBRIC -->
+  <div>
+    <div class="sec-heading">Part 5 Rubric — 15 points &nbsp;·&nbsp; Synthesis Memo (All Versions)</div>
+    <div class="rubric-wrap" style="margin-top:14px;">
+      <table class="rubric-table">
+        <colgroup><col style="width:19%"><col style="width:22%"><col style="width:20%"><col style="width:20%"><col style="width:19%"></colgroup>
+        <thead>
+          <tr>
+            <th class="th-crit">Criterion</th>
+            <th class="th-full"><span class="pts-label">Full Credit</span></th>
+            <th class="th-part"><span class="pts-label">Partial</span></th>
+            <th class="th-min"><span class="pts-label">Minimal</span></th>
+            <th class="th-none"><span class="pts-label">No Credit</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="td-crit">5(a) — Structural Recommendation<span class="crit-pts">5 pts</span><span class="crit-lo">LO9-1–7</span></td>
+            <td class="td-full"><span class="cell-pts">5 pts</span>Recommendation is structural (a supply chain design decision, not a process tweak): e.g., implement differentiated inventory policies by product category; formalize a partnership agreement with Category B suppliers; implement VMI for Category A; adopt postponement for surgical kit assembly. Highest-priority justification is grounded in Riverside-specific facts from Parts 1–4. Must be consistent with student's own Part 1 analysis.</td>
+            <td class="td-part"><span class="cell-pts">2–4 pts</span>Structural recommendation present but highest-priority argument is weak or generic ("because it's the most important"). Or recommendation is valid but not grounded in Riverside-specific facts — could describe any health system.</td>
+            <td class="td-min"><span class="cell-pts">1 pts</span>Non-structural recommendation ("improve supplier communication," "train staff better") without a supply chain design component. Or recommendation is vague and could mean anything.</td>
+            <td class="td-none"><span class="cell-pts">0 pts</span>No recommendation, or recommendation contradicts the student's own Part 1 analysis without explanation.</td>
+          </tr>
+          <tr>
+            <td class="td-crit">5(b) — Metric + Target<span class="crit-pts">5 pts</span><span class="crit-lo">LO9-2</span></td>
+            <td class="td-full"><span class="cell-pts">5 pts</span>Specific metric named AND a specific numeric target stated (e.g., "fill rate ≥ 98%," "Category B inventory turns of 4.5," "Category A turns between 12 and 16"). Target is justified with a supply chain reason tied to Riverside's situation — not just naming the contractual threshold. Target must be achievable and not simply restate current performance.</td>
+            <td class="td-part"><span class="cell-pts">2–4 pts</span>Metric named correctly but target is absent or stated as "higher than current" without a specific value. Or specific value given but no justification for why that value is appropriate for Riverside.</td>
+            <td class="td-min"><span class="cell-pts">1 pts</span>Metric named without any target, or target stated as a percentage change ("improve by 10%") without a specific benchmark value.</td>
+            <td class="td-none"><span class="cell-pts">0 pts</span>No metric identified, or metric is not a supply chain performance metric (e.g., "patient satisfaction scores").</td>
+          </tr>
+          <tr>
+            <td class="td-crit">5(c) — Residual Risk<span class="crit-pts">5 pts</span><span class="crit-lo">LO9-1–7</span></td>
+            <td class="td-full"><span class="cell-pts">5 pts</span>Specific risk named that is not the same problem being solved by Part 5(a). Risk is supply-chain-structural (not operational noise). Management action is credible and specific. Example: if 5(a) recommends differentiated inventory policy, a residual risk might be supplier concentration in Category B; management action might be qualifying a second supplier for critical implant types.</td>
+            <td class="td-part"><span class="cell-pts">2–4 pts</span>Distinct risk named but management action is generic ("monitor the situation") without a specific structural response. Or risk is plausible but tangential to Riverside's supply chain (e.g., "regulatory changes in healthcare could affect suppliers" without connecting to the supply chain structure).</td>
+            <td class="td-min"><span class="cell-pts">1 pts</span>Risk named that is essentially the same problem being addressed in 5(a) with slightly different wording. Deduct 2 pts maximum if risk is the same problem.</td>
+            <td class="td-none"><span class="cell-pts">0 pts</span>No residual risk identified, or the risk identified is that the Part 5(a) recommendation itself might fail (circular).</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- GRADING NOTES -->
+  <div>
+    <div class="sec-heading">Grading Efficiency Notes</div>
+    <div style="margin-top:14px;" class="notes-list">
+      <div class="note-item"><div class="note-num">1</div><span><strong>Scan Part 5 first (2 min).</strong> A student's 5(a) recommendation immediately reveals whether they understood the core tension from Part 1. If 5(a) is generic ("improve processes"), the entire submission likely lacks specificity — grade with that expectation. If 5(a) names a structural change grounded in Riverside facts, the submission is likely strong. This scan calibrates your expectations before you read the detail.</span></div>
+      <div class="note-item"><div class="note-num">2</div><span><strong>Version check before Part 2 (30 seconds).</strong> Find the student's last ID digit, confirm version, identify the expected turns values from the answer key. A student with ID digit 3 submitting 14.6 turns for Category A = Version A numbers on a Version B student = flag immediately.</span></div>
+      <div class="note-item"><div class="note-num">3</div><span><strong>Part 2 COGS/revenue confusion</strong> is the most universal error. Expected Category A turns range from 12–18 depending on version; a student submitting 40+ turns is using revenue instead of COGS. Note the error, award 0 for the formula step, and award partial credit for subsequent steps if the student uses their (wrong) turns figure consistently.</span></div>
+      <div class="note-item"><div class="note-num">4</div><span><strong>Part 3 borderline cases:</strong> If the student names "bullwhip effect" as the cause without selecting one of the four root causes, award maximum 3/7 for 3(b) — the Chapter 11 taxonomy is required. If the student identifies a plausible root cause but the mechanism explanation doesn't address the alternating pattern specifically, award 4–5/7.</span></div>
+      <div class="note-item"><div class="note-num">5</div><span><strong>AI-assist signals:</strong> 5(a) with generic language ("implement a differentiated supply chain strategy") that could describe any firm without a single Riverside-specific fact; Part 1 that uses exactly the right textbook vocabulary but whose supplier relationship justification doesn't cite the 12-supplier or 2-3-supplier constraint that is the key differentiator between the two categories; Part 3 that correctly identifies all four root causes but cannot explain why one fits this specific alternating pattern better than the others.</span></div>
+    </div>
+  </div>
+
+  <!-- QUICK SCORE REFERENCE -->
+  <div>
+    <div class="sec-heading">Quick Score Reference</div>
+    <div style="border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;background:white;margin-top:14px;">
+      <table class="speed-table">
+        <thead><tr><th>Score</th><th>What it signals</th><th style="text-align:right;">Letter</th></tr></thead>
+        <tbody>
+          <tr><td style="font-weight:700;color:var(--green);">90–100</td><td>All five parts complete with specificity. Part 2 calculations correct for assigned version with work shown. Framework vocabulary precise and applied to Riverside-specific facts. Part 5 recommendation is structural and grounded.</td><td style="text-align:right;font-weight:700;">A</td></tr>
+          <tr><td style="font-weight:700;color:var(--amber);">75–89</td><td>Most parts strong. One or two minor gaps — typically Part 5(b) missing a specific target value, or Part 3(b) naming a cause without explaining the mechanism. Conceptual understanding solid.</td><td style="text-align:right;font-weight:700;">B</td></tr>
+          <tr><td style="font-weight:700;color:var(--orange);">60–74</td><td>Some parts complete. Generic Part 1 recommendations not grounded in Riverside facts. Part 3 identifies bullwhip without root cause. Part 5 recommendation is non-structural. Structural calculation errors in Part 2.</td><td style="text-align:right;font-weight:700;">C</td></tr>
+          <tr><td style="font-weight:700;color:var(--red);">Below 60</td><td>Multiple parts missing or misapplied. Part 2 uses wrong version's data or wrong formula structure. Part 1 has both categories assigned the same strategy. Consider individual follow-up before returning grade.</td><td style="text-align:right;font-weight:700;">D / F</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

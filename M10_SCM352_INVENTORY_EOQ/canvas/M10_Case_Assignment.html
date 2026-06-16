@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Case Analysis M10 — Riverside Health System Pharmacy — SCM 352</title>
+<style>
+:root{--navy:#1a3a5c;--blue:#2563a8;--blue-lt:#dbeafe;--blue-xlt:#eff6ff;--gold:#f59e0b;--gold-lt:#fffbeb;--gold-bdr:#fde68a;--green:#16a34a;--green-lt:#f0fdf4;--green-bdr:#bbf7d0;--red:#dc2626;--red-lt:#fef2f2;--red-bdr:#fecaca;--amber:#d97706;--amber-lt:#fffbeb;--amber-bdr:#fde68a;--purple:#7c3aed;--purple-lt:#faf5ff;--purple-bdr:#ddd6fe;--teal:#0891b2;--teal-lt:#f0fdfe;--teal-bdr:#a5f3fc;--gray-50:#f9fafb;--gray-100:#f3f4f6;--gray-200:#e5e7eb;--gray-300:#d1d5db;--gray-400:#9ca3af;--gray-600:#4b5563;--gray-700:#374151;--gray-800:#1f2937;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--gray-50);color:var(--gray-800);line-height:1.65;font-size:14px;}
+.pg-header{background:var(--navy);color:white;padding:24px 28px;}
+.pg-header-eyebrow{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
+.pg-header h1{font-size:22px;font-weight:700;letter-spacing:-.01em;margin-bottom:6px;}
+.pg-header p{font-size:13px;color:rgba(255,255,255,.68);}
+.meta-strip{background:white;border-bottom:2px solid var(--gray-200);display:flex;gap:0;overflow-x:auto;}
+.meta-cell{padding:11px 20px;border-right:1px solid var(--gray-200);flex-shrink:0;}
+.meta-cell:last-child{border-right:none;}
+.meta-lbl{font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--gray-400);margin-bottom:2px;}
+.meta-val{font-size:13px;font-weight:700;color:var(--navy);}
+.pg-body{max-width:860px;margin:0 auto;padding:28px 22px 60px;display:flex;flex-direction:column;gap:28px;}
+.version-banner{background:var(--navy);border-radius:12px;overflow:hidden;border:2px solid var(--navy);}
+.version-banner-hd{padding:13px 20px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,255,255,.15);}
+.version-banner-hd h2{font-size:14px;font-weight:700;color:white;}
+.version-banner-hd p{font-size:12px;color:rgba(255,255,255,.6);margin-top:2px;}
+.version-table{width:100%;border-collapse:collapse;font-size:13px;}
+.version-table th{padding:9px 16px;text-align:left;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:rgba(255,255,255,.55);border-bottom:1px solid rgba(255,255,255,.1);}
+.version-table td{padding:10px 16px;border-bottom:1px solid rgba(255,255,255,.07);color:rgba(255,255,255,.85);}
+.version-table tr:last-child td{border-bottom:none;}
+.ver-badge{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:6px;font-size:13px;font-weight:800;}
+.ver-a{background:#dcfce7;color:#166534;} .ver-b{background:#dbeafe;color:#1e40af;} .ver-c{background:#faf5ff;color:#6b21a8;} .ver-d{background:#fef9c3;color:#854d0e;}
+.alert{border-radius:10px;padding:13px 16px;font-size:13.5px;line-height:1.6;display:flex;gap:11px;align-items:flex-start;}
+.alert-icon{font-size:17px;flex-shrink:0;margin-top:1px;}
+.alert-body{flex:1;}
+.alert-body strong{display:block;margin-bottom:3px;}
+.alert-red{background:var(--red-lt);border:1.5px solid var(--red-bdr);}
+.alert-gold{background:var(--gold-lt);border:1.5px solid var(--gold-bdr);}
+.alert-blue{background:var(--blue-xlt);border:1.5px solid #bfdbfe;}
+.sec-div{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--gray-400);padding-bottom:10px;border-bottom:1px solid var(--gray-200);margin-bottom:-4px;}
+.section-card{background:white;border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;}
+.section-hd{padding:14px 20px;border-bottom:1px solid var(--gray-200);display:flex;align-items:center;gap:12px;}
+.part-badge{display:flex;align-items:center;justify-content:center;min-width:36px;height:36px;border-radius:8px;font-size:12px;font-weight:800;flex-shrink:0;}
+.section-hd-text h2{font-size:15px;font-weight:700;color:var(--navy);}
+.section-hd-text p{font-size:12px;color:var(--gray-600);margin-top:2px;}
+.pts-badge{margin-left:auto;flex-shrink:0;font-size:13px;font-weight:700;padding:4px 12px;border-radius:100px;}
+.section-bd{padding:20px;}
+.part1 .section-hd{background:var(--blue-xlt);} .part1 .part-badge{background:var(--blue);color:white;} .part1 .pts-badge{background:var(--blue-lt);color:var(--navy);}
+.part2 .section-hd{background:var(--green-lt);} .part2 .part-badge{background:var(--green);color:white;} .part2 .pts-badge{background:var(--green-bdr);color:var(--green);}
+.part3 .section-hd{background:var(--purple-lt);} .part3 .part-badge{background:var(--purple);color:white;} .part3 .pts-badge{background:var(--purple-bdr);color:var(--purple);}
+.part4 .section-hd{background:var(--teal-lt);} .part4 .part-badge{background:var(--teal);color:white;} .part4 .pts-badge{background:var(--teal-bdr);color:var(--teal);}
+.part5 .section-hd{background:var(--amber-lt);} .part5 .part-badge{background:var(--amber);color:white;} .part5 .pts-badge{background:var(--amber-bdr);color:var(--amber);}
+.ver-tabs{border:1.5px solid var(--gray-200);border-radius:10px;overflow:hidden;margin:16px 0;}
+.ver-tab-hd{display:flex;border-bottom:1.5px solid var(--gray-200);background:var(--gray-50);}
+.ver-tab-btn{flex:1;padding:10px 0;border:none;background:none;cursor:pointer;font-size:13px;font-weight:700;color:var(--gray-400);border-right:1px solid var(--gray-200);transition:all 0.15s;display:flex;align-items:center;justify-content:center;gap:6px;}
+.ver-tab-btn:last-child{border-right:none;}
+.ver-tab-btn:hover{color:var(--navy);background:white;}
+.ver-tab-btn.active{color:var(--navy);background:white;box-shadow:inset 0 -2px 0 var(--blue);}
+.ver-tab-btn .vb{width:20px;height:20px;border-radius:4px;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;}
+.ver-tab-panel{display:none;padding:16px;}
+.ver-tab-panel.active{display:block;}
+.data-table{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px;}
+.data-table th{background:var(--navy);color:white;padding:9px 13px;text-align:left;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;}
+.data-table td{padding:9px 13px;border-bottom:1px solid var(--gray-100);}
+.data-table tr:last-child td{border-bottom:none;}
+.data-table td:first-child{font-weight:700;color:var(--gray-700);}
+.mini-table{width:100%;border-collapse:collapse;font-size:13px;margin:12px 0;}
+.mini-table th{background:var(--navy);color:white;padding:8px 12px;text-align:center;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;}
+.mini-table td{padding:9px 12px;border-bottom:1px solid var(--gray-100);text-align:center;}
+.mini-table td:first-child{text-align:left;font-weight:700;color:var(--gray-700);}
+.mini-table tr:last-child td{border-bottom:none;}
+.q-block{margin-bottom:16px;padding:14px 16px;border:1.5px solid var(--gray-200);border-radius:8px;background:var(--gray-50);}
+.q-block:last-child{margin-bottom:0;}
+.q-num{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--gray-400);margin-bottom:5px;}
+.q-text{font-size:13.5px;line-height:1.65;color:var(--gray-700);}
+.q-text p+p{margin-top:6px;}
+.q-pts{display:inline-block;margin-top:7px;font-size:11px;font-weight:700;padding:2px 9px;border-radius:100px;background:var(--blue-lt);color:var(--navy);}
+.scenario-box{background:var(--gray-50);border:1.5px solid var(--gray-200);border-left:4px solid var(--teal);border-radius:0 8px 8px 0;padding:16px 18px;font-size:13.5px;line-height:1.75;color:var(--gray-700);margin:12px 0;}
+.submit-list{display:flex;flex-direction:column;gap:6px;}
+.submit-item{display:flex;gap:10px;align-items:flex-start;padding:9px 13px;background:var(--gray-50);border:1px solid var(--gray-200);border-radius:7px;font-size:13px;line-height:1.5;color:var(--gray-700);}
+.submit-item::before{content:'☐';font-size:16px;flex-shrink:0;color:var(--gray-400);margin-top:-1px;}
+.grade-table{width:100%;border-collapse:collapse;font-size:13px;}
+.grade-table th{background:var(--navy);color:white;padding:9px 13px;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;text-align:left;}
+.grade-table td{padding:9px 13px;border-bottom:1px solid var(--gray-100);}
+.grade-table tr:last-child td{border-bottom:none;}
+.grade-table tr.total td{font-weight:700;background:var(--blue-xlt);color:var(--navy);font-size:14px;}
+.pts-right{text-align:right;font-weight:700;font-size:15px;color:var(--navy);}
+</style>
+</head>
+<body>
+
+<div class="pg-header">
+  <div class="pg-header-eyebrow">SCM 352 · Module M10 · Case Analysis</div>
+  <h1>Riverside Health System: Pharmacy Inventory Optimization for a Critical Medication</h1>
+  <p>Parameterized case — 4 versions (A–D) · 100 points · Due Day 6 at 11:59 PM</p>
+</div>
+
+<div class="meta-strip">
+  <div class="meta-cell"><div class="meta-lbl">Points</div><div class="meta-val">100</div></div>
+  <div class="meta-cell"><div class="meta-lbl">Due</div><div class="meta-val">Day 6 · 11:59 PM</div></div>
+  <div class="meta-cell"><div class="meta-lbl">Format</div><div class="meta-val">PDF or Word</div></div>
+  <div class="meta-cell"><div class="meta-lbl">Attempts</div><div class="meta-val">1</div></div>
+  <div class="meta-cell"><div class="meta-lbl">Allowed resources</div><div class="meta-val">Ch. 12 · Lectures · Apps · Slides</div></div>
+</div>
+
+<div class="pg-body">
+
+  <!-- VERSION ASSIGNMENT -->
+  <div class="version-banner">
+    <div class="version-banner-hd">
+      <div><h2>Find Your Assigned Version</h2><p>Use the last digit of your student ID. Submit only your assigned version.</p></div>
+    </div>
+    <table class="version-table">
+      <thead><tr><th>Last digit of student ID</th><th>Your version</th><th>Riverside annual demand · Ordering cost · Holding cost</th></tr></thead>
+      <tbody>
+        <tr><td>0, 1, or 2</td><td><span class="ver-badge ver-a">A</span></td><td>R = 2,000 vials/yr · K = $60/order · h = $6.00/vial/yr</td></tr>
+        <tr><td>3, 4, or 5</td><td><span class="ver-badge ver-b">B</span></td><td>R = 3,600 vials/yr · K = $80/order · h = $5.00/vial/yr</td></tr>
+        <tr><td>6 or 7</td><td><span class="ver-badge ver-c">C</span></td><td>R = 1,200 vials/yr · K = $45/order · h = $4.50/vial/yr</td></tr>
+        <tr><td>8 or 9</td><td><span class="ver-badge ver-d">D</span></td><td>R = 4,800 vials/yr · K = $100/order · h = $8.00/vial/yr</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- RULES -->
+  <div style="display:flex;flex-direction:column;gap:10px;">
+    <div class="alert alert-red">
+      <div class="alert-icon">🚫</div>
+      <div class="alert-body"><strong>Do not collaborate on version-specific calculations.</strong> Parts 1 and 2 use parameters unique to your version. Submitting another version's numbers constitutes academic dishonesty and is detectable — each version produces a distinct Q* and TC chain.</div>
+    </div>
+    <div class="alert alert-gold">
+      <div class="alert-icon">📋</div>
+      <div class="alert-body"><strong>Show all calculation steps with labeled intermediate values.</strong> For Part 1a, show 2KR/h before taking the square root. For Part 2b, show each of the three TC components separately before summing. Answers without supporting work will not receive full credit.</div>
+    </div>
+    <div class="alert alert-blue">
+      <div class="alert-icon">ℹ️</div>
+      <div class="alert-body">Parts 3, 4, and 5 use your version's parameters but ask the same questions of all students. You may discuss concepts but your written responses and calculations must be your own.</div>
+    </div>
+  </div>
+
+  <!-- BACKGROUND -->
+  <div>
+    <div class="sec-div">Background — All Versions</div>
+    <div class="section-card" style="margin-top:14px;">
+      <div class="section-bd" style="font-size:13.5px;line-height:1.75;color:var(--gray-700);display:flex;flex-direction:column;gap:12px;">
+        <p>Riverside Health System operates a network of 18 clinical facilities across the Mountain West. Its central pharmacy fills prescriptions and fulfills supply requisitions for all facilities, including a critical injectable medication used across Riverside's oncology, transplant, and intensive care units. The pharmacy director refers to this medication as <strong>Medication R</strong> throughout all internal analyses — do the same in your submission.</p>
+        <p>Riverside's pharmacy orders Medication R from a contracted pharmaceutical distributor. Each time an order is placed, the pharmacy incurs a <strong>fixed ordering cost</strong> that covers purchasing department labor, distributor order-processing fees, and receiving dock time. Because Medication R requires refrigerated storage, the <strong>holding cost</strong> includes capital cost tied up in inventory, refrigeration energy, and the risk of expiration before use. The pharmacy tracks annual demand in <strong>vials</strong>.</p>
+        <p>You are an operations analyst assisting the pharmacy director. Your version's specific parameters are shown in the version tab tables in Parts 1 and 2 below. Use only your assigned version's numbers throughout — all five parts of the case.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- PART 1 -->
+  <div>
+    <div class="sec-div">Part 1 — EOQ Calculation &nbsp;·&nbsp; Version-specific parameters</div>
+    <div class="section-card part1" style="margin-top:14px;">
+      <div class="section-hd">
+        <div class="part-badge">1</div>
+        <div class="section-hd-text">
+          <h2>EOQ Calculation</h2>
+          <p>Use your version's parameters from the data table below</p>
+        </div>
+        <div class="pts-badge">18 pts</div>
+      </div>
+      <div class="section-bd">
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">Select your version to view your parameters.</p>
+
+        <div class="ver-tabs">
+          <div class="ver-tab-hd">
+            <button class="ver-tab-btn active" onclick="switchTab('p1','a')" id="p1-tab-a"><span class="vb ver-a">A</span> Version A</button>
+            <button class="ver-tab-btn" onclick="switchTab('p1','b')" id="p1-tab-b"><span class="vb ver-b">B</span> Version B</button>
+            <button class="ver-tab-btn" onclick="switchTab('p1','c')" id="p1-tab-c"><span class="vb ver-c">C</span> Version C</button>
+            <button class="ver-tab-btn" onclick="switchTab('p1','d')" id="p1-tab-d"><span class="vb ver-d">D</span> Version D</button>
+          </div>
+          <div class="ver-tab-panel active" id="p1-panel-a">
+            <table class="data-table">
+              <thead><tr><th>Parameter</th><th>Symbol</th><th>Your Value (Version A)</th></tr></thead>
+              <tbody>
+                <tr><td>Annual demand</td><td>R</td><td>2,000 vials per year</td></tr>
+                <tr><td>Fixed ordering cost</td><td>K</td><td>$60.00 per order</td></tr>
+                <tr><td>Annual holding cost</td><td>h</td><td>$6.00 per vial per year</td></tr>
+                <tr><td>Unit purchase cost (regular)</td><td>c</td><td>$30.00 per vial</td></tr>
+                <tr><td>Current batch size</td><td>—</td><td>300 vials per order</td></tr>
+                <tr><td>Alternative quantity (Part 2c)</td><td>—</td><td>400 vials per order</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="ver-tab-panel" id="p1-panel-b">
+            <table class="data-table">
+              <thead><tr><th>Parameter</th><th>Symbol</th><th>Your Value (Version B)</th></tr></thead>
+              <tbody>
+                <tr><td>Annual demand</td><td>R</td><td>3,600 vials per year</td></tr>
+                <tr><td>Fixed ordering cost</td><td>K</td><td>$80.00 per order</td></tr>
+                <tr><td>Annual holding cost</td><td>h</td><td>$5.00 per vial per year</td></tr>
+                <tr><td>Unit purchase cost (regular)</td><td>c</td><td>$25.00 per vial</td></tr>
+                <tr><td>Current batch size</td><td>—</td><td>200 vials per order</td></tr>
+                <tr><td>Alternative quantity (Part 2c)</td><td>—</td><td>500 vials per order</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="ver-tab-panel" id="p1-panel-c">
+            <table class="data-table">
+              <thead><tr><th>Parameter</th><th>Symbol</th><th>Your Value (Version C)</th></tr></thead>
+              <tbody>
+                <tr><td>Annual demand</td><td>R</td><td>1,200 vials per year</td></tr>
+                <tr><td>Fixed ordering cost</td><td>K</td><td>$45.00 per order</td></tr>
+                <tr><td>Annual holding cost</td><td>h</td><td>$4.50 per vial per year</td></tr>
+                <tr><td>Unit purchase cost (regular)</td><td>c</td><td>$40.00 per vial</td></tr>
+                <tr><td>Current batch size</td><td>—</td><td>200 vials per order</td></tr>
+                <tr><td>Alternative quantity (Part 2c)</td><td>—</td><td>300 vials per order</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="ver-tab-panel" id="p1-panel-d">
+            <table class="data-table">
+              <thead><tr><th>Parameter</th><th>Symbol</th><th>Your Value (Version D)</th></tr></thead>
+              <tbody>
+                <tr><td>Annual demand</td><td>R</td><td>4,800 vials per year</td></tr>
+                <tr><td>Fixed ordering cost</td><td>K</td><td>$100.00 per order</td></tr>
+                <tr><td>Annual holding cost</td><td>h</td><td>$8.00 per vial per year</td></tr>
+                <tr><td>Unit purchase cost (regular)</td><td>c</td><td>$20.00 per vial</td></tr>
+                <tr><td>Current batch size</td><td>—</td><td>500 vials per order</td></tr>
+                <tr><td>Alternative quantity (Part 2c)</td><td>—</td><td>600 vials per order</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="q-block">
+          <div class="q-num">Question 1a</div>
+          <div class="q-text">Write the EOQ formula Q* = √(2KR/h). Identify what each variable represents in the context of Riverside's pharmacy. Substitute your version's values for K, R, and h, and compute Q*. Show all steps, including the intermediate value 2KR/h before taking the square root. Round Q* to the nearest whole vial.</div>
+          <span class="q-pts">8 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Question 1b</div>
+          <div class="q-text">At your computed Q*, how many orders will the pharmacy place per year? What is the average time between orders, expressed in weeks (assume 52 weeks per year)? Show your calculations for both.</div>
+          <span class="q-pts">5 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Question 1c</div>
+          <div class="q-text">The pharmacy currently orders in batches of the size shown in your version table. Compare this current batch size to your computed Q*. Is the pharmacy currently ordering too frequently, not frequently enough, or approximately at the optimal level? What is the cost implication of the current practice relative to Q*? (One to two sentences — no calculation required.)</div>
+          <span class="q-pts">5 pts</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PART 2 -->
+  <div>
+    <div class="sec-div">Part 2 — Total Annual Inventory Cost &nbsp;·&nbsp; Version-specific data</div>
+    <div class="section-card part2" style="margin-top:14px;">
+      <div class="section-hd">
+        <div class="part-badge">2</div>
+        <div class="section-hd-text"><h2>Total Annual Inventory Cost</h2><p>Use your version's parameters from Part 1 — same R, K, h, c, and Alt Q</p></div>
+        <div class="pts-badge">22 pts</div>
+      </div>
+      <div class="section-bd">
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:16px;">Use your version's parameters from the Part 1 data table. The "Alternative quantity" row in your Part 1 table is the Alt Q for Question 2c.</p>
+        <div class="q-block">
+          <div class="q-num">Question 2a</div>
+          <div class="q-text">
+            <p>Write the total annual cost formula: <strong>TC = K(R/Q) + h(Q/2) + cR</strong></p>
+            <p>For each of the three terms, write a plain-language sentence explaining what that term represents in the context of Riverside's pharmacy. Then explain in one sentence why the purchasing cost term cR does not affect which Q minimizes total cost.</p>
+          </div>
+          <span class="q-pts">6 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Question 2b</div>
+          <div class="q-text">Compute the total annual cost TC at your version's Q* (computed in Part 1). Show each of the three terms — ordering cost, holding cost, and purchasing cost — separately before summing. After computing TC, confirm that your ordering cost and holding cost are approximately equal at Q*. In one sentence, explain why this equality always holds at the EOQ.</div>
+          <span class="q-pts">10 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Question 2c</div>
+          <div class="q-text">The pharmacy director wants to evaluate ordering in batches of the "Alternative quantity" shown in your version's Part 1 table. Compute TC at this alternative quantity. By how much does ordering at this alternative quantity increase total annual cost compared to TC at Q*? Express the increase in dollars and as a percentage of TC at Q*. What does this tell you about the sensitivity of total cost to deviations from Q*?</div>
+          <span class="q-pts">6 pts</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PART 3 -->
+  <div>
+    <div class="sec-div">Part 3 — Economies of Scale Analysis &nbsp;·&nbsp; Version-specific Valley R</div>
+    <div class="section-card part3" style="margin-top:14px;">
+      <div class="section-hd">
+        <div class="part-badge">3</div>
+        <div class="section-hd-text"><h2>Economies of Scale Analysis</h2><p>Uses your version's R — Valley Medical demand varies by version</p></div>
+        <div class="pts-badge">20 pts</div>
+      </div>
+      <div class="section-bd">
+        <p style="font-size:13.5px;line-height:1.7;color:var(--gray-700);margin-bottom:14px;">Riverside is part of a regional health network. A neighboring hospital, Valley Medical Center, also orders Medication R from the same distributor. Valley's K and h are identical to Riverside's (your version's values). Valley's annual demand and the proposed consortium combined demand are version-specific — find your values below.</p>
+
+        <table class="mini-table">
+          <thead><tr><th>Parameter</th><th>Version A</th><th>Version B</th><th>Version C</th><th>Version D</th></tr></thead>
+          <tbody>
+            <tr><td>Your Riverside R (vials/yr)</td><td>2,000</td><td>3,600</td><td>1,200</td><td>4,800</td></tr>
+            <tr><td>Valley Medical R (vials/yr)</td><td>8,000</td><td>14,400</td><td>4,800</td><td>19,200</td></tr>
+            <tr><td>Demand multiplier (Valley / Riverside)</td><td>4×</td><td>4×</td><td>4×</td><td>4×</td></tr>
+            <tr><td>Combined consortium R (vials/yr)</td><td>10,000</td><td>18,000</td><td>6,000</td><td>24,000</td></tr>
+          </tbody>
+        </table>
+
+        <div class="q-block">
+          <div class="q-num">Question 3a</div>
+          <div class="q-text">Using your version's K and h, compute Q* and total annual EOQ cost (ordering cost + holding cost, excluding cR) for Valley Medical Center. Show all steps. Valley's K and h are the same as Riverside's for your version.</div>
+          <span class="q-pts">6 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Question 3b</div>
+          <div class="q-text">Valley's demand is exactly 4 times Riverside's demand. By what factor does Valley's total annual EOQ cost exceed Riverside's? Does this match the Chapter 12 √2 scaling rule? Explain using the formula: since EOQ cost = √(2KRh), doubling demand increases cost by √2, so quadrupling demand increases cost by √4 = 2. Does your computed ratio confirm this?</div>
+          <span class="q-pts">7 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Question 3c</div>
+          <div class="q-text">The two hospitals are considering forming a joint purchasing consortium with combined annual demand shown in your version's row above. Using your version's K and h, compute Q* and total annual EOQ cost for the combined consortium. Compare the consortium's combined EOQ cost to the sum of Riverside's and Valley's individual costs. How much does pooling save per year in dollars? What is the percentage savings? What does this result imply for the director's recommendation?</div>
+          <span class="q-pts">7 pts</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PART 4 -->
+  <div>
+    <div class="sec-div">Part 4 — Quantity Discount Decision &nbsp;·&nbsp; Version-specific Q_disc_min</div>
+    <div class="section-card part4" style="margin-top:14px;">
+      <div class="section-hd">
+        <div class="part-badge">4</div>
+        <div class="section-hd-text"><h2>Quantity Discount Decision</h2><p>4% discount offer — minimum order quantity varies by version</p></div>
+        <div class="pts-badge">22 pts</div>
+      </div>
+      <div class="section-bd">
+        <p style="font-size:13.5px;line-height:1.7;color:var(--gray-700);margin-bottom:14px;">The distributor offers Riverside a 4% discount on the unit price of Medication R if the pharmacy orders at least the minimum quantity shown below. The holding cost h remains fixed in dollar terms (not as a percentage of unit cost) at your version's value from Part 1.</p>
+
+        <table class="mini-table">
+          <thead><tr><th>Parameter</th><th>Version A</th><th>Version B</th><th>Version C</th><th>Version D</th></tr></thead>
+          <tbody>
+            <tr><td>Regular unit cost c ($/vial)</td><td>$30.00</td><td>$25.00</td><td>$40.00</td><td>$20.00</td></tr>
+            <tr><td>Discount percentage</td><td>4%</td><td>4%</td><td>4%</td><td>4%</td></tr>
+            <tr><td>Minimum order quantity Q_disc_min</td><td>300 vials</td><td>500 vials</td><td>250 vials</td><td>500 vials</td></tr>
+          </tbody>
+        </table>
+
+        <div class="q-block">
+          <div class="q-num">Question 4a</div>
+          <div class="q-text">Compute the discounted unit cost c_discount (regular price × 0.96). Then compute total annual cost TC at the discount minimum quantity Q_disc_min using c_discount and your version's h (fixed — do not recalculate h). Show all three TC components separately: K(R/Q_disc_min), h(Q_disc_min/2), and c_discount × R.</div>
+          <span class="q-pts">8 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Question 4b</div>
+          <div class="q-text">State TC at your version's Q* using the regular unit cost c. (You computed this in Part 2b — you may reference that answer directly without recomputing.)</div>
+          <span class="q-pts">4 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Question 4c</div>
+          <div class="q-text">Compare TC at Q* (regular price) to TC at Q_disc_min (discount price). Which is lower? Should Riverside accept the quantity discount? State the annual dollar savings (or cost) from accepting the discount. Give a one-sentence recommendation.</div>
+          <span class="q-pts">4 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Question 4d</div>
+          <div class="q-text">In two sentences, explain the role of the cR term in this quantity discount comparison. Why does the cR term matter for the discount decision even though it was irrelevant to the EOQ minimization in Part 1?</div>
+          <span class="q-pts">6 pts</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PART 5 -->
+  <div>
+    <div class="sec-div">Part 5 — Managerial Synthesis &nbsp;·&nbsp; Same for all versions</div>
+    <div class="section-card part5" style="margin-top:14px;">
+      <div class="section-hd">
+        <div class="part-badge">5</div>
+        <div class="section-hd-text"><h2>Managerial Synthesis</h2><p>Communicate your findings for a non-technical audience; evaluate expiration risk</p></div>
+        <div class="pts-badge">18 pts</div>
+      </div>
+      <div class="section-bd">
+        <div class="q-block">
+          <div class="q-num">Question 5a — Executive Summary</div>
+          <div class="q-text">
+            <p>The pharmacy director is preparing a budget presentation for Riverside's CFO. Using your results from Parts 1–4, write a <strong>two-paragraph executive summary</strong> (4–6 sentences each) that:</p>
+            <p><strong>Paragraph 1:</strong> States the recommended order quantity and ordering frequency for Medication R, and whether Riverside should accept the distributor's quantity discount offer. State the annual cost impact of the discount decision. Write for a non-technical audience — use dollar amounts and plain language, no formulas.</p>
+            <p><strong>Paragraph 2:</strong> Explains the economies of scale argument for joining the purchasing consortium with Valley Medical Center. State the annual savings from pooling demand in dollars and as a percentage. Explain in plain language why pooling creates savings even without any change in price or supplier — no formulas or √R notation in this paragraph.</p>
+          </div>
+          <span class="q-pts">10 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Question 5b — Expiration Risk and the EOQ Model</div>
+          <div class="q-text">
+            <p>The director mentions that Medication R has a 12-month shelf life and that roughly 5% of vials ordered are occasionally wasted due to expiration before use. In <strong>exactly three sentences</strong>, address the following:</p>
+            <p><strong>Sentence 1:</strong> Explain how the expiration risk affects the validity of the EOQ model's holding cost assumption.</p>
+            <p><strong>Sentence 2:</strong> State whether the expiration risk pushes the true optimal Q* higher or lower than your Part 1 calculation, and why.</p>
+            <p><strong>Sentence 3:</strong> Describe how you would adjust the holding cost parameter h to capture the expiration risk — what additional cost component would you add to h, and how would you estimate it?</p>
+          </div>
+          <span class="q-pts">8 pts</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUBMISSION CHECKLIST -->
+  <div>
+    <div class="sec-div">Submission Requirements</div>
+    <div class="section-card" style="margin-top:14px;">
+      <div class="section-hd" style="background:var(--gray-50);padding:13px 20px;border-bottom:1px solid var(--gray-200);">
+        <h2 style="font-size:14px;font-weight:700;color:var(--navy);">Before you submit, verify the following</h2>
+      </div>
+      <div class="section-bd">
+        <div class="submit-list">
+          <div class="submit-item">Your file is saved as <strong>PDF or Word (.docx)</strong>.</div>
+          <div class="submit-item">Your <strong>assigned version (A, B, C, or D)</strong> is written at the top of your document.</div>
+          <div class="submit-item">Part 1a shows the intermediate value <strong>2KR/h</strong> before the square root and rounds Q* to the nearest whole vial.</div>
+          <div class="submit-item">Part 2b shows <strong>all three TC components separately</strong> (ordering, holding, purchasing) before the total.</div>
+          <div class="submit-item">Part 3c states the consortium savings in <strong>both dollars and percentage</strong>.</div>
+          <div class="submit-item">Part 4a shows c_discount computed as regular price × 0.96, and uses h as a <strong>fixed dollar amount</strong> (not recalculated from c_discount).</div>
+          <div class="submit-item">Part 5a is written in <strong>plain language with no formulas</strong> — dollars and plain English only.</div>
+          <div class="submit-item">Part 5b is exactly <strong>three sentences</strong> addressing the expiration risk mechanism, direction of Q* change, and h adjustment.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GRADING SUMMARY -->
+  <div class="section-card">
+    <div style="background:var(--blue-xlt);padding:13px 20px;border-bottom:1px solid var(--gray-200);">
+      <h2 style="font-size:14px;font-weight:700;color:var(--navy);">Grading Summary · 100 points total</h2>
+    </div>
+    <table class="grade-table">
+      <thead><tr><th>Part</th><th>Content</th><th style="text-align:right;">Points</th><th>Primary LO</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Part 1</strong></td><td>EOQ Calculation — formula setup, Q*, orders/year, current batch comparison</td><td class="pts-right">18</td><td>LO10-2</td></tr>
+        <tr><td><strong>Part 2</strong></td><td>Total Annual Cost — TC formula, TC at Q*, TC at Alt Q and % premium</td><td class="pts-right">22</td><td>LO10-3</td></tr>
+        <tr><td><strong>Part 3</strong></td><td>Economies of Scale — Valley Q* and EOQ cost, √2 scaling test, consortium savings</td><td class="pts-right">20</td><td>LO10-4</td></tr>
+        <tr><td><strong>Part 4</strong></td><td>Quantity Discount — TC at discount Q_min, cost comparison, accept/reject, cR role</td><td class="pts-right">22</td><td>LO10-5</td></tr>
+        <tr><td><strong>Part 5</strong></td><td>Managerial Synthesis — executive summary + expiration risk analysis</td><td class="pts-right">18</td><td>LO10-1, LO10-7</td></tr>
+        <tr class="total"><td colspan="2"><strong>Total</strong></td><td class="pts-right">100</td><td></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<script>
+function switchTab(part, ver) {
+  ['a','b','c','d'].forEach(v => {
+    const btn   = document.getElementById(part + '-tab-' + v);
+    const panel = document.getElementById(part + '-panel-' + v);
+    if (btn)   btn.classList.toggle('active', v === ver);
+    if (panel) panel.classList.toggle('active', v === ver);
+  });
+}
+</script>
+</body>
+</html>

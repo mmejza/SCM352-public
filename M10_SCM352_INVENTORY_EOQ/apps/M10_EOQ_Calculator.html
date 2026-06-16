@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EOQ Calculator — SCM 352 M10</title>
+<style>
+:root {
+  --navy:#1a3a5c; --blue:#2563a8; --blue-lt:#dbeafe; --blue-xlt:#eff6ff; --blue-bdr:#bfdbfe;
+  --gold:#f59e0b; --gold-lt:#fffbeb; --gold-bdr:#fde68a; --gold-dark:#92400e;
+  --green:#16a34a; --green-lt:#f0fdf4; --green-bdr:#bbf7d0;
+  --red:#dc2626; --red-lt:#fef2f2; --red-bdr:#fecaca;
+  --amber:#d97706; --amber-lt:#fffbeb; --amber-bdr:#fde68a;
+  --gray-50:#f9fafb; --gray-100:#f3f4f6; --gray-200:#e5e7eb; --gray-300:#d1d5db;
+  --gray-400:#9ca3af; --gray-600:#4b5563; --gray-700:#374151; --gray-800:#1f2937;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--gray-50);color:var(--gray-800);min-height:100vh;}
+header{background:var(--navy);color:#fff;padding:14px 24px;display:flex;align-items:center;gap:14px;}
+.hbadge{background:var(--gold);color:var(--navy);font-weight:700;font-size:11px;padding:3px 8px;border-radius:4px;letter-spacing:.05em;text-transform:uppercase;white-space:nowrap;}
+header h1{font-size:17px;font-weight:600;}
+.header-lo{margin-left:auto;font-size:11px;color:rgba(255,255,255,.6);}
+
+/* scenario nav */
+.scen-nav{background:#fff;border-bottom:2px solid var(--gray-200);padding:0 20px;display:flex;gap:0;overflow-x:auto;}
+.scen-btn{padding:11px 16px;border:none;background:none;cursor:pointer;font-size:13px;font-weight:500;color:var(--gray-600);border-bottom:3px solid transparent;white-space:nowrap;transition:all .15s;}
+.scen-btn:hover{color:var(--blue);}
+.scen-btn.active{color:var(--blue);border-bottom-color:var(--blue);font-weight:600;}
+.scen-btn.done::after{content:' ✓';color:var(--green);}
+
+/* main */
+.main{max-width:860px;margin:0 auto;padding:24px 20px;}
+
+/* step indicator */
+.step-bar{display:flex;align-items:center;gap:0;margin-bottom:20px;background:#fff;border:1px solid var(--gray-200);border-radius:10px;overflow:hidden;}
+.step-item{flex:1;padding:10px 8px;text-align:center;font-size:12px;color:var(--gray-400);position:relative;border-right:1px solid var(--gray-200);}
+.step-item:last-child{border-right:none;}
+.step-item.s-done{background:var(--green-lt);color:var(--green);}
+.step-item.s-active{background:var(--blue-lt);color:var(--blue);font-weight:700;}
+.step-num{display:block;font-size:16px;font-weight:700;line-height:1.2;}
+
+/* cards */
+.card{background:#fff;border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;margin-bottom:16px;}
+.card-head{background:var(--blue-lt);padding:12px 18px;border-bottom:1px solid var(--gray-200);}
+.card-head h2{font-size:14px;font-weight:700;color:var(--navy);}
+.card-head p{font-size:12px;color:var(--gray-600);margin-top:3px;}
+.card-body{padding:18px;}
+
+/* scenario context */
+.ctx{background:var(--gray-50);border-left:4px solid var(--blue);padding:12px 16px;border-radius:0 8px 8px 0;font-size:13px;line-height:1.65;color:var(--gray-800);margin-bottom:16px;}
+.param-chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:0;}
+.chip{background:var(--blue-xlt);border:1px solid var(--blue-bdr);border-radius:6px;padding:5px 12px;font-size:12px;font-weight:600;color:var(--navy);}
+
+/* step content */
+.match-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--gray-100);}
+.match-row:last-child{border-bottom:none;}
+.match-val{background:var(--navy);color:#fff;padding:5px 12px;border-radius:6px;font-size:13px;font-weight:700;min-width:160px;text-align:center;}
+.match-arrow{color:var(--gray-400);font-size:18px;}
+.match-sel{flex:1;padding:8px 10px;border:2px solid var(--gray-300);border-radius:8px;font-size:13px;color:var(--gray-700);background:#fff;cursor:pointer;}
+.match-sel:focus{outline:none;border-color:var(--blue);}
+.match-sel.ok{border-color:var(--green);background:var(--green-lt);}
+.match-sel.err{border-color:var(--red);background:var(--red-lt);}
+
+.formula-grid{display:grid;grid-template-columns:auto 1fr auto 1fr auto 1fr auto;align-items:center;gap:8px;font-size:15px;font-weight:600;color:var(--navy);margin:12px 0;}
+.f-op{color:var(--gray-600);font-size:16px;}
+.f-eq{background:var(--navy);color:#fff;padding:7px 14px;border-radius:8px;font-size:14px;font-weight:700;}
+.num-in{width:90px;padding:8px 10px;border:2px solid var(--gray-300);border-radius:8px;font-size:14px;text-align:center;font-weight:600;}
+.num-in:focus{outline:none;border-color:var(--blue);}
+.num-in.ok{border-color:var(--green);background:var(--green-lt);}
+.num-in.err{border-color:var(--red);background:var(--red-lt);}
+.num-in.wide{width:120px;}
+.formula-text{font-size:14px;color:var(--gray-700);margin-bottom:8px;}
+
+/* interp fields */
+.interp-row{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.interp-label{font-size:13px;color:var(--gray-700);min-width:260px;}
+.interp-val{font-size:13px;color:var(--gray-600);}
+textarea.interp-text{width:100%;padding:10px 12px;border:2px solid var(--gray-300);border-radius:8px;font-size:13px;font-family:inherit;resize:vertical;min-height:68px;}
+textarea.interp-text:focus{outline:none;border-color:var(--blue);}
+
+/* buttons */
+.btn{padding:9px 22px;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;transition:all .15s;}
+.btn-primary{background:var(--blue);color:#fff;}
+.btn-primary:hover{background:#1d4ed8;}
+.btn-primary:disabled{background:var(--gray-400);cursor:not-allowed;}
+.btn-secondary{background:var(--gray-100);color:var(--gray-800);}
+.btn-secondary:hover{background:var(--gray-200);}
+.btn-green{background:var(--green);color:#fff;}
+.btn-green:hover{background:#15803d;}
+.btn-group{display:flex;gap:10px;align-items:center;margin-top:16px;}
+
+/* feedback */
+.fb{display:none;border-radius:8px;overflow:hidden;margin-top:12px;}
+.fb.show{display:block;}
+.fb-banner{padding:10px 14px;font-size:13px;font-weight:700;display:flex;align-items:center;gap:8px;}
+.fb-ok{background:var(--green-lt);color:var(--green);}
+.fb-err{background:var(--red-lt);color:var(--red);}
+.fb-warn{background:var(--amber-lt);color:var(--amber);}
+.fb-body{padding:12px 14px;font-size:13px;line-height:1.6;background:#fff;border:1px solid var(--gray-200);border-top:none;border-radius:0 0 8px 8px;}
+
+/* tip box */
+.tip{background:var(--gold-lt);border:1px solid var(--gold-bdr);border-radius:8px;padding:12px 14px;font-size:12px;line-height:1.6;color:var(--gray-800);margin-top:12px;}
+.tip-label{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--amber);margin-bottom:4px;}
+
+/* result box */
+.result-box{background:var(--green-lt);border:2px solid var(--green-bdr);border-radius:10px;padding:16px;text-align:center;margin-top:12px;}
+.result-big{font-size:32px;font-weight:700;color:var(--green);line-height:1;}
+.result-label{font-size:12px;color:var(--gray-600);margin-top:4px;}
+
+/* completion banner */
+.complete-banner{background:var(--green-lt);border:2px solid var(--green-bdr);border-radius:12px;padding:20px;text-align:center;}
+.complete-banner h3{font-size:18px;font-weight:700;color:var(--green);margin-bottom:6px;}
+.progress-note{font-size:12px;color:var(--gray-600);margin-top:8px;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hbadge">SCM 352 · M10</div>
+  <h1>App 1 — EOQ Calculator with Step Validation</h1>
+  <span class="header-lo">LO10-2 · LO10-3</span>
+</header>
+
+<div class="scen-nav" id="scenNav"></div>
+
+<div class="main" id="appMain"></div>
+
+<script>
+const SC = [
+  {
+    id:1, label:'Scenario 1',
+    industry:'Hospital Linen Service',
+    ctx:'A regional hospital linen service processes and repackages surgical drape sets for outpatient clinics. Demand is steady at 2,000 packs per year. Each order requires coordinating with the distributor, logging receipt, and updating the inventory system.',
+    product:'surgical drape packs',
+    R:2000, K:50, h:4.00, c:8,
+    Qstar:224, twoKRh:50000, ordersYr:8.9, weeks:5.8
+  },
+  {
+    id:2, label:'Scenario 2',
+    industry:'Dental Supply Room',
+    ctx:'A dental practice orders boxes of examination gloves for patient care. Demand averages 5,000 boxes per year. The practice manager places orders by calling the supply distributor; each order requires staff time to place, receive, and log.',
+    product:'exam glove boxes',
+    R:5000, K:80, h:5.00, c:15,
+    Qstar:400, twoKRh:160000, ordersYr:12.5, weeks:4.2
+  },
+  {
+    id:3, label:'Scenario 3',
+    industry:'School District Cafeteria',
+    ctx:'A large school district cafeteria orders single-serving juice cartons in cases. Annual demand is 12,000 cases. Each purchase order must be approved by the district purchasing office, which adds processing time and cost.',
+    product:'juice carton cases',
+    R:12000, K:120, h:3.00, c:6,
+    Qstar:980, twoKRh:960000, ordersYr:12.2, weeks:4.3
+  },
+  {
+    id:4, label:'Scenario 4',
+    industry:'Auto Parts Distributor',
+    ctx:'A regional auto parts distributor stocks a high-turnover filter component used in fleet vehicle maintenance. Annual demand is 8,400 units. The distributor orders from a manufacturer that charges a per-order processing fee on top of internal ordering labor.',
+    product:'filter units',
+    R:8400, K:65, h:7.00, c:22,
+    Qstar:395, twoKRh:156000, ordersYr:21.3, weeks:2.4
+  },
+  {
+    id:5, label:'Scenario 5',
+    industry:'Regional Food Bank',
+    ctx:'A regional food bank orders canned soup in pallet-quantity cases from a grocery distributor. Annual demand is 3,600 cases. The food bank has a dedicated receiving dock and tracks inventory with a spreadsheet system.',
+    product:'canned soup cases',
+    R:3600, K:45, h:2.50, c:4,
+    Qstar:360, twoKRh:129600, ordersYr:10.0, weeks:5.2
+  }
+];
+
+const OPTS = [
+  {val:'R', label:'Annual demand R (units/year)'},
+  {val:'K', label:'Fixed ordering cost K ($/order)'},
+  {val:'h', label:'Annual holding cost h ($/unit/year)'},
+  {val:'c', label:'Unit purchase cost c ($/unit)'}
+];
+
+let cur = 0;
+let step = Array(5).fill(0);    // current step per scenario (0-3)
+let done = Array(5).fill(false); // scenario completed
+
+function fmt(n,dec=0){return n.toLocaleString('en-US',{minimumFractionDigits:dec,maximumFractionDigits:dec});}
+function close(a,b,pct=0.02){return Math.abs(a-b)/Math.max(Math.abs(b),1)<=pct;}
+
+function renderNav(){
+  const nav = document.getElementById('scenNav');
+  nav.innerHTML = SC.map((s,i)=>`<button class="scen-btn${i===cur?' active':''}${done[i]?' done':''}" onclick="selectScen(${i})">${s.label}</button>`).join('');
+}
+
+function selectScen(i){cur=i;renderNav();renderMain();}
+
+function renderMain(){
+  const s=SC[cur], st=step[cur];
+  const el=document.getElementById('appMain');
+  if(done[cur]){
+    el.innerHTML=`
+      <div class="complete-banner">
+        <h3>✓ Scenario ${s.id} Complete</h3>
+        <p style="font-size:14px;color:var(--gray-700);margin-top:6px;">Q* = <strong>${s.Qstar} ${s.product.split(' ').pop()}</strong> per order · ${fmt(s.ordersYr,1)} orders/year · every ${fmt(s.weeks,1)} weeks</p>
+        <p class="progress-note">${done.filter(Boolean).length} of 5 scenarios completed</p>
+      </div>`;
+    return;
+  }
+
+  const stepLabels=['Parameter ID','Formula Setup','Compute Q*','Interpretation'];
+  const stepBar = stepLabels.map((l,i)=>`<div class="step-item${i<st?' s-done':i===st?' s-active':''}">${i<st?'✓':''}<span class="step-num">${i+1}</span>${l}</div>`).join('');
+
+  let content='';
+  if(st===0) content=renderStep0(s);
+  else if(st===1) content=renderStep1(s);
+  else if(st===2) content=renderStep2(s);
+  else content=renderStep3(s);
+
+  el.innerHTML=`
+    <div class="step-bar">${stepBar}</div>
+    <div class="card">
+      <div class="card-head"><h2>Scenario ${s.id}: ${s.industry}</h2><p>${s.product} · Step ${st+1} of 4</p></div>
+      <div class="card-body">
+        <div class="ctx">${s.ctx}</div>
+        <div class="param-chips">
+          <span class="chip">R = ${fmt(s.R)} units/yr</span>
+          <span class="chip">K = $${s.K}/order</span>
+          <span class="chip">h = $${s.h.toFixed(2)}/unit/yr</span>
+          <span class="chip">c = $${s.c}/unit</span>
+        </div>
+      </div>
+    </div>
+    ${content}
+  `;
+}
+
+function renderStep0(s){
+  const items=[
+    {disp:`${fmt(s.R)} units/year`, ans:'R'},
+    {disp:`$${s.K} per order`, ans:'K'},
+    {disp:`$${s.h.toFixed(2)} per unit per year`, ans:'h'},
+    {disp:`$${s.c} per unit`, ans:'c'}
+  ];
+  const rows=items.map((it,i)=>`
+    <div class="match-row">
+      <div class="match-val">${it.disp}</div>
+      <span class="match-arrow">→</span>
+      <select class="match-sel" id="m${i}">
+        <option value="">— select variable —</option>
+        ${OPTS.map(o=>`<option value="${o.val}">${o.label}</option>`).join('')}
+      </select>
+    </div>`).join('');
+
+  return `
+    <div class="card">
+      <div class="card-head"><h2>Step 1 — Parameter Identification</h2><p>Match each value to the correct EOQ formula variable.</p></div>
+      <div class="card-body">
+        <p class="formula-text" style="margin-bottom:14px;">Formula: <strong>Q* = √( 2KR / h )</strong> &nbsp;·&nbsp; Identify what R, K, h, and c represent in this scenario.</p>
+        ${rows}
+        <div class="btn-group">
+          <button class="btn btn-primary" onclick="checkStep0()">Check Answers</button>
+        </div>
+        <div class="fb" id="fb0"></div>
+      </div>
+    </div>
+    <div class="tip"><div class="tip-label">Formula Reference</div>
+    Q* = √(2KR/h) &nbsp;·&nbsp; K = fixed cost per order &nbsp;·&nbsp; R = annual demand &nbsp;·&nbsp; h = annual holding cost per unit &nbsp;·&nbsp; c = unit purchase cost (does not affect Q*)</div>`;
+}
+
+function checkStep0(){
+  const s=SC[cur];
+  const correct={0:'R',1:'K',2:'h',3:'c'};
+  let ok=true;
+  [0,1,2,3].forEach(i=>{
+    const sel=document.getElementById('m'+i);
+    if(!sel) return;
+    const v=sel.value;
+    sel.classList.remove('ok','err');
+    if(v===correct[i]) sel.classList.add('ok');
+    else {sel.classList.add('err');ok=false;}
+  });
+  const fb=document.getElementById('fb0');
+  fb.classList.add('show');
+  if(ok){
+    fb.innerHTML=`<div class="fb-banner fb-ok">✓ Correct — all four parameters identified</div><div class="fb-body">R = ${fmt(s.R)} units/year (annual demand) · K = $${s.K}/order (fixed ordering cost) · h = $${s.h.toFixed(2)}/unit/yr (annual holding cost) · c = $${s.c}/unit (unit purchase cost — note: c does not appear in Q* because purchasing cost is the same regardless of order quantity).<div class="btn-group" style="margin-top:12px;"><button class="btn btn-primary" onclick="advance()">Next: Formula Setup →</button></div></div>`;
+  } else {
+    fb.innerHTML=`<div class="fb-banner fb-err">✗ Review your selections — one or more is incorrect</div><div class="fb-body">Re-read the variable definitions: R is annual demand in units/year · K is the fixed cost per order in $/order · h is the per-unit annual holding cost in $/unit/year · c is the purchase price per unit. Check each one and try again.</div>`;
+  }
+}
+
+function renderStep1(s){
+  return `
+    <div class="card">
+      <div class="card-head"><h2>Step 2 — Formula Setup</h2><p>Substitute your values and compute 2KR/h before taking the square root.</p></div>
+      <div class="card-body">
+        <p class="formula-text">Fill in the values. The formula is: <strong>Q* = √( 2 × K × R / h )</strong></p>
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:14px 0;font-size:15px;font-weight:600;color:var(--navy);">
+          <span>2 ×</span>
+          <input class="num-in" id="kIn" type="number" placeholder="K" step="any">
+          <span>×</span>
+          <input class="num-in" id="rIn" type="number" placeholder="R" step="any">
+          <span>÷</span>
+          <input class="num-in" id="hIn" type="number" placeholder="h" step="any">
+          <span>=</span>
+          <input class="num-in wide" id="resIn" type="number" placeholder="2KR/h" step="any">
+        </div>
+        <div class="btn-group">
+          <button class="btn btn-primary" onclick="checkStep1()">Check Setup</button>
+        </div>
+        <div class="fb" id="fb1"></div>
+      </div>
+    </div>`;
+}
+
+function checkStep1(){
+  const s=SC[cur];
+  const k=parseFloat(document.getElementById('kIn').value);
+  const r=parseFloat(document.getElementById('rIn').value);
+  const h=parseFloat(document.getElementById('hIn').value);
+  const res=parseFloat(document.getElementById('resIn').value);
+  const fb=document.getElementById('fb1');
+  fb.classList.add('show');
+
+  if([k,r,h,res].some(isNaN)){
+    fb.innerHTML=`<div class="fb-banner fb-err">✗ Fill in all four fields before checking.</div>`;
+    return;
+  }
+
+  // Check for the missing-2 error
+  const correct2KRh = 2*s.K*s.R/s.h;
+  const noTwo = s.K*s.R/s.h;
+  if(close(res, noTwo, 0.02) && !close(res, correct2KRh, 0.02)){
+    fb.innerHTML=`<div class="fb-banner fb-err">✗ Missing factor of 2 in the numerator</div><div class="fb-body">Your result matches K × R / h = ${fmt(noTwo,0)} — but the EOQ formula requires <strong>2KR</strong> in the numerator. The factor of 2 comes from the calculus derivation of the cost minimum. The correct numerator is 2 × K × R = 2 × ${s.K} × ${fmt(s.R)} = ${fmt(2*s.K*s.R)}. Divide that by h = ${s.h}: 2KR/h = <strong>${fmt(correct2KRh,0)}</strong>. Correct your result and try again.</div>`;
+    return;
+  }
+
+  const kOk=close(k,s.K,0.01), rOk=close(r,s.R,0.01), hOk=close(h,s.h,0.01), resOk=close(res,correct2KRh,0.02);
+  if(kOk&&rOk&&hOk&&resOk){
+    fb.innerHTML=`<div class="fb-banner fb-ok">✓ Correct setup — 2 × ${s.K} × ${fmt(s.R)} / ${s.h} = ${fmt(correct2KRh,0)}</div><div class="fb-body">The value under the square root is ${fmt(correct2KRh,0)}. Now take the square root to find Q*.<div class="btn-group" style="margin-top:12px;"><button class="btn btn-primary" onclick="advance()">Next: Compute Q* →</button></div></div>`;
+  } else {
+    let hints=[];
+    if(!kOk) hints.push(`K should be ${s.K}`);
+    if(!rOk) hints.push(`R should be ${fmt(s.R)}`);
+    if(!hOk) hints.push(`h should be ${s.h}`);
+    if(!resOk) hints.push(`2 × ${s.K} × ${fmt(s.R)} / ${s.h} = ${fmt(correct2KRh,0)}`);
+    fb.innerHTML=`<div class="fb-banner fb-err">✗ Check your values</div><div class="fb-body">${hints.join(' · ')}</div>`;
+  }
+}
+
+function renderStep2(s){
+  return `
+    <div class="card">
+      <div class="card-head"><h2>Step 3 — Compute Q*</h2><p>Take the square root of your 2KR/h result to find the optimal order quantity.</p></div>
+      <div class="card-body">
+        <p class="formula-text">Q* = √(${fmt(s.twoKRh,0)}) = ?</p>
+        <div style="display:flex;align-items:center;gap:10px;margin:14px 0;font-size:15px;font-weight:600;color:var(--navy);">
+          <span>Q* = </span>
+          <input class="num-in wide" id="qIn" type="number" placeholder="Q* (units)" step="1">
+          <span style="font-size:13px;color:var(--gray-600);">units per order (round to nearest whole unit)</span>
+        </div>
+        <div class="btn-group">
+          <button class="btn btn-primary" onclick="checkStep2()">Check Q*</button>
+        </div>
+        <div class="fb" id="fb2"></div>
+      </div>
+    </div>`;
+}
+
+function checkStep2(){
+  const s=SC[cur];
+  const q=parseFloat(document.getElementById('qIn').value);
+  const fb=document.getElementById('fb2');
+  fb.classList.add('show');
+  if(isNaN(q)){
+    fb.innerHTML=`<div class="fb-banner fb-err">✗ Enter a value for Q*.</div>`;
+    return;
+  }
+  const exact=Math.sqrt(s.twoKRh);
+  if(close(q,exact,0.015)||Math.abs(q-Math.round(exact))<=1){
+    fb.innerHTML=`<div class="fb-banner fb-ok">✓ Q* = ${s.Qstar} units per order</div><div class="fb-body">√${fmt(s.twoKRh,0)} = ${exact.toFixed(2)} ≈ <strong>${s.Qstar} units</strong> (rounded to nearest whole unit). This is the order quantity that minimizes total annual ordering + holding cost for this scenario.<div class="btn-group" style="margin-top:12px;"><button class="btn btn-primary" onclick="advance()">Next: Interpretation →</button></div></div>`;
+  } else if(close(q, Math.round(exact/10)*10, 0.05)){
+    fb.innerHTML=`<div class="fb-banner fb-warn">Close — check your rounding</div><div class="fb-body">√${fmt(s.twoKRh,0)} = ${exact.toFixed(2)}. Round to the nearest whole unit: Q* = <strong>${s.Qstar}</strong>. (Round to units, not tens.)</div>`;
+  } else {
+    fb.innerHTML=`<div class="fb-banner fb-err">✗ Check your calculation</div><div class="fb-body">√${fmt(s.twoKRh,0)} = ${exact.toFixed(4)}… Use a calculator if needed. Round to the nearest whole unit.</div>`;
+  }
+}
+
+function renderStep3(s){
+  return `
+    <div class="card">
+      <div class="card-head"><h2>Step 4 — Interpretation</h2><p>Compute order frequency and explain the result in context.</p></div>
+      <div class="card-body">
+        <div class="result-box" style="margin-bottom:16px;">
+          <div class="result-big">Q* = ${s.Qstar} units</div>
+          <div class="result-label">${s.industry} · ${s.product}</div>
+        </div>
+        <div class="interp-row">
+          <span class="interp-label">Orders per year = R ÷ Q* = ${fmt(s.R)} ÷ ${s.Qstar} =</span>
+          <input class="num-in" id="oIn" type="number" placeholder="orders" step="0.1">
+        </div>
+        <div class="interp-row">
+          <span class="interp-label">Weeks between orders = 52 ÷ (orders/yr) =</span>
+          <input class="num-in" id="wIn" type="number" placeholder="weeks" step="0.1">
+        </div>
+        <p style="font-size:13px;color:var(--gray-700);margin:14px 0 6px;">In one sentence, explain what Q* = ${s.Qstar} means for the ${s.industry.toLowerCase()}:</p>
+        <textarea class="interp-text" id="txtIn" placeholder="The ${s.industry.toLowerCase()} should order ${s.Qstar} ${s.product} per order…"></textarea>
+        <div class="btn-group">
+          <button class="btn btn-primary" onclick="checkStep3()">Check Answers</button>
+        </div>
+        <div class="fb" id="fb3"></div>
+      </div>
+    </div>`;
+}
+
+function checkStep3(){
+  const s=SC[cur];
+  const o=parseFloat(document.getElementById('oIn').value);
+  const w=parseFloat(document.getElementById('wIn').value);
+  const txt=document.getElementById('txtIn').value.trim();
+  const fb=document.getElementById('fb3');
+  fb.classList.add('show');
+
+  if(isNaN(o)||isNaN(w)){
+    fb.innerHTML=`<div class="fb-banner fb-err">✗ Fill in both numeric fields.</div>`;
+    return;
+  }
+  const oOk=close(o,s.ordersYr,0.05);
+  const wOk=close(w,s.weeks,0.05);
+
+  if(oOk&&wOk){
+    done[cur]=true;
+    fb.innerHTML=`<div class="fb-banner fb-ok">✓ Scenario ${s.id} complete</div><div class="fb-body">
+      Orders/year = ${fmt(s.R)} / ${s.Qstar} = <strong>${s.ordersYr}</strong> orders/year &nbsp;·&nbsp; Weeks between orders = 52 / ${s.ordersYr} = <strong>${s.weeks} weeks</strong><br><br>
+      ${txt ? '<em>Your interpretation has been noted.</em>' : '<em>Tip: write your interpretation for practice — Gate 2 asks you to explain Q* in context.</em>'}
+      <div style="background:var(--blue-lt);border-radius:8px;padding:10px 14px;margin-top:12px;font-size:13px;">
+        <strong>Confirmation check:</strong> At Q* = ${s.Qstar}, ordering cost ≈ K(R/Q*) = ${s.K}×${fmt(s.ordersYr,1)} = $${fmt(s.K*s.R/s.Qstar,0)} &nbsp;·&nbsp; holding cost = h(Q*/2) = ${s.h}×${Math.round(s.Qstar/2)} = $${fmt(s.h*s.Qstar/2,0)} &nbsp;·&nbsp; These are approximately equal — confirming Q* is the balance point.
+      </div>
+      <div class="btn-group" style="margin-top:12px;"><button class="btn btn-green" onclick="renderMain()">✓ View Summary</button>${cur<4?`<button class="btn btn-secondary" onclick="selectScen(${cur+1})">Next Scenario →</button>`:''}</div>
+    </div>`;
+    renderNav();
+  } else {
+    let hints=[];
+    if(!oOk) hints.push(`Orders/year = ${fmt(s.R)} / ${s.Qstar} = ${s.ordersYr}`);
+    if(!wOk) hints.push(`Weeks = 52 / ${s.ordersYr} = ${s.weeks}`);
+    fb.innerHTML=`<div class="fb-banner fb-err">✗ Check your calculations</div><div class="fb-body">${hints.join(' · ')}</div>`;
+  }
+}
+
+function advance(){
+  step[cur]=Math.min(step[cur]+1,3);
+  renderMain();
+}
+
+// init
+renderNav();
+renderMain();
+</script>
+</body>
+</html>

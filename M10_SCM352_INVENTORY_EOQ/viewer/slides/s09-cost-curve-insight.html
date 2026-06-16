@@ -1,0 +1,55 @@
+<section class="slide-page" data-title="The Flat Bottom — EOQ Robustness" data-lo="LO10-7" data-notes="The cost curve near Q* is very flat. This is EOQ's most underappreciated property: large deviations from Q* produce small cost penalties. Gate 2 Q2(c) illustrates this: deviating by ~42% from Q* (from 346 to 200) raises TC by only 0.36%.">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">M10</span>
+      <span class="le-course">SCM 352 · Module 10</span>
+    </div>
+    <span class="le-pagenum">9 / 20</span>
+  </div>
+
+  <div class="le-titleblock">
+    <div class="le-title">The Flat Bottom — <span>EOQ Robustness</span></div>
+    <div class="le-sub">Why deviating from Q* costs less than you think</div>
+  </div>
+
+  <div class="le-body">
+    <div class="callout navy">
+      <div class="callout-label" style="color:var(--teal);">Key Property</div>
+      <p style="color:rgba(255,255,255,.88);">The total ordering + holding cost curve is <strong style="color:#fff;">U-shaped and flat near the minimum</strong>. Moving away from Q* by 20–40% typically raises costs by only 1–4%. This is why EOQ remains useful even with imprecise parameter estimates.</p>
+    </div>
+    <div class="two-col" style="margin-top:8px;">
+      <div class="callout teal">
+        <div class="callout-label">Illustration (Version A)</div>
+        <table class="clean-table" style="margin-top:4px;">
+          <thead><tr><th>Order Qty Q</th><th>Ordering Cost</th><th>Holding Cost</th><th>TC (O+H)</th><th>% Above Min</th></tr></thead>
+          <tbody>
+            <tr><td>150</td><td>$2,400</td><td>$450</td><td>$2,850</td><td class="neg">+37.1%</td></tr>
+            <tr><td>200</td><td>$1,800</td><td>$600</td><td>$2,400</td><td class="neg">+15.7%</td></tr>
+            <tr><td>300</td><td>$1,200</td><td>$900</td><td>$2,100</td><td class="neg">+1.4%</td></tr>
+            <tr class="total-row"><td><strong>346 (Q*)</strong></td><td>$1,040</td><td>$1,038</td><td>$2,078</td><td class="pos">0%</td></tr>
+            <tr><td>400</td><td>$900</td><td>$1,200</td><td>$2,100</td><td class="neg">+1.1%</td></tr>
+            <tr><td>600</td><td>$600</td><td>$1,800</td><td>$2,400</td><td class="neg">+15.5%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <div class="callout amber">
+          <div class="callout-label">Implication for Estimation Error</div>
+          <p>If you over-estimate K or h by 50%, Q* will be off by √1.5 ≈ 22%. But the cost penalty from operating at the "wrong" Q* is typically under 2%. EOQ is <strong>robust to parameter uncertainty</strong>.</p>
+        </div>
+        <div class="callout red" style="margin-top:8px;">
+          <div class="callout-label">Where It Falls Apart</div>
+          <p>Robustness applies near the minimum. At extreme deviations (Q = 2× or 0.5× Q*) the cost penalty grows sharply. The hospitals in 2020 did not deviate modestly — they ordered 2–3 years of supply at once.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="le-footer">
+    <div class="le-lo-pills"><span class="le-lo-pill">LO10-7</span></div>
+    <div><span class="le-gate-note">Gate 2 Q5 · Ch. 12 §12.1</span></div>
+  </div>
+</section>

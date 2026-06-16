@@ -1,0 +1,53 @@
+<section class="slide-page" data-title="When EOQ Does Not Apply" data-lo="LO10-7" data-notes="Gate 2 Q7 asks students to evaluate four scenarios against EOQ assumptions. The three failure modes map to core EOQ assumptions: (1) non-steady demand violates constant R assumption, (2) perishability violates infinite shelf life, (3) demand-inventory link violates independence of demand from inventory level.">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">M10</span>
+      <span class="le-course">SCM 352 · Module 10</span>
+    </div>
+    <span class="le-pagenum">19 / 20</span>
+  </div>
+
+  <div class="le-titleblock">
+    <div class="le-title">When EOQ Does <span>Not Apply</span></div>
+    <div class="le-sub">Three failure modes and the assumption each violates</div>
+  </div>
+
+  <div class="le-body">
+    <div class="callout teal" style="margin-bottom:8px;">
+      <div class="callout-label">EOQ Core Assumptions</div>
+      <p>Steady, predictable demand · Infinite shelf life · Demand independent of inventory level · Known, stable K and h · No minimum order constraints (handled separately)</p>
+    </div>
+    <div class="card-grid three">
+      <div class="mini-card">
+        <h4>Failure Mode 1<br>Non-Steady Demand</h4>
+        <p><strong>Violated assumption:</strong> Constant R</p>
+        <p style="margin-top:4px;">Seasonal goods, promotional spikes, and lumpy demand invalidate the steady-state cycle count. EOQ tells you to order Q every T weeks — but T changes if R changes.</p>
+        <p style="margin-top:4px;color:var(--muted);">Example: fresh salmon — Q7 Scenario A</p>
+      </div>
+      <div class="mini-card">
+        <h4>Failure Mode 2<br>Perishability</h4>
+        <p><strong>Violated assumption:</strong> Infinite shelf life</p>
+        <p style="margin-top:4px;">When items expire, holding cost is no longer linear — it spikes when units are discarded. EOQ holding cost h does not capture disposal cost or the constraint that order size must not exceed shelf life × demand.</p>
+        <p style="margin-top:4px;color:var(--muted);">Example: 3-day salmon window — Q7 Scenario A</p>
+      </div>
+      <div class="mini-card">
+        <h4>Failure Mode 3<br>Demand-Inventory Link</h4>
+        <p><strong>Violated assumption:</strong> Demand ⊥ Inventory</p>
+        <p style="margin-top:4px;">If high inventory signals availability and boosts demand (car dealer lot) or low inventory signals popularity and boosts demand (yogurt scarcity), EOQ is mis-specified. The Connections box (pp. 369–370) documents both directions.</p>
+        <p style="margin-top:4px;color:var(--muted);">Chapter-exclusive: not in slides or narration</p>
+      </div>
+    </div>
+    <div class="callout amber" style="margin-top:8px;">
+      <div class="callout-label">Good-Fit Checklist</div>
+      <p>Steady demand · Non-perishable · Known stable K and h · Demand independent of stock level · No supply disruption risk → EOQ applies. Hammers at a hardware retailer (Q7 Scenario B) is the textbook case.</p>
+    </div>
+  </div>
+
+  <div class="le-footer">
+    <div class="le-lo-pills"><span class="le-lo-pill">LO10-7</span></div>
+    <div><span class="le-gate-note">Gate 2 Q7 · Ch. 12 §12.1, Connections</span></div>
+  </div>
+</section>

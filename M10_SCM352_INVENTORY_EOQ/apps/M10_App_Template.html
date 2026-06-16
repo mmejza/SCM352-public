@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- EDIT: Replace [App Title] and M10 below -->
+<title>[App Title] — SCM 352 M10</title>
+<style>
+/*
+  ═══════════════════════════════════════════════════════
+  DESIGN SYSTEM CANONICAL :root — DO NOT MODIFY VARIABLES
+  Source: _course/module-design-system.md Section 1
+  ═══════════════════════════════════════════════════════
+*/
+:root {
+  --navy:        #1a3a5c;
+  --blue:        #2563a8;
+  --blue-lt:     #dbeafe;
+  --blue-xlt:    #eff6ff;
+  --gold:        #f59e0b;
+  --gold-lt:     #fffbeb;
+  --gold-bdr:    #fde68a;
+  --green:       #16a34a;
+  --green-lt:    #f0fdf4;
+  --green-bdr:   #bbf7d0;
+  --red:         #dc2626;
+  --red-lt:      #fef2f2;
+  --red-bdr:     #fecaca;
+  --amber:       #d97706;
+  --amber-lt:    #fffbeb;
+  --amber-bdr:   #fde68a;
+  --orange:      #ea580c;
+  --orange-lt:   #fff7ed;
+  --orange-bdr:  #fed7aa;
+  --purple:      #7c3aed;
+  --purple-lt:   #faf5ff;
+  --purple-bdr:  #ddd6fe;
+  --teal:        #0891b2;
+  --teal-lt:     #f0fdfe;
+  --teal-bdr:    #a5f3fc;
+  --gray-50:     #f9fafb;
+  --gray-100:    #f3f4f6;
+  --gray-200:    #e5e7eb;
+  --gray-300:    #d1d5db;
+  --gray-400:    #9ca3af;
+  --gray-600:    #4b5563;
+  --gray-700:    #374151;
+  --gray-800:    #1f2937;
+}
+
+/* ── RESET ─────────────────────────────────────────── */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; background: var(--gray-50); color: var(--gray-800); min-height: 100vh; }
+
+/* ── HEADER ─────────────────────────────────────────── */
+header { background: var(--navy); color: white; padding: 16px 24px; display: flex; align-items: center; gap: 16px; }
+.header-badge { background: var(--gold); color: var(--navy); font-weight: 700; font-size: 11px; padding: 3px 8px; border-radius: 4px; letter-spacing: 0.05em; text-transform: uppercase; }
+header h1 { font-size: 18px; font-weight: 600; }
+
+/* ── PROGRESS NAV ───────────────────────────────────── */
+/*
+  CHOOSE ONE nav pattern from design-system Section 4.7 (dots)
+  or Section 4.8 (scenario tabs). Remove the unused block.
+*/
+/* Dot nav (for vignette/scenario apps): */
+.dot-track { background: white; border-bottom: 2px solid var(--gray-200); padding: 12px 24px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.dot-row { display: flex; gap: 6px; flex-wrap: wrap; }
+.dot { width: 30px; height: 30px; border-radius: 50%; border: 2px solid var(--gray-200); background: white; font-size: 11px; font-weight: 700; color: var(--gray-400); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s; }
+.dot:hover   { border-color: var(--blue); color: var(--blue); }
+.dot.active  { border-color: var(--blue);  background: var(--blue);  color: white; }
+.dot.d-correct { border-color: var(--green);  background: var(--green);  color: white; }
+.dot.d-partial { border-color: var(--amber);  background: var(--amber);  color: white; }
+.dot.d-wrong   { border-color: var(--red);    background: var(--red);    color: white; }
+
+/* Scenario tab nav (for multi-scenario apps): */
+.scenario-nav { background: white; border-bottom: 2px solid var(--gray-200); padding: 0 24px; display: flex; gap: 0; overflow-x: auto; }
+.scenario-btn { padding: 12px 18px; border: none; background: none; cursor: pointer; font-size: 13px; font-weight: 500; color: var(--gray-600); border-bottom: 3px solid transparent; white-space: nowrap; transition: all 0.15s; }
+.scenario-btn:hover { color: var(--blue); }
+.scenario-btn.active { color: var(--blue); border-bottom-color: var(--blue); font-weight: 600; }
+.scenario-btn.completed::after { content: ' ✓'; }
+
+/* ── LAYOUT ─────────────────────────────────────────── */
+.main { max-width: 1100px; margin: 0 auto; padding: 24px; display: grid; grid-template-columns: 1fr 320px; gap: 24px; align-items: start; }
+@media (max-width: 820px) { .main { grid-template-columns: 1fr; } }
+
+/* ── CARD ────────────────────────────────────────────── */
+.card { background: white; border: 1px solid var(--gray-200); border-radius: 12px; overflow: hidden; }
+.card-header { background: var(--blue-lt); padding: 14px 20px; border-bottom: 1px solid var(--gray-200); }
+.card-header h2 { font-size: 15px; font-weight: 700; color: var(--navy); }
+.card-header p  { font-size: 13px; color: var(--gray-600); margin-top: 4px; }
+.card-body { padding: 20px; }
+
+/* ── SCENARIO / VIGNETTE TEXT ───────────────────────── */
+.scenario-desc { font-size: 14px; line-height: 1.7; color: var(--gray-800); background: var(--gray-50); border-left: 4px solid var(--blue); padding: 14px 16px; border-radius: 0 8px 8px 0; margin-bottom: 20px; }
+
+/* ── DIFFICULTY TAG ─────────────────────────────────── */
+.diff-tag { font-size: 11px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; padding: 3px 9px; border-radius: 100px; }
+.diff-easy   { background: var(--green-lt); color: var(--green); }
+.diff-medium { background: var(--amber-lt); color: var(--amber); }
+.diff-hard   { background: var(--red-lt);   color: var(--red); }
+
+/* ── OPTION / SELECTION AREA ───────────────────────── */
+/* BUILD: replace with the specific selection mechanism for this app:
+   - Radio buttons (see M01 Pareto Explorer)
+   - Option cards (see M01 Inhibitor Identifier)
+   - Drag-and-drop zones (see M01 Utility Classifier)
+*/
+.option-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+.option-card { display: flex; align-items: flex-start; gap: 10px; padding: 12px 14px; border: 2px solid var(--gray-200); border-radius: 10px; cursor: pointer; transition: border-color 0.15s, background 0.15s; background: white; user-select: none; }
+.option-card:hover { border-color: var(--blue); background: var(--gray-50); }
+
+/* ── BUTTONS ─────────────────────────────────────────── */
+.btn { padding: 10px 22px; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.15s; }
+.btn-primary   { background: var(--blue);     color: white; }
+.btn-secondary { background: var(--gray-100); color: var(--gray-800); }
+.btn-green     { background: var(--green);    color: white; }
+.btn-primary:hover   { background: #1d4ed8; }
+.btn-primary:disabled { background: var(--gray-400); cursor: not-allowed; }
+.btn-secondary:hover { background: var(--gray-200); }
+.btn-green:hover { background: #15803d; }
+.btn-group { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+
+/* ── FEEDBACK PANEL ─────────────────────────────────── */
+.feedback-panel { display: none; margin-top: 20px; border: 2px solid var(--gray-200); border-radius: 10px; overflow: hidden; }
+.feedback-panel.show { display: block; }
+.fb-banner { padding: 12px 16px; font-size: 14px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+.fb-correct { background: var(--green-lt); color: var(--green); border-bottom: 2px solid var(--green); }
+.fb-partial { background: var(--amber-lt); color: var(--amber); border-bottom: 2px solid var(--amber); }
+.fb-wrong   { background: var(--red-lt);   color: var(--red);   border-bottom: 2px solid var(--red); }
+.fb-body { padding: 16px; font-size: 13px; line-height: 1.65; background: white; }
+.think-deeper { background: var(--gold-lt); border: 1.5px solid var(--gold-bdr); border-radius: 8px; padding: 12px 16px; margin-top: 12px; font-size: 13px; line-height: 1.6; }
+.think-deeper-label { font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--amber); margin-bottom: 6px; }
+
+/* ── SCORE SIDEBAR ───────────────────────────────────── */
+.score-row { padding: 16px 20px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--gray-100); }
+.score-num { font-size: 28px; font-weight: 700; color: var(--navy); }
+.score-meta { font-size: 12px; color: var(--gray-600); line-height: 1.4; }
+.score-meta strong { color: var(--gray-800); display: block; font-size: 13px; }
+.prog-bar-outer { height: 5px; background: var(--gray-200); border-radius: 3px; overflow: hidden; margin: 0 20px 16px; }
+.prog-bar-inner { height: 100%; background: var(--blue); border-radius: 3px; transition: width 0.4s; }
+
+/* ── CONCEPT / REFERENCE BOX ───────────────────────── */
+.tip-box { background: var(--gold-lt); border: 1px solid var(--gold-bdr); border-radius: 8px; padding: 12px 16px; font-size: 13px; line-height: 1.6; color: var(--gray-800); }
+.tip-box strong { color: var(--navy); }
+
+/* ── FINAL SUMMARY SCREEN ───────────────────────────── */
+.final-summary { display: none; text-align: center; padding: 24px 20px; }
+.final-summary.show { display: block; }
+.final-summary h3 { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+</style>
+</head>
+<body>
+
+<!-- ═══ HEADER ═══ -->
+<header>
+  <!-- EDIT: Replace M10 with module number -->
+  <div class="header-badge">SCM 352 · M10</div>
+  <!-- EDIT: Replace with app title from architecture Section 7 -->
+  <h1>[App Title from Architecture Section 7]</h1>
+</header>
+
+<!-- ═══ PROGRESS NAV ═══ -->
+<!-- BUILD: Choose dot nav (vignette apps) OR scenario tab nav (scenario apps). Delete the unused one. -->
+
+<!-- Option A: Dot nav for vignette/identifier apps -->
+<div class="dot-track">
+  <span style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--gray-600);">Scenarios</span>
+  <div class="dot-row" id="dotRow">
+    <!-- Dots injected by JS -->
+  </div>
+</div>
+
+<!-- Option B: Scenario tab nav for multi-scenario apps -->
+<!-- <div class="scenario-nav" id="scenarioNav"></div> -->
+
+<!-- ═══ MAIN LAYOUT ═══ -->
+<div class="main">
+
+  <!-- LEFT: Main content -->
+  <div>
+    <div class="card" id="mainCard">
+      <div class="card-header">
+        <!-- BUILD: Title and subtitle set by JS from scenario data -->
+        <h2 id="cardTitle">Loading…</h2>
+        <p id="cardSubtitle"><!-- BUILD: subtitle from JS --></p>
+      </div>
+      <div class="card-body">
+
+        <!-- Meta row (difficulty + vignette counter) -->
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap;">
+          <div class="diff-tag" id="diffTag"><!-- set by JS --></div>
+          <div style="margin-left:auto;font-size:12px;font-weight:600;color:var(--gray-400);" id="vigNum"></div>
+        </div>
+
+        <!-- Scenario / vignette text -->
+        <div class="scenario-desc" id="scenarioDesc"><!-- set by JS --></div>
+
+        <!-- BUILD: Insert selection mechanism here.
+             Options:
+             (A) Radio option cards — see M01 Inhibitor Identifier
+             (B) Firm classification radios — see M01 Pareto Explorer
+             (C) Drag-and-drop zones — see M01 Utility Classifier
+        -->
+        <div id="selectionArea">
+          <!-- BUILD: selection UI -->
+        </div>
+
+        <!-- Button group -->
+        <div class="btn-group" style="margin-top:16px;">
+          <button class="btn btn-primary" id="submitBtn" onclick="handleSubmit()" disabled>Check Answer</button>
+          <button class="btn btn-secondary" id="prevBtn" onclick="handlePrev()" style="display:none">← Previous</button>
+          <button class="btn btn-green"    id="nextBtn" onclick="handleNext()" style="display:none">Next →</button>
+          <button class="btn btn-secondary" id="restartBtn" onclick="handleRestart()" style="display:none">↩ Restart</button>
+        </div>
+
+        <!-- Feedback panel -->
+        <div class="feedback-panel" id="feedbackPanel">
+          <div class="fb-banner" id="fbBanner"></div>
+          <div class="fb-body">
+            <div id="fbReveal"></div>
+            <div class="think-deeper" id="fbThink" style="display:none">
+              <div class="think-deeper-label">Think Deeper</div>
+              <div id="fbThinkText"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Final summary (shown after last item) -->
+        <div class="final-summary" id="finalSummary">
+          <!-- BUILD: populate in showFinalSummary() -->
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT: Sidebar -->
+  <div style="position:sticky;top:24px;display:flex;flex-direction:column;gap:16px;">
+
+    <!-- Score card -->
+    <div class="card">
+      <div class="card-header">
+        <h2>Your Score</h2>
+        <p>Updates after each answer</p>
+      </div>
+      <div class="score-row">
+        <div class="score-num" id="scoreNum">0</div>
+        <div class="score-meta">
+          <strong id="scoreLabel">correct</strong>
+          <span id="scoreDetail">of 0 answered</span>
+        </div>
+      </div>
+      <div class="prog-bar-outer">
+        <div class="prog-bar-inner" id="progBar" style="width:0%"></div>
+      </div>
+      <!-- BUILD: add partial/wrong counts if this app uses 3-state grading -->
+    </div>
+
+    <!-- Concept reference card -->
+    <div class="card">
+      <div class="card-header">
+        <!-- EDIT: name the concept this app teaches -->
+        <h2>Key Concept</h2>
+        <p><!-- BUILD: subtitle, e.g. "Chapter 4 reference" --></p>
+      </div>
+      <div class="card-body">
+        <div class="tip-box" id="conceptBox">
+          <!-- BUILD: static reference text OR set dynamically per scenario -->
+          <!-- This should be a short definition or decision rule, not a long explanation -->
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div><!-- /main -->
+
+<script>
+// ═══════════════════════════════════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════════════════════════════════
+/*
+  BUILD: Replace this array with the actual scenario/vignette data
+  from the architecture document Section 7.
+
+  Each item should contain:
+  - id: number
+  - title / industry / label (for nav display)
+  - difficulty: 'easy' | 'medium' | 'hard'
+  - text / desc: the scenario or vignette text
+  - answer: the correct answer key
+  - [additional fields as needed for this app's mechanic]
+  - reveal: the explanation text shown in feedback
+  - thinkDeeper: string | null  (null if not applicable)
+
+  See M01 apps for full data structure examples.
+*/
+const ITEMS = [
+  // BUILD: paste data from architecture Section 7
+];
+
+// ═══════════════════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════════════════
+let currentIdx = 0;
+let submitted  = false;
+let selected   = null;
+let results    = {};   // id → 'correct' | 'partial' | 'wrong'
+let cntCorrect = 0;
+let cntPartial = 0;
+let cntWrong   = 0;
+
+// ═══════════════════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════════════════
+function init() {
+  buildNav();
+  loadItem(0);
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// NAV
+// ═══════════════════════════════════════════════════════════════════
+function buildNav() {
+  const row = document.getElementById('dotRow');
+  if (!row) return;
+  ITEMS.forEach((item, i) => {
+    const dot = document.createElement('button');
+    dot.className = 'dot' + (i === 0 ? ' active' : '');
+    dot.id = 'dot' + i;
+    dot.textContent = String(i + 1).padStart(2, '0');
+    dot.title = `Item ${i + 1}`;
+    dot.onclick = () => goTo(i);
+    row.appendChild(dot);
+  });
+}
+
+function updateNav() {
+  ITEMS.forEach((item, i) => {
+    const dot = document.getElementById('dot' + i);
+    if (!dot) return;
+    dot.className = 'dot';
+    if (i === currentIdx) dot.classList.add('active');
+    const r = results[item.id];
+    if (r === 'correct') dot.classList.add('d-correct');
+    else if (r === 'partial') dot.classList.add('d-partial');
+    else if (r === 'wrong') dot.classList.add('d-wrong');
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// LOAD ITEM
+// ═══════════════════════════════════════════════════════════════════
+function loadItem(idx) {
+  currentIdx = idx;
+  submitted  = false;
+  selected   = null;
+  const item = ITEMS[idx];
+
+  // Header
+  document.getElementById('hdr-progress') && (document.getElementById('hdr-progress').textContent = `Item ${idx+1} of ${ITEMS.length}`);
+  document.getElementById('cardTitle').textContent   = `Item ${idx + 1}`;
+  document.getElementById('scenarioDesc').textContent = item.text || item.desc || '';
+  document.getElementById('vigNum').textContent       = String(idx+1).padStart(2,'0') + ' / ' + ITEMS.length;
+
+  // Difficulty tag
+  const dt = document.getElementById('diffTag');
+  if (dt) {
+    dt.textContent = item.difficulty.charAt(0).toUpperCase() + item.difficulty.slice(1);
+    dt.className = 'diff-tag diff-' + item.difficulty;
+  }
+
+  // Concept box
+  if (item.concept) document.getElementById('conceptBox').innerHTML = item.concept;
+
+  // Reset feedback
+  document.getElementById('feedbackPanel').classList.remove('show');
+  document.getElementById('fbThink').style.display = 'none';
+
+  // Buttons
+  document.getElementById('submitBtn').disabled     = true;
+  document.getElementById('submitBtn').style.display = 'inline-block';
+  document.getElementById('nextBtn').style.display   = 'none';
+  document.getElementById('prevBtn').style.display   = idx > 0 ? 'inline-block' : 'none';
+  document.getElementById('restartBtn').style.display = 'none';
+  document.getElementById('finalSummary').classList.remove('show');
+
+  // BUILD: Reset and rebuild selection UI for this item
+  // resetSelectionUI(item);
+
+  // If previously answered, replay result
+  if (results[item.id]) replayResult(item, results[item.id]);
+
+  updateNav();
+}
+
+function replayResult(item, status) {
+  submitted = true;
+  document.getElementById('submitBtn').style.display = 'none';
+  showFeedback(item, status);
+  document.getElementById('nextBtn').style.display  = currentIdx < ITEMS.length - 1 ? 'inline-block' : 'none';
+  document.getElementById('prevBtn').style.display  = currentIdx > 0 ? 'inline-block' : 'none';
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// GRADE
+// ═══════════════════════════════════════════════════════════════════
+function grade(item, studentAnswer) {
+  // BUILD: implement grading logic appropriate to this app's mechanic.
+  // Must return: 'correct' | 'partial' | 'wrong'
+  // See M01 Inhibitor Identifier grade() for multi-inhibitor example.
+  if (studentAnswer === item.answer) return 'correct';
+  return 'wrong';
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// FEEDBACK
+// ═══════════════════════════════════════════════════════════════════
+function showFeedback(item, status) {
+  const panel  = document.getElementById('feedbackPanel');
+  const banner = document.getElementById('fbBanner');
+  const reveal = document.getElementById('fbReveal');
+  const thinkBox  = document.getElementById('fbThink');
+  const thinkText = document.getElementById('fbThinkText');
+
+  banner.className = 'fb-banner ';
+  if (status === 'correct') {
+    banner.classList.add('fb-correct');
+    banner.innerHTML = '✓ Correct.';
+  } else if (status === 'partial') {
+    banner.classList.add('fb-partial');
+    banner.innerHTML = '◑ Partially correct — see the explanation below.';
+  } else {
+    banner.classList.add('fb-wrong');
+    banner.innerHTML = '✗ Incorrect — see the explanation below.';
+  }
+
+  reveal.innerHTML = item.reveal || '';
+
+  if (item.thinkDeeper) {
+    thinkText.textContent = item.thinkDeeper;
+    thinkBox.style.display = 'block';
+  }
+
+  panel.classList.add('show');
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// SUBMIT
+// ═══════════════════════════════════════════════════════════════════
+function handleSubmit() {
+  if (!selected || submitted) return;
+  submitted = true;
+  const item = ITEMS[currentIdx];
+
+  // BUILD: get student's answer from selection UI
+  // const studentAnswer = selected;
+
+  const status = grade(item, selected);
+  results[item.id] = status;
+  if (status === 'correct')  cntCorrect++;
+  else if (status === 'partial') cntPartial++;
+  else cntWrong++;
+
+  updateScoreDisplay();
+  showFeedback(item, status);
+  updateNav();
+
+  document.getElementById('submitBtn').style.display = 'none';
+  if (currentIdx < ITEMS.length - 1) {
+    document.getElementById('nextBtn').style.display = 'inline-block';
+  } else {
+    setTimeout(showFinalSummary, 1200);
+  }
+  document.getElementById('prevBtn').style.display = currentIdx > 0 ? 'inline-block' : 'none';
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════════════════════════════════
+function handleNext()    { if (currentIdx < ITEMS.length - 1) goTo(currentIdx + 1); else showFinalSummary(); }
+function handlePrev()    { if (currentIdx > 0) goTo(currentIdx - 1); }
+function handleRestart() {
+  results = {}; cntCorrect = cntPartial = cntWrong = 0;
+  selected = null;
+  document.getElementById('finalSummary').classList.remove('show');
+  updateScoreDisplay();
+  loadItem(0);
+}
+function goTo(idx) { loadItem(idx); }
+
+// ═══════════════════════════════════════════════════════════════════
+// SCORE DISPLAY
+// ═══════════════════════════════════════════════════════════════════
+function updateScoreDisplay() {
+  const answered = cntCorrect + cntPartial + cntWrong;
+  document.getElementById('scoreNum').textContent    = cntCorrect;
+  document.getElementById('scoreDetail').textContent = `of ${answered} answered`;
+  document.getElementById('progBar').style.width     = ((answered / ITEMS.length) * 100) + '%';
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// FINAL SUMMARY
+// ═══════════════════════════════════════════════════════════════════
+function showFinalSummary() {
+  const sum = document.getElementById('finalSummary');
+  sum.classList.add('show');
+  const answered = cntCorrect + cntPartial + cntWrong;
+  const pct = answered > 0 ? Math.round((cntCorrect / answered) * 100) : 0;
+  sum.innerHTML = `
+    <h3 style="color:var(--green)">All ${ITEMS.length} items complete</h3>
+    <p style="font-size:22px;font-weight:700;color:var(--navy);margin:10px 0">${cntCorrect} / ${ITEMS.length}</p>
+    <p style="color:var(--gray-600);font-size:13px;margin-bottom:16px">${pct}% correct</p>
+    <div class="tip-box" style="text-align:left">
+      <!-- BUILD: Key takeaway connecting to Gate 2 or Case -->
+      <strong>Key takeaway for Gate 2 and the Case:</strong><br>
+      <!-- BUILD: 2-3 sentence summary of what this app tested -->
+    </div>
+    <button class="btn btn-secondary" onclick="handleRestart()" style="margin-top:16px">↩ Restart</button>
+  `;
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// START
+// ═══════════════════════════════════════════════════════════════════
+init();
+</script>
+</body>
+</html>

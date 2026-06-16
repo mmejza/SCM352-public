@@ -1,0 +1,60 @@
+<section class="slide-page" data-title="Pallet and Case Constraints" data-lo="LO10-6" data-notes="Gate 2 Q6 uses beverage distributor: R=36,000, K=$80, h=$0.30, case=24 bottles, pallet=50 cases. Theoretical Q*=4,382 bottles. Round to nearest case (182 or 183 cases = 4,368 or 4,392 bottles). Both give essentially identical TC — the flat bottom in action. The pallet (1,200 bottles) question is about checking the discount scenario, not rounding.">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">M10</span>
+      <span class="le-course">SCM 352 · Module 10</span>
+    </div>
+    <span class="le-pagenum">18 / 20</span>
+  </div>
+
+  <div class="le-titleblock">
+    <div class="le-title">Pallet and Case <span>Constraints</span></div>
+    <div class="le-sub">Adjusting theoretical EOQ to the nearest feasible quantity</div>
+  </div>
+
+  <div class="le-body">
+    <div class="callout navy" style="margin-bottom:8px;">
+      <div class="callout-label" style="color:var(--teal);">Scenario — Beverage Distributor</div>
+      <p style="color:rgba(255,255,255,.88);">R = 36,000 bottles/year · K = $80/order · h = $0.30/bottle/year · <strong style="color:#fff;">Case = 24 bottles · Pallet = 50 cases = 1,200 bottles</strong></p>
+    </div>
+    <div class="two-col">
+      <div>
+        <div class="callout teal">
+          <div class="callout-label">Step 1 — Unconstrained Q*</div>
+          <p>Q* = √(2 × 80 × 36,000 / 0.30) = √19,200,000 = <strong>4,382 bottles</strong></p>
+        </div>
+        <div class="callout teal" style="margin-top:8px;">
+          <div class="callout-label">Step 2 — Round to Whole Cases</div>
+          <p>4,382 ÷ 24 = 182.6 cases</p>
+          <p>Round down: 182 × 24 = <strong>4,368 bottles</strong></p>
+          <p>Round up: 183 × 24 = <strong>4,392 bottles</strong></p>
+        </div>
+      </div>
+      <div>
+        <div class="callout amber">
+          <div class="callout-label">Step 3 — Compute TC at Both</div>
+          <table class="clean-table" style="margin-top:4px;">
+            <thead><tr><th>Q</th><th>Ordering</th><th>Holding</th><th>TC</th></tr></thead>
+            <tbody>
+              <tr><td>4,368</td><td>$659.34</td><td>$655.20</td><td><strong>$1,314.54</strong></td></tr>
+              <tr><td>4,392</td><td>$655.74</td><td>$658.80</td><td><strong>$1,314.54</strong></td></tr>
+            </tbody>
+          </table>
+          <p style="font-size:8.5px;margin-top:4px;color:var(--muted);">Both feasible quantities yield essentially identical total cost — the flat bottom again. Either is acceptable.</p>
+        </div>
+        <div class="callout red" style="margin-top:8px;">
+          <div class="callout-label">Pallet Discount Requires Separate Analysis</div>
+          <p>If a pallet-quantity discount is offered, compute full TC at Q = 1,200 (including new cR) and compare. A smaller order quantity increases ordering cost — only the discount can offset this. See Slides 15–17.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="le-footer">
+    <div class="le-lo-pills"><span class="le-lo-pill">LO10-6</span></div>
+    <div><span class="le-gate-note">Gate 2 Q6 · Ch. 12 §12.3.1</span></div>
+  </div>
+</section>

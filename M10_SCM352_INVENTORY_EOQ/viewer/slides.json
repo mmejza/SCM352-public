@@ -1,0 +1,26 @@
+{
+  "title": "Inventory Management and EOQ",
+  "moduleLabel": "SCM 352 · M10 Lecture Slides",
+  "slides": [
+    "slides/s01-title.html",
+    "slides/s02-learning-objectives.html",
+    "slides/s03-gate-content.html",
+    "slides/s04-eoq-concept.html",
+    "slides/s05-eoq-formula.html",
+    "slides/s06-eoq-example-setup.html",
+    "slides/s07-eoq-example-solution.html",
+    "slides/s08-total-cost-formula.html",
+    "slides/s09-cost-curve-insight.html",
+    "slides/s10-total-cost-setup.html",
+    "slides/s11-total-cost-solution.html",
+    "slides/s12-economies-of-scale.html",
+    "slides/s13-scale-comparison-setup.html",
+    "slides/s14-scale-comparison-solution.html",
+    "slides/s15-quantity-discount-concept.html",
+    "slides/s16-quantity-discount-setup.html",
+    "slides/s17-quantity-discount-solution.html",
+    "slides/s18-pallet-constraints.html",
+    "slides/s19-eoq-failures.html",
+    "slides/s20-strategy-connection.html"
+  ]
+}

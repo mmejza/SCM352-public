@@ -1,0 +1,49 @@
+<section class="slide-page" data-title="The EOQ Formula" data-lo="LO10-2" data-notes="Variable identification is worth points on Gate 2 Q1(a). Stress units: K in $/order, R in units/year, h in $/unit/year, Q* in units. The formula result is always in units.">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">M10</span>
+      <span class="le-course">SCM 352 · Module 10</span>
+    </div>
+    <span class="le-pagenum">5 / 20</span>
+  </div>
+
+  <div class="le-titleblock">
+    <div class="le-title">The EOQ <span>Formula</span></div>
+    <div class="le-sub">Q* = √(2KR/h) — parameter identification and units</div>
+  </div>
+
+  <div class="le-body">
+    <div class="formula-box">Q* = √( 2KR / h )</div>
+    <div class="two-col" style="margin-top:8px;">
+      <div class="callout teal">
+        <div class="callout-label">Variable Definitions</div>
+        <p><strong>Q*</strong> — optimal order quantity (units per order)</p>
+        <p><strong>K</strong> — fixed ordering cost ($/order); includes processing, shipping, setup</p>
+        <p><strong>R</strong> — annual demand (units/year); must be in consistent time units</p>
+        <p><strong>h</strong> — annual holding cost per unit ($/unit/year); includes capital cost, storage, insurance, obsolescence</p>
+      </div>
+      <div>
+        <div class="callout amber">
+          <div class="callout-label">Derived Quantities</div>
+          <p><strong>Orders per year</strong> = R / Q*</p>
+          <p><strong>Time between orders</strong> = 52 weeks / (R/Q*) = 52Q*/R</p>
+          <p><strong>Average inventory</strong> = Q*/2 units</p>
+        </div>
+        <div class="callout red" style="margin-top:8px;">
+          <div class="callout-label">Common Errors</div>
+          <p>Forgetting the factor of 2 in the numerator</p>
+          <p>Using weekly demand when h is annual — keep units consistent</p>
+          <p>Reporting Q* without rounding to practical integer units</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="le-footer">
+    <div class="le-lo-pills"><span class="le-lo-pill">LO10-2</span></div>
+    <div><span class="le-gate-note">Gate 2 Q1 · Ch. 12 §12.1</span></div>
+  </div>
+</section>

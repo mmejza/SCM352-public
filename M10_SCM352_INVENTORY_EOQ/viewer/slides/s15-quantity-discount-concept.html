@@ -1,0 +1,54 @@
+<section class="slide-page" data-title="Quantity Discounts — When cR Matters" data-lo="LO10-5" data-notes="The conceptual bridge: cR drops out of EOQ minimization but returns as the dominant factor in discount comparisons. The two-step decision process is: (1) compute TC at Q* with regular price, (2) compute TC at Q_min with discounted price (and updated h if h is a % of c). Pick lower TC.">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">M10</span>
+      <span class="le-course">SCM 352 · Module 10</span>
+    </div>
+    <span class="le-pagenum">15 / 20</span>
+  </div>
+
+  <div class="le-titleblock">
+    <div class="le-title">Quantity Discounts — <span>When cR Matters</span></div>
+    <div class="le-sub">The term that dropped out of EOQ now drives the decision</div>
+  </div>
+
+  <div class="le-body">
+    <div class="callout navy">
+      <div class="callout-label" style="color:var(--teal);">The Setup</div>
+      <p style="color:rgba(255,255,255,.88);">A supplier offers: order at least Q<sub>min</sub> units per order → receive a lower unit price c<sub>discount</sub> &lt; c<sub>regular</sub>. Should the firm accept?</p>
+      <p style="color:rgba(255,255,255,.88);margin-top:4px;">The answer is NOT obvious: ordering Q<sub>min</sub> (if &gt; Q*) means larger batches → holding cost rises. But a lower c reduces cR, which is the <strong style="color:#fff;">dominant cost component</strong>.</p>
+    </div>
+    <div class="two-col" style="margin-top:8px;">
+      <div class="callout teal">
+        <div class="callout-label">Decision Process</div>
+        <p><strong>Step 1</strong> — Compute TC at Q* with regular price c<sub>reg</sub> and h<sub>reg</sub></p>
+        <p><strong>Step 2</strong> — Compute TC at Q<sub>min</sub> with discount price c<sub>disc</sub>.</p>
+        <p style="margin-left:12px;">· If h is a fixed $/unit/year → h stays unchanged</p>
+        <p style="margin-left:12px;">· If h = r × c (holding rate × unit cost) → h<sub>disc</sub> = r × c<sub>disc</sub></p>
+        <p><strong>Step 3</strong> — Compare total TC. Pick the lower one.</p>
+        <p><strong>Step 4</strong> — Explain why cR is the decisive term even though it was irrelevant to Q*</p>
+      </div>
+      <div>
+        <div class="callout amber">
+          <div class="callout-label">Two Sources of Savings</div>
+          <p>When a discount is accepted:</p>
+          <p>1. <strong>cR falls</strong> — same units purchased, lower price per unit</p>
+          <p>2. <strong>h may fall</strong> — if h is tied to c, lower c also lowers holding cost</p>
+          <p style="margin-top:4px;">Against this: if Q<sub>min</sub> &gt; Q*, ordering and holding costs diverge from the optimum — TC(O+H) rises above the minimum.</p>
+        </div>
+        <div class="callout red" style="margin-top:8px;">
+          <div class="callout-label">Common Error</div>
+          <p>Comparing only the purchase price savings (c<sub>disc</sub> × R) without including the holding cost increase from ordering Q<sub>min</sub> &gt; Q*. Always compute <em>full</em> TC at both quantities.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="le-footer">
+    <div class="le-lo-pills"><span class="le-lo-pill">LO10-5</span></div>
+    <div><span class="le-gate-note">Gate 2 Q3 · Ch. 12 §12.3</span></div>
+  </div>
+</section>

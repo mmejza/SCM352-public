@@ -1,0 +1,50 @@
+<section class="slide-page" data-title="The Ordering-Holding Tradeoff" data-lo="LO10-1" data-notes="This is the conceptual foundation. The key insight is that ordering cost and holding cost pull in opposite directions — no single move reduces both. The minimum of their sum is the EOQ. Draw the U-shape if narrating live.">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">M10</span>
+      <span class="le-course">SCM 352 · Module 10</span>
+    </div>
+    <span class="le-pagenum">4 / 20</span>
+  </div>
+
+  <div class="le-titleblock">
+    <div class="le-title">The <span>Ordering-Holding</span> Tradeoff</div>
+    <div class="le-sub">Why you cannot minimize both costs with the same move</div>
+  </div>
+
+  <div class="le-body">
+    <div class="callout navy">
+      <div class="callout-label" style="color:var(--teal);">The Core Conflict</div>
+      <p>Order more at once → fewer orders per year → <strong style="color:#fff;">ordering cost falls</strong> · but average inventory rises → <strong style="color:var(--amber);">holding cost rises</strong></p>
+      <p>Order less at once → more orders per year → <strong style="color:var(--amber);">ordering cost rises</strong> · but average inventory falls → <strong style="color:#fff;">holding cost falls</strong></p>
+    </div>
+    <div class="two-col" style="margin-top:8px;">
+      <div class="callout teal">
+        <div class="callout-label">Ordering Cost K(R/Q)</div>
+        <p><strong>K</strong> = fixed cost per order ($/order)</p>
+        <p><strong>R/Q</strong> = number of orders placed per year</p>
+        <p>↑ as Q decreases (more frequent ordering)</p>
+        <p>↓ as Q increases (less frequent ordering)</p>
+      </div>
+      <div class="callout amber">
+        <div class="callout-label">Holding Cost h(Q/2)</div>
+        <p><strong>h</strong> = annual cost to hold one unit ($/unit/year)</p>
+        <p><strong>Q/2</strong> = average inventory on hand</p>
+        <p>↑ as Q increases (larger average stock)</p>
+        <p>↓ as Q decreases (smaller average stock)</p>
+      </div>
+    </div>
+    <div class="callout teal" style="margin-top:8px;">
+      <div class="callout-label">The EOQ Insight</div>
+      <p>The total inventory cost (ordering + holding) is minimized at the quantity Q* where ordering cost equals holding cost. This is the <strong>Economic Order Quantity</strong> — the exact balance point between the two opposing forces.</p>
+    </div>
+  </div>
+
+  <div class="le-footer">
+    <div class="le-lo-pills"><span class="le-lo-pill">LO10-1</span></div>
+    <div><span class="le-gate-note">Gate 2 Q4 · Ch. 12 §12.1</span></div>
+  </div>
+</section>

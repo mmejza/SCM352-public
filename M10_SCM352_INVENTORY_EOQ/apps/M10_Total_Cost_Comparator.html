@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Total Cost Comparator — SCM 352 M10</title>
+<style>
+:root {
+  --navy:#1a3a5c; --blue:#2563a8; --blue-lt:#dbeafe; --blue-xlt:#eff6ff; --blue-bdr:#bfdbfe;
+  --gold:#f59e0b; --gold-lt:#fffbeb; --gold-bdr:#fde68a; --gold-dark:#92400e;
+  --green:#16a34a; --green-lt:#f0fdf4; --green-bdr:#bbf7d0;
+  --red:#dc2626; --red-lt:#fef2f2; --red-bdr:#fecaca;
+  --amber:#d97706; --amber-lt:#fffbeb; --amber-bdr:#fde68a;
+  --gray-50:#f9fafb; --gray-100:#f3f4f6; --gray-200:#e5e7eb; --gray-300:#d1d5db;
+  --gray-400:#9ca3af; --gray-600:#4b5563; --gray-700:#374151; --gray-800:#1f2937;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--gray-50);color:var(--gray-800);min-height:100vh;}
+header{background:var(--navy);color:#fff;padding:14px 24px;display:flex;align-items:center;gap:14px;}
+.hbadge{background:var(--gold);color:var(--navy);font-weight:700;font-size:11px;padding:3px 8px;border-radius:4px;letter-spacing:.05em;text-transform:uppercase;white-space:nowrap;}
+header h1{font-size:17px;font-weight:600;}
+.header-lo{margin-left:auto;font-size:11px;color:rgba(255,255,255,.6);}
+
+/* top nav */
+.scen-nav{background:#fff;border-bottom:2px solid var(--gray-200);padding:0 20px;display:flex;gap:0;overflow-x:auto;}
+.scen-btn{padding:11px 16px;border:none;background:none;cursor:pointer;font-size:13px;font-weight:500;color:var(--gray-600);border-bottom:3px solid transparent;white-space:nowrap;transition:all .15s;}
+.scen-btn:hover{color:var(--blue);}.scen-btn.active{color:var(--blue);border-bottom-color:var(--blue);font-weight:600;}
+.scen-btn.done::after{content:' ✓';color:var(--green);}
+
+/* mode tabs */
+.mode-bar{background:var(--gray-100);padding:6px;border-radius:10px;display:flex;gap:4px;margin-bottom:20px;}
+.mode-btn{flex:1;padding:8px 12px;border:none;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;color:var(--gray-600);background:transparent;transition:all .15s;text-align:center;}
+.mode-btn:hover{background:#fff;color:var(--blue);}
+.mode-btn.active{background:#fff;color:var(--blue);box-shadow:0 1px 4px rgba(0,0,0,.1);}
+
+.main{max-width:960px;margin:0 auto;padding:24px 20px;}
+
+.card{background:#fff;border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;margin-bottom:16px;}
+.card-head{background:var(--blue-lt);padding:12px 18px;border-bottom:1px solid var(--gray-200);}
+.card-head h2{font-size:14px;font-weight:700;color:var(--navy);}
+.card-head p{font-size:12px;color:var(--gray-600);margin-top:3px;}
+.card-body{padding:18px;}
+
+.ctx{background:var(--gray-50);border-left:4px solid var(--blue);padding:12px 16px;border-radius:0 8px 8px 0;font-size:13px;line-height:1.65;margin-bottom:14px;}
+.param-chips{display:flex;gap:8px;flex-wrap:wrap;}
+.chip{background:var(--blue-xlt);border:1px solid var(--blue-bdr);border-radius:6px;padding:5px 12px;font-size:12px;font-weight:600;color:var(--navy);}
+
+/* TC comparison table */
+.tc-compare{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:12px 0;}
+.tc-col{border-radius:10px;padding:14px;}
+.tc-col.opt-star{background:var(--green-lt);border:2px solid var(--green-bdr);}
+.tc-col.opt-alt{background:var(--amber-lt);border:2px solid var(--amber-bdr);}
+.tc-col h4{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px;}
+.tc-col.opt-star h4{color:var(--green);}
+.tc-col.opt-alt h4{color:var(--amber);}
+.tc-row{display:flex;justify-content:space-between;font-size:13px;padding:4px 0;border-bottom:1px solid rgba(0,0,0,.06);}
+.tc-row:last-child{border-bottom:none;font-weight:700;padding-top:8px;}
+
+/* input fields */
+.num-in{width:110px;padding:6px 10px;border:2px solid var(--gray-300);border-radius:7px;font-size:13px;text-align:center;font-weight:600;}
+.num-in:focus{outline:none;border-color:var(--blue);}
+.num-in.ok{border-color:var(--green);background:var(--green-lt);}
+.num-in.err{border-color:var(--red);background:var(--red-lt);}
+
+/* cost curve visual */
+.curve-wrap{position:relative;height:160px;margin:12px 0;background:var(--gray-50);border:1px solid var(--gray-200);border-radius:8px;overflow:hidden;}
+.curve-axis-y{position:absolute;left:8px;top:8px;bottom:28px;width:2px;background:var(--gray-400);}
+.curve-axis-x{position:absolute;left:8px;right:8px;bottom:28px;height:2px;background:var(--gray-400);}
+.curve-line{position:absolute;left:10px;right:10px;top:8px;bottom:28px;}
+.curve-dot{position:absolute;width:10px;height:10px;border-radius:50%;border:2px solid #fff;transform:translate(-50%,-50%);}
+.curve-label{position:absolute;font-size:10px;font-weight:700;white-space:nowrap;}
+.axis-label{position:absolute;font-size:9px;color:var(--gray-600);}
+
+/* slider */
+.slider-wrap{margin:12px 0;}
+.slider-lbl{display:flex;justify-content:space-between;font-size:12px;color:var(--gray-600);margin-bottom:6px;}
+input[type=range]{width:100%;accent-color:var(--blue);}
+.slider-val{text-align:center;font-size:18px;font-weight:700;color:var(--blue);margin:6px 0;}
+.live-table{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0;}
+.live-card{border-radius:8px;padding:10px;text-align:center;border:1px solid var(--gray-200);}
+.live-card h5{font-size:10px;font-weight:700;text-transform:uppercase;color:var(--gray-600);margin-bottom:4px;}
+.live-card .val{font-size:18px;font-weight:700;color:var(--navy);}
+.live-card.min-mark{border-color:var(--green);background:var(--green-lt);}
+.live-card.min-mark .val{color:var(--green);}
+
+/* sensitivity */
+.sens-row{background:var(--gray-50);border:1px solid var(--gray-200);border-radius:10px;padding:14px;margin-bottom:12px;}
+.sens-q{font-size:13px;font-weight:600;color:var(--navy);margin-bottom:10px;}
+.dir-btns{display:flex;gap:8px;}
+.dir-btn{flex:1;padding:9px;border:2px solid var(--gray-300);border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;background:#fff;color:var(--gray-700);transition:all .15s;}
+.dir-btn:hover{border-color:var(--blue);color:var(--blue);}
+.dir-btn.selected{border-color:var(--blue);background:var(--blue);color:#fff;}
+.dir-btn.correct{border-color:var(--green);background:var(--green);color:#fff;}
+.dir-btn.wrong{border-color:var(--red);background:var(--red-lt);color:var(--red);}
+.sens-reveal{display:none;margin-top:10px;padding:10px 12px;background:var(--blue-lt);border-radius:8px;font-size:13px;line-height:1.5;}
+
+/* buttons */
+.btn{padding:9px 20px;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;transition:all .15s;}
+.btn-primary{background:var(--blue);color:#fff;}
+.btn-primary:hover{background:#1d4ed8;}
+.btn-secondary{background:var(--gray-100);color:var(--gray-800);}
+.btn-secondary:hover{background:var(--gray-200);}
+.btn-green{background:var(--green);color:#fff;}
+.btn-group{display:flex;gap:10px;align-items:center;margin-top:12px;}
+
+.fb{display:none;border-radius:8px;overflow:hidden;margin-top:10px;}
+.fb.show{display:block;}
+.fb-banner{padding:10px 14px;font-size:13px;font-weight:700;display:flex;align-items:center;gap:8px;}
+.fb-ok{background:var(--green-lt);color:var(--green);}
+.fb-err{background:var(--red-lt);color:var(--red);}
+.fb-body{padding:12px 14px;font-size:13px;line-height:1.6;background:#fff;border:1px solid var(--gray-200);border-top:none;border-radius:0 0 8px 8px;}
+
+.tip{background:var(--gold-lt);border:1px solid var(--gold-bdr);border-radius:8px;padding:12px 14px;font-size:12px;line-height:1.6;margin-top:12px;}
+.tip-label{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--amber);margin-bottom:4px;}
+.pos{color:var(--green);font-weight:700;}
+.neg{color:var(--red);font-weight:700;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hbadge">SCM 352 · M10</div>
+  <h1>App 2 — Total Cost Comparator</h1>
+  <span class="header-lo">LO10-3 · LO10-7</span>
+</header>
+
+<div class="scen-nav" id="scenNav"></div>
+<div class="main" id="appMain"></div>
+
+<script>
+const SC = [
+  {
+    id:1, label:'Scenario 1', industry:'Veterinary Clinic', product:'medical supply kits',
+    ctx:'A veterinary clinic orders disposable examination supply kits. Demand is steady at 3,000 kits per year. The clinic manager wants to understand how different order quantities affect total annual inventory cost.',
+    R:3000, K:60, h:6.00, c:20,
+    Qstar:245, altQ:150,
+    altQLabel:'150 (too small — excess ordering)',
+    sensMoves:[
+      {param:'K', from:60, to:135, dir:'up', newQ:Math.round(Math.sqrt(2*135*3000/6)), explanation:'K doubled (×2.25) → Q* increases by √2.25 = 1.5× → from 245 to ~368. Higher ordering cost justifies fewer, larger orders.'},
+      {param:'h', from:6, to:1.5, dir:'down', newQ:Math.round(Math.sqrt(2*60*3000/1.5)), explanation:'h decreased by 75% → Q* increases by √4 = 2× → from 245 to ~490. Lower holding cost makes holding larger batches cheaper.'},
+      {param:'R', from:3000, to:750, dir:'down', newQ:Math.round(Math.sqrt(2*60*750/6)), explanation:'R decreased by 75% → Q* decreases by √4 = ½ → from 245 to ~122. Lower demand means smaller optimal batches.'}
+    ]
+  },
+  {
+    id:2, label:'Scenario 2', industry:'Municipal Water Treatment', product:'chemical reagent units',
+    ctx:'A municipal water treatment plant orders chemical reagent units for water purification. Annual demand is 7,500 units. The plant operations manager is evaluating ordering policies.',
+    R:7500, K:100, h:4.00, c:12,
+    Qstar:612, altQ:1200,
+    altQLabel:'1,200 (too large — excess holding)',
+    sensMoves:[
+      {param:'K', from:100, to:25, dir:'down', newQ:Math.round(Math.sqrt(2*25*7500/4)), explanation:'K decreased by 75% → Q* decreases by √4 = ½ → from 612 to ~306. When ordering becomes cheap, smaller more frequent orders are optimal.'},
+      {param:'h', from:4, to:16, dir:'up', newQ:Math.round(Math.sqrt(2*100*7500/16)), explanation:'h quadrupled → Q* decreases by √4 = ½ → from 612 to ~306. Higher holding cost means you want to carry less inventory per order.'},
+      {param:'R', from:7500, to:30000, dir:'up', newQ:Math.round(Math.sqrt(2*100*30000/4)), explanation:'R quadrupled → Q* doubles (×2 = √4) → from 612 to ~1,225. Higher demand drives larger optimal batches (scale effect).'}
+    ]
+  },
+  {
+    id:3, label:'Scenario 3', industry:'Charter School IT', product:'computer supply sets',
+    ctx:'A charter school network orders computer supply sets for its classrooms. Annual demand is 1,800 sets. The IT director is comparing the EOQ recommendation to a current ordering practice.',
+    R:1800, K:75, h:3.00, c:9,
+    Qstar:300, altQ:500,
+    altQLabel:'500 (too large — excess holding)',
+    sensMoves:[
+      {param:'K', from:75, to:300, dir:'up', newQ:Math.round(Math.sqrt(2*300*1800/3)), explanation:'K quadrupled → Q* doubles (×2 = √4) → from 300 to ~600. Higher ordering cost drives larger, less frequent orders.'},
+      {param:'R', from:1800, to:7200, dir:'up', newQ:Math.round(Math.sqrt(2*75*7200/3)), explanation:'R quadrupled → Q* doubles → from 300 to ~600. Economies of scale: larger demand supports larger batches at lower per-unit cost.'},
+      {param:'h', from:3, to:12, dir:'up', newQ:Math.round(Math.sqrt(2*75*1800/12)), explanation:'h quadrupled → Q* halves → from 300 to ~150. Higher holding cost penalizes large inventory buffers.'}
+    ]
+  },
+  {
+    id:4, label:'Scenario 4', industry:'Athletic Training Center', product:'athletic supply packs',
+    ctx:'An athletic training center orders supply packs for its training programs. Annual demand is 6,000 packs. The center director wants to verify the current ordering quantity against the EOQ formula.',
+    R:6000, K:90, h:5.00, c:18,
+    Qstar:465, altQ:250,
+    altQLabel:'250 (too small — excess ordering)',
+    sensMoves:[
+      {param:'h', from:5, to:20, dir:'up', newQ:Math.round(Math.sqrt(2*90*6000/20)), explanation:'h quadrupled → Q* halves (×½ = 1/√4) → from 465 to ~232. Much higher holding cost makes large orders very expensive.'},
+      {param:'K', from:90, to:10, dir:'down', newQ:Math.round(Math.sqrt(2*10*6000/5)), explanation:'K decreased 89% → Q* decreases dramatically (×√(10/90) ≈ 0.33×) → from 465 to ~155. Very cheap ordering means small frequent orders dominate.'},
+      {param:'R', from:6000, to:1500, dir:'down', newQ:Math.round(Math.sqrt(2*90*1500/5)), explanation:'R decreased 75% → Q* halves (1/√4 = ½) → from 465 to ~232. Lower demand supports smaller batches.'}
+    ]
+  }
+];
+
+let cur=0, mode=Array(4).fill(0), done=Array(4).fill(false);
+let sensAnswered=Array(4).fill([false,false,false]);
+
+function fmt(n,d=0){return n.toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d});}
+function close(a,b,pct=0.03){return Math.abs(a-b)/Math.max(Math.abs(b),1)<=pct;}
+function tcOH(R,K,h,Q){return K*(R/Q)+h*(Q/2);}
+function tcTotal(R,K,h,c,Q){return K*(R/Q)+h*(Q/2)+c*R;}
+
+function renderNav(){
+  document.getElementById('scenNav').innerHTML=SC.map((s,i)=>`<button class="scen-btn${i===cur?' active':''}${done[i]?' done':''}" onclick="sel(${i})">${s.label}</button>`).join('');
+}
+function sel(i){cur=i;renderNav();renderMain();}
+
+function renderMain(){
+  const s=SC[cur], m=mode[cur];
+  const modeLabels=['Mode A — Q* vs. Alt Q','Mode B — Orders/Year Slider','Mode C — Sensitivity'];
+  const modeBar=modeLabels.map((l,i)=>`<button class="mode-btn${i===m?' active':''}" onclick="setMode(${i})">${l}</button>`).join('');
+
+  const paramChips=`<div class="param-chips"><span class="chip">R = ${fmt(s.R)} units/yr</span><span class="chip">K = $${s.K}/order</span><span class="chip">h = $${s.h.toFixed(2)}/unit/yr</span><span class="chip">c = $${s.c}/unit</span><span class="chip" style="background:var(--green-lt);border-color:var(--green-bdr);color:var(--green);">Q* = ${s.Qstar} units</span></div>`;
+
+  let content='';
+  if(m===0) content=renderModeA(s,paramChips);
+  else if(m===1) content=renderModeB(s,paramChips);
+  else content=renderModeC(s,paramChips);
+
+  document.getElementById('appMain').innerHTML=`
+    <div class="card">
+      <div class="card-head"><h2>Scenario ${s.id}: ${s.industry}</h2><p>${s.product}</p></div>
+      <div class="card-body"><div class="ctx">${s.ctx}</div>${paramChips}</div>
+    </div>
+    <div class="mode-bar">${modeBar}</div>
+    ${content}`;
+
+  if(m===1) initSlider(s);
+}
+
+function setMode(m){mode[cur]=m;renderMain();}
+
+/* ── MODE A ─────────────────────────────────── */
+function renderModeA(s,paramChips){
+  const tcStar=tcTotal(s.R,s.K,s.h,s.c,s.Qstar);
+  const tcAlt=tcTotal(s.R,s.K,s.h,s.c,s.altQ);
+  const ohStar=tcOH(s.R,s.K,s.h,s.Qstar);
+  const ohAlt=tcOH(s.R,s.K,s.h,s.altQ);
+  return `
+    <div class="card">
+      <div class="card-head"><h2>Mode A — Compare TC: Q* vs. Alternative</h2><p>Compute total annual cost at both quantities and see how much the deviation costs.</p></div>
+      <div class="card-body">
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:14px;">Alternative order quantity: <strong>${s.altQLabel}</strong></p>
+        <div class="tc-compare">
+          <div class="tc-col opt-star">
+            <h4>At Q* = ${s.Qstar} units</h4>
+            <div class="tc-row"><span>Ordering K(R/Q*)</span><input class="num-in" id="a1o" type="number" placeholder="$" step="0.01"></div>
+            <div class="tc-row"><span>Holding h(Q*/2)</span><input class="num-in" id="a1h" type="number" placeholder="$" step="0.01"></div>
+            <div class="tc-row"><span>Purchasing cR</span><input class="num-in" id="a1p" type="number" placeholder="$" step="0.01"></div>
+            <div class="tc-row"><span>Total TC</span><input class="num-in" id="a1t" type="number" placeholder="$" step="0.01"></div>
+          </div>
+          <div class="tc-col opt-alt">
+            <h4>At Q = ${s.altQ} units</h4>
+            <div class="tc-row"><span>Ordering K(R/Q)</span><input class="num-in" id="a2o" type="number" placeholder="$" step="0.01"></div>
+            <div class="tc-row"><span>Holding h(Q/2)</span><input class="num-in" id="a2h" type="number" placeholder="$" step="0.01"></div>
+            <div class="tc-row"><span>Purchasing cR</span><input class="num-in" id="a2p" type="number" placeholder="$" step="0.01"></div>
+            <div class="tc-row"><span>Total TC</span><input class="num-in" id="a2t" type="number" placeholder="$" step="0.01"></div>
+          </div>
+        </div>
+        <p style="font-size:13px;color:var(--gray-700);margin:10px 0 6px;">By how much does ordering at Q = ${s.altQ} increase TC vs. Q* ($ and %)?</p>
+        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+          <span style="font-size:13px;">Extra cost:</span>
+          <input class="num-in" id="aDiff" type="number" placeholder="$" step="0.01">
+          <span style="font-size:13px;">= </span>
+          <input class="num-in" id="aPct" type="number" placeholder="%" step="0.01">
+          <span style="font-size:13px;">% above Q*</span>
+        </div>
+        <div class="btn-group"><button class="btn btn-primary" onclick="checkModeA()">Check All Values</button></div>
+        <div class="fb" id="fbA"></div>
+      </div>
+    </div>`;
+}
+
+function checkModeA(){
+  const s=SC[cur];
+  const tcStar=tcTotal(s.R,s.K,s.h,s.c,s.Qstar);
+  const tcAlt=tcTotal(s.R,s.K,s.h,s.c,s.altQ);
+  const diff=tcAlt-tcStar;
+  const pct=(diff/tcStar)*100;
+  const ohStar=tcOH(s.R,s.K,s.h,s.Qstar);
+  const ohAlt=tcOH(s.R,s.K,s.h,s.altQ);
+  const purch=s.c*s.R;
+
+  const vals={
+    a1o:s.K*(s.R/s.Qstar), a1h:s.h*(s.Qstar/2), a1p:purch, a1t:tcStar,
+    a2o:s.K*(s.R/s.altQ), a2h:s.h*(s.altQ/2), a2p:purch, a2t:tcAlt,
+    aDiff:diff, aPct:pct
+  };
+  let allOk=true;
+  Object.entries(vals).forEach(([id,expected])=>{
+    const el=document.getElementById(id);
+    if(!el) return;
+    const v=parseFloat(el.value);
+    el.classList.remove('ok','err');
+    if(!isNaN(v)&&close(v,expected,0.025)){el.classList.add('ok');}
+    else{el.classList.add('err');allOk=false;}
+  });
+  const fb=document.getElementById('fbA');
+  fb.classList.add('show');
+  if(allOk){
+    fb.innerHTML=`<div class="fb-banner fb-ok">✓ All values correct</div><div class="fb-body">
+      TC at Q* = <strong>$${fmt(tcStar,2)}</strong> · TC at Q=${s.altQ} = <strong>$${fmt(tcAlt,2)}</strong><br>
+      Deviation cost: <strong class="neg">$${fmt(diff,2)} (+${pct.toFixed(2)}%)</strong><br><br>
+      <strong>EOQ robustness:</strong> The order quantity deviates from Q* by ${Math.abs(Math.round((s.altQ/s.Qstar-1)*100))}%, but total cost increases by only ${pct.toFixed(2)}%. This is the flat bottom of the U-curve — the EOQ is forgiving of moderate deviations.<br>
+      <strong>Check:</strong> Ordering cost at Q*: $${fmt(vals.a1o,0)} · Holding cost at Q*: $${fmt(vals.a1h,0)} · These are approximately equal, confirming Q* is the balance point.
+    </div>`;
+  } else {
+    const faults=Object.entries(vals).filter(([id])=>{const e=document.getElementById(id);return e&&e.classList.contains('err');});
+    fb.innerHTML=`<div class="fb-banner fb-err">✗ Some values are incorrect — red fields need correction</div><div class="fb-body">Check: cR = ${s.c}×${fmt(s.R)} = $${fmt(purch,0)} for both columns (same regardless of Q). Ordering at Q*: ${s.K}×(${fmt(s.R)}/${s.Qstar}) = $${fmt(vals.a1o,2)}. Ordering at alt: ${s.K}×(${fmt(s.R)}/${s.altQ}) = $${fmt(vals.a2o,2)}.</div>`;
+  }
+}
+
+/* ── MODE B ─────────────────────────────────── */
+function renderModeB(s){
+  return `
+    <div class="card">
+      <div class="card-head"><h2>Mode B — Orders/Year Slider</h2><p>Drag the slider to change ordering frequency and watch TC components update in real time.</p></div>
+      <div class="card-body">
+        <div class="slider-wrap">
+          <div class="slider-lbl"><span>1 order/yr (large batches)</span><span>50 orders/yr (small batches)</span></div>
+          <input type="range" id="ordSlider" min="1" max="50" value="${Math.round(s.R/s.Qstar)}" oninput="updateSlider()">
+          <div class="slider-val" id="sliderDisp">— orders/year</div>
+        </div>
+        <div class="live-table" id="liveTbl"></div>
+        <div id="sliderChart" style="margin:12px 0;"></div>
+        <p style="font-size:13px;color:var(--gray-700);margin:12px 0 6px;">At what number of orders per year does total cost (O+H) reach its minimum?</p>
+        <div style="display:flex;gap:10px;align-items:center;margin-bottom:10px;">
+          <input class="num-in" id="bAns" type="number" placeholder="orders/yr" step="0.1" style="width:130px;">
+          <button class="btn btn-primary" onclick="checkModeB()">Check</button>
+        </div>
+        <div class="fb" id="fbB"></div>
+        <div class="tip"><div class="tip-label">Note</div>The slider shows ordering + holding cost only (excl. cR). The purchasing cost cR = $${fmt(s.c*s.R,0)} is constant at all slider positions.</div>
+      </div>
+    </div>`;
+}
+
+function initSlider(s){
+  updateSlider();
+}
+
+function updateSlider(){
+  const s=SC[cur];
+  const nOrd=parseInt(document.getElementById('ordSlider').value);
+  const Q=s.R/nOrd;
+  const ord=s.K*nOrd;
+  const hld=s.h*(Q/2);
+  const total=ord+hld;
+  const optOrd=s.R/s.Qstar;
+  const optTotal=tcOH(s.R,s.K,s.h,s.Qstar);
+  const pct=(total/optTotal-1)*100;
+
+  document.getElementById('sliderDisp').textContent=`${nOrd} order${nOrd!==1?'s':''}/year · Q = ${Math.round(Q)} units`;
+
+  const isMin=Math.abs(nOrd-optOrd)<1;
+  document.getElementById('liveTbl').innerHTML=`
+    <div class="live-card${isMin?' min-mark':''}"><h5>Ordering Cost</h5><div class="val">$${fmt(ord,0)}</div></div>
+    <div class="live-card${isMin?' min-mark':''}"><h5>Holding Cost</h5><div class="val">$${fmt(hld,0)}</div></div>
+    <div class="live-card${isMin?' min-mark':''}"><h5>TC (O+H)${isMin?' ✓ Min':''}</h5><div class="val${isMin?' pos':pct>5?' neg':''}">$${fmt(total,0)}${pct>0.5?` (+${pct.toFixed(1)}%)`:''}</div></div>`;
+}
+
+function checkModeB(){
+  const s=SC[cur];
+  const ans=parseFloat(document.getElementById('bAns').value);
+  const optOrd=s.R/s.Qstar;
+  const fb=document.getElementById('fbB');
+  fb.classList.add('show');
+  if(isNaN(ans)){fb.innerHTML=`<div class="fb-banner fb-err">✗ Enter a number of orders per year.</div>`;return;}
+  if(close(ans,optOrd,0.07)){
+    fb.innerHTML=`<div class="fb-banner fb-ok">✓ Correct — minimum TC at ≈${optOrd.toFixed(1)} orders/year</div><div class="fb-body">At R/Q* = ${fmt(s.R)}/${s.Qstar} ≈ ${optOrd.toFixed(1)} orders/year, ordering cost equals holding cost (each ≈ $${fmt(tcOH(s.R,s.K,s.h,s.Qstar)/2,0)}) and their sum is minimized. This is exactly Q* from the EOQ formula.</div>`;
+  } else if(close(ans, s.Qstar, 0.15)){
+    fb.innerHTML=`<div class="fb-banner fb-warn">Close — check the units</div><div class="fb-body">You may have entered Q* (${s.Qstar} units) instead of R/Q* (orders per year). Orders/year = R/Q* = ${fmt(s.R)}/${s.Qstar} = ${optOrd.toFixed(1)}.</div>`;
+  } else {
+    fb.innerHTML=`<div class="fb-banner fb-err">✗ Not the minimum</div><div class="fb-body">Drag the slider to find where ordering cost and holding cost are equal — that is where TC is minimized. Answer: R/Q* = ${fmt(s.R)}/${s.Qstar} ≈ ${optOrd.toFixed(1)} orders/year.</div>`;
+  }
+}
+
+/* ── MODE C ─────────────────────────────────── */
+function renderModeC(s){
+  const answered=sensAnswered[cur];
+  const rows=s.sensMoves.map((mv,i)=>{
+    const ans=answered[i];
+    const expected=mv.dir;
+    return `
+      <div class="sens-row" id="srow${i}">
+        <div class="sens-q">Change ${i+1}: If <strong>${mv.param}</strong> changes from ${mv.param==='R'?fmt(mv.from):mv.from} to ${mv.param==='R'?fmt(mv.to):mv.to}${mv.param==='R'?' units/yr':mv.param==='K'?' $/order':' $/unit/yr'} — will Q* <strong>increase, decrease, or stay the same</strong>?</div>
+        <div class="dir-btns">
+          <button class="dir-btn${ans?expected==='up'?' correct':' wrong':''}" onclick="ansSens(${i},'up')" ${ans?'disabled':''}>▲ Increase</button>
+          <button class="dir-btn${ans?expected==='same'?' correct':' wrong':''}" onclick="ansSens(${i},'same')" ${ans?'disabled':''}>— No change</button>
+          <button class="dir-btn${ans?expected==='down'?' correct':' wrong':''}" onclick="ansSens(${i},'down')" ${ans?'disabled':''}>▼ Decrease</button>
+        </div>
+        <div class="sens-reveal${ans?' show':''}" id="srev${i}" style="${ans?'display:block;':'display:none;'}">
+          <strong>New Q* = ${mv.newQ} units</strong> (was ${s.Qstar})<br>${mv.explanation}
+        </div>
+      </div>`;
+  }).join('');
+  return `
+    <div class="card">
+      <div class="card-head"><h2>Mode C — Parameter Sensitivity</h2><p>Predict the direction of Q* change before revealing the new value.</p></div>
+      <div class="card-body">
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:14px;">Starting Q* = <strong>${s.Qstar} units</strong>. Each question changes one parameter — predict whether Q* increases, decreases, or stays the same. Your prediction is locked in before the answer reveals.</p>
+        ${rows}
+        <div class="tip" style="margin-top:12px;"><div class="tip-label">EOQ Sensitivity Rule</div>Q* = √(2KR/h) · Q* ∝ √K and Q* ∝ √R and Q* ∝ 1/√h · Doubling K → Q* ×√2 · Doubling R → Q* ×√2 · Doubling h → Q* ÷√2</div>
+      </div>
+    </div>`;
+}
+
+function ansSens(i,dir){
+  const s=SC[cur];
+  const mv=s.sensMoves[i];
+  const correct=dir===mv.dir;
+  const btns=document.querySelectorAll(`#srow${i} .dir-btn`);
+  btns.forEach(b=>b.disabled=true);
+  const dirMap={up:'▲ Increase', same:'— No change', down:'▼ Decrease'};
+  btns.forEach(b=>{
+    b.classList.remove('selected');
+    if(b.textContent.trim()===dirMap[mv.dir]) b.classList.add('correct');
+    else if(b.textContent.trim()===dirMap[dir]&&!correct) b.classList.add('wrong');
+  });
+  const rev=document.getElementById('srev'+i);
+  rev.style.display='block';
+  if(!correct){
+    rev.innerHTML=`<strong style="color:var(--red);">Not quite.</strong> New Q* = ${mv.newQ} units. Recall: Q* = √(2KR/h). ${mv.explanation}`;
+  } else {
+    rev.innerHTML=`<strong style="color:var(--green);">Correct.</strong> New Q* = ${mv.newQ} units. ${mv.explanation}`;
+  }
+  const newArr=[...sensAnswered[cur]];
+  newArr[i]=true;
+  sensAnswered[cur]=newArr;
+}
+
+renderNav();
+renderMain();
+</script>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<section class="slide-page" data-title="Total Cost Example — Solution" data-lo="LO10-3" data-notes="Key teaching moment: (1) ordering ≈ holding at Q* confirms the balance; (2) the cost penalty from operating at Q=200 is only $322 or 0.36% — illustrates EOQ robustness. Note that cR ($86,400) dominates TC at both quantities, which is why cR matters for quantity discount comparisons.">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">M10</span>
+      <span class="le-course">SCM 352 · Module 10</span>
+    </div>
+    <span class="le-pagenum">11 / 20</span>
+  </div>
+
+  <div class="le-titleblock">
+    <div class="le-title">Total Cost Example — <span>Solution</span></div>
+    <div class="le-sub">R = 4,800 · K = $75 · h = $6.00 · c = $18.00</div>
+  </div>
+
+  <div class="le-body">
+    <div class="two-col">
+      <div class="callout teal">
+        <div class="callout-label">Part (a) — TC at Q* = 346</div>
+        <table class="clean-table" style="margin-top:4px;">
+          <thead><tr><th>Component</th><th>Calculation</th><th>Cost</th></tr></thead>
+          <tbody>
+            <tr><td>Ordering K(R/Q)</td><td>75 × (4,800/346)</td><td>$1,040</td></tr>
+            <tr><td>Holding h(Q/2)</td><td>6.00 × (346/2)</td><td>$1,038</td></tr>
+            <tr><td>Purchasing cR</td><td>18 × 4,800</td><td>$86,400</td></tr>
+            <tr class="total-row"><td colspan="2"><strong>Total TC at Q*</strong></td><td><strong>$88,478</strong></td></tr>
+          </tbody>
+        </table>
+        <p style="font-size:9px;margin-top:4px;color:var(--teal-dk);"><strong>Check:</strong> Ordering ($1,040) ≈ Holding ($1,038) ✓</p>
+      </div>
+      <div class="callout amber">
+        <div class="callout-label">Part (b) — TC at Q = 200</div>
+        <table class="clean-table" style="margin-top:4px;">
+          <thead><tr><th>Component</th><th>Calculation</th><th>Cost</th></tr></thead>
+          <tbody>
+            <tr><td>Ordering K(R/Q)</td><td>75 × (4,800/200)</td><td>$1,800</td></tr>
+            <tr><td>Holding h(Q/2)</td><td>6.00 × (200/2)</td><td>$600</td></tr>
+            <tr><td>Purchasing cR</td><td>18 × 4,800</td><td>$86,400</td></tr>
+            <tr class="total-row"><td colspan="2"><strong>Total TC at Q = 200</strong></td><td><strong>$88,800</strong></td></tr>
+          </tbody>
+        </table>
+        <p style="font-size:9px;margin-top:4px;"><strong>Increase:</strong> $322 more · only <strong>+0.36%</strong> above optimal</p>
+      </div>
+    </div>
+    <div class="callout navy" style="margin-top:8px;">
+      <div class="callout-label" style="color:var(--teal);">Takeaway</div>
+      <p style="color:rgba(255,255,255,.88);">A 42% deviation from Q* (346 → 200) raises total cost by only 0.36%. The cost curve is flat near Q*. Also note: cR = $86,400 is 97.6% of TC — it is the dominant term, which is why a price change (quantity discount) will have outsized impact.</p>
+    </div>
+  </div>
+
+  <div class="le-footer">
+    <div class="le-lo-pills"><span class="le-lo-pill">LO10-3</span><span class="le-lo-pill">LO10-7</span></div>
+    <div><span class="le-gate-note">Gate 2 Q2 · Ch. 12 §12.1</span></div>
+  </div>
+</section>

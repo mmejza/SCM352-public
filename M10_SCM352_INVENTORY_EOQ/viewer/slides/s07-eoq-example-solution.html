@@ -1,0 +1,48 @@
+<section class="slide-page" data-title="EOQ Example — Solution" data-lo="LO10-2" data-notes="Walk through the step-by-step calculation. Emphasize that ordering cost ≈ holding cost at Q* confirms the balance point. The current batch of 200 is sub-optimal — too many small orders drives excess ordering cost.">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">M10</span>
+      <span class="le-course">SCM 352 · Module 10</span>
+    </div>
+    <span class="le-pagenum">7 / 20</span>
+  </div>
+
+  <div class="le-titleblock">
+    <div class="le-title">EOQ Example — <span>Solution</span></div>
+    <div class="le-sub">R = 4,800 · K = $75 · h = $6.00</div>
+  </div>
+
+  <div class="le-body">
+    <div class="callout navy" style="margin-bottom:8px;">
+      <div class="callout-label" style="color:var(--teal);">Part (a) — Compute Q*</div>
+      <p style="color:rgba(255,255,255,.88);">Q* = √(2 × 75 × 4,800 / 6.00) = √(720,000 / 6.00) = √120,000 = <strong style="color:#fff;">346.4 ≈ 346 units</strong></p>
+    </div>
+    <div class="two-col">
+      <div class="callout teal">
+        <div class="callout-label">Part (b) — Order Frequency</div>
+        <p><strong>Orders/year</strong> = R/Q* = 4,800/346 = <strong>13.9 orders/year</strong></p>
+        <p><strong>Time between orders</strong> = 52/13.9 = <strong>3.7 weeks</strong></p>
+        <p>The firm should reorder approximately every 3–4 weeks.</p>
+      </div>
+      <div class="callout amber">
+        <div class="callout-label">Part (c) — Current Batch = 200</div>
+        <p>200 &lt; Q* (346) → ordering <strong>too frequently</strong></p>
+        <p>Current: R/200 = 24 orders/year vs. optimal 13.9 orders/year</p>
+        <p>Fix: increase batch size toward 346 to cut ordering cost without unduly raising holding cost</p>
+      </div>
+    </div>
+    <div class="callout teal" style="margin-top:8px;">
+      <div class="callout-label">Confirmation Check at Q* = 346</div>
+      <p><strong>Ordering cost</strong> = K × (R/Q*) = 75 × 13.87 = <strong>$1,040/year</strong> &nbsp;·&nbsp; <strong>Holding cost</strong> = h × (Q*/2) = 6.00 × 173 = <strong>$1,038/year</strong></p>
+      <p>Ordering ≈ Holding ✓ — confirms Q* is the balance point</p>
+    </div>
+  </div>
+
+  <div class="le-footer">
+    <div class="le-lo-pills"><span class="le-lo-pill">LO10-2</span></div>
+    <div><span class="le-gate-note">Gate 2 Q1 · Ch. 12 §12.1</span></div>
+  </div>
+</section>

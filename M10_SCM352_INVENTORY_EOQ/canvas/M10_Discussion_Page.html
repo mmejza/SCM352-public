@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Discussion: Inventory Costs in the Wild — SCM 352 M10</title>
+<style>
+:root {
+  --navy:#1a3a5c;--blue:#2563a8;--blue-lt:#dbeafe;--blue-xlt:#eff6ff;
+  --gold:#f59e0b;--gold-lt:#fffbeb;--gold-bdr:#fde68a;
+  --green:#16a34a;--green-lt:#f0fdf4;--green-bdr:#bbf7d0;
+  --red:#dc2626;--red-lt:#fef2f2;--red-bdr:#fecaca;
+  --purple:#7c3aed;--purple-lt:#faf5ff;--purple-bdr:#ddd6fe;
+  --teal:#0891b2;--teal-lt:#f0fdfe;--teal-bdr:#a5f3fc;
+  --amber:#d97706;--amber-lt:#fffbeb;--amber-bdr:#fde68a;
+  --gray-50:#f9fafb;--gray-100:#f3f4f6;--gray-200:#e5e7eb;
+  --gray-400:#9ca3af;--gray-600:#4b5563;--gray-700:#374151;--gray-800:#1f2937;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--gray-50);color:var(--gray-800);line-height:1.6;}
+.page-header{background:var(--navy);color:white;padding:20px 28px;display:flex;align-items:flex-start;gap:16px;}
+.header-badge{background:var(--gold);color:var(--navy);font-weight:700;font-size:11px;padding:3px 9px;border-radius:4px;letter-spacing:.05em;text-transform:uppercase;white-space:nowrap;flex-shrink:0;}
+.header-text h1{font-size:20px;font-weight:700;margin-bottom:4px;}
+.header-text p{font-size:13px;color:rgba(255,255,255,.7);}
+.meta-strip{display:flex;gap:0;flex-wrap:wrap;border-bottom:2px solid var(--gray-200);background:white;}
+.meta-pill{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;padding:9px 16px;border-right:1px solid var(--gray-200);color:var(--gray-700);}
+.pip{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.pg-body{max-width:860px;margin:0 auto;padding:28px 24px 48px;display:flex;flex-direction:column;gap:24px;}
+.sec-div{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--gray-400);padding-bottom:10px;border-bottom:1px solid var(--gray-200);margin-bottom:-4px;}
+.card{background:white;border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;}
+.card-hd{padding:14px 20px;border-bottom:1px solid var(--gray-200);display:flex;align-items:center;gap:10px;}
+.card-hd h2{font-size:15px;font-weight:700;color:var(--navy);}
+.card-hd p{font-size:12px;color:var(--gray-600);margin-top:2px;}
+.card-bd{padding:20px;}
+.alert{border-radius:10px;padding:13px 16px;font-size:13.5px;line-height:1.6;display:flex;gap:11px;align-items:flex-start;}
+.alert-icon{font-size:17px;flex-shrink:0;margin-top:1px;}
+.alert-body{flex:1;}
+.alert-body strong{display:block;margin-bottom:3px;}
+.alert-red{background:var(--red-lt);border:1.5px solid var(--red-bdr);}
+.alert-gold{background:var(--gold-lt);border:1.5px solid var(--gold-bdr);}
+.alert-blue{background:var(--blue-xlt);border:1.5px solid #bfdbfe;}
+.part{border:1.5px solid var(--gray-200);border-radius:10px;overflow:hidden;margin-bottom:14px;}
+.part:last-child{margin-bottom:0;}
+.part-header{padding:12px 16px;display:flex;align-items:center;gap:12px;border-bottom:1.5px solid var(--gray-200);}
+.part-num{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;flex-shrink:0;color:white;}
+.part-title{flex:1;font-size:14px;font-weight:700;color:var(--gray-800);}
+.part-pts{font-size:12px;font-weight:700;padding:3px 9px;border-radius:100px;white-space:nowrap;}
+.part-body{padding:14px 16px;font-size:13.5px;line-height:1.65;color:var(--gray-700);}
+.part-body p+p{margin-top:8px;}
+.example-note{font-size:12px;color:var(--gray-600);margin-top:8px;padding:8px 12px;background:var(--gray-50);border-radius:6px;border-left:3px solid #d1d5db;}
+/* Part color scheme — 5 criteria */
+.part-1 .part-header{background:var(--blue-xlt);border-color:#bfdbfe;} .part-1 .part-num{background:var(--blue);} .part-1 .part-pts{background:var(--blue-lt);color:var(--navy);}
+.part-2 .part-header{background:var(--purple-lt);border-color:var(--purple-bdr);} .part-2 .part-num{background:var(--purple);} .part-2 .part-pts{background:var(--purple-bdr);color:var(--purple);}
+.part-3 .part-header{background:var(--teal-lt);border-color:var(--teal-bdr);} .part-3 .part-num{background:var(--teal);} .part-3 .part-pts{background:var(--teal-bdr);color:var(--teal);}
+.part-4 .part-header{background:var(--green-lt);border-color:var(--green-bdr);} .part-4 .part-num{background:var(--green);} .part-4 .part-pts{background:var(--green-bdr);color:var(--green);}
+.part-5 .part-header{background:var(--amber-lt);border-color:var(--amber-bdr);} .part-5 .part-num{background:var(--amber);} .part-5 .part-pts{background:var(--amber-bdr);color:var(--amber);}
+.pts-table{width:100%;border-collapse:collapse;font-size:13.5px;}
+.pts-table th{background:var(--navy);color:white;padding:9px 14px;text-align:left;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;}
+.pts-table td{padding:9px 14px;border-bottom:1px solid var(--gray-100);vertical-align:top;}
+.pts-table tr:last-child td{border-bottom:none;}
+.pts-table tr.total-row td{font-weight:700;background:var(--gray-50);font-size:14px;border-top:2px solid var(--gray-200);}
+.pts-num{font-weight:700;font-size:15px;color:var(--navy);text-align:right;white-space:nowrap;}
+.tip-list{list-style:none;padding:0;display:flex;flex-direction:column;gap:8px;}
+.tip-list li{display:flex;gap:10px;font-size:13.5px;line-height:1.55;color:var(--gray-700);}
+.tip-list li::before{content:'→';color:var(--gold);font-weight:700;flex-shrink:0;margin-top:1px;}
+.prohibited-list{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;}
+.prohibited-tag{font-size:12px;font-weight:600;padding:3px 10px;border-radius:100px;background:var(--red-lt);color:var(--red);border:1px solid var(--red-bdr);}
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div class="header-badge">SCM 352 · M10</div>
+  <div class="header-text">
+    <h1>Discussion: Inventory Costs in the Wild</h1>
+    <p>Module M10 Discussion · 30 points · Item 10 of 12</p>
+  </div>
+</div>
+
+<div class="meta-strip">
+  <div class="meta-pill"><div class="pip" style="background:#2563a8"></div> Due: Following module (M11) close</div>
+  <div class="meta-pill"><div class="pip" style="background:#16a34a"></div> 30 points total</div>
+  <div class="meta-pill"><div class="pip" style="background:#f59e0b"></div> 30–40 minutes</div>
+  <div class="meta-pill"><div class="pip" style="background:#0891b2"></div> LO10-1 · LO10-3 · LO10-4 · LO10-7</div>
+</div>
+
+<div class="pg-body">
+
+  <div class="card">
+    <div class="card-hd" style="background:var(--blue-xlt);">
+      <div><h2>What You Are Doing</h2><p>Apply the EOQ framework to a real business you observe directly — not from the textbook, slides, or any previous module.</p></div>
+    </div>
+    <div class="card-bd">
+      <p style="font-size:13.5px;line-height:1.7;color:var(--gray-700);">Identify a business you interact with regularly — a store, clinic, restaurant, organization, or workplace — that carries physical inventory. Write an initial post that applies five specific analytical lenses from Module 10: ordering cost identification, holding cost identification, EOQ applicability assessment using the three failure mode test, economies of scale intuition using the √R scaling relationship, and format/specificity requirements. Do not use any business from the textbook, slides, narration, or any previous module's discussion.</p>
+    </div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:12px;">
+    <div class="alert alert-red">
+      <div class="alert-icon">🚫</div>
+      <div class="alert-body">
+        <strong>Do not name your business in your initial post.</strong>
+        Describe it by type, role, and setting only — "a regional grocery chain," "a veterinary clinic," "a small hardware retailer." Students who identify a business by name in the initial post receive a 10-point deduction. You will identify the business by name only in your peer replies (if any), which are not required for M10.
+      </div>
+    </div>
+    <div class="alert alert-red">
+      <div class="alert-icon">🚫</div>
+      <div class="alert-body">
+        <strong>Do not use businesses from the chapter or the following prohibited list:</strong>
+        <div class="prohibited-list">
+          <span class="prohibited-tag">Beer Distributor (textbook)</span>
+          <span class="prohibited-tag">Walmart DC (textbook)</span>
+          <span class="prohibited-tag">NorthMart / SouthMart (slides)</span>
+          <span class="prohibited-tag">Riverside Health System (Case)</span>
+          <span class="prohibited-tag">Any business used in prior M01–M09 discussions</span>
+        </div>
+      </div>
+    </div>
+    <div class="alert alert-blue">
+      <div class="alert-icon">📅</div>
+      <div class="alert-body">
+        <strong>Initial post only — no peer reply required.</strong>
+        This discussion has no reply requirement. The deadline extends to the close of the following module (M11). This gives you flexibility but do not leave it until the last day of M11 — late posts receive 0 points.
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="sec-div">Initial Post &nbsp;·&nbsp; Due: Following Module (M11) Close &nbsp;·&nbsp; 30 points</div>
+    <div class="card" style="margin-top:16px;">
+      <div class="card-bd" style="padding:16px;">
+
+        <div class="part part-1">
+          <div class="part-header">
+            <div class="part-num">1</div>
+            <div class="part-title">Ordering Cost Identification</div>
+            <div class="part-pts">6 pts</div>
+          </div>
+          <div class="part-body">
+            <p>Describe what happens when this business places a replenishment order. Identify <strong>at least two specific activities</strong> that contribute to the fixed ordering cost K. For each activity, explain in one sentence why it is a <em>fixed cost per order</em> rather than a variable cost per unit.</p>
+            <div class="example-note">Example of the level of specificity required: "The purchasing manager spends 45 minutes per order reviewing specs, contacting the vendor, and processing the purchase order — this is a fixed labor cost per order regardless of whether the order is for 50 units or 500." Generic statements ("they place an order") do not earn credit.</div>
+          </div>
+        </div>
+
+        <div class="part part-2">
+          <div class="part-header">
+            <div class="part-num">2</div>
+            <div class="part-title">Holding Cost Identification</div>
+            <div class="part-pts">6 pts</div>
+          </div>
+          <div class="part-body">
+            <p>Identify <strong>at least two components</strong> of holding cost h for this business. <strong>At least one component must go beyond simple "storage space"</strong> — consider capital cost (the cost of money tied up in inventory), obsolescence risk, spoilage, insurance, or deterioration. For each component, explain in one sentence why it belongs in h (i.e., why it accrues with inventory level rather than with the number of orders).</p>
+            <div class="example-note">The most common error is listing only "warehouse rent." Capital cost is almost always larger — if a business holds $50,000 of inventory and its cost of capital is 10% per year, the capital holding cost alone is $5,000/year, before rent is added.</div>
+          </div>
+        </div>
+
+        <div class="part part-3">
+          <div class="part-header">
+            <div class="part-num">3</div>
+            <div class="part-title">EOQ Applicability Assessment</div>
+            <div class="part-pts">6 pts</div>
+          </div>
+          <div class="part-body">
+            <p>Apply the three EOQ failure mode tests from Lecture Segment 2. For each failure mode, give a one-sentence assessment specific to your chosen business and its product:</p>
+            <p><strong>(a) Is demand steady and predictable?</strong> Or is it seasonal, lumpy, or demand-inventory dependent?</p>
+            <p><strong>(b) Does the product have a stable shelf life?</strong> Or does it expire, become obsolete, or go stale before being used?</p>
+            <p><strong>(c) Is demand independent of inventory level?</strong> Or does inventory quantity signal something to customers that affects how much they buy?</p>
+            <p style="margin-top:8px;">Based on these three assessments, state whether EOQ is a <em>good fit</em>, <em>poor fit</em>, or <em>requires modification</em> for this business and product. One sentence explanation required.</p>
+          </div>
+        </div>
+
+        <div class="part part-4">
+          <div class="part-header">
+            <div class="part-num">4</div>
+            <div class="part-title">Scale Intuition</div>
+            <div class="part-pts">6 pts</div>
+          </div>
+          <div class="part-body">
+            <p>Compare your chosen business to a much larger competitor (if one exists in the same product category) or to a hypothetical version of itself with <strong>4 times the annual demand</strong> (4× R).</p>
+            <p>Using the Chapter 12 economies of scale insight, explain whether the larger business would have a <strong>higher or lower per-unit inventory cost</strong>, and by what factor. Use the √R scaling relationship explicitly in your explanation: state that EOQ cost scales as √R, so when R increases by a factor of 4, EOQ cost increases by a factor of √4 = 2, meaning the larger firm pays half the per-unit inventory cost.</p>
+            <div class="example-note">If your business is a small pharmacy with R = 2,000 vials/year, a hospital network with R = 8,000 vials/year has 4× the demand. EOQ cost scales as √R → scales by √4 = 2. The large hospital's total EOQ cost is 2× larger in dollars, but its per-unit EOQ cost is half as large. That is the inventory economies of scale advantage.</div>
+          </div>
+        </div>
+
+        <div class="part part-5">
+          <div class="part-header">
+            <div class="part-num">5</div>
+            <div class="part-title">Format and Specificity</div>
+            <div class="part-pts">6 pts</div>
+          </div>
+          <div class="part-body">
+            <p>Your post must meet all of the following specificity requirements to earn full credit on this criterion:</p>
+            <p><strong>Real business:</strong> The business you describe must be real and one you have actually visited or interacted with recently — not hypothetical, not from a case study, not described generically.</p>
+            <p><strong>Specific product:</strong> Name the specific product being inventoried (not just "supplies" or "inventory"). All cost component analyses must be specific to that product.</p>
+            <p><strong>EOQ applicability refers to the specific product:</strong> The three failure mode assessments must address the product you named, not inventory in general.</p>
+            <p><strong>No business name in initial post:</strong> Describe by type and setting only (e.g., "a single-location veterinary clinic in a mid-size city").</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-hd" style="background:var(--blue-xlt);">
+      <div><h2>Points Summary</h2><p>30 points total · 13% of Module M10 grade</p></div>
+    </div>
+    <table class="pts-table">
+      <thead><tr><th>Component</th><th>Criteria</th><th style="text-align:right;">Points</th></tr></thead>
+      <tbody>
+        <tr><td rowspan="5" style="font-weight:600;color:var(--navy);vertical-align:top;padding-top:12px;">Initial Post<br><span style="font-weight:400;font-size:12px;color:var(--gray-600);">No reply required</span></td>
+          <td>1 — Ordering Cost Identification (≥2 specific activities, fixed-cost rationale for each)</td><td class="pts-num">6</td></tr>
+        <tr><td>2 — Holding Cost Identification (≥2 components; ≥1 beyond storage space)</td><td class="pts-num">6</td></tr>
+        <tr><td>3 — EOQ Applicability Assessment (3 failure mode tests + overall conclusion)</td><td class="pts-num">6</td></tr>
+        <tr><td>4 — Scale Intuition (√R scaling explicit; correct direction and factor)</td><td class="pts-num">6</td></tr>
+        <tr><td>5 — Format and Specificity (real business, specific product, no business name)</td><td class="pts-num">6</td></tr>
+        <tr class="total-row"><td colspan="2">Total</td><td class="pts-num">30</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-hd" style="background:var(--gold-lt);border-color:var(--gold-bdr);">
+      <div><h2 style="color:#92400e;">Tips for Full Credit</h2></div>
+    </div>
+    <div class="card-bd">
+      <ul class="tip-list">
+        <li>For Criterion 1, "we place orders when stock is low" earns 0 points. Describe the specific labor, system, or logistical activity that happens every time an order is placed — and explain why its cost doesn't depend on how many units are ordered.</li>
+        <li>For Criterion 2, capital cost is almost always your largest holding cost component. Estimate the product's unit cost and multiply by approximate average inventory — then apply a 15–25% annual rate to get the capital holding cost. This is usually larger than rent.</li>
+        <li>For Criterion 3, do not assume EOQ always applies. Perishable products (produce, medications, fashion) often fail the shelf-life test. Businesses where inventory level affects customer behavior (car dealerships, yogurt brands) fail the demand-independence test. State clearly which conditions your business passes and fails.</li>
+        <li>For Criterion 4, the √R scaling must be explicit. You must state: "EOQ cost scales as √R, so 4× demand → √4 = 2× EOQ cost → ½ per-unit EOQ cost." Simply saying "larger firms are more efficient" earns partial credit only.</li>
+        <li>Do not name your business in the initial post — describe it by type ("a single-location hardware retailer," "a regional hospital pharmacy"). Naming earns a 10-point deduction regardless of post quality.</li>
+        <li>This discussion connects directly to the Case Analysis: the expiration risk question in Case Part 5 uses the same failure mode logic as Criterion 3. If you work through the discussion before the Case, you will find Part 5b easier to write.</li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

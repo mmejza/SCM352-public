@@ -1,0 +1,26 @@
+{
+  "title": "Forecasting",
+  "moduleLabel": "SCM 352 · M11 Lecture Slides",
+  "slides": [
+    "slides/s01-title.html",
+    "slides/s02-learning-objectives.html",
+    "slides/s03-gate-content.html",
+    "slides/s04-forecasting-overview.html",
+    "slides/s05-demand-components.html",
+    "slides/s06-ma-formula.html",
+    "slides/s07-ma-example-setup.html",
+    "slides/s08-ma-example-solution.html",
+    "slides/s09-es-formula.html",
+    "slides/s10-es-example-setup.html",
+    "slides/s11-es-example-solution.html",
+    "slides/s12-mad-bias-formulas.html",
+    "slides/s13-mad-bias-example.html",
+    "slides/s14-mape-formula.html",
+    "slides/s15-mape-example.html",
+    "slides/s16-method-selection.html",
+    "slides/s17-method-limits.html",
+    "slides/s18-judgmental-methods.html",
+    "slides/s19-forecasting-biases.html",
+    "slides/s20-strategy-connection.html"
+  ]
+}

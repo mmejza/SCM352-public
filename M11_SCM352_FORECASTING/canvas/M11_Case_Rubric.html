@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Case Rubric — Riverside Health System Pharmacy Supply Forecasting — M11 — SCM 352</title>
+<style>
+:root{--navy:#1a3a5c;--blue:#2563a8;--blue-lt:#dbeafe;--blue-xlt:#eff6ff;--gold:#f59e0b;--gold-lt:#fffbeb;--gold-bdr:#fde68a;--green:#16a34a;--green-lt:#f0fdf4;--green-bdr:#bbf7d0;--red:#dc2626;--red-lt:#fef2f2;--red-bdr:#fecaca;--amber:#d97706;--amber-lt:#fffbeb;--amber-bdr:#fde68a;--orange:#ea580c;--orange-lt:#fff7ed;--orange-bdr:#fed7aa;--gray-50:#f9fafb;--gray-100:#f3f4f6;--gray-200:#e5e7eb;--gray-400:#9ca3af;--gray-600:#4b5563;--gray-700:#374151;--gray-800:#1f2937;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--gray-50);color:var(--gray-800);font-size:13px;line-height:1.5;}
+.pg-header{background:var(--navy);color:white;padding:18px 28px;display:flex;align-items:center;gap:14px;}
+.badge{background:var(--gold);color:var(--navy);font-weight:700;font-size:10px;padding:3px 8px;border-radius:4px;letter-spacing:.06em;text-transform:uppercase;flex-shrink:0;}
+.pg-header h1{font-size:17px;font-weight:700;}
+.pg-header p{font-size:12px;color:rgba(255,255,255,.6);margin-top:3px;}
+.hdr-right{margin-left:auto;font-size:12px;color:rgba(255,255,255,.5);text-align:right;line-height:1.7;}
+.pg-body{max-width:1060px;margin:0 auto;padding:24px 20px 60px;display:flex;flex-direction:column;gap:28px;}
+.sec-heading{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--gray-400);padding-bottom:10px;border-bottom:1px solid var(--gray-200);margin-bottom:4px;}
+.alert{border-radius:10px;padding:12px 16px;font-size:13px;line-height:1.6;display:flex;gap:10px;align-items:flex-start;}
+.alert-icon{font-size:17px;flex-shrink:0;margin-top:1px;}
+.alert-body{flex:1;}
+.alert-body strong{display:block;margin-bottom:3px;}
+.alert-red{background:var(--red-lt);border:1.5px solid var(--red-bdr);}
+.alert-gold{background:var(--gold-lt);border:1.5px solid var(--gold-bdr);}
+.rubric-wrap{border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;background:white;}
+.rubric-table{width:100%;border-collapse:collapse;font-size:12px;}
+.rubric-table thead tr th{padding:9px 11px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;vertical-align:bottom;}
+.th-crit{background:var(--navy);color:white;}
+.th-full{background:var(--green);color:white;}
+.th-part{background:var(--amber);color:white;}
+.th-min{background:var(--orange);color:white;}
+.th-none{background:var(--red);color:white;}
+.pts-label{display:block;font-size:14px;font-weight:800;margin-bottom:2px;letter-spacing:-.02em;}
+.rubric-table td{padding:10px 11px;border-bottom:1px solid var(--gray-100);border-right:1px solid var(--gray-100);vertical-align:top;line-height:1.5;}
+.rubric-table tr:last-child td{border-bottom:none;}
+.rubric-table td:last-child{border-right:none;}
+.td-crit{background:var(--gray-50);font-weight:700;color:var(--navy);font-size:12.5px;}
+.td-full{background:var(--green-lt);}
+.td-part{background:var(--amber-lt);}
+.td-min{background:var(--orange-lt);}
+.td-none{background:var(--red-lt);}
+.crit-pts{display:inline-block;margin-top:5px;font-size:11px;font-weight:700;padding:2px 8px;border-radius:100px;background:var(--blue-lt);color:var(--navy);}
+.crit-lo{display:block;font-size:10px;font-weight:600;color:var(--gray-400);margin-top:3px;}
+.cell-pts{font-weight:800;font-size:12.5px;margin-bottom:4px;display:block;}
+.td-full .cell-pts{color:var(--green);}
+.td-part .cell-pts{color:var(--amber);}
+.td-min .cell-pts{color:var(--orange);}
+.td-none .cell-pts{color:var(--red);}
+.ak-table{width:100%;border-collapse:collapse;font-size:12px;}
+.ak-table th{background:var(--navy);color:white;padding:8px 12px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;}
+.ak-table td{padding:8px 12px;border-bottom:1px solid var(--gray-100);vertical-align:top;line-height:1.5;}
+.ak-table tr:last-child td{border-bottom:none;}
+.ver-a-row{background:#f0fdf4;} .ver-b-row{background:var(--blue-xlt);} .ver-c-row{background:#faf5ff;} .ver-d-row{background:var(--gold-lt);}
+.ak-badge{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:5px;font-size:11px;font-weight:800;}
+.ab-a{background:#dcfce7;color:#166534;} .ab-b{background:#dbeafe;color:#1e40af;} .ab-c{background:#faf5ff;color:#6b21a8;} .ab-d{background:#fef9c3;color:#854d0e;}
+.notes-list{display:flex;flex-direction:column;gap:8px;}
+.note-item{display:flex;gap:10px;font-size:13px;line-height:1.55;color:var(--gray-700);padding:9px 12px;background:var(--gray-50);border:1px solid var(--gray-200);border-radius:7px;}
+.note-num{width:22px;height:22px;border-radius:50%;background:var(--navy);color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.speed-table{width:100%;border-collapse:collapse;font-size:12.5px;}
+.speed-table th{background:var(--navy);color:white;padding:8px 12px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;}
+.speed-table td{padding:8px 12px;border-bottom:1px solid var(--gray-100);}
+.speed-table tr:last-child td{border-bottom:none;}
+.ak-note{font-size:11.5px;color:var(--gray-400);margin-top:6px;padding-left:4px;}
+</style>
+</head>
+<body>
+
+<div class="pg-header">
+  <div class="badge">SCM 352 · M11</div>
+  <div>
+    <h1>Case Analysis Grading Rubric — Riverside Health System: Building a Forecasting System for the Pharmacy Supply Chain</h1>
+    <p>Instructor use only · SpeedGrader reference · Do not distribute to students</p>
+  </div>
+  <div class="hdr-right">100 pts total<br>43% of Module M11</div>
+</div>
+
+<div class="pg-body">
+
+  <div style="display:flex;flex-direction:column;gap:10px;">
+    <div class="alert alert-red">
+      <div class="alert-icon">⚠️</div>
+      <div class="alert-body"><strong>Verify version before grading Parts 1 and 2.</strong> Check student's assigned version using the canonical key: last digit 0, 1, 2 → Version A; 3, 4, 5 → Version B; 6, 7 → Version C; 8, 9 → Version D. Numeric answers matching a different version are a strong signal of version misassignment or academic dishonesty — flag for review.</div>
+    </div>
+    <div class="alert alert-gold">
+      <div class="alert-icon">⚙️</div>
+      <div class="alert-body"><strong>Recommended grading order:</strong> Part 4b first (bias identification — fastest diagnostic for conceptual understanding), then Part 1 (version-specific computation, fast to check), then Part 2 (calculation chain), then Part 3 (judgment-heavy recommendation), then Part 4d (management summary). This order reveals AI-generated work early: Part 4b requires naming a specific bias type AND linking it to the budget incentive structure — generic answers are identifiable immediately.</div>
+    </div>
+    <div class="alert alert-red">
+      <div class="alert-icon">🔴</div>
+      <div class="alert-body"><strong>Corrected F₁ values (Case-specific):</strong> The Case uses F₁ = D₁ (Week 1 actual demand), not the Gate 2 Q2 values. Correct F₁ values: V-A = 120, V-B = 85, V-C = 200, V-D = 310. A student who starts Part 2 with F₁ = 500 (Gate 2 Version A value) has used the wrong initial condition — award 0 on question 2a and flag the error explicitly in feedback.</div>
+    </div>
+  </div>
+
+  <!-- PART 1 ANSWER KEYS -->
+  <div>
+    <div class="sec-heading">Part 1 Answer Keys — Moving Average Forecast (Version-Specific)</div>
+    <div style="border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;margin-top:14px;background:white;">
+      <table class="ak-table">
+        <thead>
+          <tr>
+            <th style="width:5%">Ver.</th>
+            <th>Product · N · Windows</th>
+            <th>Shorter-window MA forecast (1a)</th>
+            <th>Longer-window MA forecast (1a)</th>
+            <th>Errors (1b) · Winner</th>
+            <th>Demand pattern · Recommendation (1c)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="ver-a-row">
+            <td><span class="ak-badge ab-a">A</span></td>
+            <td>Surgical gloves · N=8 · Actual Wk 9 = 138</td>
+            <td><strong>3-week MA = 134.3</strong><br><span style="font-size:11px;color:#374151;">(128+140+135)/3</span></td>
+            <td><strong>5-week MA = 132.0</strong><br><span style="font-size:11px;color:#374151;">(125+132+128+140+135)/5</span></td>
+            <td>3-wk error = 3.7<br>5-wk error = 6.0<br><strong>3-week wins</strong></td>
+            <td>Upward-trending. Shorter (3-week) window recommended — less lag on rising demand.</td>
+          </tr>
+          <tr class="ver-b-row">
+            <td><span class="ak-badge ab-b">B</span></td>
+            <td>IV solution bags · N=9 · Actual Wk 10 = 102</td>
+            <td><strong>4-week MA = 96.3</strong><br><span style="font-size:11px;color:#374151;">(91+98+96+100)/4</span></td>
+            <td><strong>6-week MA = 95.3</strong><br><span style="font-size:11px;color:#374151;">(92+95+91+98+96+100)/6</span></td>
+            <td>4-wk error = 5.7<br>6-wk error = 6.7<br><strong>4-week wins</strong></td>
+            <td>Upward-trending. Shorter (4-week) window recommended — more responsive to rising trend.</td>
+          </tr>
+          <tr class="ver-c-row">
+            <td><span class="ak-badge ab-c">C</span></td>
+            <td>Reagent kits · N=8 · Actual Wk 9 = 225</td>
+            <td><strong>3-week MA = 214.3</strong><br><span style="font-size:11px;color:#374151;">(215+208+220)/3</span></td>
+            <td><strong>5-week MA = 209.2</strong><br><span style="font-size:11px;color:#374151;">(198+215+208+220+205)/5</span></td>
+            <td>3-wk error = 10.7<br>5-wk error = 15.8<br><strong>3-week wins</strong></td>
+            <td>Upward-trending. Shorter (3-week) window recommended — less lag behind rising demand.</td>
+          </tr>
+          <tr class="ver-d-row">
+            <td><span class="ak-badge ab-d">D</span></td>
+            <td>Orthopedic supplies · N=10 · Actual Wk 11 = 350</td>
+            <td><strong>4-week MA = 332.8</strong><br><span style="font-size:11px;color:#374151;">(318+340+328+345)/4</span></td>
+            <td><strong>8-week MA = 325.1</strong><br><span style="font-size:11px;color:#374151;">(320+305+315+330+318+340+328+345)/8</span></td>
+            <td>4-wk error = 17.2<br>8-wk error = 24.9<br><strong>4-week wins</strong></td>
+            <td>Upward-trending. Shorter (4-week) window recommended — 8-period window drags heavily on older lower values.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="ak-note">Award partial credit on 1b: 3 pts for correct errors with wrong winner declared; 4 pts for correct errors, correct winner, but no explanation of why. All four versions: shorter window wins this single period. Award 1c full credit for any internally consistent recommendation — longer window is defensible if student argues demand is noisy rather than trending.</p>
+  </div>
+
+  <!-- PART 1 RUBRIC -->
+  <div>
+    <div class="sec-heading">Part 1 Rubric — 20 points</div>
+    <div class="rubric-wrap" style="margin-top:14px;">
+      <table class="rubric-table">
+        <colgroup><col style="width:19%"><col style="width:22%"><col style="width:20%"><col style="width:20%"><col style="width:19%"></colgroup>
+        <thead>
+          <tr>
+            <th class="th-crit">Criterion</th>
+            <th class="th-full"><span class="pts-label">Full Credit</span></th>
+            <th class="th-part"><span class="pts-label">Partial</span></th>
+            <th class="th-min"><span class="pts-label">Minimal</span></th>
+            <th class="th-none"><span class="pts-label">No Credit</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="td-crit">1a — Both MA computations<span class="crit-pts">8 pts</span><span class="crit-lo">LO11-2</span></td>
+            <td class="td-full"><span class="cell-pts">8 pts</span>Both MAs correct. Weeks used are explicitly listed for each computation. Arithmetic is shown (not just the answer). Rounding to 1 decimal is acceptable.</td>
+            <td class="td-part"><span class="cell-pts">5–7 pts</span>One MA correct, one has minor arithmetic error. Or: both correct but weeks used not listed (no work shown). Deduct 1 pt per wrong window bound.</td>
+            <td class="td-min"><span class="cell-pts">2–4 pts</span>One or both MAs use wrong window (wrong number of periods, wrong starting week). Method is correct but execution is wrong. Or: answers without any supporting work.</td>
+            <td class="td-none"><span class="cell-pts">0–1 pts</span>No computation attempted, or uses a formula other than simple average of the n most recent actual demand values.</td>
+          </tr>
+          <tr>
+            <td class="td-crit">1b — Errors and comparison<span class="crit-pts">5 pts</span><span class="crit-lo">LO11-2</span></td>
+            <td class="td-full"><span class="cell-pts">5 pts</span>Both absolute errors computed correctly from student's own MA values. Correct winner identified with a stated reason (not just the label).</td>
+            <td class="td-part"><span class="cell-pts">3–4 pts</span>Both errors correct, winner correct but no reason stated. Or: minor arithmetic error in one error, winner still correct.</td>
+            <td class="td-min"><span class="cell-pts">1–2 pts</span>Errors computed but uses signed rather than absolute values. Or: wrong winner identified due to arithmetic error. Or: correct errors but no comparison.</td>
+            <td class="td-none"><span class="cell-pts">0 pts</span>No error computation, or errors computed from wrong values (cross-version), or both errors wrong.</td>
+          </tr>
+          <tr>
+            <td class="td-crit">1c — Pattern and recommendation<span class="crit-pts">7 pts</span><span class="crit-lo">LO11-2 · LO11-5</span></td>
+            <td class="td-full"><span class="cell-pts">7 pts</span>Demand pattern correctly identified (upward trending for all versions). Recommendation is internally consistent with pattern. Two sentences explicitly reference responsiveness-vs-smoothing trade-off from lecture.</td>
+            <td class="td-part"><span class="cell-pts">5–6 pts</span>Pattern identified, correct recommendation, but trade-off language is vague ("shorter window is better") without explaining why in terms of responsiveness/lag.</td>
+            <td class="td-min"><span class="cell-pts">2–4 pts</span>Pattern identified but recommendation is contradictory (recommends longer window for trending demand without justification). Or: recommendation stated but no pattern analysis.</td>
+            <td class="td-none"><span class="cell-pts">0–1 pts</span>No pattern identified and/or recommendation is absent or internally inconsistent with no reasoning.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- PART 2 ANSWER KEYS -->
+  <div>
+    <div class="sec-heading">Part 2 Answer Keys — Exponential Smoothing and Error Analysis (Version-Specific)</div>
+    <div style="border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;margin-top:14px;background:white;">
+      <table class="ak-table">
+        <thead>
+          <tr>
+            <th style="width:5%">Ver.</th>
+            <th>ES Chain Summary (F₂ → F(N+1))</th>
+            <th>MAD (2c)</th>
+            <th>Bias (2d)</th>
+            <th>Interpretation (2d)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="ver-a-row">
+            <td><span class="ak-badge ab-a">A</span></td>
+            <td style="font-size:11px;">α=0.30, F₁=120<br>F₂=120.00, F₃=123.00, F₄=120.60,<br>F₅=121.92, F₆=124.94, F₇=125.86,<br>F₈=130.10, F₉=131.57</td>
+            <td><strong>6.82</strong></td>
+            <td><strong>+4.82</strong></td>
+            <td>Systematic under-forecast. Pharmacy will order fewer gloves than needed each week.</td>
+          </tr>
+          <tr class="ver-b-row">
+            <td><span class="ak-badge ab-b">B</span></td>
+            <td style="font-size:11px;">α=0.20, F₁=85<br>F₂=85.00, F₃=86.00, F₄=86.40,<br>F₅=87.52, F₆=88.62, F₇=88.89,<br>F₈=90.12, F₉=90.89, F₁₀=92.72</td>
+            <td><strong>4.82</strong></td>
+            <td><strong>+4.82</strong></td>
+            <td>Systematic under-forecast. All errors positive (note: MAD = Bias for this version — pedagogical flag). Pharmacy consistently under-orders IV bags.</td>
+          </tr>
+          <tr class="ver-c-row">
+            <td><span class="ak-badge ab-c">C</span></td>
+            <td style="font-size:11px;">α=0.40, F₁=200<br>F₂=200.00, F₃=198.00, F₄=203.20,<br>F₅=203.92, F₆=201.95, F₇=207.17,<br>F₈=207.70, F₉=212.62</td>
+            <td><strong>6.54</strong></td>
+            <td><strong>+3.87</strong></td>
+            <td>Systematic under-forecast. Lab will receive fewer reagent kits than needed, risking test delays.</td>
+          </tr>
+          <tr class="ver-d-row">
+            <td><span class="ak-badge ab-d">D</span></td>
+            <td style="font-size:11px;">α=0.25, F₁=310<br>F₂=310.00, F₃=301.25, F₄=308.44,<br>F₅=307.08, F₆=308.06, F₇=312.54,<br>F₈=313.91, F₉=319.43, F₁₀=320.82,<br>F₁₁=325.87</td>
+            <td><strong>11.46</strong></td>
+            <td><strong>+7.52</strong></td>
+            <td>Systematic under-forecast. Health system will chronically underorder orthopedic supplies, requiring costly emergency procurement.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="ak-note">Propagation rule: If a student makes an arithmetic error in an early step (e.g., wrong F₂) that carries forward consistently using the correct formula, penalize once at the origin. Award full method credit for subsequent steps if the student's own prior-period forecast is used correctly in each update. Version B note: MAD = Bias is not an error — it is a genuine result when all errors are positive (all-positive errors occur because F₁=D₁ with monotonically non-decreasing demand). If a student notes this explicitly, award a quality point under 2d.</p>
+  </div>
+
+  <!-- PART 2 RUBRIC -->
+  <div>
+    <div class="sec-heading">Part 2 Rubric — 25 points</div>
+    <div class="rubric-wrap" style="margin-top:14px;">
+      <table class="rubric-table">
+        <colgroup><col style="width:19%"><col style="width:22%"><col style="width:20%"><col style="width:20%"><col style="width:19%"></colgroup>
+        <thead>
+          <tr>
+            <th class="th-crit">Criterion</th>
+            <th class="th-full"><span class="pts-label">Full Credit</span></th>
+            <th class="th-part"><span class="pts-label">Partial</span></th>
+            <th class="th-min"><span class="pts-label">Minimal</span></th>
+            <th class="th-none"><span class="pts-label">No Credit</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="td-crit">2a — ES recursive chain<span class="crit-pts">10 pts</span><span class="crit-lo">LO11-3</span></td>
+            <td class="td-full"><span class="cell-pts">10 pts</span>Correct F₁ used (= Week 1 actual demand for the version). Each step shows the formula application. All forecasts correct to ±0.05 rounding tolerance. Forecasts run through the correct final period.</td>
+            <td class="td-part"><span class="cell-pts">7–9 pts</span>Correct F₁, correct formula, 1–2 arithmetic errors propagated. Or: all correct but F(N+1) missing. Deduct 1 pt per wrong step that breaks the chain.</td>
+            <td class="td-min"><span class="cell-pts">3–6 pts</span>Wrong F₁ used (e.g., uses Gate 2 value of 500/800/150/1200). Or: correct F₁ but formula misapplied — drops prior forecast (uses D(t-1) instead of F(t)). Partial chain with major errors.</td>
+            <td class="td-none"><span class="cell-pts">0–2 pts</span>No chain attempted, or formula entirely wrong, or cross-version data used.</td>
+          </tr>
+          <tr>
+            <td class="td-crit">2b — Signed errors<span class="crit-pts">5 pts</span><span class="crit-lo">LO11-4</span></td>
+            <td class="td-full"><span class="cell-pts">5 pts</span>All errors computed as Actual − Forecast with signs preserved. Errors consistent with student's own Part 2a forecasts.</td>
+            <td class="td-part"><span class="cell-pts">3–4 pts</span>Errors mostly correct; 1–2 sign errors or arithmetic mistakes. Or: errors computed as Forecast − Actual (wrong sign convention but consistent).</td>
+            <td class="td-min"><span class="cell-pts">1–2 pts</span>Absolute errors used instead of signed errors. Or: errors inconsistent with student's own forecasts from 2a.</td>
+            <td class="td-none"><span class="cell-pts">0 pts</span>No errors computed, or entirely wrong.</td>
+          </tr>
+          <tr>
+            <td class="td-crit">2c — MAD computation<span class="crit-pts">5 pts</span><span class="crit-lo">LO11-4</span></td>
+            <td class="td-full"><span class="cell-pts">5 pts</span>Formula stated: MAD = Σ|errors|/N. Absolute values applied correctly. Sum and N correct. Final result consistent with student's own errors from 2b (propagation rule).</td>
+            <td class="td-part"><span class="cell-pts">3–4 pts</span>Formula correct, one arithmetic error. Or: formula correct but divides by wrong N (e.g., N-1 or N+1).</td>
+            <td class="td-min"><span class="cell-pts">1–2 pts</span>Divides sum of signed errors by N (computing bias instead of MAD). Or: sums absolute errors but forgets to divide.</td>
+            <td class="td-none"><span class="cell-pts">0 pts</span>No MAD attempted or formula entirely wrong.</td>
+          </tr>
+          <tr>
+            <td class="td-crit">2d — Bias + operational implication<span class="crit-pts">5 pts</span><span class="crit-lo">LO11-4 · LO11-8</span></td>
+            <td class="td-full"><span class="cell-pts">5 pts</span>Bias formula stated: Bias = Σ(errors)/N using signed errors. Result positive and consistent with student's 2b values. Correctly identifies as systematic under-forecast. Operational consequence stated (pharmacy will chronically under-order).</td>
+            <td class="td-part"><span class="cell-pts">3–4 pts</span>Bias computed correctly, correct direction, but operational implication is generic ("they won't have enough"). Or: uses absolute errors for bias (gets positive MAD instead) but notes under-forecast from the sign.</td>
+            <td class="td-min"><span class="cell-pts">1–2 pts</span>Uses absolute values to compute bias (the most common error — produces the same result as MAD). No operational implication stated.</td>
+            <td class="td-none"><span class="cell-pts">0 pts</span>No bias computed. Or direction of bias stated incorrectly (positive bias = over-forecast claim is wrong).</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- PART 3 RUBRIC + SAMPLE ANSWERS -->
+  <div>
+    <div class="sec-heading">Part 3 Rubric — 20 points · MAPE, Comparison, Method Recommendation (All Versions)</div>
+    <div class="rubric-wrap" style="margin-top:14px;">
+      <table class="rubric-table">
+        <colgroup><col style="width:19%"><col style="width:22%"><col style="width:20%"><col style="width:20%"><col style="width:19%"></colgroup>
+        <thead>
+          <tr>
+            <th class="th-crit">Criterion</th>
+            <th class="th-full"><span class="pts-label">Full Credit</span></th>
+            <th class="th-part"><span class="pts-label">Partial</span></th>
+            <th class="th-min"><span class="pts-label">Minimal</span></th>
+            <th class="th-none"><span class="pts-label">No Credit</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="td-crit">3a — MAPE computation<span class="crit-pts">5 pts</span><span class="crit-lo">LO11-6</span></td>
+            <td class="td-full"><span class="cell-pts">5 pts</span>Per-period APE = |Error_t|/D_t × 100% shown for all N periods. Denominator is actual demand (not forecast). MAPE = average of all per-period APEs. Result consistent with student's Part 2 errors.</td>
+            <td class="td-part"><span class="cell-pts">3–4 pts</span>Correct per-period APEs but summary average missing or wrong denominator on 1–2 periods. Or: correct MAPE but no per-period work shown.</td>
+            <td class="td-min"><span class="cell-pts">1–2 pts</span>Divides by forecast instead of actual demand. Or: uses signed errors instead of absolute values in numerator. Or: sums APEs instead of averaging.</td>
+            <td class="td-none"><span class="cell-pts">0 pts</span>MAPE formula not used, or cross-version values used.</td>
+          </tr>
+          <tr>
+            <td class="td-crit">3b — MA vs. ES comparison<span class="crit-pts">3 pts</span><span class="crit-lo">LO11-5</span></td>
+            <td class="td-full"><span class="cell-pts">3 pts</span>Correctly identifies that MA single-period errors (from Part 1) and ES MAD (from Part 2) measure different things. States which MA performed better in the test period and which ES MAD result indicates. Notes the comparison is directional, not definitive.</td>
+            <td class="td-part"><span class="cell-pts">2 pts</span>Correct identification of which approach was more accurate but does not acknowledge the apples-to-oranges comparison (single period vs. multi-period average).</td>
+            <td class="td-min"><span class="cell-pts">1 pt</span>Mentions both approaches but conclusion is unclear or contradicts the computed values.</td>
+            <td class="td-none"><span class="cell-pts">0 pts</span>No comparison attempted, or conclusion directly contradicts student's own computed values.</td>
+          </tr>
+          <tr>
+            <td class="td-crit">3c — Method recommendation<span class="crit-pts">12 pts</span><span class="crit-lo">LO11-5 · LO11-8</span></td>
+            <td class="td-full"><span class="cell-pts">12 pts</span>All four elements present: (1) method named; (2) MAD/error comparison referenced with student's own computed values; (3) bias finding addressed — whether it strengthens or complicates the recommendation; (4) one genuine limitation of the recommended method acknowledged. Internally consistent (e.g., not recommending longer window for a trending demand series).</td>
+            <td class="td-part"><span class="cell-pts">8–11 pts</span>Three of four elements present. Method choice is defensible. Commonly missing element: (3) bias finding or (4) limitation. Deduct 1 pt per missing required element.</td>
+            <td class="td-min"><span class="cell-pts">4–7 pts</span>Method named but recommendation is generic (not grounded in student's computed values). Two or more elements missing. Bias finding ignored entirely.</td>
+            <td class="td-none"><span class="cell-pts">0–3 pts</span>Recommendation is absent, or contradicts the student's own Parts 1–2 results without explanation, or uses generic language with no reference to computed values.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="margin-top:12px;background:white;border:1px solid var(--gray-200);border-radius:10px;padding:14px 16px;">
+      <div style="font-size:11px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--gray-400);margin-bottom:10px;">Sample Full-Credit 3c (Version A, for grader calibration)</div>
+      <div style="font-size:12.5px;line-height:1.6;color:var(--gray-700);">
+        "I recommend exponential smoothing with α = 0.30 as the primary forecasting method for Riverside's surgical glove supply. The ES model's MAD of 6.82 units provides a more comprehensive accuracy picture than the 3-week MA's single-period error of 3.7 units; over multiple periods, ES demonstrates consistent tracking of the demand level. The positive bias of +4.82 units complicates this recommendation slightly — it indicates the ES model is systematically under-forecasting, which means Riverside should plan to carry additional safety stock to buffer against this predictable shortfall. The key limitation of exponential smoothing is that it cannot track a sustained demand trend, so if glove demand continues to rise faster than the model updates, the positive bias will worsen and the α may need to be increased."
+      </div>
+    </div>
+  </div>
+
+  <!-- PART 4 RUBRIC + ANSWER KEY -->
+  <div>
+    <div class="sec-heading">Part 4 Rubric + Answer Key — 35 points · Judgmental Forecasting Evaluation (All Versions)</div>
+
+    <div style="border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;margin-top:14px;background:white;">
+      <table class="ak-table">
+        <thead>
+          <tr>
+            <th style="width:5%">Ver.</th>
+            <th>Combined forecast (4c)</th>
+            <th>Combined error</th>
+            <th>ES F(T+1)</th>
+            <th>ES error</th>
+            <th>More accurate</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="ver-a-row">
+            <td><span class="ak-badge ab-a">A</span></td>
+            <td><strong>132.3</strong> = (145+140+112)/3</td>
+            <td>|138−132.3| = <strong>5.7</strong></td>
+            <td>F₉ = 131.57</td>
+            <td>|138−131.57| = <strong>6.43</strong></td>
+            <td><strong>Combined</strong> (5.7 &lt; 6.43)</td>
+          </tr>
+          <tr class="ver-b-row">
+            <td><span class="ak-badge ab-b">B</span></td>
+            <td><strong>94.3</strong> = (105+100+78)/3</td>
+            <td>|102−94.3| = <strong>7.7</strong></td>
+            <td>F₁₀ = 92.72</td>
+            <td>|102−92.72| = <strong>9.28</strong></td>
+            <td><strong>Combined</strong> (7.7 &lt; 9.28)</td>
+          </tr>
+          <tr class="ver-c-row">
+            <td><span class="ak-badge ab-c">C</span></td>
+            <td><strong>214.3</strong> = (230+228+185)/3</td>
+            <td>|225−214.3| = <strong>10.7</strong></td>
+            <td>F₉ = 212.62</td>
+            <td>|225−212.62| = <strong>12.38</strong></td>
+            <td><strong>Combined</strong> (10.7 &lt; 12.38)</td>
+          </tr>
+          <tr class="ver-d-row">
+            <td><span class="ak-badge ab-d">D</span></td>
+            <td><strong>335.7</strong> = (355+360+292)/3</td>
+            <td>|350−335.7| = <strong>14.3</strong></td>
+            <td>F₁₁ = 325.87</td>
+            <td>|350−325.87| = <strong>24.13</strong></td>
+            <td><strong>Combined</strong> (14.3 &lt; 24.13)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="ak-note">Grading note for 4c: The ES F(T+1) value is the student's own Part 2a result — it will vary slightly if the student made rounding errors in Part 2. Use the student's own computed F(T+1) for the comparison. Accept the student's own error comparison provided the arithmetic is correct given their Part 2 values. Award full credit for either method as "more accurate" if the comparison is correctly computed from student's own values. In practice, combined forecast wins for all four versions, but students arriving at a different conclusion due to their own Part 2 chain should not be penalized if their comparison is internally consistent.</p>
+
+    <div class="rubric-wrap" style="margin-top:14px;">
+      <table class="rubric-table">
+        <colgroup><col style="width:19%"><col style="width:22%"><col style="width:20%"><col style="width:20%"><col style="width:19%"></colgroup>
+        <thead>
+          <tr>
+            <th class="th-crit">Criterion</th>
+            <th class="th-full"><span class="pts-label">Full Credit</span></th>
+            <th class="th-part"><span class="pts-label">Partial</span></th>
+            <th class="th-min"><span class="pts-label">Minimal</span></th>
+            <th class="th-none"><span class="pts-label">No Credit</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="td-crit">4a — Method identification + advantage<span class="crit-pts">5 pts</span><span class="crit-lo">LO11-5</span></td>
+            <td class="td-full"><span class="cell-pts">5 pts</span>(i) Correctly names "forecast combination" (accept: independent expert aggregation, combining independent estimates). (ii) Advantage specifically addresses independence — averaging independent estimates cancels directional errors; comparing it correctly to a group meeting where anchoring or social pressure can distort estimates.</td>
+            <td class="td-part"><span class="cell-pts">3–4 pts</span>Correct method label (2 pts) but advantage is generic ("more people = better"). Or: advantage correct but method label is "Delphi" — accept for 3 pts with a note that Delphi involves structured iteration, not simple averaging.</td>
+            <td class="td-min"><span class="cell-pts">1–2 pts</span>Method label wrong and advantage is generic. Or: method correct but advantage describes a completely different method's benefit.</td>
+            <td class="td-none"><span class="cell-pts">0 pts</span>No method identified. Or method described as "voting" or another non-Chapter 15 approach.</td>
+          </tr>
+          <tr>
+            <td class="td-crit">4b — Bias identification + mechanism<span class="crit-pts">8 pts</span><span class="crit-lo">LO11-7</span></td>
+            <td class="td-full"><span class="cell-pts">8 pts</span>(i) Names "forecast gaming" (3 pts). (ii) Explicitly connects gaming to Manager 3's budget control role: a lower demand forecast justifies a smaller purchase authorization, which makes the budget appear cost-efficient. References Chapter 15.6 definition — gaming as manipulation for a preferred outcome due to misaligned incentives (5 pts).</td>
+            <td class="td-part"><span class="cell-pts">5–7 pts</span>Correct bias name (3 pts). Explanation connects to budget but does not explicitly invoke the Ch. 15.6 incentive-alignment framework — says "they want to save money" rather than "the forecast serves a preferred budget outcome." Award 3–4 pts for the explanation.</td>
+            <td class="td-min"><span class="cell-pts">2–4 pts</span>Names anchoring or overconfidence instead of gaming. Partial explanation that identifies the financial incentive without connecting it to the Ch. 15.6 gaming definition. Award 2 pts for identifying that the divergence is suspicious and budget-related.</td>
+            <td class="td-none"><span class="cell-pts">0–1 pts</span>No bias identified. Or characterizes Manager 3's behavior as dishonesty or error rather than a rational incentive-aligned response.</td>
+          </tr>
+          <tr>
+            <td class="td-crit">4c — Combined forecast + comparison<span class="crit-pts">8 pts</span><span class="crit-lo">LO11-5 · LO11-7</span></td>
+            <td class="td-full"><span class="cell-pts">8 pts</span>Combined forecast correctly computed as simple average of all 3 estimates (not just M1+M2). Error magnitudes for both methods stated. Winner identified with error values explicitly compared. Uses student's own Part 2a F(T+1) for the ES comparison.</td>
+            <td class="td-part"><span class="cell-pts">5–7 pts</span>Combined forecast correct. One error magnitude slightly off due to rounding of Part 2a. Winner identified. Or: averages only M1 and M2 (excludes M3) and notes this produces a different result.</td>
+            <td class="td-min"><span class="cell-pts">2–4 pts</span>Combined forecast computation shown but arithmetic error in average. Or: comparison attempted but ES value from architecture used instead of student's own Part 2 result.</td>
+            <td class="td-none"><span class="cell-pts">0–1 pts</span>No combined forecast computed. Or comparison absent. Or cross-version data used.</td>
+          </tr>
+          <tr>
+            <td class="td-crit">4d — Management summary<span class="crit-pts">14 pts</span><span class="crit-lo">LO11-7 · LO11-8</span></td>
+            <td class="td-full"><span class="cell-pts">14 pts</span>All four elements present and addressed using student's own computed values: (1) MAPE from 3a cited numerically; (2) bias direction and magnitude from 2d cited numerically; (3) clear condition under which judgmental input takes priority over statistical model (new product, structural break, or historical data no longer reflects current environment); (4) one specific condition that would change the recommendation. Internally consistent recommendation (statistical/combined/hybrid).</td>
+            <td class="td-part"><span class="cell-pts">10–13 pts</span>Three of four elements present. Most commonly missing: element (4) the condition for changing the recommendation. Deduct 1 pt per missing element. Deduct 1 additional pt if MAPE and bias values are not cited numerically (uses "the MAPE was acceptable" without stating the number).</td>
+            <td class="td-min"><span class="cell-pts">5–9 pts</span>Two elements present. Generic language ("statistical models are more objective") not grounded in the student's computed values. Or: recommendation is internally inconsistent (recommends statistical model despite high positive bias without acknowledging the tension).</td>
+            <td class="td-none"><span class="cell-pts">0–4 pts</span>Summary is absent, or one or zero elements present, or entirely generic with no reference to student's own computed values.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- GRADING NOTES -->
+  <div>
+    <div class="sec-heading">Grading Efficiency Notes</div>
+    <div style="margin-top:14px;" class="notes-list">
+      <div class="note-item"><div class="note-num">1</div><span><strong>Check Part 2a F₁ value before grading anything else.</strong> If F₁ is wrong (uses Gate 2 Q2 scale value like 500, 800, 150, or 1200 instead of D₁), the entire Part 2 chain is wrong. Apply the propagation rule only if the formula itself is correct — deduct once at origin (2a receives 0), then award full method credit for 2b–2d if the student's own values are used consistently thereafter.</span></div>
+      <div class="note-item"><div class="note-num">2</div><span><strong>Part 2d bias sign confusion is the most common error across all versions.</strong> The correct formula is Bias = Σ(Actual − Forecast)/N. Since demand is upward-trending and ES lags, all versions produce positive bias (systematic under-forecast). A student who states "negative bias = under-forecast" has the sign convention backwards — note the error and apply partial credit for 2d (3 pts if the calculation is correct but the interpretation is reversed).</span></div>
+      <div class="note-item"><div class="note-num">3</div><span><strong>Version B: MAD = Bias is not an error.</strong> Version B (IV solution bags, α=0.20, F₁=85) generates all-positive errors because F₁=D₁ with a demand series that never decreases. This means |error| = error for every period, so MAD and Bias are numerically equal (both = 4.82). Do not flag this as an error — it is a pedagogically intended edge case. If a student notices and comments on it, note it positively.</span></div>
+      <div class="note-item"><div class="note-num">4</div><span><strong>Part 3c: accept any internally consistent recommendation.</strong> ES, shorter MA, or longer MA are all defensible depending on how the student interprets the demand pattern and weighs the bias finding. The grading target is the quality of reasoning, not the method chosen. Do not penalize a student who recommends the shorter MA if they correctly argue it showed the lowest single-period error and the demand pattern warrants responsiveness.</span></div>
+      <div class="note-item"><div class="note-num">5</div><span><strong>Part 4b is the primary AI-detection criterion.</strong> A post that simply says "forecast gaming" without explaining the incentive mechanism (budget controller → lower forecast → smaller authorization → appears cost-efficient) is consistent with AI-generated text. Full credit requires the incentive chain. A student who writes "forecast gaming" and then explains overconfidence is misidentifying the bias — award 3 pts for the correct label, 0 pts for the mechanism explanation.</span></div>
+      <div class="note-item"><div class="note-num">6</div><span><strong>Part 4d: require numerical citations from the student's own Parts 2–3.</strong> "The MAPE was acceptable" without stating the student's own MAPE number should receive 1 pt less on element (1). The purpose of the management summary is to practice using computed evidence in a recommendation — students who write generically without citing their own values are not demonstrating LO11-7 or LO11-8 at the apply/analyze level.</span></div>
+    </div>
+  </div>
+
+  <!-- QUICK SCORE REFERENCE -->
+  <div>
+    <div class="sec-heading">Quick Score Reference</div>
+    <div style="border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;background:white;margin-top:14px;">
+      <table class="speed-table">
+        <thead><tr><th>Score</th><th>What it signals</th><th style="text-align:right;">Letter</th></tr></thead>
+        <tbody>
+          <tr><td style="font-weight:700;color:var(--green);">90–100</td><td>All parts complete. Version-specific calculations correct with work shown. Bias sign interpreted correctly. Part 4d cites own computed MAPE and bias values. Method recommendation internally consistent with evidence.</td><td style="text-align:right;font-weight:700;">A</td></tr>
+          <tr><td style="font-weight:700;color:var(--amber);">75–89</td><td>Most parts strong. One or two minor gaps. Part 2 chain correct with possible rounding propagation. Part 3c missing one element. Part 4b names the bias correctly but mechanism explanation is thin.</td><td style="text-align:right;font-weight:700;">B</td></tr>
+          <tr><td style="font-weight:700;color:var(--orange);">60–74</td><td>Part 2 chain uses wrong F₁ or formula error. Part 3c is generic. Part 4b names wrong bias. Part 4d has no numerical citations. Structural calculation errors in multiple parts.</td><td style="text-align:right;font-weight:700;">C</td></tr>
+          <tr><td style="font-weight:700;color:var(--red);">Below 60</td><td>Multiple parts incomplete or misapplied. Wrong version data used. ES formula applied incorrectly throughout. Part 4 analysis absent or entirely generic. Consider individual follow-up before returning grade.</td><td style="text-align:right;font-weight:700;">D / F</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

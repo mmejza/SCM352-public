@@ -1,0 +1,45 @@
+<section class="slide-page" data-title="The MAPE Formula" data-lo="LO11-6" data-notes="Gate 2 Q6 computation slide. Key insight: MAPE uses actual demand (not forecast) in the denominator. Common error: dividing by forecast. Second common error: using signed errors instead of absolute values. MAPE enables cross-product comparison when demand volumes differ.">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">M11</span>
+      <span class="le-course">SCM 352 · Module 11</span>
+    </div>
+    <span class="le-pagenum">14 / 20</span>
+  </div>
+
+  <div class="le-titleblock">
+    <div class="le-title">The MAPE <span>Formula</span></div>
+    <div class="le-sub">Mean Absolute Percentage Error — scales accuracy relative to demand volume</div>
+  </div>
+
+  <div class="le-body">
+    <div class="formula-box">MAPE = (1/n) × Σ ( |D<sub>t</sub> − F<sub>t</sub>| / D<sub>t</sub> ) × 100%</div>
+    <div class="two-col" style="margin-top:8px;">
+      <div class="callout teal">
+        <div class="callout-label">Why MAPE — Not Just MAD</div>
+        <p>MAD is in the same units as demand. A MAD of 15 units means something different for a product selling 50 units/week vs. 5,000 units/week. <strong>MAPE normalizes error as a percentage of actual demand</strong>, making accuracy comparable across products at different volume levels.</p>
+        <p style="margin-top:5px;">MAD = 15 on demand of 50 → 30% error. MAD = 15 on demand of 5,000 → 0.3% error. Only MAPE reveals which model is actually more accurate.</p>
+      </div>
+      <div>
+        <div class="callout amber">
+          <div class="callout-label">Per-Period Calculation</div>
+          <p>For each period t:</p>
+          <p style="margin-top:4px;">APE<sub>t</sub> = |D<sub>t</sub> − F<sub>t</sub>| / D<sub>t</sub> × 100%</p>
+          <p style="margin-top:4px;">Then MAPE = average of all APE<sub>t</sub> values.</p>
+        </div>
+        <div class="callout red" style="margin-top:8px;">
+          <div class="callout-label">Critical: Denominator = Actual</div>
+          <p>Divide by D<sub>t</sub> (actual demand), not F<sub>t</sub> (forecast). Use absolute values in the numerator — MAPE is always positive.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="le-footer">
+    <div class="le-lo-pills"><span class="le-lo-pill">LO11-6</span></div>
+    <div><span class="le-gate-note">Gate 2 Q6 · Ch. 15 §15.2</span></div>
+  </div>
+</section>

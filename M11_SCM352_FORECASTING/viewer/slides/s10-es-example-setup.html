@@ -1,0 +1,45 @@
+<section class="slide-page" data-title="Exponential Smoothing — Example Setup" data-lo="LO11-3" data-notes="Same scenario as MA slides for direct comparison. F1=100, alpha=0.4. Five periods of demand. Attempt before advancing to s11. Solution: F2=100.00, F3=102.00, F4=100.40, F5=104.24, F6=105.74.">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">M11</span>
+      <span class="le-course">SCM 352 · Module 11</span>
+    </div>
+    <span class="le-pagenum">10 / 20</span>
+  </div>
+
+  <div class="le-titleblock">
+    <div class="le-title">Exponential Smoothing — <span>Example Setup</span></div>
+    <div class="le-sub">Same pharmacy scenario — attempt the recursive computation before advancing</div>
+  </div>
+
+  <div class="le-body">
+    <div class="callout amber">
+      <div class="callout-label">Attempt Before Advancing</div>
+      <p>Complete the ES forecast chain for F<sub>2</sub> through F<sub>6</sub>. Show each calculation step. Round to two decimal places.</p>
+    </div>
+    <div class="callout navy" style="margin-top:8px;">
+      <div class="callout-label" style="color:var(--teal);">Scenario</div>
+      <p style="color:rgba(255,255,255,.88);">The same Riverside pharmacy now applies exponential smoothing to forecast weekly antibiotic demand. The initial forecast is <strong style="color:#fff;">F<sub>1</sub> = 100</strong> and the smoothing parameter is <strong style="color:#fff;">α = 0.4</strong>.</p>
+    </div>
+    <table class="clean-table" style="margin-top:8px;">
+      <thead><tr><th>Period (t)</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Actual Demand D<sub>t</sub></strong></td><td>100</td><td>105</td><td>98</td><td>110</td><td>108</td></tr>
+        <tr><td><strong>Forecast F<sub>t</sub></strong></td><td>100</td><td>?</td><td>?</td><td>?</td><td>?</td></tr>
+      </tbody>
+    </table>
+    <div class="callout teal" style="margin-top:8px;">
+      <div class="callout-label">Formula Reminder</div>
+      <p>F<sub>t+1</sub> = α · D<sub>t</sub> + (1−α) · F<sub>t</sub> &nbsp;=&nbsp; 0.4 · D<sub>t</sub> + 0.6 · F<sub>t</sub></p>
+      <p style="margin-top:4px;">Compute F<sub>6</sub> (the forecast for Period 6) after completing the chain.</p>
+    </div>
+  </div>
+
+  <div class="le-footer">
+    <div class="le-lo-pills"><span class="le-lo-pill">LO11-3</span></div>
+    <div><span class="le-gate-note">Gate 2 Q2 · Ch. 15 §15.3</span></div>
+  </div>
+</section>

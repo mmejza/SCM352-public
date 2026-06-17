@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Canvas Module M11 Configuration Guide — SCM 352</title>
+<style>
+:root{
+  --navy:#1a3a5c;--blue:#2563a8;--blue-lt:#dbeafe;--blue-xlt:#eff6ff;
+  --gold:#f59e0b;--gold-lt:#fffbeb;--gold-bdr:#fde68a;
+  --green:#16a34a;--green-lt:#f0fdf4;--green-bdr:#bbf7d0;
+  --red:#dc2626;--red-lt:#fef2f2;--red-bdr:#fecaca;
+  --gray-50:#f9fafb;--gray-100:#f3f4f6;--gray-200:#e5e7eb;
+  --gray-400:#9ca3af;--gray-600:#4b5563;--gray-700:#374151;--gray-800:#1f2937;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--gray-50);color:var(--gray-800);font-size:13px;line-height:1.5;}
+.pg-header{background:var(--navy);color:white;padding:18px 28px;display:flex;align-items:center;gap:14px;}
+.badge{background:var(--gold);color:var(--navy);font-weight:700;font-size:10px;padding:3px 8px;border-radius:4px;letter-spacing:.06em;text-transform:uppercase;flex-shrink:0;}
+.pg-header h1{font-size:17px;font-weight:700;}
+.pg-header p{font-size:12px;color:rgba(255,255,255,.6);margin-top:3px;}
+.header-right{margin-left:auto;font-size:12px;color:rgba(255,255,255,.5);text-align:right;line-height:1.7;}
+.pg-body{max-width:980px;margin:0 auto;padding:24px 20px 60px;display:flex;flex-direction:column;gap:28px;}
+.sec-heading{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--gray-400);padding-bottom:10px;border-bottom:1px solid var(--gray-200);margin-bottom:4px;}
+.card{background:white;border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;}
+.card-hd{padding:14px 20px;border-bottom:1px solid var(--gray-200);display:flex;align-items:flex-start;gap:10px;}
+.card-hd h2{font-size:14px;font-weight:700;color:var(--navy);}
+.card-hd p{font-size:12px;color:var(--gray-600);margin-top:2px;}
+.card-bd{padding:18px 20px;}
+.alert{border-radius:10px;padding:12px 16px;font-size:13px;line-height:1.6;display:flex;gap:10px;align-items:flex-start;}
+.alert-icon{font-size:17px;flex-shrink:0;margin-top:1px;}
+.alert-body{flex:1;}
+.alert-body strong{display:block;margin-bottom:3px;}
+.alert-red{background:var(--red-lt);border:1.5px solid var(--red-bdr);}
+.alert-gold{background:var(--gold-lt);border:1.5px solid var(--gold-bdr);}
+.alert-blue{background:var(--blue-xlt);border:1.5px solid #bfdbfe;}
+.checklist{display:flex;flex-direction:column;gap:6px;}
+.check-item{display:flex;align-items:center;gap:8px;padding:6px 10px;border:1px solid var(--gray-200);border-radius:6px;background:var(--gray-50);font-size:12.5px;}
+.check-item input[type=checkbox]{width:14px;height:14px;flex-shrink:0;}
+.check-item label{flex:1;line-height:1.4;}
+.check-tag{font-size:10px;font-weight:700;padding:2px 7px;border-radius:100px;white-space:nowrap;}
+.tag-file{background:#dbeafe;color:#1e40af;}
+.tag-canvas{background:#dcfce7;color:#166534;}
+.tag-config{background:#faf5ff;color:#6b21a8;}
+.tag-verify{background:#fff7ed;color:#9a3412;}
+.seq-table{width:100%;border-collapse:collapse;font-size:12.5px;}
+.seq-table th{background:var(--navy);color:white;padding:9px 12px;text-align:left;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;}
+.seq-table td{padding:9px 12px;border-bottom:1px solid var(--gray-100);vertical-align:middle;}
+.seq-table tr:last-child td{border-bottom:none;}
+.seq-table tr.gated td{background:#fafafe;}
+.item-num{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:white;}
+.n-open{background:var(--green);}
+.n-gate{background:var(--gold);color:var(--navy);}
+.n-lock{background:var(--gray-400);}
+.type-pill{font-size:10px;font-weight:700;padding:2px 7px;border-radius:100px;white-space:nowrap;}
+.tp-page{background:#dbeafe;color:#1e40af;}
+.tp-link{background:#f0fdf4;color:#166534;}
+.tp-quiz{background:#fffbeb;color:#92400e;}
+.tp-media{background:#faf5ff;color:#6b21a8;}
+.tp-tool{background:#f0fdfe;color:#0e7490;}
+.tp-disc{background:#fff7ed;color:#9a3412;}
+.tp-assign{background:#fef2f2;color:#991b1b;}
+.open-note{font-size:11px;color:var(--green);font-weight:600;}
+.lock-note{font-size:11px;color:var(--gray-400);font-weight:600;}
+.ver-table{width:100%;border-collapse:collapse;font-size:12.5px;}
+.ver-table th{background:var(--navy);color:white;padding:9px 12px;text-align:left;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;}
+.ver-table td{padding:9px 12px;border-bottom:1px solid var(--gray-100);vertical-align:top;}
+.ver-table tr:last-child td{border-bottom:none;}
+.ver-a{background:#f0fdf4;} .ver-b{background:var(--blue-xlt);} .ver-c{background:#faf5ff;} .ver-d{background:var(--gold-lt);}
+.mon-row{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--gray-100);}
+.mon-row:last-child{border-bottom:none;}
+.mon-day{font-size:11px;font-weight:800;padding:3px 9px;border-radius:100px;white-space:nowrap;flex-shrink:0;}
+.day-3{background:#dbeafe;color:#1e40af;}
+.day-4{background:#f0fdf4;color:#166534;}
+.day-6{background:var(--red-lt);color:var(--red);border:1px solid var(--red-bdr);}
+.post{background:var(--green-lt);color:var(--green);border:1px solid var(--green-bdr);}
+.spec-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;margin-top:4px;}
+.spec-card{border:1px solid var(--gray-200);border-radius:10px;overflow:hidden;}
+.spec-hd{padding:9px 14px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--gray-200);}
+.spec-hd h3{font-size:12.5px;font-weight:700;color:var(--gray-800);flex:1;}
+.spec-bd{padding:10px 14px;font-size:12px;color:var(--gray-700);}
+.spec-row{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--gray-100);gap:8px;}
+.spec-row:last-child{border-bottom:none;}
+.spec-key{color:var(--gray-400);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.04em;flex-shrink:0;}
+.spec-val{font-weight:600;color:var(--gray-800);text-align:right;}
+</style>
+</head>
+<body>
+
+<div class="pg-header">
+  <div class="badge">SCM 352 · M11</div>
+  <div>
+    <h1>Canvas Module M11 Configuration Guide — Forecasting</h1>
+    <p>Instructor use only · Pre-launch setup reference</p>
+  </div>
+  <div class="header-right">12 module items<br>Est. setup: 30–45 min</div>
+</div>
+
+<div class="pg-body">
+
+  <!-- PRE-LAUNCH CHECKLIST -->
+  <div>
+    <div class="sec-heading">Step 0 — Pre-Launch Checklist</div>
+    <div class="card" style="margin-top:14px;">
+      <div class="card-hd" style="background:var(--gold-lt);">
+        <div><h2 style="color:#92400e;">Complete before touching Canvas</h2><p style="color:#a16207;">All assets must be ready before configuring the module sequence</p></div>
+      </div>
+      <div class="card-bd">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+          <div>
+            <div style="font-size:11px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--gray-400);margin-bottom:8px;">Files to Have Ready</div>
+            <div class="checklist">
+              <div class="check-item"><input type="checkbox"><label><strong>Gates QTI zip</strong> — <code>gates/SCM352_M11_Gates_QTI.zip</code></label><span class="check-tag tag-file">FILE</span></div>
+              <div class="check-item"><input type="checkbox"><label><strong>App 1 HTML</strong> — <code>apps/M11_Forecasting_Method_Workbench.html</code></label><span class="check-tag tag-file">FILE</span></div>
+              <div class="check-item"><input type="checkbox"><label><strong>App 2 HTML</strong> — <code>apps/M11_MAD_Bias_Calculator.html</code></label><span class="check-tag tag-file">FILE</span></div>
+              <div class="check-item"><input type="checkbox"><label><strong>App 3 HTML (optional)</strong> — <code>apps/M11_Seasonal_Forecast_Builder.html</code> — enrichment only, not required</label><span class="check-tag tag-file">FILE</span></div>
+              <div class="check-item"><input type="checkbox"><label><strong>Slide viewer</strong> — <code>viewer/</code> (index.html + slides/)</label><span class="check-tag tag-file">FILE</span></div>
+              <div class="check-item"><input type="checkbox"><label><strong>Lecture videos</strong> — recorded + captioned from <code>video/</code> scripts</label><span class="check-tag tag-file">FILE</span></div>
+              <div class="check-item"><input type="checkbox"><label><strong>Case PDF</strong> — exported from <code>assessments/M11_Case.md</code></label><span class="check-tag tag-file">FILE</span></div>
+              <div class="check-item"><input type="checkbox"><label><strong>Publisher reading URL</strong> — Chapter 15 link</label><span class="check-tag tag-file">FILE</span></div>
+            </div>
+          </div>
+          <div>
+            <div style="font-size:11px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--gray-400);margin-bottom:8px;">Canvas Actions</div>
+            <div class="checklist">
+              <div class="check-item"><input type="checkbox"><label><strong>Import Gates QTI</strong> — Course Settings → Import → QTI .zip</label><span class="check-tag tag-canvas">CANVAS</span></div>
+              <div class="check-item"><input type="checkbox"><label><strong>Upload app files</strong> — Files → M11_Apps folder</label><span class="check-tag tag-canvas">CANVAS</span></div>
+              <div class="check-item"><input type="checkbox"><label><strong>Upload slide viewer</strong> — Files → M11_Viewer folder</label><span class="check-tag tag-canvas">CANVAS</span></div>
+              <div class="check-item"><input type="checkbox"><label><strong>Upload lecture videos</strong> — Canvas Media → M11 folder + captions</label><span class="check-tag tag-canvas">CANVAS</span></div>
+              <div class="check-item"><input type="checkbox"><label><strong>Configure Gate 2 versions</strong> — Question Groups for Q1 and Q2 (V1–V4)</label><span class="check-tag tag-config">CONFIG</span></div>
+              <div class="check-item"><input type="checkbox"><label><strong>Create Canvas Module</strong> — name + enable sequential</label><span class="check-tag tag-canvas">CANVAS</span></div>
+              <div class="check-item"><input type="checkbox"><label><strong>Verify Gate 1 lock</strong> — test in Student View</label><span class="check-tag tag-verify">VERIFY</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODULE SEQUENCE -->
+  <div>
+    <div class="sec-heading">Step 1 — Module Sequence Quick Reference</div>
+    <div class="card" style="margin-top:12px;">
+      <table class="seq-table">
+        <thead>
+          <tr>
+            <th style="width:4%">#</th>
+            <th style="width:28%">Canvas Item Name</th>
+            <th style="width:11%">Type</th>
+            <th style="width:8%">Points</th>
+            <th style="width:14%">Due / Opens</th>
+            <th style="width:13%">Timer / Attempts</th>
+            <th style="width:22%">Unlock Condition</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><div class="item-num n-open">1</div></td><td><strong>Module M11 Overview</strong></td><td><span class="type-pill tp-page">Page</span></td><td>—</td><td>Open on release</td><td>—</td><td><span class="open-note">No requirement</span></td></tr>
+          <tr><td><div class="item-num n-open">2</div></td><td><strong>Chapter 15 Reading</strong></td><td><span class="type-pill tp-link">Ext. URL</span></td><td>—</td><td>Open on release</td><td>—</td><td><span class="open-note">Must view #1</span></td></tr>
+          <tr><td><div class="item-num n-gate">3</div></td><td><strong>Gate 1 — Reading Check</strong></td><td><span class="type-pill tp-quiz">Quiz</span></td><td>0</td><td>Due Day 2</td><td>2 attempts<br>24-hr cooldown</td><td><span class="open-note">Must view #2</span></td></tr>
+          <tr class="gated"><td><div class="item-num n-lock">4</div></td><td><strong>Lecture: What Your Forecast Is Actually Measuring</strong></td><td><span class="type-pill tp-media">Media</span></td><td>—</td><td>After Gate 1</td><td>—</td><td><span class="lock-note">🔒 Gate 1 ≥ 80%</span></td></tr>
+          <tr class="gated"><td><div class="item-num n-lock">5</div></td><td><strong>Lecture: Expert Judgment, Bias, and Forecasting Under Uncertainty</strong></td><td><span class="type-pill tp-media">Media</span></td><td>—</td><td>After Gate 1</td><td>—</td><td><span class="lock-note">🔒 Must view #4</span></td></tr>
+          <tr class="gated"><td><div class="item-num n-lock">6</div></td><td><strong>Slide Deck — Module M11</strong></td><td><span class="type-pill tp-tool">Ext. Tool</span></td><td>—</td><td>After Gate 1</td><td>—</td><td><span class="lock-note">🔒 Must view #5</span></td></tr>
+          <tr class="gated"><td><div class="item-num n-lock">7</div></td><td><strong>App 1: Forecasting Method Workbench</strong></td><td><span class="type-pill tp-tool">Ext. Tool</span></td><td>—</td><td>After Gate 1</td><td>—</td><td><span class="lock-note">🔒 Must view #6</span></td></tr>
+          <tr class="gated"><td><div class="item-num n-lock">8</div></td><td><strong>App 2: MAD and Bias Calculator</strong></td><td><span class="type-pill tp-tool">Ext. Tool</span></td><td>—</td><td>After Gate 1</td><td>—</td><td><span class="lock-note">🔒 Must view #7</span></td></tr>
+          <tr class="gated"><td><div class="item-num n-lock">9</div></td><td><strong>App 3: Seasonal Forecast Builder (Optional)</strong></td><td><span class="type-pill tp-tool">Ext. Tool</span></td><td>—</td><td>After Gate 1</td><td>—</td><td><span class="lock-note">🔒 Must view #8 · Optional enrichment — not required</span></td></tr>
+          <tr class="gated"><td><div class="item-num n-lock">10</div></td><td><strong>Discussion: Forecasting Failures and Fixes</strong></td><td><span class="type-pill tp-disc">Discussion</span></td><td>30</td><td>Following module close</td><td>—</td><td><span class="lock-note">🔒 Must view #8</span></td></tr>
+          <tr class="gated"><td><div class="item-num n-lock">11</div></td><td><strong>Gate 2 Quiz</strong></td><td><span class="type-pill tp-quiz">Quiz</span></td><td>100</td><td>Due Day 6<br>11:59 PM</td><td>90 min<br>1 attempt</td><td><span class="lock-note">🔒 Must post #10</span></td></tr>
+          <tr class="gated"><td><div class="item-num n-lock">12</div></td><td><strong>Case Analysis M11</strong></td><td><span class="type-pill tp-assign">Assignment</span></td><td>100</td><td>Due Day 6<br>11:59 PM</td><td>—</td><td><span class="lock-note">🔒 Must submit #11</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="alert alert-gold" style="margin-top:10px;">
+      <div class="alert-icon">⚠️</div>
+      <div class="alert-body"><strong>Item 10 unlock note:</strong> Discussion (Item 10) requires completion of Item 8 (App 2: MAD and Bias Calculator). Item 9 (App 3: Seasonal Forecast Builder) is optional enrichment — it is NOT in the required prerequisite chain. Students who skip Item 9 can still post to the Discussion.</div>
+    </div>
+  </div>
+
+  <!-- ITEM CONFIG SPECS -->
+  <div>
+    <div class="sec-heading">Step 2 — Item Configuration Specs (Module-Specific Items)</div>
+    <div class="alert alert-gold" style="margin-top:12px;">
+      <div class="alert-icon">ℹ️</div>
+      <div class="alert-body">Items 1–3 and 10–12 follow the same configuration as M01 (see M01_Module_Config.html for full specs). Only module-specific items are detailed below.</div>
+    </div>
+    <div class="spec-grid" style="margin-top:14px;">
+
+      <div class="spec-card" style="border-color:#fde68a;">
+        <div class="spec-hd" style="background:var(--gold-lt);border-color:#fde68a;">
+          <div class="item-num n-gate" style="width:22px;height:22px;font-size:10px;">3</div>
+          <h3>Gate 1 — Reading Check</h3>
+          <span class="type-pill tp-quiz">Quiz</span>
+        </div>
+        <div class="spec-bd">
+          <div class="spec-row"><span class="spec-key">Points</span><span class="spec-val">0</span></div>
+          <div class="spec-row"><span class="spec-key">Questions</span><span class="spec-val">5 from bank of 7</span></div>
+          <div class="spec-row"><span class="spec-key">Attempts</span><span class="spec-val">2 (24-hr cooldown)</span></div>
+          <div class="spec-row"><span class="spec-key">Due</span><span class="spec-val">Day 2 · 11:59 PM</span></div>
+          <div class="spec-row"><span class="spec-key">Requirement</span><span class="spec-val" style="color:var(--red);font-weight:800;">Score ≥ 80%</span></div>
+        </div>
+      </div>
+
+      <div class="spec-card" style="border-color:var(--gold-bdr);">
+        <div class="spec-hd" style="background:var(--gold-lt);border-color:var(--gold-bdr);">
+          <div class="item-num n-gate" style="width:22px;height:22px;font-size:10px;">11</div>
+          <h3>Gate 2 Quiz</h3>
+          <span class="type-pill tp-quiz">Quiz</span>
+        </div>
+        <div class="spec-bd">
+          <div class="spec-row"><span class="spec-key">Points</span><span class="spec-val">100</span></div>
+          <div class="spec-row"><span class="spec-key">Attempts</span><span class="spec-val" style="color:var(--red);font-weight:800;">1 only</span></div>
+          <div class="spec-row"><span class="spec-key">Time limit</span><span class="spec-val" style="color:var(--red);font-weight:800;">90 minutes</span></div>
+          <div class="spec-row"><span class="spec-key">Due</span><span class="spec-val">Day 6 · 11:59 PM</span></div>
+          <div class="spec-row"><span class="spec-key">Versions</span><span class="spec-val">V1–V4 for Q1 + Q2</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- GATE 2 VERSION TABLE -->
+  <div>
+    <div class="sec-heading">Step 3 — Gate 2 Version Reference (Q1 and Q2)</div>
+    <div class="alert alert-blue" style="margin-top:12px;">
+      <div class="alert-icon">ℹ️</div>
+      <div class="alert-body"><strong>Canvas question group configuration:</strong> Q1 (Moving Average) and Q2 (Exponential Smoothing) are parameterized as Canvas question groups with 4 versions each (V1–V4). Canvas auto-assigns one version per student at quiz load. Q3, Q4, Q5, Q6, Q7, Q8 are single fixed versions.</div>
+    </div>
+    <div style="border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;margin-top:14px;background:white;">
+      <table class="ver-table">
+        <thead><tr><th>Version</th><th>Q1 Industry Context</th><th>Q1 Demand Series</th><th>Q1 Windows</th><th>Q2 Alpha / F₁</th><th>Q2 Product Scale</th></tr></thead>
+        <tbody>
+          <tr class="ver-a"><td><strong>V1 (A)</strong></td><td>Riverside Health System — surgical glove boxes</td><td>120,130,115,125,132,128,140,135 (N=8, Wk 9 actual=138)</td><td>3-week vs. 5-week</td><td>α=0.30 / F₁=500</td><td>~500 units/week</td></tr>
+          <tr class="ver-b"><td><strong>V2 (B)</strong></td><td>Regional hospital pharmacy — IV solution bags</td><td>85,90,88,92,95,91,98,96,100 (N=9, Wk 10 actual=102)</td><td>4-week vs. 6-week</td><td>α=0.20 / F₁=800</td><td>~800 units/week</td></tr>
+          <tr class="ver-c"><td><strong>V3 (C)</strong></td><td>Hospital lab — reagent kit units</td><td>200,195,210,205,198,215,208,220 (N=8, Wk 9 actual=225)</td><td>3-week vs. 5-week</td><td>α=0.40 / F₁=150</td><td>~150 units/week</td></tr>
+          <tr class="ver-d"><td><strong>V4 (D)</strong></td><td>Health system — orthopedic supply units</td><td>310,295,320,305,315,330,318,340,328,345 (N=10, Wk 11 actual=350)</td><td>4-week vs. 8-week</td><td>α=0.25 / F₁=1200</td><td>~1200 units/week</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:11.5px;color:var(--gray-400);margin-top:6px;padding-left:4px;">Gate 2 Q2 uses the original architecture F₁ values (500/800/150/1200). The Case Analysis M11 uses corrected F₁=D₁ values — these are different assessments with different parameters. Do not cross-apply.</p>
+  </div>
+
+  <!-- MONITORING -->
+  <div>
+    <div class="sec-heading">Step 4 — During-Module Monitoring</div>
+    <div class="card" style="margin-top:14px;">
+      <div class="card-hd"><div><h2>Weekly monitoring actions — 30 min total</h2></div></div>
+      <div class="card-bd">
+        <div class="mon-row"><div class="mon-day day-3">Day 3</div><div><strong>Pull Gate 1 completion report.</strong> The MAE=MAD equivalence (G1-Q5) and "Level" as a fourth demand component (G1-Q2) are chapter-exclusive and not in the slides. Students with 0 Gate 1 attempts by Day 3 need a prompt — they cannot access any graded content until they pass Gate 1.</div></div>
+        <div class="mon-row"><div class="mon-day day-4">Day 4</div><div><strong>Scan discussion initial posts.</strong> Watch for: (a) posts that use the Cisco 2000 case — this is the prohibited example from the module overview; send resubmission request. (b) posts that describe the failure in general terms without identifying a specific demand component — look for vocabulary from Chapter 15 (level, trend, seasonality, randomness). (c) posts describing "high bias" but computing signed vs. unsigned errors incorrectly in their diagnosis section.</div></div>
+        <div class="mon-row"><div class="mon-day day-6">Day 6</div><div><strong>After Gate 2 closes:</strong> Export quiz statistics. Common error patterns to watch: Q1 window bound errors (students include the current period's forecast in the MA calculation); Q2 rounding errors in the ES chain; Q3 bias sign confusion (students compute |errors| for bias instead of signed errors); Q6 denominator errors in MAPE (students divide by forecast instead of actual demand); Q7 confusion of anchoring vs. overconfidence — anchoring requires naming the structural trigger (preliminary estimate presented first).</div></div>
+        <div class="mon-row"><div class="mon-day post">Post-module</div><div><strong>Grade Discussion initial posts</strong> after following-module close. See M11_Discussion_Rubric.html. Grading note: posts that correctly identify forecast gaming as the bias in the Part 4 scenario (budget controller under-forecasting) earn full credit for Part 3 (Error Type) even if the rest of Part 4 terminology is imprecise — the gaming identification is the primary diagnostic signal.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GRADING EFFICIENCY -->
+  <div>
+    <div class="sec-heading">Assessment Grading Summary</div>
+    <div class="card" style="margin-top:14px;">
+      <table class="seq-table">
+        <thead><tr><th>Assessment</th><th>Points</th><th>Autograded?</th><th>Est. Time / Student</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Gate 1</strong></td><td>0</td><td style="color:var(--green);font-weight:700;">Yes</td><td>0 min</td><td>Monitor completion rates only</td></tr>
+          <tr><td><strong>Gate 2 Q1, Q2</strong></td><td>26 pts combined</td><td style="color:var(--green);font-weight:700;">Yes — numeric</td><td>~2 min</td><td>Verify window bounds for Q1; verify ES chain at F₂ and F₅ for Q2</td></tr>
+          <tr><td><strong>Gate 2 Q3</strong></td><td>14 pts</td><td style="color:var(--green);font-weight:700;">Partial — check bias sign</td><td>~4 min</td><td>Verify MAD denominator; verify signed errors for bias (not absolute)</td></tr>
+          <tr><td><strong>Gate 2 Q4, Q5</strong></td><td>20 pts combined</td><td style="color:var(--red);font-weight:700;">No — rubric</td><td>~5 min</td><td>Q4(c) requires acknowledgment that MA/ES cannot handle seasonality — accept any answer noting this structural limitation</td></tr>
+          <tr><td><strong>Gate 2 Q6</strong></td><td>14 pts</td><td style="color:var(--green);font-weight:700;">Partial — check denominator</td><td>~5 min</td><td>MAPE denominator must be actual demand (not forecast); award partial for correct per-period APE even if summary average is wrong</td></tr>
+          <tr><td><strong>Gate 2 Q7, Q8</strong></td><td>26 pts combined</td><td style="color:var(--red);font-weight:700;">No — rubric</td><td>~8 min</td><td>Q7(b) requires naming anchoring AND structural trigger; Q8 bias sign interpretation is often reversed</td></tr>
+          <tr><td><strong>Discussion</strong></td><td>30</td><td style="color:var(--red);font-weight:700;">No — rubric</td><td>3–5 min</td><td>Initial post only; see M11_Discussion_Rubric.html</td></tr>
+          <tr><td><strong>Case Analysis</strong></td><td>100</td><td style="color:var(--red);font-weight:700;">No — rubric</td><td>8–12 min</td><td>Version-specific Parts 1–2; see M11_Case_Rubric.html; propagation rule applies</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

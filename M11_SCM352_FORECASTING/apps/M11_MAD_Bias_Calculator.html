@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MAD and Bias Calculator — SCM 352 M11</title>
+<style>
+:root {
+  --navy:#1a3a5c; --blue:#2563a8; --blue-lt:#dbeafe; --blue-xlt:#eff6ff; --blue-bdr:#bfdbfe;
+  --gold:#f59e0b; --gold-lt:#fffbeb; --gold-bdr:#fde68a;
+  --green:#16a34a; --green-lt:#f0fdf4; --green-bdr:#bbf7d0; --green-dark:#15803d;
+  --red:#dc2626; --red-lt:#fef2f2; --red-bdr:#fecaca;
+  --amber:#d97706; --amber-lt:#fffbeb; --amber-bdr:#fde68a;
+  --gray-50:#f9fafb; --gray-100:#f3f4f6; --gray-200:#e5e7eb; --gray-300:#d1d5db;
+  --gray-400:#9ca3af; --gray-600:#4b5563; --gray-700:#374151; --gray-800:#1f2937;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--gray-50);color:var(--gray-800);min-height:100vh;}
+header{background:var(--navy);color:white;padding:14px 24px;display:flex;align-items:center;gap:14px;}
+.hbadge{background:var(--gold);color:var(--navy);font-weight:700;font-size:11px;padding:3px 8px;border-radius:4px;letter-spacing:.05em;text-transform:uppercase;}
+header h1{font-size:17px;font-weight:600;}
+.hlo{margin-left:auto;font-size:11px;color:rgba(255,255,255,.6);}
+
+.scen-nav{background:white;border-bottom:2px solid var(--gray-200);padding:0 20px;display:flex;gap:0;overflow-x:auto;}
+.sbtn{padding:11px 18px;border:none;background:none;cursor:pointer;font-size:13px;font-weight:500;color:var(--gray-600);border-bottom:3px solid transparent;white-space:nowrap;transition:all .15s;}
+.sbtn:hover{color:var(--blue);}
+.sbtn.active{color:var(--blue);border-bottom-color:var(--blue);font-weight:600;}
+.sbtn.done::after{content:' ✓';color:var(--green);}
+
+.wrap{max-width:820px;margin:0 auto;padding:22px 20px;}
+
+/* step progress */
+.step-track{display:flex;gap:0;background:white;border:1px solid var(--gray-200);border-radius:10px;overflow:hidden;margin-bottom:20px;}
+.step-item{flex:1;padding:10px 8px;text-align:center;font-size:11px;color:var(--gray-400);border-right:1px solid var(--gray-200);cursor:default;}
+.step-item:last-child{border-right:none;}
+.step-item.s-active{background:var(--blue-lt);color:var(--blue);font-weight:700;}
+.step-item.s-done{background:var(--green-lt);color:var(--green);}
+.step-num{display:block;font-size:17px;font-weight:700;line-height:1.2;}
+
+.ctx{background:var(--gray-50);border-left:4px solid var(--blue);padding:12px 16px;border-radius:0 8px 8px 0;font-size:13px;line-height:1.65;margin-bottom:16px;}
+.teach{background:var(--gold-lt);border:1px solid var(--gold-bdr);border-radius:8px;padding:10px 14px;font-size:12px;line-height:1.6;margin-bottom:16px;}
+.teach-lbl{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--amber);margin-bottom:3px;}
+
+.card{background:white;border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;margin-bottom:16px;}
+.card-head{padding:12px 18px;border-bottom:1px solid var(--gray-200);background:var(--blue-lt);}
+.card-head h2{font-size:14px;font-weight:700;color:var(--navy);}
+.card-head p{font-size:12px;color:var(--gray-600);margin-top:3px;}
+.card-body{padding:16px 18px;}
+
+/* error table */
+table.et{width:100%;border-collapse:collapse;font-size:13px;}
+table.et th{background:var(--gray-100);padding:8px 10px;text-align:center;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--gray-600);border-bottom:2px solid var(--gray-200);}
+table.et td{padding:6px 8px;text-align:center;border-bottom:1px solid var(--gray-100);}
+table.et tr:last-child td{border-bottom:none;}
+td.t-given{font-weight:700;color:var(--navy);}
+td.t-period{color:var(--gray-600);font-weight:600;}
+
+input.ei{width:80px;padding:5px 7px;border:2px solid var(--gray-300);border-radius:6px;font-size:12px;text-align:center;transition:border-color .15s;}
+input.ei:focus{outline:none;border-color:var(--blue);}
+input.ei.ok{border-color:var(--green);background:var(--green-lt);}
+input.ei.err{border-color:var(--red);background:var(--red-lt);}
+input.ei:disabled{background:var(--gray-100);color:var(--gray-700);border-color:var(--gray-200);}
+
+/* summary inputs */
+.sum-row{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap;}
+.sum-label{font-size:13px;font-weight:600;color:var(--gray-700);min-width:220px;}
+input.sum-in{width:100px;padding:8px 10px;border:2px solid var(--gray-300);border-radius:8px;font-size:14px;text-align:center;font-weight:600;}
+input.sum-in:focus{outline:none;border-color:var(--blue);}
+input.sum-in.ok{border-color:var(--green);background:var(--green-lt);}
+input.sum-in.err{border-color:var(--red);background:var(--red-lt);}
+input.sum-in:disabled{background:var(--gray-100);color:var(--gray-700);border-color:var(--gray-200);}
+.sum-unit{font-size:12px;color:var(--gray-500);}
+
+/* interpretation */
+.interp-panel{background:white;border:2px solid var(--gray-200);border-radius:12px;padding:18px;margin-bottom:16px;}
+.interp-panel.locked{opacity:.4;pointer-events:none;}
+.interp-panel h3{font-size:14px;font-weight:700;color:var(--navy);margin-bottom:14px;}
+select.interp-sel{padding:9px 12px;border:2px solid var(--gray-300);border-radius:8px;font-size:13px;background:white;cursor:pointer;width:100%;max-width:320px;margin-bottom:14px;}
+select.interp-sel:focus{outline:none;border-color:var(--blue);}
+select.interp-sel.ok{border-color:var(--green);background:var(--green-lt);}
+select.interp-sel.err{border-color:var(--red);background:var(--red-lt);}
+textarea.interp-text{width:100%;padding:10px 12px;border:2px solid var(--gray-300);border-radius:8px;font-size:13px;font-family:inherit;resize:vertical;min-height:76px;margin-bottom:10px;}
+textarea.interp-text:focus{outline:none;border-color:var(--blue);}
+
+/* feedback */
+.fb{display:none;border-radius:8px;overflow:hidden;margin-top:10px;}
+.fb.show{display:block;}
+.fb-banner{padding:9px 13px;font-size:13px;font-weight:700;display:flex;align-items:center;gap:7px;}
+.fb-ok{background:var(--green-lt);color:var(--green);}
+.fb-err{background:var(--red-lt);color:var(--red);}
+.fb-body{padding:11px 13px;font-size:12px;line-height:1.65;background:white;border:1px solid var(--gray-200);border-top:none;border-radius:0 0 8px 8px;}
+
+.model-ans{display:none;background:var(--blue-xlt);border:1px solid var(--blue-bdr);border-radius:8px;padding:13px 16px;font-size:13px;line-height:1.65;margin-top:12px;}
+.model-ans.show{display:block;}
+.model-ans-lbl{font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--blue);margin-bottom:6px;}
+
+.btn{padding:9px 20px;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;transition:all .15s;}
+.btn-primary{background:var(--blue);color:white;}
+.btn-primary:hover{background:#1d4ed8;}
+.btn-primary:disabled{background:var(--gray-400);cursor:not-allowed;}
+.btn-green{background:var(--green);color:white;}
+.btn-green:hover{background:var(--green-dark);}
+.btn-secondary{background:var(--gray-100);color:var(--gray-800);}
+.btn-secondary:hover{background:var(--gray-200);}
+.btn-group{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:12px;}
+.lock-msg{font-size:13px;color:var(--gray-400);font-style:italic;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hbadge">SCM 352 · M11</div>
+  <h1>MAD and Bias Calculator</h1>
+  <div class="hlo">LO11-4 · LO11-8</div>
+</header>
+
+<div class="scen-nav" id="scenNav"></div>
+
+<div class="wrap" id="appWrap"></div>
+
+<script>
+// ═══ DATA ═══════════════════════════════════════════════
+const SCEN=[
+  {
+    id:0,
+    name:"Scenario 1",
+    label:"Mixed Errors",
+    desc:"Riverside Health System uses exponential smoothing (α = 0.25) to forecast weekly demand for surgical dressing kits. The table below shows actual demand and forecast values for 6 consecutive weeks.",
+    actual:[180,195,172,201,188,196],
+    forecast:[175,183,191,179,195,186],
+    insight:"A small positive bias means the model is slightly under-forecasting on average. This is typical when demand drifts upward. The operational response is a modest safety buffer, not a full model recalibration.",
+    bias_type:"Under-forecasting (positive bias)",
+    bias_key:"under",
+    model_response:"The pharmacy should maintain a safety buffer of approximately 3–4 units per week to compensate for the consistent under-forecast. The bias is small enough that recalibrating α is optional — the primary action is adjusting the ordering policy.",
+    difficulty:"Introductory"
+  },
+  {
+    id:1,
+    name:"Scenario 2",
+    label:"Clear Under-Forecast",
+    desc:"Riverside uses exponential smoothing (α = 0.20) to forecast weekly demand for post-surgical antibiotics. Demand has been rising steadily. The table shows 8 weeks of actual demand and forecast values.",
+    actual:[85,92,98,105,112,118,124,130],
+    forecast:[82,82,84,87,90,93,96,99],
+    insight:"A large consistent positive bias (errors all positive) signals a systematic model failure — the model is under-forecasting every period because it cannot track the upward trend. The fix is not adding more buffer stock; it is recalibrating α upward or switching to a trend-tracking method.",
+    bias_type:"Under-forecasting (large consistent positive bias)",
+    bias_key:"under",
+    model_response:"The pharmacy should recalibrate α upward (e.g., to 0.4–0.5) or consider a trend-corrected method. Adding buffer stock covers the symptom but does not address the structural under-forecast. At 18 units of average under-forecast per week, the cumulative shortfall over a 13-week quarter exceeds 200 units.",
+    difficulty:"Intermediate"
+  },
+  {
+    id:2,
+    name:"Scenario 3",
+    label:"High MAD, Near-Zero Bias",
+    desc:"Riverside forecasts weekly demand for pain management medications using exponential smoothing (α = 0.30). Demand fluctuates widely due to varying patient acuity. The table shows 8 weeks of actual demand and forecast values.",
+    actual:[120,155,88,140,95,162,102,148],
+    forecast:[115,135,148,110,132,108,138,118],
+    insight:"Near-zero bias but high MAD means the model is correctly centered (not systematically over or under) but imprecise. The large individual errors require a substantial safety stock buffer. The model itself does not need to be replaced — the demand process is just highly variable.",
+    bias_type:"Neither (near-zero bias — high MAD, unbiased)",
+    bias_key:"neither",
+    model_response:"The model is correctly centered and does not require recalibration. However, the high MAD (~26 units) requires a substantial safety stock buffer. This is a high-noise demand pattern — no forecasting model can eliminate the imprecision when the underlying demand is this variable.",
+    difficulty:"Advanced"
+  }
+];
+
+function r2(x){return Math.round(x*100)/100;}
+function eq(a,b){return Math.abs(a-b)<=0.06;}
+function sumAbs(arr){return arr.reduce((s,v)=>s+Math.abs(v),0);}
+function sumSigned(arr){return arr.reduce((s,v)=>s+v,0);}
+
+let state={
+  activeScen:0,
+  ss:SCEN.map(()=>({
+    step:1, // 1=errors, 2=abs, 3=mad, 4=bias, 5=interp done
+    errDone:false, absDone:false, madDone:false, biasDone:false, interpDone:false
+  }))
+};
+
+function renderNav(){
+  const nav=document.getElementById('scenNav');
+  nav.innerHTML=SCEN.map((s,i)=>{
+    const st=state.ss[i];
+    const done=st.interpDone?' done':'';
+    const active=i===state.activeScen?' active':'';
+    return `<button class="sbtn${active}${done}" onclick="switchScen(${i})">${s.name}: ${s.label}</button>`;
+  }).join('');
+}
+function switchScen(idx){state.activeScen=idx;renderNav();renderApp();}
+
+function computeErrors(actual,forecast){
+  return actual.map((a,i)=>r2(a-forecast[i]));
+}
+function computeAbsErrors(errors){
+  return errors.map(e=>r2(Math.abs(e)));
+}
+
+function renderApp(){
+  const sc=SCEN[state.activeScen];
+  const st=state.ss[state.activeScen];
+  const T=sc.actual.length;
+  const errors=computeErrors(sc.actual,sc.forecast);
+  const absErrors=computeAbsErrors(errors);
+  const sumAE=r2(sumAbs(errors));
+  const sumE=r2(sumSigned(errors));
+  const mad=r2(sumAE/T);
+  const bias=r2(sumE/T);
+
+  const step=st.step;
+
+  // Build step progress
+  const steps=['Step 1: Errors','Step 2: |Errors|','Step 3: MAD','Step 4: Bias','Step 5: Interpret'];
+  const stepBar=`<div class="step-track">${steps.map((s,i)=>{
+    const cls=i+1<step?'s-done':i+1===step?'s-active':'';
+    return `<div class="step-item ${cls}"><span class="step-num">${i+1}</span>${s}</div>`;
+  }).join('')}</div>`;
+
+  // Error table header
+  let thRow=`<tr><th>Period</th><th>Actual Demand</th><th>Forecast</th>`;
+  if(step>=1) thRow+=`<th>Error<br>(Actual − Forecast)</th>`;
+  if(step>=2) thRow+=`<th>|Error|</th>`;
+  thRow+=`</tr>`;
+
+  let tdRows='';
+  for(let i=0;i<T;i++){
+    let row=`<tr><td class="t-period">${i+1}</td><td class="t-given">${sc.actual[i]}</td><td class="t-given">${sc.forecast[i]}</td>`;
+    if(step>=1){
+      const locked=st.errDone?'disabled':'';
+      row+=`<td><input type="text" class="ei" id="e-${state.activeScen}-${i}" value="" placeholder="?" ${locked}></td>`;
+    }
+    if(step>=2){
+      const locked=st.absDone?'disabled':'';
+      row+=`<td><input type="text" class="ei" id="ae-${state.activeScen}-${i}" value="" placeholder="?" ${locked}></td>`;
+    }
+    row+=`</tr>`;
+    tdRows+=row;
+  }
+
+  // Summary section
+  let summaryHTML='';
+  if(step>=3){
+    const mLocked=st.madDone?'disabled':'';
+    summaryHTML+=`
+    <div class="card" style="margin-top:14px;">
+      <div class="card-head"><h2>Step 3 — Compute MAD</h2>
+        <p>MAD = Sum of |Errors| ÷ number of periods (${T})</p></div>
+      <div class="card-body">
+        <div class="sum-row">
+          <span class="sum-label">Sum of absolute errors:</span>
+          <span class="t-given" style="font-size:15px;font-weight:700;">${sumAE}</span>
+        </div>
+        <div class="sum-row">
+          <span class="sum-label">MAD = ${sumAE} ÷ ${T} =</span>
+          <input type="text" class="sum-in" id="madIn" value="" placeholder="?" ${mLocked}>
+          <span class="sum-unit">units</span>
+        </div>
+        ${st.madDone
+          ?`<div style="font-size:12px;color:var(--green);font-weight:600;">✓ MAD = ${mad} units</div>`
+          :`<div class="btn-group"><button class="btn btn-primary" onclick="checkMAD()">Check MAD</button></div>`}
+        <div class="fb" id="fb-mad"></div>
+      </div>
+    </div>`;
+  }
+  if(step>=4){
+    const bLocked=st.biasDone?'disabled':'';
+    summaryHTML+=`
+    <div class="card">
+      <div class="card-head"><h2>Step 4 — Compute Forecast Bias</h2>
+        <p>Bias = Sum of signed errors ÷ number of periods (${T}) — keep the + and − signs!</p></div>
+      <div class="card-body">
+        <div class="sum-row">
+          <span class="sum-label">Sum of signed errors:</span>
+          <span class="t-given" style="font-size:15px;font-weight:700;">${sumE}</span>
+        </div>
+        <div class="sum-row">
+          <span class="sum-label">Bias = ${sumE} ÷ ${T} =</span>
+          <input type="text" class="sum-in" id="biasIn" value="" placeholder="?" ${bLocked}>
+          <span class="sum-unit">units</span>
+        </div>
+        ${st.biasDone
+          ?`<div style="font-size:12px;color:var(--green);font-weight:600;">✓ Bias = ${bias>0?'+':''}${bias} units</div>`
+          :`<div class="btn-group"><button class="btn btn-primary" onclick="checkBias()">Check Bias</button></div>`}
+        <div class="fb" id="fb-bias"></div>
+      </div>
+    </div>`;
+  }
+
+  // Interpretation panel
+  let interpHTML='';
+  const interpLock=step<5?'locked':'';
+  const lockMsg=step<5?`<p class="lock-msg">Complete Steps 1–4 to unlock.</p>`:'';
+
+  let biasDropVal=sc.bias_key==='under'?'Under-forecasting (positive bias)':sc.bias_key==='over'?'Over-forecasting (negative bias)':'Neither systematically (near-zero bias)';
+
+  interpHTML=`
+  <div class="interp-panel ${interpLock}" id="interpPanel">
+    <h3>Step 5 — Interpret the Results</h3>
+    ${lockMsg}
+    <div>
+      <label style="font-size:13px;font-weight:600;display:block;margin-bottom:6px;">Based on the bias value, this model is:</label>
+      <select class="interp-sel" id="biasSel" ${st.interpDone?'disabled':''}>
+        <option value="">— Select —</option>
+        <option value="under">Under-forecasting (positive bias)</option>
+        <option value="over">Over-forecasting (negative bias)</option>
+        <option value="neither">Neither systematically (near-zero bias)</option>
+      </select>
+    </div>
+    <div>
+      <label style="font-size:13px;font-weight:600;display:block;margin-bottom:6px;">In one sentence, what should the operations manager do in response to this finding?</label>
+      <textarea class="interp-text" id="interpText" ${st.interpDone?'disabled':''}></textarea>
+    </div>
+    ${st.interpDone
+      ?`<div style="font-size:12px;color:var(--green);font-weight:600;">✓ Submitted</div>`
+      :`<div class="btn-group"><button class="btn btn-green" onclick="submitInterp()">Submit Interpretation</button></div>`}
+    <div class="model-ans${st.interpDone?' show':''}" id="modelAns">
+      <div class="model-ans-lbl">Model Answer</div>
+      <p><strong>Bias type:</strong> ${sc.bias_type}</p>
+      <p style="margin-top:6px;"><strong>Recommended response:</strong> ${sc.model_response}</p>
+      <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--blue-bdr);">
+        <strong>Key reminder:</strong>
+        <ul style="margin-top:5px;padding-left:18px;font-size:12px;line-height:1.7;">
+          <li>Bias = sum of <em>signed</em> errors ÷ n. If you used |errors|, you computed MAD again, not bias.</li>
+          <li>Positive bias = Actual > Forecast = under-forecasting (the model is too low).</li>
+          <li>Negative bias = Actual < Forecast = over-forecasting (the model is too high).</li>
+          <li>Near-zero bias + high MAD = imprecise but unbiased. Safety stock is the fix; the model is correctly centered.</li>
+        </ul>
+      </div>
+    </div>
+  </div>`;
+
+  const diffColor=sc.difficulty==='Introductory'?'var(--green)':sc.difficulty==='Intermediate'?'var(--amber)':'var(--red)';
+
+  const html=`
+${stepBar}
+<div class="ctx"><strong>${sc.desc}</strong></div>
+<div class="teach"><div class="teach-lbl">Learning Focus</div>${sc.insight}</div>
+
+<div class="card">
+  <div class="card-head">
+    <h2>Steps 1–2 — Error Table</h2>
+    <p><span style="font-size:11px;font-weight:700;color:${diffColor};">${sc.difficulty}</span> · Complete the error and absolute error columns, then click Check.</p>
+  </div>
+  <div class="card-body">
+    <table class="et"><thead>${thRow}</thead><tbody>${tdRows}</tbody></table>
+    <div class="btn-group">
+      ${step===1&&!st.errDone?`<button class="btn btn-primary" onclick="checkErrors()">Check Error Column</button>`:''}
+      ${step>=2&&!st.absDone?`<button class="btn btn-primary" onclick="checkAbsErrors()">Check |Error| Column</button>`:''}
+      ${st.absDone?`<span style="font-size:12px;color:var(--green);font-weight:600;">✓ Error table complete</span>`:''}
+    </div>
+    <div class="fb" id="fb-err"></div>
+    <div class="fb" id="fb-abs"></div>
+  </div>
+</div>
+
+${summaryHTML}
+${interpHTML}`;
+
+  document.getElementById('appWrap').innerHTML=html;
+  restoreValues();
+}
+
+// Restore validated cell values after re-render
+const cellCache={};
+function cacheAndRestore(id,val){cellCache[id]=val;}
+function restoreValues(){
+  const sc=SCEN[state.activeScen];
+  const st=state.ss[state.activeScen];
+  const T=sc.actual.length;
+  const errors=computeErrors(sc.actual,sc.forecast);
+  const absErrors=computeAbsErrors(errors);
+  const mad=r2(sumAbs(errors)/T);
+  const bias=r2(sumSigned(errors)/T);
+
+  if(st.errDone){
+    for(let i=0;i<T;i++){
+      const el=document.getElementById(`e-${state.activeScen}-${i}`);
+      if(el){el.value=errors[i];el.className='ei ok';}
+    }
+  }
+  if(st.absDone){
+    for(let i=0;i<T;i++){
+      const el=document.getElementById(`ae-${state.activeScen}-${i}`);
+      if(el){el.value=absErrors[i];el.className='ei ok';}
+    }
+  }
+  if(st.madDone){
+    const el=document.getElementById('madIn');
+    if(el){el.value=mad;el.className='sum-in ok';}
+  }
+  if(st.biasDone){
+    const el=document.getElementById('biasIn');
+    if(el){el.value=bias;el.className='sum-in ok';}
+  }
+}
+
+function showFb(id,ok,msg){
+  const el=document.getElementById(id);
+  if(!el) return;
+  el.innerHTML=`<div class="fb-banner ${ok?'fb-ok':'fb-err'}">${ok?'✓ Correct':'✗ Not yet correct'}</div><div class="fb-body">${msg}</div>`;
+  el.className='fb show';
+}
+
+function checkErrors(){
+  const sc=SCEN[state.activeScen];
+  const st=state.ss[state.activeScen];
+  const T=sc.actual.length;
+  const errors=computeErrors(sc.actual,sc.forecast);
+  let wrong=0,blank=0;
+  const errs=[];
+  for(let i=0;i<T;i++){
+    const el=document.getElementById(`e-${state.activeScen}-${i}`);
+    if(!el) continue;
+    const val=parseFloat(el.value);
+    if(isNaN(val)||el.value.trim()===''){blank++;el.classList.add('err');}
+    else if(eq(val,errors[i])){el.classList.add('ok');el.classList.remove('err');}
+    else{wrong++;el.classList.add('err');el.classList.remove('ok');errs.push({i,exp:errors[i],got:r2(val)});}
+  }
+  if(wrong>0||blank>0){
+    let msg=`${wrong+blank} cell(s) need correction. `;
+    if(errs.length>0){
+      const e=errs[0];
+      const sign=errors[e.i]>=0?'+':'';
+      msg+=`Period ${e.i+1}: Error = Actual − Forecast = ${sc.actual[e.i]} − ${sc.forecast[e.i]} = ${sign}${errors[e.i]}. You entered ${e.got}. Keep the sign — positive means actual was higher than forecast.`;
+    }
+    showFb('fb-err',false,msg);
+  } else {
+    st.errDone=true; st.step=Math.max(st.step,2);
+    showFb('fb-err',true,`All ${T} errors computed correctly. Now fill in the |Error| column — use the absolute value (remove any negative sign).`);
+    renderApp();
+  }
+}
+
+function checkAbsErrors(){
+  const sc=SCEN[state.activeScen];
+  const st=state.ss[state.activeScen];
+  const T=sc.actual.length;
+  const errors=computeErrors(sc.actual,sc.forecast);
+  const absErrors=computeAbsErrors(errors);
+  let wrong=0,blank=0;
+  const errs=[];
+  for(let i=0;i<T;i++){
+    const el=document.getElementById(`ae-${state.activeScen}-${i}`);
+    if(!el) continue;
+    const val=parseFloat(el.value);
+    if(isNaN(val)||el.value.trim()===''){blank++;el.classList.add('err');}
+    else if(eq(val,absErrors[i])){el.classList.add('ok');el.classList.remove('err');}
+    else{wrong++;el.classList.add('err');el.classList.remove('ok');errs.push({i,exp:absErrors[i],got:r2(val)});}
+  }
+  if(wrong>0||blank>0){
+    let msg=`${wrong+blank} cell(s) need correction. `;
+    if(errs.length>0){
+      const e=errs[0];
+      msg+=`Period ${e.i+1}: |Error| should be ${e.exp}. If the error was negative (${errors[e.i]}), the absolute value removes the sign. |${errors[e.i]}| = ${e.exp}.`;
+    }
+    showFb('fb-abs',false,msg);
+  } else {
+    st.absDone=true; st.step=Math.max(st.step,3);
+    const sumAE=r2(sumAbs(errors));
+    showFb('fb-abs',true,`Correct. The sum of all absolute errors is ${sumAE}. Now compute MAD by dividing by ${T}.`);
+    renderApp();
+  }
+}
+
+function checkMAD(){
+  const sc=SCEN[state.activeScen];
+  const st=state.ss[state.activeScen];
+  const T=sc.actual.length;
+  const errors=computeErrors(sc.actual,sc.forecast);
+  const mad=r2(sumAbs(errors)/T);
+  const el=document.getElementById('madIn');
+  if(!el) return;
+  const val=parseFloat(el.value);
+  if(isNaN(val)||el.value.trim()===''){
+    showFb('fb-mad',false,'Please enter a value for MAD.');
+    return;
+  }
+  if(!eq(val,mad)){
+    const sumAE=r2(sumAbs(errors));
+    let msg=`Expected MAD = ${mad}. Check: Sum of |errors| = ${sumAE}; divide by ${T} periods. `;
+    if(Math.abs(val-sumAE)<0.1) msg+=`It looks like you entered the sum of absolute errors (${sumAE}) instead of the average. Divide by ${T}.`;
+    el.classList.add('err');
+    showFb('fb-mad',false,msg);
+  } else {
+    el.classList.add('ok');
+    st.madDone=true; st.step=Math.max(st.step,4);
+    showFb('fb-mad',true,`MAD = ${mad} units. This means the forecast is off by an average of ${mad} units per period. Now compute the bias using the SIGNED errors (not absolute values).`);
+    renderApp();
+  }
+}
+
+function checkBias(){
+  const sc=SCEN[state.activeScen];
+  const st=state.ss[state.activeScen];
+  const T=sc.actual.length;
+  const errors=computeErrors(sc.actual,sc.forecast);
+  const mad=r2(sumAbs(errors)/T);
+  const bias=r2(sumSigned(errors)/T);
+  const el=document.getElementById('biasIn');
+  if(!el) return;
+  const val=parseFloat(el.value);
+  if(isNaN(val)||el.value.trim()===''){
+    showFb('fb-bias',false,'Please enter a value for Bias.');
+    return;
+  }
+  if(eq(val,mad)&&!eq(val,bias)){
+    // Student computed MAD again
+    el.classList.add('err');
+    showFb('fb-bias',false,`You entered the MAD again (${mad}). Bias uses the SIGNED errors — keep the + and − signs. Do not take the absolute value before summing. Sum the errors as they are, then divide by ${T}.`);
+    return;
+  }
+  if(!eq(val,bias)){
+    el.classList.add('err');
+    const sumE=r2(sumSigned(errors));
+    showFb('fb-bias',false,`Expected Bias = ${bias>0?'+':''}${bias}. Sum of signed errors = ${sumE>0?'+':''}${sumE}; divide by ${T}.`);
+  } else {
+    el.classList.add('ok');
+    st.biasDone=true; st.step=Math.max(st.step,5);
+    const biasSign=bias>0?'positive (under-forecasting)':bias<0?'negative (over-forecasting)':'near zero (no systematic direction)';
+    showFb('fb-bias',true,`Bias = ${bias>0?'+':''}${bias} units. The bias is ${biasSign}. Now interpret what this means for Riverside's operations.`);
+    renderApp();
+  }
+}
+
+function submitInterp(){
+  const sc=SCEN[state.activeScen];
+  const st=state.ss[state.activeScen];
+  const selEl=document.getElementById('biasSel');
+  const txtEl=document.getElementById('interpText');
+  if(!selEl||!txtEl) return;
+  if(selEl.value===''){alert('Please select a bias direction before submitting.');return;}
+  if(txtEl.value.trim().length<20){alert('Please write at least one sentence describing the operational response.');return;}
+  const correct=selEl.value===sc.bias_key;
+  if(!correct){
+    selEl.classList.add('err');
+    const hint=sc.bias_key==='under'?'The bias is positive — actual > forecast — so the model is under-forecasting.':
+                sc.bias_key==='over'?'The bias is negative — actual < forecast — so the model is over-forecasting.':
+                'The bias is very close to zero, meaning errors are roughly balanced between positive and negative.';
+    alert(`Not quite. ${hint}`);
+    return;
+  }
+  selEl.classList.add('ok');
+  st.interpDone=true;
+  renderNav();
+  renderApp();
+  setTimeout(()=>{
+    const ma=document.getElementById('modelAns');
+    if(ma) ma.scrollIntoView({behavior:'smooth',block:'start'});
+  },100);
+}
+
+renderNav();
+renderApp();
+</script>
+</body>
+</html>

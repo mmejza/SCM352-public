@@ -1,0 +1,48 @@
+<section class="slide-page" data-title="MAD and Bias — Worked Example" data-lo="LO11-4 LO11-8" data-notes="Uses the same 5-period ES data from s10-s11. MAD=4.47, Bias=+2.87. Positive bias = under-forecasting. Response: buffer stock absorbs MAD; bias requires model recalibration (increase alpha or check for omitted trend). Gate 2 Q3 and Q8 directly test this interpretation.">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">M11</span>
+      <span class="le-course">SCM 352 · Module 11</span>
+    </div>
+    <span class="le-pagenum">13 / 20</span>
+  </div>
+
+  <div class="le-titleblock">
+    <div class="le-title">MAD and Bias — <span>Worked Example</span></div>
+    <div class="le-sub">Pharmacy antibiotic, α = 0.4 — computing both accuracy metrics</div>
+  </div>
+
+  <div class="le-body">
+    <table class="clean-table">
+      <thead>
+        <tr><th>Period</th><th>Actual D<sub>t</sub></th><th>Forecast F<sub>t</sub></th><th>Error (D−F)</th><th>|Error|</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td>100</td><td>100.00</td><td>0.00</td><td>0.00</td></tr>
+        <tr><td>2</td><td>105</td><td>100.00</td><td class="pos">+5.00</td><td>5.00</td></tr>
+        <tr><td>3</td><td>98</td><td>102.00</td><td class="neg">−4.00</td><td>4.00</td></tr>
+        <tr><td>4</td><td>110</td><td>100.40</td><td class="pos">+9.60</td><td>9.60</td></tr>
+        <tr><td>5</td><td>108</td><td>104.24</td><td class="pos">+3.76</td><td>3.76</td></tr>
+        <tr class="total-row"><td colspan="3"><strong>Sum / n</strong></td><td><strong>+14.36 / 5</strong></td><td><strong>22.36 / 5</strong></td></tr>
+      </tbody>
+    </table>
+    <div class="two-col" style="margin-top:8px;">
+      <div class="callout teal">
+        <div class="callout-label">MAD = 22.36 / 5 = 4.47 units</div>
+        <p>On average, the forecast is off by 4.47 units per period. The pharmacy should maintain a safety stock buffer to absorb this typical error level.</p>
+      </div>
+      <div class="callout amber">
+        <div class="callout-label">Bias = +14.36 / 5 = +2.87 units</div>
+        <p>Positive bias: actual demand consistently exceeds the forecast. The model <strong>under-forecasts</strong> by an average of 2.87 units per period. This is systematic — buffer stock will not fix it. The model needs recalibration.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="le-footer">
+    <div class="le-lo-pills"><span class="le-lo-pill">LO11-4</span><span class="le-lo-pill">LO11-8</span></div>
+    <div><span class="le-gate-note">Gate 2 Q3, Q8 · Ch. 15 §15.2</span></div>
+  </div>
+</section>

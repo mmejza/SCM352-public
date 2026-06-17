@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Discussion Rubric — Forecasting Failures and Fixes — M11 — SCM 352</title>
+<style>
+:root{--navy:#1a3a5c;--blue:#2563a8;--blue-lt:#dbeafe;--blue-xlt:#eff6ff;--gold:#f59e0b;--gold-lt:#fffbeb;--gold-bdr:#fde68a;--green:#16a34a;--green-lt:#f0fdf4;--green-bdr:#bbf7d0;--red:#dc2626;--red-lt:#fef2f2;--red-bdr:#fecaca;--amber:#d97706;--amber-lt:#fffbeb;--amber-bdr:#fde68a;--orange:#ea580c;--orange-lt:#fff7ed;--orange-bdr:#fed7aa;--gray-50:#f9fafb;--gray-100:#f3f4f6;--gray-200:#e5e7eb;--gray-400:#9ca3af;--gray-600:#4b5563;--gray-700:#374151;--gray-800:#1f2937;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--gray-50);color:var(--gray-800);font-size:13px;line-height:1.5;}
+.pg-header{background:var(--navy);color:white;padding:18px 28px;display:flex;align-items:center;gap:14px;}
+.badge{background:var(--gold);color:var(--navy);font-weight:700;font-size:10px;padding:3px 8px;border-radius:4px;letter-spacing:.06em;text-transform:uppercase;flex-shrink:0;}
+.pg-header h1{font-size:17px;font-weight:700;}
+.pg-header p{font-size:12px;color:rgba(255,255,255,.6);margin-top:3px;}
+.hdr-right{margin-left:auto;font-size:12px;color:rgba(255,255,255,.5);text-align:right;line-height:1.7;}
+.pg-body{max-width:1060px;margin:0 auto;padding:24px 20px 60px;display:flex;flex-direction:column;gap:28px;}
+.sec-heading{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--gray-400);padding-bottom:10px;border-bottom:1px solid var(--gray-200);margin-bottom:4px;}
+.alert{border-radius:10px;padding:12px 16px;font-size:13px;line-height:1.6;display:flex;gap:10px;align-items:flex-start;}
+.alert-icon{font-size:17px;flex-shrink:0;margin-top:1px;}
+.alert-body{flex:1;}
+.alert-body strong{display:block;margin-bottom:3px;}
+.alert-red{background:var(--red-lt);border:1.5px solid var(--red-bdr);}
+.alert-gold{background:var(--gold-lt);border:1.5px solid var(--gold-bdr);}
+.alert-blue{background:var(--blue-xlt);border:1.5px solid #bfdbfe;}
+.score-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;}
+.score-card{background:white;border:1px solid var(--gray-200);border-radius:10px;padding:14px 16px;text-align:center;}
+.score-card .label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--gray-400);margin-bottom:6px;}
+.score-card .pts{font-size:28px;font-weight:800;color:var(--navy);letter-spacing:-.04em;line-height:1;}
+.score-card .sub{font-size:11px;color:var(--gray-600);margin-top:4px;}
+.rubric-wrap{border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;background:white;}
+.rubric-table{width:100%;border-collapse:collapse;font-size:12px;}
+.rubric-table thead tr th{padding:9px 11px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;vertical-align:bottom;}
+.th-crit{background:var(--navy);color:white;}
+.th-full{background:var(--green);color:white;}
+.th-part{background:var(--amber);color:white;}
+.th-min{background:var(--orange);color:white;}
+.th-none{background:var(--red);color:white;}
+.pts-label{display:block;font-size:14px;font-weight:800;margin-bottom:2px;letter-spacing:-.02em;}
+.rubric-table td{padding:10px 11px;border-bottom:1px solid var(--gray-100);border-right:1px solid var(--gray-100);vertical-align:top;line-height:1.5;}
+.rubric-table tr:last-child td{border-bottom:none;}
+.rubric-table td:last-child{border-right:none;}
+.td-crit{background:var(--gray-50);font-weight:700;color:var(--navy);font-size:12.5px;}
+.td-full{background:var(--green-lt);}
+.td-part{background:var(--amber-lt);}
+.td-min{background:var(--orange-lt);}
+.td-none{background:var(--red-lt);}
+.crit-pts{display:inline-block;margin-top:5px;font-size:11px;font-weight:700;padding:2px 8px;border-radius:100px;background:var(--blue-lt);color:var(--navy);}
+.crit-lo{display:block;font-size:10px;font-weight:600;color:var(--gray-400);margin-top:3px;letter-spacing:.03em;}
+.cell-pts{font-weight:800;font-size:12.5px;margin-bottom:4px;display:block;}
+.td-full .cell-pts{color:var(--green);}
+.td-part .cell-pts{color:var(--amber);}
+.td-min .cell-pts{color:var(--orange);}
+.td-none .cell-pts{color:var(--red);}
+.notes-list{display:flex;flex-direction:column;gap:10px;}
+.notes-list li{display:flex;gap:10px;font-size:13px;line-height:1.55;color:var(--gray-700);}
+.note-num{width:22px;height:22px;border-radius:50%;background:var(--navy);color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.speed-table{width:100%;border-collapse:collapse;font-size:12.5px;}
+.speed-table th{background:var(--navy);color:white;padding:8px 12px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;}
+.speed-table td{padding:8px 12px;border-bottom:1px solid var(--gray-100);}
+.speed-table tr:last-child td{border-bottom:none;}
+</style>
+</head>
+<body>
+
+<div class="pg-header">
+  <div class="badge">SCM 352 · M11</div>
+  <div>
+    <h1>Grading Rubric — Discussion: Forecasting Failures and Fixes</h1>
+    <p>Instructor use only · SpeedGrader reference · Do not distribute to students</p>
+  </div>
+  <div class="hdr-right">30 pts total<br>13% of Module M11</div>
+</div>
+
+<div class="pg-body">
+
+  <div class="score-grid">
+    <div class="score-card"><div class="label">Initial Post</div><div class="pts">26</div><div class="sub">4 criteria · No reply required</div></div>
+    <div class="score-card"><div class="label">Post Quality</div><div class="pts">4</div><div class="sub">Clarity · vocabulary · specificity</div></div>
+    <div class="score-card"><div class="label">Total</div><div class="pts">30</div><div class="sub">13% of Module grade</div></div>
+    <div class="score-card"><div class="label">Grading Time</div><div class="pts" style="font-size:20px;">3–5</div><div class="sub">min per student</div></div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:12px;">
+    <div class="alert alert-red">
+      <div class="alert-icon">🚫</div>
+      <div class="alert-body">
+        <strong>Prohibited Example Penalty</strong>
+        Posts using the Cisco 2000 case or any textbook/lecture/app example should be returned with a resubmission request. Award <strong>0 points</strong> until the student submits a corrected post with a different organization.
+      </div>
+    </div>
+    <div class="alert alert-gold">
+      <div class="alert-icon">⚠️</div>
+      <div class="alert-body">
+        <strong>Specificity Threshold for Part 1</strong>
+        A post that names an organization but describes the failure only in vague terms (e.g., "they misjudged demand" with no quantities, timeframes, or consequences) should receive 2–3 pts on Part 1, not 6. Part 1 full credit requires: organization named + what was forecast + what happened + operational consequence, all with some specificity.
+      </div>
+    </div>
+    <div class="alert alert-blue">
+      <div class="alert-icon">ℹ️</div>
+      <div class="alert-body">
+        <strong>Defensible Alternatives</strong>
+        Some failures can legitimately be characterized as either high MAD or high bias depending on what information is available. Award full credit for either characterization with a correct justification grounded in the evidence the student described in Part 1. Do not require the "correct" answer — require a defensible answer.
+      </div>
+    </div>
+  </div>
+
+  <!-- INITIAL POST RUBRIC -->
+  <div>
+    <div class="sec-heading">Initial Post Rubric &nbsp;·&nbsp; 30 points (26 criteria + 4 quality)</div>
+    <div class="rubric-wrap" style="margin-top:16px;">
+      <table class="rubric-table">
+        <colgroup><col style="width:19%"><col style="width:21%"><col style="width:20%"><col style="width:21%"><col style="width:19%"></colgroup>
+        <thead>
+          <tr>
+            <th class="th-crit">Criterion</th>
+            <th class="th-full"><span class="pts-label">Full Credit</span>Excellent</th>
+            <th class="th-part"><span class="pts-label">Partial</span>Missing one element</th>
+            <th class="th-min"><span class="pts-label">Minimal</span>Vague / incomplete</th>
+            <th class="th-none"><span class="pts-label">No Credit</span>Missing / prohibited</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="td-crit">
+              1 — Describe the Failure
+              <span class="crit-pts">6 pts</span>
+              <span class="crit-lo">LO11-5</span>
+            </td>
+            <td class="td-full"><span class="cell-pts">6 pts</span>Organization named. What was being forecast is clear (product/service, time horizon). What happened is described with approximate quantities or timeframes. Operational consequence (excess inventory, stockout, capacity mismatch) is explicitly stated.</td>
+            <td class="td-part"><span class="cell-pts">4–5 pts</span>Three of the four elements present. Consequence is stated but vague (e.g., "lost revenue" without specifics) — or forecast vs. actual comparison is implied but not stated.</td>
+            <td class="td-min"><span class="cell-pts">2–3 pts</span>Organization named, failure vaguely described. Two or fewer elements present. No operational consequence stated, or consequence is generic ("they lost money").</td>
+            <td class="td-none"><span class="cell-pts">0–1 pts</span>No organization named, or failure description is entirely unverifiable, or example is from prohibited list (Cisco 2000, Riverside, textbook examples).</td>
+          </tr>
+          <tr>
+            <td class="td-crit">2 — Identify Demand Components Missed<span class="crit-pts">8 pts</span><span class="crit-lo">LO11-1 · LO11-5</span></td>
+            <td class="td-full"><span class="cell-pts">8 pts</span>Correct component(s) identified using Chapter 15 terminology (level, trend, seasonality, randomness). Each identified component is supported with explicit evidence from the Part 1 failure description. The connection between missed component and the failure outcome is clear.</td>
+            <td class="td-part"><span class="cell-pts">6–7 pts</span>Correct component(s) identified with Chapter 15 vocabulary, but evidence is thin — component named without clear citation of evidence from Part 1. Or: multiple components present but only one identified when two are clearly operating.</td>
+            <td class="td-min"><span class="cell-pts">3–5 pts</span>Attempt to identify component(s) but vocabulary is imprecise (e.g., "the demand went up" instead of "trend") or evidence is unconnected to Part 1 description. Component named but mechanism unclear.</td>
+            <td class="td-none"><span class="cell-pts">0–2 pts</span>No demand components identified, or the identified component is inconsistent with the failure described in Part 1, or Chapter 15 framework is not used.</td>
+          </tr>
+          <tr>
+            <td class="td-crit">3 — Diagnose the Error Type<span class="crit-pts">6 pts</span><span class="crit-lo">LO11-4 · LO11-7</span></td>
+            <td class="td-full"><span class="cell-pts">6 pts</span>Correctly identifies failure as high MAD (imprecise, inconsistent direction) or high bias (systematic direction — over or under). Reasoning is grounded in the failure description from Part 1 using Chapter 15 terminology. Operational implication of the error type is mentioned.</td>
+            <td class="td-part"><span class="cell-pts">4–5 pts</span>Correct MAD/bias characterization with reasoning, but operational implication is missing or generic. Or: characterization is correct but the reasoning references general knowledge rather than the specific failure described in Part 1.</td>
+            <td class="td-min"><span class="cell-pts">2–3 pts</span>MAD or bias is mentioned but the distinction between the two is unclear or incorrectly applied. Student confuses high MAD with high bias (e.g., claims both are present without distinguishing them), or the choice is not connected to the failure.</td>
+            <td class="td-none"><span class="cell-pts">0–1 pts</span>No error type diagnosis attempted, or the diagnosis uses vocabulary not from Chapter 15 (e.g., "standard deviation" or "variance" without connecting to MAD/bias), or the conclusion is internally inconsistent with Part 1.</td>
+          </tr>
+          <tr>
+            <td class="td-crit">4 — Recommend a Method Fix<span class="crit-pts">6 pts</span><span class="crit-lo">LO11-5 · LO11-7</span></td>
+            <td class="td-full"><span class="cell-pts">6 pts</span>Specific method named (MA with window size direction; ES with α direction; forecast combination/Delphi; analogical forecasting). Recommendation connects directly to the demand component identified in Part 2 and error type in Part 3. No internal contradictions (e.g., recommending long MA for a trend problem).</td>
+            <td class="td-part"><span class="cell-pts">4–5 pts</span>Correct method direction but parameter direction is missing or vague (e.g., "exponential smoothing" without specifying high or low α). Or: method connects to Part 2 or Part 3 but not both.</td>
+            <td class="td-min"><span class="cell-pts">2–3 pts</span>A method is named but recommendation is generic ("better forecasting") or contradicts the student's own Parts 2–3 diagnosis. Parameter direction inconsistent with stated goal.</td>
+            <td class="td-none"><span class="cell-pts">0–1 pts</span>No method recommendation, or recommendation is from outside Chapter 15 scope (e.g., "hire more analysts"), or recommendation directly contradicts the diagnosed demand component without justification.</td>
+          </tr>
+          <tr>
+            <td class="td-crit">Post Quality<span class="crit-pts">4 pts</span><span class="crit-lo">all LOs</span></td>
+            <td class="td-full"><span class="cell-pts">4 pts</span>Clear, well-organized post. Chapter 15 vocabulary used correctly and consistently throughout. Specific evidence supports every claim. Post reads as a coherent analysis, not a list of disconnected answers.</td>
+            <td class="td-part"><span class="cell-pts">3 pts</span>Mostly clear. Some vocabulary imprecision or one section feels disconnected from the others. Evidence generally adequate.</td>
+            <td class="td-min"><span class="cell-pts">2 pts</span>Post is difficult to follow or vocabulary is frequently imprecise. Sections feel independent rather than building on each other.</td>
+            <td class="td-none"><span class="cell-pts">0–1 pts</span>Post is disorganized, vocabulary is incorrect or absent, or the post reads as a template fill-in with no original analysis.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- GRADING EFFICIENCY NOTES -->
+  <div>
+    <div class="sec-heading">Grading Efficiency Notes</div>
+    <div style="margin-top:16px;background:white;border:1px solid var(--gray-200);border-radius:12px;padding:20px;">
+      <ul class="notes-list">
+        <li><div class="note-num">1</div><span><strong>Grade in criterion order (Part 2 first, then Part 3, then Part 1, then Part 4).</strong> Part 2 (demand components, 8 pts) is the most discriminating criterion and reveals whether the student understood the core Chapter 15 concept. Grade it first to calibrate your expectation before reading the rest of the post.</span></li>
+        <li><div class="note-num">2</div><span><strong>MAD vs. bias distinction (Part 3) is the most commonly missed item.</strong> Students who say "the forecast was inaccurate" without specifying direction are describing MAD (imprecision), not bias (systematic direction). If a failure involves consistent over- or under-forecasting over multiple periods, that is bias. If errors were large but alternating, that is high MAD. Award partial credit when the right concept is circled but the distinction isn't articulated.</span></li>
+        <li><div class="note-num">3</div><span><strong>Check for prohibited examples before reading the rest.</strong> Scan the first two sentences of every post. If you see "Cisco" followed by a year near 2000, or the student is describing Riverside Health System, return for resubmission immediately. Do not grade the rest.</span></li>
+        <li><div class="note-num">4</div><span><strong>AI-assist signals for this module.</strong> Posts that correctly identify "seasonality" as a missed component but use it generically without evidence from Part 1 (e.g., "seasonality can affect many industries") are likely AI-assisted. Require evidence from the specific failure description to award Part 2 full credit. Posts that recommend "exponential smoothing with a high alpha" for every failure type regardless of demand pattern are a signal that the student is applying a generic template.</span></li>
+        <li><div class="note-num">5</div><span><strong>Award full credit on Part 4 for any internally consistent recommendation.</strong> There is often more than one defensible method fix for a given failure. The goal is not a single correct answer — it is for the student to make a connection between their Parts 2–3 diagnosis and a specific Chapter 15 method. If the connection is defensible and the parameter direction is internally consistent with the diagnosis, award full credit even if you would have chosen a different method.</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- QUICK REFERENCE -->
+  <div>
+    <div class="sec-heading">Quick SpeedGrader Score Reference</div>
+    <div style="margin-top:16px;background:white;border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;">
+      <table class="speed-table">
+        <thead><tr><th>Score Range</th><th>What it indicates</th><th style="text-align:right;">Letter</th></tr></thead>
+        <tbody>
+          <tr><td style="font-weight:700;color:var(--green);">27–30</td><td>All criteria met with specificity. Chapter 15 vocabulary correct throughout. Evidence clearly grounded in the described failure. Method recommendation internally consistent with diagnosis.</td><td style="text-align:right;font-weight:700;">A</td></tr>
+          <tr><td style="font-weight:700;color:var(--amber);">23–26</td><td>Most criteria met. One element vague or one criterion weak. Vocabulary mostly correct. Method recommendation present but parameter direction may be imprecise.</td><td style="text-align:right;font-weight:700;">B</td></tr>
+          <tr><td style="font-weight:700;color:var(--orange);">18–22</td><td>Some criteria incomplete. Demand component identified but not supported with evidence. MAD/bias distinction unclear. Method fix is generic. Post feels like separate answers, not a coherent analysis.</td><td style="text-align:right;font-weight:700;">C</td></tr>
+          <tr><td style="font-weight:700;color:var(--red);">Below 18</td><td>Multiple criteria missing or misapplied. Prohibited example used. Failure description too vague to evaluate. No Chapter 15 vocabulary. Consider reaching out before returning grade.</td><td style="text-align:right;font-weight:700;">D / F</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

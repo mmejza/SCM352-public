@@ -1,0 +1,46 @@
+<section class="slide-page" data-title="The Moving Average Formula" data-lo="LO11-2" data-notes="Gate 2 Q1 computation slide. Stress: the window uses exactly the n most recent ACTUAL demand observations — not forecasts. Larger n smooths more but lags more when demand trends. Smaller n tracks the trend faster but amplifies noise.">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">M11</span>
+      <span class="le-course">SCM 352 · Module 11</span>
+    </div>
+    <span class="le-pagenum">6 / 20</span>
+  </div>
+
+  <div class="le-titleblock">
+    <div class="le-title">The Moving Average <span>Formula</span></div>
+    <div class="le-sub">Equal weight on the n most recent actual demand observations</div>
+  </div>
+
+  <div class="le-body">
+    <div class="formula-box">MA(n) = ( D<sub>t</sub> + D<sub>t−1</sub> + · · · + D<sub>t−n+1</sub> ) / n</div>
+    <div class="two-col" style="margin-top:8px;">
+      <div class="callout teal">
+        <div class="callout-label">Variable Definitions</div>
+        <p><strong>MA(n)</strong> — forecast for the next period</p>
+        <p><strong>n</strong> — window length (number of periods included)</p>
+        <p><strong>D<sub>t</sub></strong> — actual demand in the most recent period</p>
+        <p><strong>D<sub>t−n+1</sub></strong> — actual demand n periods ago (oldest in window)</p>
+      </div>
+      <div>
+        <div class="callout amber">
+          <div class="callout-label">The n Trade-Off</div>
+          <p><strong>Large n</strong> (e.g., 8–12 weeks): smooths noise; good for stable demand. Lags badly when a true trend emerges.</p>
+          <p style="margin-top:5px;"><strong>Small n</strong> (e.g., 2–3 weeks): tracks trend quickly. Overreacts to random spikes.</p>
+        </div>
+        <div class="callout red" style="margin-top:8px;">
+          <div class="callout-label">Common Error</div>
+          <p>Including the current period's forecast in the window. Use only actual observed demand values — D<sub>t</sub> through D<sub>t−n+1</sub>.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="le-footer">
+    <div class="le-lo-pills"><span class="le-lo-pill">LO11-2</span></div>
+    <div><span class="le-gate-note">Gate 2 Q1 · Ch. 15 §15.2</span></div>
+  </div>
+</section>

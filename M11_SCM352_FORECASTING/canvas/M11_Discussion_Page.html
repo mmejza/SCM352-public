@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Discussion: Forecasting Failures and Fixes — SCM 352 M11</title>
+<style>
+:root {
+  --navy:#1a3a5c;--blue:#2563a8;--blue-lt:#dbeafe;--blue-xlt:#eff6ff;
+  --gold:#f59e0b;--gold-lt:#fffbeb;--gold-bdr:#fde68a;
+  --green:#16a34a;--green-lt:#f0fdf4;--green-bdr:#bbf7d0;
+  --red:#dc2626;--red-lt:#fef2f2;--red-bdr:#fecaca;
+  --purple:#7c3aed;--purple-lt:#faf5ff;--purple-bdr:#ddd6fe;
+  --teal:#0891b2;--teal-lt:#f0fdfe;--teal-bdr:#a5f3fc;
+  --gray-50:#f9fafb;--gray-100:#f3f4f6;--gray-200:#e5e7eb;
+  --gray-400:#9ca3af;--gray-600:#4b5563;--gray-700:#374151;--gray-800:#1f2937;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--gray-50);color:var(--gray-800);line-height:1.6;}
+.page-header{background:var(--navy);color:white;padding:20px 28px;display:flex;align-items:flex-start;gap:16px;}
+.header-badge{background:var(--gold);color:var(--navy);font-weight:700;font-size:11px;padding:3px 9px;border-radius:4px;letter-spacing:.05em;text-transform:uppercase;white-space:nowrap;flex-shrink:0;}
+.header-text h1{font-size:20px;font-weight:700;margin-bottom:4px;}
+.header-text p{font-size:13px;color:rgba(255,255,255,.7);}
+.meta-strip{display:flex;gap:0;flex-wrap:wrap;border-bottom:2px solid var(--gray-200);background:white;}
+.meta-pill{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;padding:9px 16px;border-right:1px solid var(--gray-200);color:var(--gray-700);}
+.pip{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.pg-body{max-width:860px;margin:0 auto;padding:28px 24px 48px;display:flex;flex-direction:column;gap:24px;}
+.sec-div{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--gray-400);padding-bottom:10px;border-bottom:1px solid var(--gray-200);margin-bottom:-4px;}
+.card{background:white;border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;}
+.card-hd{padding:14px 20px;border-bottom:1px solid var(--gray-200);display:flex;align-items:center;gap:10px;}
+.card-hd h2{font-size:15px;font-weight:700;color:var(--navy);}
+.card-hd p{font-size:12px;color:var(--gray-600);margin-top:2px;}
+.card-bd{padding:20px;}
+.alert{border-radius:10px;padding:13px 16px;font-size:13.5px;line-height:1.6;display:flex;gap:11px;align-items:flex-start;}
+.alert-icon{font-size:17px;flex-shrink:0;margin-top:1px;}
+.alert-body{flex:1;}
+.alert-body strong{display:block;margin-bottom:3px;}
+.alert-red{background:var(--red-lt);border:1.5px solid var(--red-bdr);}
+.alert-gold{background:var(--gold-lt);border:1.5px solid var(--gold-bdr);}
+.alert-blue{background:var(--blue-xlt);border:1.5px solid #bfdbfe;}
+.part{border:1.5px solid var(--gray-200);border-radius:10px;overflow:hidden;margin-bottom:14px;}
+.part:last-child{margin-bottom:0;}
+.part-header{padding:12px 16px;display:flex;align-items:center;gap:12px;border-bottom:1.5px solid var(--gray-200);}
+.part-num{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;flex-shrink:0;color:white;}
+.part-title{flex:1;font-size:14px;font-weight:700;color:var(--gray-800);}
+.part-pts{font-size:12px;font-weight:700;padding:3px 9px;border-radius:100px;white-space:nowrap;}
+.part-body{padding:14px 16px;font-size:13.5px;line-height:1.65;color:var(--gray-700);}
+.part-body p+p{margin-top:8px;}
+.part-1 .part-header{background:var(--blue-xlt);border-color:#bfdbfe;} .part-1 .part-num{background:var(--blue);} .part-1 .part-pts{background:var(--blue-lt);color:var(--navy);}
+.part-2 .part-header{background:var(--purple-lt);border-color:var(--purple-bdr);} .part-2 .part-num{background:var(--purple);} .part-2 .part-pts{background:var(--purple-bdr);color:var(--purple);}
+.part-3 .part-header{background:var(--teal-lt);border-color:var(--teal-bdr);} .part-3 .part-num{background:var(--teal);} .part-3 .part-pts{background:var(--teal-bdr);color:var(--teal);}
+.part-4 .part-header{background:var(--green-lt);border-color:var(--green-bdr);} .part-4 .part-num{background:var(--green);} .part-4 .part-pts{background:var(--green-bdr);color:var(--green);}
+.pts-table{width:100%;border-collapse:collapse;font-size:13.5px;}
+.pts-table th{background:var(--navy);color:white;padding:9px 14px;text-align:left;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;}
+.pts-table td{padding:9px 14px;border-bottom:1px solid var(--gray-100);vertical-align:top;}
+.pts-table tr:last-child td{border-bottom:none;}
+.pts-table tr.total-row td{font-weight:700;background:var(--gray-50);font-size:14px;border-top:2px solid var(--gray-200);}
+.pts-num{font-weight:700;font-size:15px;color:var(--navy);text-align:right;white-space:nowrap;}
+.tip-list{list-style:none;padding:0;display:flex;flex-direction:column;gap:8px;}
+.tip-list li{display:flex;gap:10px;font-size:13.5px;line-height:1.55;color:var(--gray-700);}
+.tip-list li::before{content:'→';color:var(--gold);font-weight:700;flex-shrink:0;margin-top:1px;}
+.prohibited-list{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;}
+.prohibited-tag{font-size:12px;font-weight:600;padding:3px 10px;border-radius:100px;background:var(--red-lt);color:var(--red);border:1px solid var(--red-bdr);}
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div class="header-badge">SCM 352 · M11</div>
+  <div class="header-text">
+    <h1>Discussion: Forecasting Failures and Fixes</h1>
+    <p>Module M11 Discussion · 30 points · Item 10 of 12</p>
+  </div>
+</div>
+
+<div class="meta-strip">
+  <div class="meta-pill"><div class="pip" style="background:#2563a8"></div> Due at close of following module</div>
+  <div class="meta-pill"><div class="pip" style="background:#16a34a"></div> 30 points total</div>
+  <div class="meta-pill"><div class="pip" style="background:#f59e0b"></div> 30–45 minutes</div>
+  <div class="meta-pill"><div class="pip" style="background:#0891b2"></div> LO11-5 · LO11-7</div>
+</div>
+
+<div class="pg-body">
+
+  <!-- Overview -->
+  <div class="card">
+    <div class="card-hd" style="background:var(--blue-xlt);">
+      <div><h2>What You Are Doing</h2><p>Research a real-world forecasting failure, diagnose it using Chapter 15 concepts, and recommend a fix</p></div>
+    </div>
+    <div class="card-bd">
+      <p style="font-size:13.5px;line-height:1.7;color:var(--gray-700);">Identify an organization — a company, hospital, government agency, retailer, or service provider — that experienced a significant forecasting failure. The failure can be historical or current; it should be something you can find credible information about. Your post will diagnose the failure using the forecasting concepts from Chapter 15 and the lecture videos, and recommend a specific method fix.</p>
+      <p style="font-size:13.5px;line-height:1.7;color:var(--gray-700);margin-top:10px;"><strong>Initial post only. No reply is required.</strong> Your initial post must address all four parts described below.</p>
+    </div>
+  </div>
+
+  <!-- Rules -->
+  <div style="display:flex;flex-direction:column;gap:12px;">
+    <div class="alert alert-red">
+      <div class="alert-icon">🚫</div>
+      <div class="alert-body">
+        <strong>Do not use the Cisco Systems 2000 inventory write-off.</strong>
+        This example is described in the Module M11 Overview and is therefore a prohibited example. Using it will result in a resubmission request with no credit awarded until a new organization is submitted.
+      </div>
+    </div>
+    <div class="alert alert-red">
+      <div class="alert-icon">🚫</div>
+      <div class="alert-body">
+        <strong>Do not use any example from the textbook, slides, lecture videos, or apps.</strong>
+        <div class="prohibited-list">
+          <span class="prohibited-tag">Cisco (2000)</span>
+          <span class="prohibited-tag">Riverside Health System</span>
+          <span class="prohibited-tag">Any textbook case example</span>
+          <span class="prohibited-tag">Any example used in the lecture scripts</span>
+        </div>
+      </div>
+    </div>
+    <div class="alert alert-gold">
+      <div class="alert-icon">📌</div>
+      <div class="alert-body">
+        <strong>Your example must be based on credible information you can describe specifically.</strong>
+        A news article, industry report, company earnings release, or academic case study are all acceptable sources. Vague or unverifiable examples will receive reduced credit on Part 1. You do not need to cite formal references — but your post must include enough detail to make the failure concrete (what was forecast, what actually happened, what the operational consequence was).
+      </div>
+    </div>
+  </div>
+
+  <!-- Initial Post -->
+  <div>
+    <div class="sec-div">Initial Post &nbsp;·&nbsp; Due at close of following module &nbsp;·&nbsp; 30 points</div>
+    <div class="card" style="margin-top:16px;">
+      <div class="card-bd" style="padding:16px;">
+
+        <div class="part part-1">
+          <div class="part-header">
+            <div class="part-num">1</div>
+            <div class="part-title">Describe the Forecasting Failure</div>
+            <div class="part-pts">6 pts</div>
+          </div>
+          <div class="part-body">
+            <p>Name the organization and describe what demand they were forecasting, what the forecast predicted, what actually happened, and the operational consequence (excess inventory, stockout, capacity mismatch, service failure, etc.).</p>
+            <p>Be specific: include approximate quantities, time frames, and the magnitude of the failure where available. A post that says "a retailer over-ordered and had too much inventory" is too vague for full credit. A post that says "Target Canada (2013) over-forecast initial store demand, ordered inventory based on projected sales of $X, and ended up with warehouses full of unsellable goods within 6 months of opening" is at the level of specificity required.</p>
+          </div>
+        </div>
+
+        <div class="part part-2">
+          <div class="part-header">
+            <div class="part-num">2</div>
+            <div class="part-title">Identify the Demand Component(s) That Were Missed</div>
+            <div class="part-pts">8 pts</div>
+          </div>
+          <div class="part-body">
+            <p>Using the four demand components from Chapter 15 — <strong>level</strong> (baseline demand), <strong>trend</strong> (systematic upward or downward movement), <strong>seasonality</strong> (repeating pattern within a year or cycle), and <strong>randomness</strong> (unpredictable fluctuation) — explain which component(s) the organization's forecasting model failed to account for.</p>
+            <p>Be specific: cite evidence from your failure description in Part 1 that points to the missed component. A statement that "they missed the trend" without evidence is not sufficient — explain what in the failure description indicates that trend was the issue.</p>
+          </div>
+        </div>
+
+        <div class="part part-3">
+          <div class="part-header">
+            <div class="part-num">3</div>
+            <div class="part-title">Diagnose the Error Type</div>
+            <div class="part-pts">6 pts</div>
+          </div>
+          <div class="part-body">
+            <p>Based on what you know about the failure, was it more likely a case of <strong>high MAD</strong> (the forecast was imprecise — large average errors but no consistent direction) or <strong>high bias</strong> (the forecast was systematically wrong in one direction — consistently over-forecasting or consistently under-forecasting)?</p>
+            <p>Explain your reasoning using Chapter 15 terminology. You do not need to compute exact numbers — use the qualitative evidence from your failure description to justify which error type better characterizes the failure and what that implies operationally.</p>
+          </div>
+        </div>
+
+        <div class="part part-4">
+          <div class="part-header">
+            <div class="part-num">4</div>
+            <div class="part-title">Recommend a Method Fix</div>
+            <div class="part-pts">6 pts</div>
+          </div>
+          <div class="part-body">
+            <p>Which forecasting method or approach from Chapter 15 would have been most likely to reduce or prevent this specific failure? Choose one of the following and explain why it addresses the specific demand pattern or bias that caused the failure:</p>
+            <p><strong>Options:</strong> Moving average with a short or long window · Exponential smoothing with a high or low α · Forecast combination or Delphi method (if the failure was driven by judgmental bias) · Analogical forecasting (if no historical data existed for the product being forecast)</p>
+            <p>Your recommendation must connect directly to the demand component(s) you identified in Part 2 and the error type you diagnosed in Part 3. "A better forecasting system" is not a valid recommendation — specify the method and the parameter direction.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Points Summary -->
+  <div class="card">
+    <div class="card-hd" style="background:var(--blue-xlt);">
+      <div><h2>Points Summary</h2><p>30 points total · 13% of Module M11 grade</p></div>
+    </div>
+    <table class="pts-table">
+      <thead><tr><th>Component</th><th>Criteria</th><th style="text-align:right;">Points</th></tr></thead>
+      <tbody>
+        <tr><td rowspan="5" style="font-weight:600;color:var(--navy);vertical-align:top;padding-top:12px;">Initial Post<br><span style="font-weight:400;font-size:12px;color:var(--gray-600);">No reply required</span></td>
+          <td>1 — Describe the Failure (organization, forecast, actual demand, operational consequence)</td><td class="pts-num">6</td></tr>
+        <tr><td>2 — Identify Demand Components Missed (correct component(s) with evidence from failure)</td><td class="pts-num">8</td></tr>
+        <tr><td>3 — Diagnose the Error Type (MAD vs. bias characterization with Chapter 15 reasoning)</td><td class="pts-num">6</td></tr>
+        <tr><td>4 — Recommend a Method Fix (specific method + parameter + connection to diagnosis)</td><td class="pts-num">6</td></tr>
+        <tr><td>Post quality — clarity, specificity of evidence, correct use of forecasting vocabulary</td><td class="pts-num">4</td></tr>
+        <tr class="total-row"><td colspan="2">Total</td><td class="pts-num">30</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Tips -->
+  <div class="card">
+    <div class="card-hd" style="background:var(--gold-lt);border-color:var(--gold-bdr);">
+      <div><h2 style="color:#92400e;">Tips for Full Credit</h2></div>
+    </div>
+    <div class="card-bd">
+      <ul class="tip-list">
+        <li>Part 2 is worth the most points (8 pts). Use Chapter 15's four-component framework explicitly — name each component you identify and quote or paraphrase specific evidence from your failure description.</li>
+        <li>The most common error in Part 3 is conflating imprecision with bias. Ask yourself: were the errors consistently in one direction (over- or under-forecast)? If yes, that is bias. If errors were sometimes positive and sometimes negative, that is high MAD without directional bias.</li>
+        <li>For Part 4, the method recommendation must match the diagnosis. If you diagnosed a trend problem in Part 2, recommending a longer moving average window contradicts your own analysis — a shorter window or higher α would reduce trend lag.</li>
+        <li>If your failure involved human judgment errors (overconfidence, anchoring, or forecast gaming), the correct Part 4 recommendation is Delphi, forecast combination, or analogical forecasting — not parameter tuning of a statistical model.</li>
+        <li>Forecasting failures from healthcare, retail, manufacturing, and government are all acceptable. Supply-chain disruptions (2020–2022) produced well-documented cases across many industries — these are fine to use if you can describe the specific demand miscalculation with concrete numbers.</li>
+        <li>This post is related to but separate from the Case Analysis. The Case asks you to compute forecasts for Riverside's pharmacy supply; this discussion asks you to diagnose a failure at a different real-world organization. Your Case Analysis computations (MAD, bias, MAPE) are not part of this post.</li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

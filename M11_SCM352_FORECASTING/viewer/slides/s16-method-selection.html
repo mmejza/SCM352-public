@@ -1,0 +1,52 @@
+<section class="slide-page" data-title="Method Selection — MA vs. ES" data-lo="LO11-5" data-notes="Gate 2 Q4 tests method selection. Key: no method dominates all situations. The selection logic depends on the demand pattern (stable, trending, seasonal). Stress that the correct answer always requires: (a) identifying the demand pattern and (b) selecting the method parameter direction consistent with that pattern.">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">M11</span>
+      <span class="le-course">SCM 352 · Module 11</span>
+    </div>
+    <span class="le-pagenum">16 / 20</span>
+  </div>
+
+  <div class="le-titleblock">
+    <div class="le-title">Method Selection — <span>MA vs. ES</span></div>
+    <div class="le-sub">No method dominates all situations — demand pattern drives the choice</div>
+  </div>
+
+  <div class="le-body">
+    <table class="clean-table">
+      <thead>
+        <tr><th>Demand Pattern</th><th>Recommended Method / Parameter</th><th>Why</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Stable, noisy</strong><br><span class="slide-meta">Low variance around a flat mean; random spikes</span></td>
+          <td>Long MA (n = 8–12) or <strong>low α</strong> (0.1–0.2)</td>
+          <td>Smoothing is the priority — averaging many periods (or giving low weight to any single observation) dampens random noise</td>
+        </tr>
+        <tr>
+          <td><strong>Consistently trending</strong><br><span class="slide-meta">Systematic upward or downward movement</span></td>
+          <td>Short MA (n = 2–3) or <strong>high α</strong> (0.5–0.7)</td>
+          <td>Responsiveness is the priority — the forecast must track the current level rather than lag behind older values</td>
+        </tr>
+        <tr>
+          <td><strong>Step change</strong><br><span class="slide-meta">Sudden permanent shift to a new level</span></td>
+          <td><strong>High α</strong> ES strongly preferred</td>
+          <td>ES with high α converges to the new level in 3–4 periods; a long MA window drags along the old level for n periods</td>
+        </tr>
+        <tr>
+          <td><strong>Seasonal</strong><br><span class="slide-meta">Repeating annual or cycle pattern</span></td>
+          <td>Neither MA nor basic ES — see note</td>
+          <td>Both methods fail to detect repeating seasonal structure; see Slide 17</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="le-footer">
+    <div class="le-lo-pills"><span class="le-lo-pill">LO11-5</span></div>
+    <div><span class="le-gate-note">Gate 2 Q4 · Ch. 15 §15.2–15.3</span></div>
+  </div>
+</section>

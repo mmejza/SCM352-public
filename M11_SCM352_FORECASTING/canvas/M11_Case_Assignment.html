@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Case Analysis M11 — Riverside Health System: Pharmacy Supply Forecasting — SCM 352</title>
+<style>
+:root{--navy:#1a3a5c;--blue:#2563a8;--blue-lt:#dbeafe;--blue-xlt:#eff6ff;--gold:#f59e0b;--gold-lt:#fffbeb;--gold-bdr:#fde68a;--green:#16a34a;--green-lt:#f0fdf4;--green-bdr:#bbf7d0;--red:#dc2626;--red-lt:#fef2f2;--red-bdr:#fecaca;--amber:#d97706;--amber-lt:#fffbeb;--amber-bdr:#fde68a;--purple:#7c3aed;--purple-lt:#faf5ff;--purple-bdr:#ddd6fe;--teal:#0891b2;--teal-lt:#f0fdfe;--teal-bdr:#a5f3fc;--gray-50:#f9fafb;--gray-100:#f3f4f6;--gray-200:#e5e7eb;--gray-300:#d1d5db;--gray-400:#9ca3af;--gray-600:#4b5563;--gray-700:#374151;--gray-800:#1f2937;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--gray-50);color:var(--gray-800);line-height:1.65;font-size:14px;}
+.pg-header{background:var(--navy);color:white;padding:24px 28px;}
+.pg-header-eyebrow{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
+.pg-header h1{font-size:22px;font-weight:700;letter-spacing:-.01em;margin-bottom:6px;}
+.pg-header p{font-size:13px;color:rgba(255,255,255,.68);}
+.meta-strip{background:white;border-bottom:2px solid var(--gray-200);display:flex;gap:0;overflow-x:auto;}
+.meta-cell{padding:11px 20px;border-right:1px solid var(--gray-200);flex-shrink:0;}
+.meta-cell:last-child{border-right:none;}
+.meta-lbl{font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--gray-400);margin-bottom:2px;}
+.meta-val{font-size:13px;font-weight:700;color:var(--navy);}
+.pg-body{max-width:860px;margin:0 auto;padding:28px 22px 60px;display:flex;flex-direction:column;gap:28px;}
+.version-banner{background:var(--navy);border-radius:12px;overflow:hidden;border:2px solid var(--navy);}
+.version-banner-hd{padding:13px 20px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,255,255,.15);}
+.version-banner-hd h2{font-size:14px;font-weight:700;color:white;}
+.version-banner-hd p{font-size:12px;color:rgba(255,255,255,.6);margin-top:2px;}
+.version-table{width:100%;border-collapse:collapse;font-size:13px;}
+.version-table th{padding:9px 16px;text-align:left;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:rgba(255,255,255,.55);border-bottom:1px solid rgba(255,255,255,.1);}
+.version-table td{padding:10px 16px;border-bottom:1px solid rgba(255,255,255,.07);color:rgba(255,255,255,.85);}
+.version-table tr:last-child td{border-bottom:none;}
+.ver-badge{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:6px;font-size:13px;font-weight:800;}
+.ver-a{background:#dcfce7;color:#166534;} .ver-b{background:#dbeafe;color:#1e40af;} .ver-c{background:#faf5ff;color:#6b21a8;} .ver-d{background:#fef9c3;color:#854d0e;}
+.alert{border-radius:10px;padding:13px 16px;font-size:13.5px;line-height:1.6;display:flex;gap:11px;align-items:flex-start;}
+.alert-icon{font-size:17px;flex-shrink:0;margin-top:1px;}
+.alert-body{flex:1;}
+.alert-body strong{display:block;margin-bottom:3px;}
+.alert-red{background:var(--red-lt);border:1.5px solid var(--red-bdr);}
+.alert-gold{background:var(--gold-lt);border:1.5px solid var(--gold-bdr);}
+.alert-blue{background:var(--blue-xlt);border:1.5px solid #bfdbfe;}
+.sec-div{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--gray-400);padding-bottom:10px;border-bottom:1px solid var(--gray-200);margin-bottom:-4px;}
+.section-card{background:white;border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;}
+.section-hd{padding:14px 20px;border-bottom:1px solid var(--gray-200);display:flex;align-items:center;gap:12px;}
+.part-badge{display:flex;align-items:center;justify-content:center;min-width:36px;height:36px;border-radius:8px;font-size:12px;font-weight:800;flex-shrink:0;}
+.section-hd-text h2{font-size:15px;font-weight:700;color:var(--navy);}
+.section-hd-text p{font-size:12px;color:var(--gray-600);margin-top:2px;}
+.pts-badge{margin-left:auto;flex-shrink:0;font-size:13px;font-weight:700;padding:4px 12px;border-radius:100px;}
+.section-bd{padding:20px;}
+.part1 .section-hd{background:var(--blue-xlt);} .part1 .part-badge{background:var(--blue);color:white;} .part1 .pts-badge{background:var(--blue-lt);color:var(--navy);}
+.part2 .section-hd{background:var(--green-lt);} .part2 .part-badge{background:var(--green);color:white;} .part2 .pts-badge{background:var(--green-bdr);color:var(--green);}
+.part3 .section-hd{background:var(--purple-lt);} .part3 .part-badge{background:var(--purple);color:white;} .part3 .pts-badge{background:var(--purple-bdr);color:var(--purple);}
+.part4 .section-hd{background:var(--teal-lt);} .part4 .part-badge{background:var(--teal);color:white;} .part4 .pts-badge{background:var(--teal-bdr);color:var(--teal);}
+.ver-tabs{border:1.5px solid var(--gray-200);border-radius:10px;overflow:hidden;margin:16px 0;}
+.ver-tab-hd{display:flex;border-bottom:1.5px solid var(--gray-200);background:var(--gray-50);}
+.ver-tab-btn{flex:1;padding:10px 0;border:none;background:none;cursor:pointer;font-size:13px;font-weight:700;color:var(--gray-400);border-right:1px solid var(--gray-200);transition:all 0.15s;display:flex;align-items:center;justify-content:center;gap:6px;}
+.ver-tab-btn:last-child{border-right:none;}
+.ver-tab-btn:hover{color:var(--navy);background:white;}
+.ver-tab-btn.active{color:var(--navy);background:white;box-shadow:inset 0 -2px 0 var(--blue);}
+.ver-tab-btn .vb{width:20px;height:20px;border-radius:4px;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;}
+.ver-tab-panel{display:none;padding:16px;}
+.ver-tab-panel.active{display:block;}
+.data-table{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px;}
+.data-table th{background:var(--navy);color:white;padding:9px 13px;text-align:left;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;}
+.data-table td{padding:9px 13px;border-bottom:1px solid var(--gray-100);}
+.data-table tr:last-child td{border-bottom:none;}
+.data-table td:first-child{font-weight:700;}
+.better-note{font-size:10px;font-weight:600;color:var(--green);display:block;margin-top:2px;}
+.q-block{margin-bottom:16px;padding:14px 16px;border:1.5px solid var(--gray-200);border-radius:8px;background:var(--gray-50);}
+.q-block:last-child{margin-bottom:0;}
+.q-num{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--gray-400);margin-bottom:5px;}
+.q-text{font-size:13.5px;line-height:1.65;color:var(--gray-700);}
+.q-pts{display:inline-block;margin-top:7px;font-size:11px;font-weight:700;padding:2px 9px;border-radius:100px;background:var(--blue-lt);color:var(--navy);}
+.scenario-box{background:var(--gray-50);border:1.5px solid var(--gray-200);border-left:4px solid var(--teal);border-radius:0 8px 8px 0;padding:16px 18px;font-size:13.5px;line-height:1.75;color:var(--gray-700);margin:12px 0;}
+.submit-list{display:flex;flex-direction:column;gap:6px;}
+.submit-item{display:flex;gap:10px;align-items:flex-start;padding:9px 13px;background:var(--gray-50);border:1px solid var(--gray-200);border-radius:7px;font-size:13px;line-height:1.5;color:var(--gray-700);}
+.submit-item::before{content:'☐';font-size:16px;flex-shrink:0;color:var(--gray-400);margin-top:-1px;}
+.grade-table{width:100%;border-collapse:collapse;font-size:13px;}
+.grade-table th{background:var(--navy);color:white;padding:9px 13px;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;text-align:left;}
+.grade-table td{padding:9px 13px;border-bottom:1px solid var(--gray-100);}
+.grade-table tr:last-child td{border-bottom:none;}
+.grade-table tr.total td{font-weight:700;background:var(--blue-xlt);color:var(--navy);font-size:14px;}
+.pts-right{text-align:right;font-weight:700;font-size:15px;color:var(--navy);}
+</style>
+</head>
+<body>
+
+<div class="pg-header">
+  <div class="pg-header-eyebrow">SCM 352 · Module M11 · Case Analysis</div>
+  <h1>Riverside Health System: Building a Forecasting System for the Pharmacy Supply Chain</h1>
+  <p>Parameterized case — 4 versions · 100 points · Due Day 6 at 11:59 PM</p>
+</div>
+
+<div class="meta-strip">
+  <div class="meta-cell"><div class="meta-lbl">Points</div><div class="meta-val">100</div></div>
+  <div class="meta-cell"><div class="meta-lbl">Due</div><div class="meta-val">Day 6 · 11:59 PM</div></div>
+  <div class="meta-cell"><div class="meta-lbl">Format</div><div class="meta-val">PDF or Word</div></div>
+  <div class="meta-cell"><div class="meta-lbl">Attempts</div><div class="meta-val">1</div></div>
+  <div class="meta-cell"><div class="meta-lbl">Allowed resources</div><div class="meta-val">Ch. 15 · Lectures · Apps · Slides</div></div>
+</div>
+
+<div class="pg-body">
+
+  <!-- VERSION ASSIGNMENT -->
+  <div class="version-banner">
+    <div class="version-banner-hd">
+      <div><h2>Find Your Assigned Version</h2><p>Use the last digit of your student ID. Submit only your assigned version.</p></div>
+    </div>
+    <table class="version-table">
+      <thead><tr><th>Last digit of student ID</th><th>Your version</th><th>Supply category · Key parameters</th></tr></thead>
+      <tbody>
+        <tr><td>0, 1, or 2</td><td><span class="ver-badge ver-a">A</span></td><td>Surgical glove boxes · Weeks 1–8 · α = 0.30 · F₁ = Week 1 actual demand</td></tr>
+        <tr><td>3, 4, or 5</td><td><span class="ver-badge ver-b">B</span></td><td>IV solution bags · Weeks 1–9 · α = 0.20 · F₁ = Week 1 actual demand</td></tr>
+        <tr><td>6 or 7</td><td><span class="ver-badge ver-c">C</span></td><td>Reagent kit units · Weeks 1–8 · α = 0.40 · F₁ = Week 1 actual demand</td></tr>
+        <tr><td>8 or 9</td><td><span class="ver-badge ver-d">D</span></td><td>Orthopedic supply units · Weeks 1–10 · α = 0.25 · F₁ = Week 1 actual demand</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- RULES -->
+  <div style="display:flex;flex-direction:column;gap:10px;">
+    <div class="alert alert-red">
+      <div class="alert-icon">🚫</div>
+      <div class="alert-body"><strong>Do not collaborate on version-specific calculations.</strong>Parts 1 and 2 use data unique to your version. Submitting another version's numbers constitutes academic dishonesty. The version tables are different enough that cross-version numbers will be caught in grading.</div>
+    </div>
+    <div class="alert alert-gold">
+      <div class="alert-icon">📋</div>
+      <div class="alert-body"><strong>Show all calculation steps with labeled intermediate values.</strong>Answers without supporting work will not receive full credit, even if numerically correct. Round all forecasts and errors to two decimal places at each computation step.</div>
+    </div>
+    <div class="alert alert-blue">
+      <div class="alert-icon">ℹ️</div>
+      <div class="alert-body">Parts 3 and 4 build directly on your Parts 1 and 2 results — complete Parts 1 and 2 first. Part 4 questions are the same for all versions; only the numerical estimates differ. You may discuss Part 4 concepts with classmates, but your written analysis must use your own computed values from Parts 1–3.</div>
+    </div>
+  </div>
+
+  <!-- BACKGROUND -->
+  <div>
+    <div class="sec-div">Background — All Versions</div>
+    <div class="section-card" style="margin-top:14px;">
+      <div class="section-bd" style="font-size:13.5px;line-height:1.75;color:var(--gray-700);">
+        <p>Riverside Health System operates a network of 18 clinical facilities across the Mountain West. Its central pharmacy fills prescriptions and fulfills supply requisitions for all facilities across several high-volume supply categories. The pharmacy director has asked you — as the operations analyst — to evaluate and implement a formal forecasting system for one of these supply categories, assigned by your version.</p>
+        <p style="margin-top:10px;">Riverside currently tracks weekly demand but has been forecasting informally. The director wants to compare two statistical methods — moving average and exponential smoothing — and evaluate how they perform alongside expert-based judgment for a new product introduction. Your analysis will directly inform inventory ordering decisions in the modules ahead.</p>
+        <p style="margin-top:10px;font-size:12.5px;color:var(--gray-600);font-style:italic;">Continuity note: This case extends the Riverside Health System scenario from Modules 2–11. The MAD you compute in Part 3 is the statistical input to safety stock sizing in Module 12. Save your results.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- PART 1 -->
+  <div>
+    <div class="sec-div">Part 1 — Moving Average Forecast &nbsp;·&nbsp; Version-specific data</div>
+    <div class="section-card part1" style="margin-top:14px;">
+      <div class="section-hd">
+        <div class="part-badge">1</div>
+        <div class="section-hd-text">
+          <h2>Moving Average Forecast</h2>
+          <p>Use only the demand data for your assigned version</p>
+        </div>
+        <div class="pts-badge">20 pts</div>
+      </div>
+      <div class="section-bd">
+        <p style="font-size:13.5px;color:var(--gray-700);line-height:1.65;margin-bottom:4px;">The table below shows weekly demand for your assigned supply category at Riverside Health System. Click your version to see your data.</p>
+
+        <div class="ver-tabs">
+          <div class="ver-tab-hd">
+            <button class="ver-tab-btn active" onclick="switchTab('p1','a')" id="p1-tab-a"><span class="vb ver-a">A</span> Version A</button>
+            <button class="ver-tab-btn" onclick="switchTab('p1','b')" id="p1-tab-b"><span class="vb ver-b">B</span> Version B</button>
+            <button class="ver-tab-btn" onclick="switchTab('p1','c')" id="p1-tab-c"><span class="vb ver-c">C</span> Version C</button>
+            <button class="ver-tab-btn" onclick="switchTab('p1','d')" id="p1-tab-d"><span class="vb ver-d">D</span> Version D</button>
+          </div>
+          <div class="ver-tab-panel active" id="p1-panel-a">
+            <p style="font-size:12.5px;color:var(--gray-600);margin-bottom:8px;"><strong>Version A</strong> — Surgical glove boxes · Compute 3-week and 5-week MA for Week 9 · Actual Week 9 demand = 138 units</p>
+            <table class="data-table">
+              <thead><tr><th>Week</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th></tr></thead>
+              <tbody><tr><td>Demand (units)</td><td>120</td><td>130</td><td>115</td><td>125</td><td>132</td><td>128</td><td>140</td><td>135</td></tr></tbody>
+            </table>
+          </div>
+          <div class="ver-tab-panel" id="p1-panel-b">
+            <p style="font-size:12.5px;color:var(--gray-600);margin-bottom:8px;"><strong>Version B</strong> — IV solution bags · Compute 4-week and 6-week MA for Week 10 · Actual Week 10 demand = 102 units</p>
+            <table class="data-table">
+              <thead><tr><th>Week</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th></tr></thead>
+              <tbody><tr><td>Demand (units)</td><td>85</td><td>90</td><td>88</td><td>92</td><td>95</td><td>91</td><td>98</td><td>96</td><td>100</td></tr></tbody>
+            </table>
+          </div>
+          <div class="ver-tab-panel" id="p1-panel-c">
+            <p style="font-size:12.5px;color:var(--gray-600);margin-bottom:8px;"><strong>Version C</strong> — Reagent kit units · Compute 3-week and 5-week MA for Week 9 · Actual Week 9 demand = 225 units</p>
+            <table class="data-table">
+              <thead><tr><th>Week</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th></tr></thead>
+              <tbody><tr><td>Demand (units)</td><td>200</td><td>195</td><td>210</td><td>205</td><td>198</td><td>215</td><td>208</td><td>220</td></tr></tbody>
+            </table>
+          </div>
+          <div class="ver-tab-panel" id="p1-panel-d">
+            <p style="font-size:12.5px;color:var(--gray-600);margin-bottom:8px;"><strong>Version D</strong> — Orthopedic supply units · Compute 4-week and 8-week MA for Week 11 · Actual Week 11 demand = 350 units</p>
+            <table class="data-table">
+              <thead><tr><th>Week</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th></tr></thead>
+              <tbody><tr><td>Demand (units)</td><td>310</td><td>295</td><td>320</td><td>305</td><td>315</td><td>330</td><td>318</td><td>340</td><td>328</td><td>345</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="q-block">
+          <div class="q-num">Question 1a</div>
+          <div class="q-text">Using the demand data for your assigned version, compute both the shorter-window and longer-window moving average forecasts for the forecast period. For each average, list the specific week numbers and demand values used, then show the computation.</div>
+          <span class="q-pts">8 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Question 1b</div>
+          <div class="q-text">Using the actual demand shown in your version data, compute the forecast error for each moving average (Error = |Actual − Forecast|). Which moving average was more accurate for this single period?</div>
+          <span class="q-pts">5 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Question 1c</div>
+          <div class="q-text">Based on the demand pattern over all N weeks in your version data — is it trending up, trending down, or stable with noise? Which window length (shorter or longer) would you recommend for ongoing forecasting at Riverside? Write two sentences justifying your recommendation using the responsiveness-vs-smoothing trade-off from the lecture.</div>
+          <span class="q-pts">7 pts</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PART 2 -->
+  <div>
+    <div class="sec-div">Part 2 — Exponential Smoothing and Error Analysis &nbsp;·&nbsp; Version-specific data</div>
+    <div class="section-card part2" style="margin-top:14px;">
+      <div class="section-hd">
+        <div class="part-badge">2</div>
+        <div class="section-hd-text"><h2>Exponential Smoothing and Error Analysis</h2><p>Show all calculation steps · Round to two decimal places at every step</p></div>
+        <div class="pts-badge">25 pts</div>
+      </div>
+      <div class="section-bd">
+        <p style="font-size:13.5px;color:var(--gray-700);line-height:1.65;margin-bottom:4px;">Using the same demand data from Part 1, apply exponential smoothing with the version-specific initial forecast F₁ and smoothing parameter α shown below.</p>
+
+        <div class="ver-tabs">
+          <div class="ver-tab-hd">
+            <button class="ver-tab-btn active" onclick="switchTab('p2','a')" id="p2-tab-a"><span class="vb ver-a">A</span> Version A</button>
+            <button class="ver-tab-btn" onclick="switchTab('p2','b')" id="p2-tab-b"><span class="vb ver-b">B</span> Version B</button>
+            <button class="ver-tab-btn" onclick="switchTab('p2','c')" id="p2-tab-c"><span class="vb ver-c">C</span> Version C</button>
+            <button class="ver-tab-btn" onclick="switchTab('p2','d')" id="p2-tab-d"><span class="vb ver-d">D</span> Version D</button>
+          </div>
+          <div class="ver-tab-panel active" id="p2-panel-a">
+            <table class="data-table">
+              <thead><tr><th>Parameter</th><th>Value</th></tr></thead>
+              <tbody>
+                <tr><td>Initial forecast F₁</td><td>120 units (= Week 1 actual demand)</td></tr>
+                <tr><td>Smoothing parameter α</td><td>0.30</td></tr>
+                <tr><td>Forecast periods</td><td>F₂ through F₉ (8 forecasts)</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="ver-tab-panel" id="p2-panel-b">
+            <table class="data-table">
+              <thead><tr><th>Parameter</th><th>Value</th></tr></thead>
+              <tbody>
+                <tr><td>Initial forecast F₁</td><td>85 units (= Week 1 actual demand)</td></tr>
+                <tr><td>Smoothing parameter α</td><td>0.20</td></tr>
+                <tr><td>Forecast periods</td><td>F₂ through F₁₀ (9 forecasts)</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="ver-tab-panel" id="p2-panel-c">
+            <table class="data-table">
+              <thead><tr><th>Parameter</th><th>Value</th></tr></thead>
+              <tbody>
+                <tr><td>Initial forecast F₁</td><td>200 units (= Week 1 actual demand)</td></tr>
+                <tr><td>Smoothing parameter α</td><td>0.40</td></tr>
+                <tr><td>Forecast periods</td><td>F₂ through F₉ (8 forecasts)</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="ver-tab-panel" id="p2-panel-d">
+            <table class="data-table">
+              <thead><tr><th>Parameter</th><th>Value</th></tr></thead>
+              <tbody>
+                <tr><td>Initial forecast F₁</td><td>310 units (= Week 1 actual demand)</td></tr>
+                <tr><td>Smoothing parameter α</td><td>0.25</td></tr>
+                <tr><td>Forecast periods</td><td>F₂ through F₁₁ (10 forecasts)</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="q-block">
+          <div class="q-num">Question 2a</div>
+          <div class="q-text">Using the formula <strong>F(t+1) = α · D(t) + (1−α) · F(t)</strong>, compute the forecast for each period from Period 2 through the forecast period. Show each computation step in the format: F(t+1) = α × D(t) + (1−α) × F(t) = [value] + [value] = [result]. Round to two decimal places at every step.</div>
+          <span class="q-pts">10 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Question 2b</div>
+          <div class="q-text">Compute the forecast error for each period using <strong>Error = Actual − Forecast</strong>. Preserve the positive or negative sign — you will need the signed errors for Part 2d.</div>
+          <span class="q-pts">5 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Question 2c</div>
+          <div class="q-text">Compute the <strong>Mean Absolute Deviation (MAD)</strong> across all N periods. Write the formula, show the absolute value of each period's error, sum them, and divide by N. Round to two decimal places.</div>
+          <span class="q-pts">5 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Question 2d</div>
+          <div class="q-text">Compute the <strong>forecast bias</strong> across all N periods using signed (not absolute) errors. Is the model systematically over-forecasting or under-forecasting? In one sentence, describe the operational consequence this bias would have for Riverside's pharmacy if left uncorrected.</div>
+          <span class="q-pts">5 pts</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PART 3 -->
+  <div>
+    <div class="sec-div">Part 3 — MAPE, Comparison, and Method Recommendation &nbsp;·&nbsp; Same for all versions</div>
+    <div class="section-card part3" style="margin-top:14px;">
+      <div class="section-hd">
+        <div class="part-badge">3</div>
+        <div class="section-hd-text"><h2>MAPE, Comparison, and Method Recommendation</h2><p>Build directly on your Part 2 exponential smoothing results</p></div>
+        <div class="pts-badge">20 pts</div>
+      </div>
+      <div class="section-bd">
+        <div class="q-block">
+          <div class="q-num">Question 3a</div>
+          <div class="q-text">Compute the <strong>MAPE</strong> (Mean Absolute Percentage Error) using your Part 2 forecast errors. Show each period's absolute percentage error using the formula <strong>|Error_t| / D_t × 100%</strong>, then compute the average MAPE across all N periods. Round each period's APE to two decimal places before averaging.</div>
+          <span class="q-pts">5 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Question 3b</div>
+          <div class="q-text">Using the forecast accuracy evidence from Parts 1 and 2, compare the moving average and exponential smoothing approaches. Part 1 gives you the single-period forecast error for each MA window for the test period. Part 2 gives you the MAD across all N periods for the ES model. Which approach showed the stronger accuracy result, and which MA window (shorter or longer) performed better for the test period?</div>
+          <span class="q-pts">3 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Question 3c</div>
+          <div class="q-text">The operations director wants to implement a single forecasting method for this supply category across all Riverside facilities. Recommend either the shorter-window moving average, the longer-window moving average, or exponential smoothing. Write a 3–4 sentence recommendation that: (1) states your chosen method; (2) references the MAD and/or error comparison from Parts 1 and 2; (3) addresses whether the bias finding from Part 2d strengthens or complicates your recommendation; and (4) acknowledges one limitation of your recommended method.</div>
+          <span class="q-pts">12 pts</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PART 4 -->
+  <div>
+    <div class="sec-div">Part 4 — Judgmental Forecasting Evaluation and Multi-Metric Summary &nbsp;·&nbsp; Same scenario, version-specific estimates</div>
+    <div class="section-card part4" style="margin-top:14px;">
+      <div class="section-hd">
+        <div class="part-badge">4</div>
+        <div class="section-hd-text"><h2>Judgmental Forecasting Evaluation and Management Summary</h2><p>Evaluate expert estimates · Identify bias · Compare to statistical model · Write management recommendation</p></div>
+        <div class="pts-badge">35 pts</div>
+      </div>
+      <div class="section-bd">
+        <p style="font-size:13px;font-weight:600;color:var(--gray-700);margin-bottom:10px;">Read the following scenario, then find your version's expert estimates in the table below before answering.</p>
+        <div class="scenario-box">
+          The Riverside operations director is introducing a new specialty medication to the formulary next quarter. No historical demand data exists for this product. She asked three senior managers to each submit an independent written demand estimate for the first quarter (Q1), without seeing the other managers' estimates. The three managers are: Manager 1 (Department Head), Manager 2 (Clinical Lead), and Manager 3 (Budget Controller — the manager who controls the specialty drug purchase budget allocation). Their estimates and the actual Q1 demand are shown in the version table below.
+        </div>
+
+        <div class="ver-tabs">
+          <div class="ver-tab-hd">
+            <button class="ver-tab-btn active" onclick="switchTab('p4','a')" id="p4-tab-a"><span class="vb ver-a">A</span> Version A</button>
+            <button class="ver-tab-btn" onclick="switchTab('p4','b')" id="p4-tab-b"><span class="vb ver-b">B</span> Version B</button>
+            <button class="ver-tab-btn" onclick="switchTab('p4','c')" id="p4-tab-c"><span class="vb ver-c">C</span> Version C</button>
+            <button class="ver-tab-btn" onclick="switchTab('p4','d')" id="p4-tab-d"><span class="vb ver-d">D</span> Version D</button>
+          </div>
+          <div class="ver-tab-panel active" id="p4-panel-a">
+            <p style="font-size:12px;color:var(--gray-600);margin-bottom:8px;"><strong>Version A</strong> — New specialty product: High-cost injectable (oncology)</p>
+            <table class="data-table">
+              <thead><tr><th>Manager</th><th>Role</th><th>Q1 Estimate (units)</th></tr></thead>
+              <tbody>
+                <tr><td>Manager 1</td><td>Department Head</td><td>145</td></tr>
+                <tr><td>Manager 2</td><td>Clinical Lead</td><td>140</td></tr>
+                <tr><td>Manager 3</td><td>Budget Controller</td><td>112</td></tr>
+                <tr><td>Actual Q1 demand</td><td>—</td><td><strong>138</strong></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="ver-tab-panel" id="p4-panel-b">
+            <p style="font-size:12px;color:var(--gray-600);margin-bottom:8px;"><strong>Version B</strong> — New specialty product: Specialty antibiotic (resistant strain)</p>
+            <table class="data-table">
+              <thead><tr><th>Manager</th><th>Role</th><th>Q1 Estimate (units)</th></tr></thead>
+              <tbody>
+                <tr><td>Manager 1</td><td>Department Head</td><td>105</td></tr>
+                <tr><td>Manager 2</td><td>Clinical Lead</td><td>100</td></tr>
+                <tr><td>Manager 3</td><td>Budget Controller</td><td>78</td></tr>
+                <tr><td>Actual Q1 demand</td><td>—</td><td><strong>102</strong></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="ver-tab-panel" id="p4-panel-c">
+            <p style="font-size:12px;color:var(--gray-600);margin-bottom:8px;"><strong>Version C</strong> — New specialty product: Biologic (autoimmune)</p>
+            <table class="data-table">
+              <thead><tr><th>Manager</th><th>Role</th><th>Q1 Estimate (units)</th></tr></thead>
+              <tbody>
+                <tr><td>Manager 1</td><td>Department Head</td><td>230</td></tr>
+                <tr><td>Manager 2</td><td>Clinical Lead</td><td>228</td></tr>
+                <tr><td>Manager 3</td><td>Budget Controller</td><td>185</td></tr>
+                <tr><td>Actual Q1 demand</td><td>—</td><td><strong>225</strong></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="ver-tab-panel" id="p4-panel-d">
+            <p style="font-size:12px;color:var(--gray-600);margin-bottom:8px;"><strong>Version D</strong> — New specialty product: Cardiac specialty device supply</p>
+            <table class="data-table">
+              <thead><tr><th>Manager</th><th>Role</th><th>Q1 Estimate (units)</th></tr></thead>
+              <tbody>
+                <tr><td>Manager 1</td><td>Department Head</td><td>355</td></tr>
+                <tr><td>Manager 2</td><td>Clinical Lead</td><td>360</td></tr>
+                <tr><td>Manager 3</td><td>Budget Controller</td><td>292</td></tr>
+                <tr><td>Actual Q1 demand</td><td>—</td><td><strong>350</strong></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="q-block">
+          <div class="q-num">Question 4a</div>
+          <div class="q-text">The director plans to average the three independent estimates to produce a combined forecast.<br><br>(i) What judgmental forecasting method is this? <span style="font-size:11px;color:var(--gray-400);">2 pts</span><br><br>(ii) State one advantage of this method over having the three managers discuss and agree on a number in a meeting. <span style="font-size:11px;color:var(--gray-400);">3 pts</span></div>
+          <span class="q-pts">5 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Question 4b</div>
+          <div class="q-text">Manager 3's estimate is substantially lower than the other two managers' estimates. Manager 3 controls the specialty drug purchase budget.<br><br>(i) Name the forecasting bias most likely responsible for Manager 3's divergence. <span style="font-size:11px;color:var(--gray-400);">3 pts</span><br><br>(ii) Explain why the budget control role makes this bias predictable. Reference the Chapter 15.6 definition of this bias type in your answer. <span style="font-size:11px;color:var(--gray-400);">5 pts</span></div>
+          <span class="q-pts">8 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Question 4c</div>
+          <div class="q-text">Compute the combined forecast as the simple average of all three managers' independent estimates. Show your work. Then compare the combined judgmental forecast error (|Actual − Combined forecast|) to the ES model's forecast error (|Actual − ES F(T+1) from Part 2|). Which method was more accurate for this single period? State the error values for each method.</div>
+          <span class="q-pts">8 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Question 4d</div>
+          <div class="q-text">Write a 4-sentence management summary recommending whether Riverside should rely on the statistical ES model, the combined expert forecast, or a hybrid approach for this supply category going forward. Your summary must address all four of the following: (1) the ES model's MAPE from Part 3a; (2) the bias direction and magnitude from Part 2d; (3) when judgmental input should be given priority over the statistical model; and (4) one condition under which your recommendation would change.</div>
+          <span class="q-pts">14 pts</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUBMISSION CHECKLIST -->
+  <div>
+    <div class="sec-div">Submission Requirements</div>
+    <div class="section-card" style="margin-top:14px;">
+      <div class="section-hd" style="background:var(--gray-50);padding:13px 20px;border-bottom:1px solid var(--gray-200);">
+        <h2 style="font-size:14px;font-weight:700;color:var(--navy);">Before you submit, verify the following</h2>
+      </div>
+      <div class="section-bd">
+        <div class="submit-list">
+          <div class="submit-item">Your file is saved as <strong>PDF or Word (.docx)</strong>.</div>
+          <div class="submit-item">Your <strong>assigned version letter (A, B, C, or D)</strong> is written at the top of your document.</div>
+          <div class="submit-item">All Parts 1 and 2 calculations show <strong>labeled intermediate steps</strong> — not just final answers.</div>
+          <div class="submit-item">Part 2 forecast chain is computed <strong>step-by-step</strong> using F(t+1) = α·D(t) + (1−α)·F(t), starting from F₁ = Week 1 actual demand.</div>
+          <div class="submit-item">Part 2d bias uses <strong>signed errors</strong> (not absolute values) — the bias answer will be positive for all versions.</div>
+          <div class="submit-item">Part 3c recommendation <strong>addresses all four required elements</strong>: method choice, MAD reference, bias impact, limitation.</div>
+          <div class="submit-item">Part 4d management summary <strong>references your own computed MAPE and bias values</strong> from Parts 3a and 2d (not generic statements).</div>
+          <div class="submit-item">Part 4 expert estimates table — confirm you used the <strong>correct version's estimates</strong> (Manager 3 estimates differ substantially across versions).</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GRADING SUMMARY -->
+  <div class="section-card">
+    <div style="background:var(--blue-xlt);padding:13px 20px;border-bottom:1px solid var(--gray-200);">
+      <h2 style="font-size:14px;font-weight:700;color:var(--navy);">Grading Summary · 100 points total</h2>
+    </div>
+    <table class="grade-table">
+      <thead><tr><th>Part</th><th>Content</th><th style="text-align:right;">Points</th><th>Primary LO</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Part 1</strong></td><td>Moving average forecast — computation, error comparison, window recommendation</td><td class="pts-right">20</td><td>LO11-2</td></tr>
+        <tr><td><strong>Part 2</strong></td><td>Exponential smoothing — full recursive chain, errors, MAD, bias</td><td class="pts-right">25</td><td>LO11-3, LO11-4</td></tr>
+        <tr><td><strong>Part 3</strong></td><td>MAPE computation, accuracy comparison, method recommendation</td><td class="pts-right">20</td><td>LO11-6, LO11-8</td></tr>
+        <tr><td><strong>Part 4</strong></td><td>Judgmental methods, bias identification, combined forecast, management summary</td><td class="pts-right">35</td><td>LO11-5, LO11-7</td></tr>
+        <tr class="total"><td colspan="2"><strong>Total</strong></td><td class="pts-right">100</td><td></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<script>
+function switchTab(part, ver) {
+  ['a','b','c','d'].forEach(v => {
+    const btn   = document.getElementById(part + '-tab-' + v);
+    const panel = document.getElementById(part + '-panel-' + v);
+    if (btn)   btn.classList.toggle('active', v === ver);
+    if (panel) panel.classList.toggle('active', v === ver);
+  });
+}
+</script>
+</body>
+</html>

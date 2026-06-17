@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forecasting Method Workbench — SCM 352 M11</title>
+<style>
+:root {
+  --navy:#1a3a5c; --blue:#2563a8; --blue-lt:#dbeafe; --blue-xlt:#eff6ff; --blue-bdr:#bfdbfe;
+  --gold:#f59e0b; --gold-lt:#fffbeb; --gold-bdr:#fde68a; --gold-dark:#92400e;
+  --green:#16a34a; --green-lt:#f0fdf4; --green-bdr:#bbf7d0; --green-dark:#15803d;
+  --red:#dc2626; --red-lt:#fef2f2; --red-bdr:#fecaca;
+  --amber:#d97706; --amber-lt:#fffbeb; --amber-bdr:#fde68a;
+  --teal:#0891b2; --teal-lt:#f0fdfe; --teal-bdr:#a5f3fc;
+  --gray-50:#f9fafb; --gray-100:#f3f4f6; --gray-200:#e5e7eb; --gray-300:#d1d5db;
+  --gray-400:#9ca3af; --gray-600:#4b5563; --gray-700:#374151; --gray-800:#1f2937;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--gray-50);color:var(--gray-800);min-height:100vh;}
+
+header{background:var(--navy);color:white;padding:14px 24px;display:flex;align-items:center;gap:14px;}
+.hbadge{background:var(--gold);color:var(--navy);font-weight:700;font-size:11px;padding:3px 8px;border-radius:4px;letter-spacing:.05em;text-transform:uppercase;white-space:nowrap;}
+header h1{font-size:17px;font-weight:600;}
+.hlo{margin-left:auto;font-size:11px;color:rgba(255,255,255,.6);}
+
+.scen-nav{background:white;border-bottom:2px solid var(--gray-200);padding:0 20px;display:flex;gap:0;overflow-x:auto;}
+.sbtn{padding:11px 18px;border:none;background:none;cursor:pointer;font-size:13px;font-weight:500;color:var(--gray-600);border-bottom:3px solid transparent;white-space:nowrap;transition:all .15s;}
+.sbtn:hover{color:var(--blue);}
+.sbtn.active{color:var(--blue);border-bottom-color:var(--blue);font-weight:600;}
+.sbtn.done::after{content:' ✓';color:var(--green);}
+
+.wrap{max-width:1080px;margin:0 auto;padding:22px 20px;}
+.ctx{background:var(--gray-50);border-left:4px solid var(--blue);padding:12px 16px;border-radius:0 8px 8px 0;font-size:13px;line-height:1.65;color:var(--gray-800);margin-bottom:16px;}
+.teach{background:var(--gold-lt);border:1px solid var(--gold-bdr);border-radius:8px;padding:10px 14px;font-size:12px;line-height:1.6;color:var(--gray-800);margin-bottom:16px;}
+.teach-lbl{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--amber);margin-bottom:3px;}
+
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;}
+@media(max-width:740px){.two-col{grid-template-columns:1fr;}}
+.panel{background:white;border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;}
+.panel-head{padding:12px 18px;border-bottom:1px solid var(--gray-200);}
+.panel-head.ma-head{background:var(--blue-lt);}
+.panel-head.es-head{background:var(--teal-lt);}
+.panel-head h3{font-size:14px;font-weight:700;color:var(--navy);}
+.panel-body{padding:14px 16px;}
+
+/* controls */
+.ctrl-row{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap;}
+.ctrl-label{font-size:13px;font-weight:600;color:var(--gray-700);}
+select.ctrl-sel{padding:7px 10px;border:2px solid var(--gray-300);border-radius:8px;font-size:13px;background:white;cursor:pointer;}
+select.ctrl-sel:focus{outline:none;border-color:var(--blue);}
+input.ctrl-in{width:90px;padding:7px 10px;border:2px solid var(--gray-300);border-radius:8px;font-size:13px;text-align:center;}
+input.ctrl-in:focus{outline:none;border-color:var(--blue);}
+
+/* forecast table */
+table.ft{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:12px;}
+table.ft th{background:var(--gray-100);padding:7px 10px;text-align:center;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--gray-600);border-bottom:2px solid var(--gray-200);}
+table.ft td{padding:5px 8px;text-align:center;border-bottom:1px solid var(--gray-100);}
+table.ft tr:last-child td{border-bottom:none;}
+td.d-actual{font-weight:700;color:var(--navy);}
+td.d-period{color:var(--gray-600);font-weight:600;}
+td.d-na{color:var(--gray-400);font-style:italic;}
+
+input.fc-in{width:80px;padding:5px 7px;border:2px solid var(--gray-300);border-radius:6px;font-size:12px;text-align:center;transition:border-color .15s;}
+input.fc-in:focus{outline:none;border-color:var(--blue);}
+input.fc-in.ok{border-color:var(--green);background:var(--green-lt);}
+input.fc-in.err{border-color:var(--red);background:var(--red-lt);}
+input.fc-in:disabled{background:var(--gray-100);color:var(--gray-600);border-color:var(--gray-200);cursor:not-allowed;}
+
+/* MAD display */
+.mad-row{display:flex;align-items:center;gap:10px;background:var(--gray-50);border:1px solid var(--gray-200);border-radius:8px;padding:10px 14px;font-size:13px;margin-top:8px;}
+.mad-val{font-size:20px;font-weight:700;color:var(--navy);}
+.mad-lbl{font-size:11px;color:var(--gray-600);}
+
+/* feedback */
+.fb{display:none;border-radius:8px;overflow:hidden;margin-top:10px;}
+.fb.show{display:block;}
+.fb-banner{padding:9px 13px;font-size:13px;font-weight:700;display:flex;align-items:center;gap:7px;}
+.fb-ok{background:var(--green-lt);color:var(--green);}
+.fb-err{background:var(--red-lt);color:var(--red);}
+.fb-body{padding:11px 13px;font-size:12px;line-height:1.65;background:white;border:1px solid var(--gray-200);border-top:none;border-radius:0 0 8px 8px;}
+
+/* comparison */
+.cmp-panel{background:white;border:2px solid var(--gray-200);border-radius:12px;padding:18px;margin-bottom:16px;}
+.cmp-panel.locked{opacity:.45;pointer-events:none;}
+.cmp-panel h3{font-size:14px;font-weight:700;color:var(--navy);margin-bottom:12px;}
+.cmp-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
+.cmp-box{border:2px solid var(--gray-200);border-radius:10px;padding:14px;text-align:center;}
+.cmp-box.winner{border-color:var(--green);background:var(--green-lt);}
+.cmp-box.loser{border-color:var(--gray-200);background:var(--gray-50);}
+.cmp-method{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--gray-600);margin-bottom:4px;}
+.cmp-mad{font-size:26px;font-weight:700;color:var(--navy);}
+.cmp-sub{font-size:11px;color:var(--gray-500);margin-top:2px;}
+.winner-tag{font-size:10px;font-weight:700;color:var(--green);letter-spacing:.05em;text-transform:uppercase;margin-top:6px;}
+
+textarea.cmp-text{width:100%;padding:10px 12px;border:2px solid var(--gray-300);border-radius:8px;font-size:13px;font-family:inherit;resize:vertical;min-height:80px;}
+textarea.cmp-text:focus{outline:none;border-color:var(--blue);}
+
+.model-ans{display:none;background:var(--blue-xlt);border:1px solid var(--blue-bdr);border-radius:8px;padding:13px 16px;font-size:13px;line-height:1.65;margin-top:12px;}
+.model-ans.show{display:block;}
+.model-ans-lbl{font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--blue);margin-bottom:6px;}
+
+.btn{padding:9px 20px;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;transition:all .15s;}
+.btn-primary{background:var(--blue);color:white;}
+.btn-primary:hover{background:#1d4ed8;}
+.btn-primary:disabled{background:var(--gray-400);cursor:not-allowed;}
+.btn-green{background:var(--green);color:white;}
+.btn-green:hover{background:var(--green-dark);}
+.btn-secondary{background:var(--gray-100);color:var(--gray-800);}
+.btn-secondary:hover{background:var(--gray-200);}
+.btn-group{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:12px;}
+
+.lock-msg{font-size:13px;color:var(--gray-400);font-style:italic;margin-top:8px;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hbadge">SCM 352 · M11</div>
+  <h1>Forecasting Method Workbench</h1>
+  <div class="hlo">LO11-2 · LO11-3</div>
+</header>
+
+<div class="scen-nav" id="scenNav"></div>
+
+<div class="wrap" id="appWrap"></div>
+
+<script>
+// ═══ DATA ═══════════════════════════════════════════════
+const SCEN = [
+  {
+    id:0,
+    name:"Scenario 1",
+    label:"Stable Demand",
+    desc:"Riverside Health System's pharmacy tracks weekly demand for IV tubing sets. Demand has been stable around 200 units per week with moderate random variation. Occasional random spikes occur but do not represent a new trend.",
+    demand:[200,215,188,203,198,212,195,208],
+    product:"IV tubing sets",
+    insight:"When demand is stable, moving average and exponential smoothing tend to perform similarly. Compare the MAD values — they should be close. The key question is whether the parameter choices (n or α) produce meaningfully different results.",
+    ma_rec:"With stable demand, a longer window (n=4 or 5) or a low α (0.1–0.2) smooths out random spikes. A very short window or high α would cause the model to overreact to one-time noise.",
+    es_f1_hint:200
+  },
+  {
+    id:1,
+    name:"Scenario 2",
+    label:"Upward Trend",
+    desc:"Riverside's emergency department has been expanding. Weekly demand for emergency procedure kits has been rising steadily by approximately 12 units per week for the past 8 weeks as a new wing opened and patient volume has grown.",
+    demand:[100,112,124,136,148,160,172,184],
+    product:"emergency procedure kits",
+    insight:"With a consistent upward trend, both methods will lag behind actual demand — but shorter windows (smaller n) and higher α values reduce this lag. Notice that even the best parameters produce positive bias (under-forecasting). Neither method can eliminate the lag entirely.",
+    ma_rec:"With consistently rising demand, a shorter window (n=2 or 3) reduces lag by giving more weight to recent, higher observations. A higher α (0.5–0.7) similarly increases responsiveness to the upward trend. Neither fully eliminates the lag.",
+    es_f1_hint:100
+  },
+  {
+    id:2,
+    name:"Scenario 3",
+    label:"Step-Change",
+    desc:"Demand for a medication at Riverside was flat at 100 units per week for the first 5 weeks. Then a new patient population was added, permanently shifting demand to approximately 160 units per week starting in Week 6.",
+    demand:[100,100,100,100,100,160,160,160],
+    product:"specialty medication",
+    insight:"After a step-change, the key difference between MA and ES emerges clearly: a high α ES recovers faster than a long-window MA. The MA must fully 'flush out' the old observations from its window, while high-α ES rapidly updates toward the new level.",
+    ma_rec:"With a step-change, a shorter MA window recovers faster — a 2-period MA reaches the new level within 2 periods, while an 8-period MA would take 8 periods. A high α (0.6–0.8) ES recovers in 3–4 periods. Try different n and α values to see the speed difference.",
+    es_f1_hint:100
+  },
+  {
+    id:3,
+    name:"Scenario 4",
+    label:"Noisy Flat Demand",
+    desc:"Weekly demand for a stable supply item at Riverside fluctuates widely around a constant average of approximately 200 units per week due to unpredictable delivery timing variation. The true underlying demand is flat — the noise is pure random variation.",
+    demand:[185,228,170,218,178,226,172,223],
+    product:"supply item",
+    insight:"When variation is pure noise around a stable mean, a longer window (n=5 or 6) or a low α (0.1–0.2) smooths out the noise better than a short window or high α. A high α would cause the forecast to 'chase' every random spike, increasing MAD. Compare MAD at low vs. high α.",
+    ma_rec:"With pure random noise around a stable mean, a longer window or lower α produces a lower MAD. The model should be smooth — it has nothing to 'track' and should resist reacting to individual spikes.",
+    es_f1_hint:200
+  }
+];
+
+const N_OPTIONS=[2,3,4,5,6];
+const ALPHA_OPTIONS=[0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8];
+
+// ═══ STATE ══════════════════════════════════════════════
+let state = {
+  activeScen:0,
+  scenState: SCEN.map(()=>({
+    maChecked:false, esChecked:false,
+    maMad:null, esMad:null,
+    submitted:false,
+    n:3, alpha:0.3, f1:null,
+    f1Locked:false
+  }))
+};
+
+// ═══ MATH ════════════════════════════════════════════════
+function r2(x){return Math.round(x*100)/100;}
+function eq(a,b){return Math.abs(a-b)<=0.06;}
+
+function computeMA(demand,n){
+  // Returns forecasts F[n]...F[T-1] in 0-indexed where F[t] = forecast for period t+1
+  // Actually: F for period k+1 = avg of D[k-n+1..k] for k >= n-1
+  const res=[];
+  for(let k=n-1;k<demand.length;k++){
+    const slice=demand.slice(k-n+1,k+1);
+    res.push({period:k+2, val:r2(slice.reduce((a,b)=>a+b,0)/n)});
+    // period k+2 because we're forecasting the NEXT period (k+1 is 0-indexed, so period k+2 in 1-indexed)
+  }
+  return res;
+  // Result: F_{n+1}, F_{n+2}, ..., F_{T+1}
+  // F_{n+1} uses D[1..n], F_{n+2} uses D[2..n+1], etc.
+}
+
+function computeES(demand,f1,alpha){
+  // Returns F[2]..F[T+1] where F[t+1] = alpha*D[t] + (1-alpha)*F[t]
+  const res=[{period:1,val:r2(f1)}]; // F1 given
+  let prev=f1;
+  for(let t=0;t<demand.length;t++){
+    const next=r2(alpha*demand[t]+(1-alpha)*prev);
+    res.push({period:t+2, val:next});
+    prev=next;
+  }
+  return res;
+  // res[0] = {period:1, val:f1}
+  // res[1] = {period:2, val:F2} (forecast for period 2, using D1)
+  // ...
+  // res[T] = {period:T+1, val:F(T+1)} (forecast for next period)
+}
+
+function computeMAD_ma(demand,n,maForecasts){
+  // maForecasts[i].period is the period being forecast
+  // error = demand[period-1] - forecast (for actual periods T where demand exists)
+  let sum=0,cnt=0;
+  for(const f of maForecasts){
+    const idx=f.period-1;
+    if(idx<demand.length){
+      sum+=Math.abs(demand[idx]-f.val);
+      cnt++;
+    }
+  }
+  return cnt>0?r2(sum/cnt):null;
+}
+
+function computeMAD_es(demand,esForecasts){
+  // esForecasts[0] = F1 (given), esForecasts[1] = F2, etc.
+  // Compare F2..FT against D2..DT (i.e., periods 2 through T)
+  let sum=0,cnt=0;
+  for(let t=1;t<esForecasts.length;t++){
+    const f=esForecasts[t];
+    const idx=f.period-1; // 0-indexed
+    if(idx<demand.length){
+      sum+=Math.abs(demand[idx]-f.val);
+      cnt++;
+    }
+  }
+  return cnt>0?r2(sum/cnt):null;
+}
+
+// ═══ RENDER ══════════════════════════════════════════════
+function renderNav(){
+  const nav=document.getElementById('scenNav');
+  nav.innerHTML=SCEN.map((s,i)=>{
+    const st=state.scenState[i];
+    const done=st.submitted?' done':'';
+    const active=i===state.activeScen?' active':'';
+    return `<button class="sbtn${active}${done}" onclick="switchScen(${i})">${s.name}: ${s.label}</button>`;
+  }).join('');
+}
+
+function switchScen(idx){
+  state.activeScen=idx;
+  renderNav();
+  renderApp();
+}
+
+function renderApp(){
+  const sc=SCEN[state.activeScen];
+  const st=state.scenState[state.activeScen];
+  const T=sc.demand.length;
+  const n=st.n;
+  const alpha=st.alpha;
+  const f1=st.f1!==null?st.f1:sc.es_f1_hint;
+
+  // Compute correct MA forecasts
+  const maFCs=computeMA(sc.demand,n);
+  // Compute correct ES forecasts
+  const esFCs=computeES(sc.demand,f1,alpha);
+
+  // Build MA input rows
+  let maRows='';
+  for(let p=1;p<=T+1;p++){
+    const dval=p<=T?sc.demand[p-1]:'—';
+    const isActual=p<=T;
+    // MA: first forecast available for period n+1
+    let fcCell;
+    if(p<=n){
+      fcCell=`<td class="d-na">—</td>`;
+    } else if(p<=T||p===T+1){
+      const fcIdx=p-(n+1); // index in maFCs array (F[n+1] is maFCs[0])
+      const fcObj=maFCs[fcIdx];
+      const cellId=`ma-${state.activeScen}-p${p}`;
+      const locked=st.maChecked?'disabled':'';
+      const inp=`<input type="text" class="fc-in" id="${cellId}" value="" placeholder="?" ${locked} onchange="autoCheckMA()">`;
+      fcCell=`<td>${inp}</td>`;
+    } else {
+      fcCell=`<td class="d-na">—</td>`;
+    }
+    const dCell=isActual?`<td class="d-actual">${dval}</td>`:`<td class="d-na">—</td>`;
+    const label=p<=T?`Period ${p}`:`<strong>Forecast Wk ${T+1}</strong>`;
+    maRows+=`<tr><td class="d-period">${label}</td>${dCell}${fcCell}</tr>`;
+  }
+
+  // Build ES input rows
+  let esRows='';
+  for(let p=1;p<=T+1;p++){
+    const dval=p<=T?sc.demand[p-1]:'—';
+    const isActual=p<=T;
+    let fcCell;
+    if(p===1){
+      // F1 is given
+      fcCell=`<td><span style="font-weight:700;color:var(--teal);">${r2(f1)}</span><span style="font-size:10px;color:var(--gray-400);"> (given)</span></td>`;
+    } else {
+      const fcObj=esFCs[p-1]; // esFCs[0]=F1, esFCs[1]=F2, etc.
+      const cellId=`es-${state.activeScen}-p${p}`;
+      const locked=st.esChecked?'disabled':'';
+      const inp=`<input type="text" class="fc-in" id="${cellId}" value="" placeholder="?" ${locked} onchange="autoCheckES()">`;
+      fcCell=`<td>${inp}</td>`;
+    }
+    const dCell=isActual?`<td class="d-actual">${dval}</td>`:`<td class="d-na">—</td>`;
+    const label=p<=T?`Period ${p}`:`<strong>Forecast Wk ${T+1}</strong>`;
+    esRows+=`<tr><td class="d-period">${label}</td>${dCell}${fcCell}</tr>`;
+  }
+
+  const maMAD=st.maChecked&&st.maMad!=null?`<div class="mad-row"><div><div class="mad-lbl">MA(${n}) MAD</div><div class="mad-val">${st.maMad}</div><div class="mad-lbl">units avg error over Wks ${n+1}–${T}</div></div></div>`:'';
+  const esMAD=st.esChecked&&st.esMad!=null?`<div class="mad-row"><div><div class="mad-lbl">ES (α=${alpha}) MAD</div><div class="mad-val">${st.esMad}</div><div class="mad-lbl">units avg error over Wks 2–${T}</div></div></div>`:'';
+
+  const bothDone=st.maChecked&&st.esChecked;
+  const cmpLock=bothDone?'':'locked';
+
+  let cmpGrid='';
+  if(bothDone&&st.maMad!==null&&st.esMad!==null){
+    const maWins=st.maMad<=st.esMad;
+    cmpGrid=`
+    <div class="cmp-grid">
+      <div class="cmp-box ${maWins?'winner':'loser'}">
+        <div class="cmp-method">MA(${n})</div>
+        <div class="cmp-mad">${st.maMad}</div>
+        <div class="cmp-sub">${T-n} comparison periods</div>
+        ${maWins?'<div class="winner-tag">Lower MAD ✓</div>':''}
+      </div>
+      <div class="cmp-box ${!maWins?'winner':'loser'}">
+        <div class="cmp-method">ES α=${alpha}</div>
+        <div class="cmp-mad">${st.esMad}</div>
+        <div class="cmp-sub">${T-1} comparison periods</div>
+        ${!maWins?'<div class="winner-tag">Lower MAD ✓</div>':''}
+      </div>
+    </div>`;
+  }
+
+  const lockMsg=bothDone?'':'<p class="lock-msg">Complete both MA and ES computations above to unlock the comparison.</p>';
+
+  const submitBtn=st.submitted?`<button class="btn btn-secondary" disabled>Submitted ✓</button>`:`<button class="btn btn-green" onclick="submitComparison()">Submit My Answer</button>`;
+
+  const modelAns=`<div class="model-ans${st.submitted?' show':''}" id="modelAns">
+    <div class="model-ans-lbl">Model Answer</div>
+    <p>${sc.ma_rec}</p>
+    <p style="margin-top:8px;"><strong>Demand pattern insight:</strong> ${sc.insight}</p>
+  </div>`;
+
+  const html=`
+<div class="ctx"><strong>${sc.desc}</strong></div>
+<div class="teach"><div class="teach-lbl">What to Look For</div>${sc.insight}</div>
+
+<div class="two-col">
+  <!-- MA Panel -->
+  <div class="panel">
+    <div class="panel-head ma-head">
+      <h3>Moving Average</h3>
+    </div>
+    <div class="panel-body">
+      <div class="ctrl-row">
+        <span class="ctrl-label">Window n:</span>
+        <select class="ctrl-sel" id="nSel" onchange="setN(this.value)" ${st.maChecked?'disabled':''}>
+          ${N_OPTIONS.map(v=>`<option value="${v}" ${v===n?'selected':''}>${v}-period</option>`).join('')}
+        </select>
+      </div>
+      <table class="ft">
+        <thead><tr><th>Period</th><th>Actual Demand</th><th>MA(${n}) Forecast</th></tr></thead>
+        <tbody>${maRows}</tbody>
+      </table>
+      ${maMAD}
+      <div class="btn-group">
+        ${st.maChecked
+          ?`<button class="btn btn-secondary" onclick="resetMA()">Reset</button><span style="font-size:12px;color:var(--green);font-weight:600;">✓ Validated</span>`
+          :`<button class="btn btn-primary" onclick="checkMA()">Check MA Forecasts</button>`}
+      </div>
+      <div class="fb" id="ma-fb"></div>
+    </div>
+  </div>
+
+  <!-- ES Panel -->
+  <div class="panel">
+    <div class="panel-head es-head">
+      <h3>Exponential Smoothing</h3>
+    </div>
+    <div class="panel-body">
+      <div class="ctrl-row">
+        <span class="ctrl-label">α (alpha):</span>
+        <select class="ctrl-sel" id="alphaSel" onchange="setAlpha(this.value)" ${st.esChecked?'disabled':''}>
+          ${ALPHA_OPTIONS.map(v=>`<option value="${v}" ${v===alpha?'selected':''}>α = ${v}</option>`).join('')}
+        </select>
+      </div>
+      <div class="ctrl-row">
+        <span class="ctrl-label">F₁ (initial):</span>
+        <input type="number" class="ctrl-in" id="f1In" value="${f1}" placeholder="F₁" onchange="setF1(this.value)" ${st.esChecked?'disabled':''}>
+        <span style="font-size:11px;color:var(--gray-500);">Period 1 forecast</span>
+      </div>
+      <table class="ft">
+        <thead><tr><th>Period</th><th>Actual Demand</th><th>ES Forecast</th></tr></thead>
+        <tbody>${esRows}</tbody>
+      </table>
+      ${esMAD}
+      <div class="btn-group">
+        ${st.esChecked
+          ?`<button class="btn btn-secondary" onclick="resetES()">Reset</button><span style="font-size:12px;color:var(--green);font-weight:600;">✓ Validated</span>`
+          :`<button class="btn btn-primary" onclick="checkES()">Check ES Forecasts</button>`}
+      </div>
+      <div class="fb" id="es-fb"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Comparison Panel -->
+<div class="cmp-panel ${cmpLock}" id="cmpPanel">
+  <h3>Comparison — Which Method Performs Better?</h3>
+  ${lockMsg}
+  ${cmpGrid}
+  <div>
+    <label style="font-size:13px;font-weight:600;display:block;margin-bottom:6px;">Your Analysis: Which method had the lower MAD? Which would you recommend for this demand pattern, and why?</label>
+    <textarea class="cmp-text" id="cmpText" placeholder="Write 1–2 sentences..."></textarea>
+    <div class="btn-group">
+      ${submitBtn}
+    </div>
+  </div>
+  ${modelAns}
+</div>`;
+
+  document.getElementById('appWrap').innerHTML=html;
+}
+
+// ═══ EVENT HANDLERS ══════════════════════════════════════
+function setN(v){
+  const st=state.scenState[state.activeScen];
+  st.n=parseInt(v);
+  st.maChecked=false; st.maMad=null;
+  renderApp();
+}
+function setAlpha(v){
+  const st=state.scenState[state.activeScen];
+  st.alpha=parseFloat(v);
+  st.esChecked=false; st.esMad=null;
+  renderApp();
+}
+function setF1(v){
+  const st=state.scenState[state.activeScen];
+  const parsed=parseFloat(v);
+  if(!isNaN(parsed)){st.f1=parsed;}
+}
+function autoCheckMA(){}
+function autoCheckES(){}
+
+function checkMA(){
+  const sc=SCEN[state.activeScen];
+  const st=state.scenState[state.activeScen];
+  const T=sc.demand.length;
+  const n=st.n;
+  const maFCs=computeMA(sc.demand,n);
+
+  let correct=0,wrong=0,blank=0;
+  const errors=[];
+
+  for(let p=n+1;p<=T+1;p++){
+    const cellId=`ma-${state.activeScen}-p${p}`;
+    const inp=document.getElementById(cellId);
+    if(!inp) continue;
+    const val=parseFloat(inp.value);
+    const fcIdx=p-(n+1);
+    const expected=maFCs[fcIdx]?maFCs[fcIdx].val:null;
+    if(isNaN(val)||inp.value.trim()===''){
+      blank++;
+      inp.classList.add('err');
+    } else if(expected!==null&&eq(val,expected)){
+      correct++;
+      inp.classList.add('ok');
+      inp.classList.remove('err');
+    } else {
+      wrong++;
+      inp.classList.add('err');
+      inp.classList.remove('ok');
+      if(expected!==null) errors.push({p,expected,got:r2(val)});
+    }
+  }
+
+  const fb=document.getElementById('ma-fb');
+  if(wrong>0||blank>0){
+    let msg=`<strong>${wrong} error${wrong!==1?'s':''} found.</strong> `;
+    if(blank>0) msg+=`${blank} cell${blank!==1?'s':''} left blank. `;
+    if(errors.length>0){
+      const e=errors[0];
+      msg+=`<br><br>Period ${e.p}: expected <strong>${e.expected}</strong>, you entered ${e.got}. `;
+      msg+=`Check that you are averaging exactly the ${n} most recent actual demand values (not including the current period's forecast).`;
+      if(wrong>1&&wrong-1>0) msg+=` There ${wrong-1===1?'is':'are'} ${wrong-1} more error${wrong-1>1?'s':''} to find.`;
+    }
+    fb.innerHTML=`<div class="fb-banner fb-err">✗ Not yet correct</div><div class="fb-body">${msg}</div>`;
+    fb.className='fb show';
+  } else {
+    // All correct
+    const mad=computeMAD_ma(sc.demand,n,maFCs);
+    st.maChecked=true; st.maMad=mad;
+    fb.innerHTML=`<div class="fb-banner fb-ok">✓ All forecasts correct</div><div class="fb-body">MA(${n}) validated. Your MAD across periods ${n+1}–${T} is <strong>${mad} units</strong>.</div>`;
+    fb.className='fb show';
+    // Re-render to show MAD and lock inputs
+    renderApp();
+    // Restore fb after re-render
+    setTimeout(()=>{
+      const fb2=document.getElementById('ma-fb');
+      if(fb2){
+        fb2.innerHTML=`<div class="fb-banner fb-ok">✓ All forecasts correct</div><div class="fb-body">MA(${n}) validated. MAD = <strong>${mad} units</strong> over ${T-n} periods.</div>`;
+        fb2.className='fb show';
+      }
+    },50);
+  }
+}
+
+function checkES(){
+  const sc=SCEN[state.activeScen];
+  const st=state.scenState[state.activeScen];
+  const T=sc.demand.length;
+  const f1Input=document.getElementById('f1In');
+  const f1val=f1Input?parseFloat(f1Input.value):sc.es_f1_hint;
+  if(!isNaN(f1val)) st.f1=f1val;
+  const f1=st.f1!==null?st.f1:sc.es_f1_hint;
+  const alpha=st.alpha;
+  const esFCs=computeES(sc.demand,f1,alpha);
+
+  let correct=0,wrong=0,blank=0;
+  const errors=[];
+
+  for(let p=2;p<=T+1;p++){
+    const cellId=`es-${state.activeScen}-p${p}`;
+    const inp=document.getElementById(cellId);
+    if(!inp) continue;
+    const val=parseFloat(inp.value);
+    const expected=esFCs[p-1]?esFCs[p-1].val:null;
+    if(isNaN(val)||inp.value.trim()===''){
+      blank++;
+      inp.classList.add('err');
+    } else if(expected!==null&&eq(val,expected)){
+      correct++;
+      inp.classList.add('ok');
+      inp.classList.remove('err');
+    } else {
+      wrong++;
+      inp.classList.add('err');
+      inp.classList.remove('ok');
+      if(expected!==null) errors.push({p,expected,got:r2(val)});
+    }
+  }
+
+  const fb=document.getElementById('es-fb');
+  if(wrong>0||blank>0){
+    let msg=`<strong>${wrong} error${wrong!==1?'s':''} found.</strong> `;
+    if(blank>0) msg+=`${blank} cell${blank!==1?'s':''} left blank. `;
+    if(errors.length>0){
+      const e=errors[0];
+      msg+=`<br><br>Period ${e.p}: expected <strong>${e.expected}</strong>, you entered ${e.got}. `;
+      const prevF=esFCs[e.p-2]?esFCs[e.p-2].val:'?';
+      const prevD=e.p-1<=T?sc.demand[e.p-2]:'?';
+      msg+=`Recall: F(${e.p}) = α × D(${e.p-1}) + (1−α) × F(${e.p-1}) = ${alpha} × ${prevD} + ${(1-alpha)} × ${prevF} = ${e.expected}. `;
+      msg+=`Make sure you are using your previously computed F(${e.p-1}), not the original demand value.`;
+    }
+    fb.innerHTML=`<div class="fb-banner fb-err">✗ Not yet correct</div><div class="fb-body">${msg}</div>`;
+    fb.className='fb show';
+  } else {
+    const mad=computeMAD_es(sc.demand,esFCs);
+    st.esChecked=true; st.esMad=mad; st.f1Locked=true;
+    fb.innerHTML=`<div class="fb-banner fb-ok">✓ All forecasts correct</div><div class="fb-body">ES (α=${alpha}) validated. MAD = <strong>${mad} units</strong> over ${T-1} periods.</div>`;
+    fb.className='fb show';
+    renderApp();
+    setTimeout(()=>{
+      const fb2=document.getElementById('es-fb');
+      if(fb2){
+        fb2.innerHTML=`<div class="fb-banner fb-ok">✓ All forecasts correct</div><div class="fb-body">ES (α=${alpha}) validated. MAD = <strong>${mad} units</strong>.</div>`;
+        fb2.className='fb show';
+      }
+    },50);
+  }
+}
+
+function resetMA(){
+  const st=state.scenState[state.activeScen];
+  st.maChecked=false; st.maMad=null;
+  renderApp();
+}
+function resetES(){
+  const st=state.scenState[state.activeScen];
+  st.esChecked=false; st.esMad=null; st.f1Locked=false;
+  renderApp();
+}
+
+function submitComparison(){
+  const st=state.scenState[state.activeScen];
+  const txt=document.getElementById('cmpText');
+  if(!txt||txt.value.trim().length<20){
+    alert('Please write at least one sentence before submitting.');
+    return;
+  }
+  st.submitted=true;
+  renderNav();
+  renderApp();
+  // Scroll to model answer
+  setTimeout(()=>{
+    const ma=document.getElementById('modelAns');
+    if(ma) ma.scrollIntoView({behavior:'smooth',block:'start'});
+  },100);
+}
+
+// ═══ INIT ════════════════════════════════════════════════
+renderNav();
+renderApp();
+</script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<section class="slide-page" data-title="MAD and Bias Formulas" data-lo="LO11-4" data-notes="Core distinction: MAD uses absolute values (always positive; measures magnitude); Bias uses signed values (can be positive or negative; measures direction). Students commonly use absolute values for both. Gate 2 Q3 tests this distinction directly.">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">M11</span>
+      <span class="le-course">SCM 352 · Module 11</span>
+    </div>
+    <span class="le-pagenum">12 / 20</span>
+  </div>
+
+  <div class="le-titleblock">
+    <div class="le-title">MAD and Bias <span>Formulas</span></div>
+    <div class="le-sub">Two measures of forecast accuracy — magnitude and direction</div>
+  </div>
+
+  <div class="le-body">
+    <div class="two-col">
+      <div>
+        <div class="formula-box">MAD = Σ |D<sub>t</sub> − F<sub>t</sub>| / n</div>
+        <div class="callout teal" style="margin-top:8px;">
+          <div class="callout-label">Mean Absolute Deviation</div>
+          <p>Average magnitude of errors across n periods. <strong>Always positive.</strong> Measures how far off the forecast is, on average, regardless of whether it is high or low.</p>
+          <p style="margin-top:5px;"><em>Operational use:</em> sets the minimum safety stock required to buffer against typical forecast error.</p>
+        </div>
+      </div>
+      <div>
+        <div class="formula-box">Bias = Σ (D<sub>t</sub> − F<sub>t</sub>) / n</div>
+        <div class="callout amber" style="margin-top:8px;">
+          <div class="callout-label">Forecast Bias</div>
+          <p>Average signed error across n periods. <strong>Can be positive or negative.</strong> Measures whether errors consistently run in one direction.</p>
+          <p style="margin-top:5px;"><strong>Positive bias:</strong> actual &gt; forecast — systematic under-forecasting.</p>
+          <p><strong>Negative bias:</strong> actual &lt; forecast — systematic over-forecasting.</p>
+        </div>
+      </div>
+    </div>
+    <div class="callout red" style="margin-top:8px;">
+      <div class="callout-label">The Critical Difference</div>
+      <p>MAD takes absolute values before summing — signs are removed. Bias keeps the signs. If you take absolute values before computing the Bias, you get MAD again, not Bias. These measure different things and require different responses.</p>
+    </div>
+  </div>
+
+  <div class="le-footer">
+    <div class="le-lo-pills"><span class="le-lo-pill">LO11-4</span><span class="le-lo-pill">LO11-8</span></div>
+    <div><span class="le-gate-note">Gate 2 Q3 · Ch. 15 §15.2</span></div>
+  </div>
+</section>

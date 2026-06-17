@@ -1,0 +1,51 @@
+<section class="slide-page" data-title="Exponential Smoothing — Solution" data-lo="LO11-3" data-notes="F2=100.00, F3=102.00, F4=100.40, F5=104.24, F6=105.74. Errors: 0, +5, -4, +9.60, +3.76. Positive bias already visible (actual > forecast in 4 of 5 periods). Sets up the MAD/Bias slides that follow.">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">M11</span>
+      <span class="le-course">SCM 352 · Module 11</span>
+    </div>
+    <span class="le-pagenum">11 / 20</span>
+  </div>
+
+  <div class="le-titleblock">
+    <div class="le-title">Exponential Smoothing — <span>Solution</span></div>
+    <div class="le-sub">F<sub>1</sub> = 100, α = 0.4 — recursive chain with errors</div>
+  </div>
+
+  <div class="le-body">
+    <table class="clean-table">
+      <thead>
+        <tr>
+          <th>Period</th><th>Actual D<sub>t</sub></th><th>Forecast F<sub>t</sub></th><th>Calculation</th><th>Error (D−F)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td>100</td><td>100.00</td><td>(given: F<sub>1</sub> = 100)</td><td>0.00</td></tr>
+        <tr><td>2</td><td>105</td><td>100.00</td><td>0.4(100) + 0.6(100)</td><td class="pos">+5.00</td></tr>
+        <tr><td>3</td><td>98</td><td>102.00</td><td>0.4(105) + 0.6(100.00)</td><td class="neg">−4.00</td></tr>
+        <tr><td>4</td><td>110</td><td>100.40</td><td>0.4(98) + 0.6(102.00)</td><td class="pos">+9.60</td></tr>
+        <tr><td>5</td><td>108</td><td>104.24</td><td>0.4(110) + 0.6(100.40)</td><td class="pos">+3.76</td></tr>
+        <tr class="total-row"><td>6</td><td>—</td><td><strong>105.74</strong></td><td>0.4(108) + 0.6(104.24)</td><td>—</td></tr>
+      </tbody>
+    </table>
+    <div class="two-col" style="margin-top:8px;">
+      <div class="callout teal">
+        <div class="callout-label">Period 3 Check</div>
+        <p>F<sub>3</sub> = 0.4(105) + 0.6(100.00) = 42.00 + 60.00 = <strong>102.00</strong></p>
+        <p style="margin-top:4px;">Use F<sub>2</sub> = 100.00 (the previous forecast), not D<sub>1</sub> = 100. In this case they are equal — but they are different quantities.</p>
+      </div>
+      <div class="callout amber">
+        <div class="callout-label">Pattern Observation</div>
+        <p>4 of 5 errors are positive — actual demand exceeds the forecast. This positive bias pattern (systematic under-forecasting) will be measured with the Bias formula on the next slides.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="le-footer">
+    <div class="le-lo-pills"><span class="le-lo-pill">LO11-3</span><span class="le-lo-pill">LO11-4</span></div>
+    <div><span class="le-gate-note">Gate 2 Q2 · Ch. 15 §15.3</span></div>
+  </div>
+</section>

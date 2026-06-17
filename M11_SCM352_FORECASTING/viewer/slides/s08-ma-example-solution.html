@@ -1,0 +1,47 @@
+<section class="slide-page" data-title="Moving Average — Example Solution" data-lo="LO11-2" data-notes="3-week MA = 111.0 (error 7.0); 4-week MA = 107.8 (error 10.2). 3-week is more accurate this period AND preferred for trending demand (shorter window lags less). This is the core trade-off insight.">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">M11</span>
+      <span class="le-course">SCM 352 · Module 11</span>
+    </div>
+    <span class="le-pagenum">8 / 20</span>
+  </div>
+
+  <div class="le-titleblock">
+    <div class="le-title">Moving Average — <span>Solution</span></div>
+    <div class="le-sub">Actual Week 7 = 118 units</div>
+  </div>
+
+  <div class="le-body">
+    <div class="two-col">
+      <div class="callout teal">
+        <div class="callout-label">3-Week MA (Weeks 4–6)</div>
+        <p>= (110 + 108 + 115) / 3</p>
+        <p>= 333 / 3 = <strong>111.0 units</strong></p>
+        <p style="margin-top:5px;">Error = 118 − 111.0 = <span class="pos">+7.0 units</span></p>
+      </div>
+      <div class="callout teal">
+        <div class="callout-label">4-Week MA (Weeks 3–6)</div>
+        <p>= (98 + 110 + 108 + 115) / 4</p>
+        <p>= 431 / 4 = <strong>107.8 units</strong></p>
+        <p style="margin-top:5px;">Error = 118 − 107.8 = <span class="pos">+10.2 units</span></p>
+      </div>
+    </div>
+    <div class="callout navy" style="margin-top:8px;">
+      <div class="callout-label" style="color:var(--teal);">Interpretation</div>
+      <p style="color:rgba(255,255,255,.88);"><strong style="color:#fff;">3-week MA was more accurate this period</strong> — error of 7.0 vs. 10.2 units. For a demand series that is trending upward (weeks 1→6 show a generally rising pattern), the 3-week window is also preferred going forward: it gives more weight to recent, higher demand values and lags less behind the trend than the 4-week window, which averages in older, lower observations.</p>
+    </div>
+    <div class="callout red" style="margin-top:8px;">
+      <div class="callout-label">Note on Lag</div>
+      <p>Both forecasts are below actual demand (positive errors). This is the moving average lag: when demand trends up, any moving average consistently under-forecasts because the window center lags behind the current level.</p>
+    </div>
+  </div>
+
+  <div class="le-footer">
+    <div class="le-lo-pills"><span class="le-lo-pill">LO11-2</span><span class="le-lo-pill">LO11-5</span></div>
+    <div><span class="le-gate-note">Gate 2 Q1 · Ch. 15 §15.2</span></div>
+  </div>
+</section>

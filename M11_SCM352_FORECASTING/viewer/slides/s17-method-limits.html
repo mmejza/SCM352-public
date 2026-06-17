@@ -1,0 +1,43 @@
+<section class="slide-page" data-title="When Neither Method Works" data-lo="LO11-5 LO11-8" data-notes="Gate 2 Q4(c) and Q5 test this knowledge. The chapter explicitly states MA and ES fail to detect 'systemic variation in the data.' The diagnostic signals (consistent positive bias = trend; alternating over/under-forecast peaks = seasonality) are important for Q8 interpretation questions.">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">M11</span>
+      <span class="le-course">SCM 352 · Module 11</span>
+    </div>
+    <span class="le-pagenum">17 / 20</span>
+  </div>
+
+  <div class="le-titleblock">
+    <div class="le-title">When Neither Method <span>Works</span></div>
+    <div class="le-sub">Recognizing the structural limits of MA and exponential smoothing</div>
+  </div>
+
+  <div class="le-body">
+    <div class="callout amber">
+      <div class="callout-label">Chapter 15 — Explicit Limitation</div>
+      <p>The chapter states that naive, moving average, and simple exponential smoothing methods all <em>"fail to detect systemic variation in the data."</em> Two specific patterns expose this failure.</p>
+    </div>
+    <div class="two-col" style="margin-top:8px;">
+      <div class="mini-card">
+        <h4>Failure Mode 1: Consistent Trend</h4>
+        <p>When demand rises 50 units per period, every MA and basic ES forecast lags behind. Shortening n or raising α reduces lag but never eliminates it — the method has no mechanism to project a trend forward.</p>
+        <p style="margin-top:5px;"><strong>Diagnostic signal:</strong> consistent positive bias in the error analysis, combined with a visibly rising demand plot.</p>
+        <p style="margin-top:5px;"><strong>Correct response:</strong> recognize the trend — parameter tuning will not solve a structural mismatch.</p>
+      </div>
+      <div class="mini-card">
+        <h4>Failure Mode 2: Repeating Seasonality</h4>
+        <p>When demand spikes every Q4 and drops every Q1, neither method can anticipate the seasonal swing. They will perpetually under-forecast in peaks and over-forecast in troughs.</p>
+        <p style="margin-top:5px;"><strong>Diagnostic signal:</strong> error analysis alternates between large positive errors (peak seasons) and large negative errors (off-seasons) — never settling into a low-MAD range.</p>
+        <p style="margin-top:5px;"><strong>Correct response:</strong> the demand series has seasonal structure — a different method family is required.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="le-footer">
+    <div class="le-lo-pills"><span class="le-lo-pill">LO11-5</span><span class="le-lo-pill">LO11-8</span></div>
+    <div><span class="le-gate-note">Gate 2 Q4, Q5 · Ch. 15 §15.3</span></div>
+  </div>
+</section>

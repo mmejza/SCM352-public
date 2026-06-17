@@ -12,17 +12,18 @@
   --red:#dc2626; --red-lt:#fef2f2; --red-bdr:#fecaca;
   --amber:#d97706; --amber-lt:#fffbeb; --amber-bdr:#fde68a;
   --gray-50:#f9fafb; --gray-100:#f3f4f6; --gray-200:#e5e7eb; --gray-300:#d1d5db;
+  --blue-700:#1d4ed8; --green-dark:#15803d; --amber-900:#78350f;
   --gray-400:#9ca3af; --gray-600:#4b5563; --gray-700:#374151; --gray-800:#1f2937;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--gray-50);color:var(--gray-800);min-height:100vh;}
-header{background:var(--navy);color:#fff;padding:14px 24px;display:flex;align-items:center;gap:14px;}
+header{background:var(--navy);color:white;padding:14px 24px;display:flex;align-items:center;gap:14px;}
 .hbadge{background:var(--gold);color:var(--navy);font-weight:700;font-size:11px;padding:3px 8px;border-radius:4px;letter-spacing:.05em;text-transform:uppercase;white-space:nowrap;}
 header h1{font-size:17px;font-weight:600;}
 .header-lo{margin-left:auto;font-size:11px;color:rgba(255,255,255,.6);}
 
 /* top nav */
-.scen-nav{background:#fff;border-bottom:2px solid var(--gray-200);padding:0 20px;display:flex;gap:0;overflow-x:auto;}
+.scen-nav{background:white;border-bottom:2px solid var(--gray-200);padding:0 20px;display:flex;gap:0;overflow-x:auto;}
 .scen-btn{padding:11px 16px;border:none;background:none;cursor:pointer;font-size:13px;font-weight:500;color:var(--gray-600);border-bottom:3px solid transparent;white-space:nowrap;transition:all .15s;}
 .scen-btn:hover{color:var(--blue);}.scen-btn.active{color:var(--blue);border-bottom-color:var(--blue);font-weight:600;}
 .scen-btn.done::after{content:' ✓';color:var(--green);}
@@ -30,12 +31,12 @@ header h1{font-size:17px;font-weight:600;}
 /* mode tabs */
 .mode-bar{background:var(--gray-100);padding:6px;border-radius:10px;display:flex;gap:4px;margin-bottom:20px;}
 .mode-btn{flex:1;padding:8px 12px;border:none;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;color:var(--gray-600);background:transparent;transition:all .15s;text-align:center;}
-.mode-btn:hover{background:#fff;color:var(--blue);}
-.mode-btn.active{background:#fff;color:var(--blue);box-shadow:0 1px 4px rgba(0,0,0,.1);}
+.mode-btn:hover{background:white;color:var(--blue);}
+.mode-btn.active{background:white;color:var(--blue);box-shadow:0 1px 4px rgba(0,0,0,.1);}
 
 .main{max-width:960px;margin:0 auto;padding:24px 20px;}
 
-.card{background:#fff;border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;margin-bottom:16px;}
+.card{background:white;border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;margin-bottom:16px;}
 .card-head{background:var(--blue-lt);padding:12px 18px;border-bottom:1px solid var(--gray-200);}
 .card-head h2{font-size:14px;font-weight:700;color:var(--navy);}
 .card-head p{font-size:12px;color:var(--gray-600);margin-top:3px;}
@@ -67,7 +68,7 @@ header h1{font-size:17px;font-weight:600;}
 .curve-axis-y{position:absolute;left:8px;top:8px;bottom:28px;width:2px;background:var(--gray-400);}
 .curve-axis-x{position:absolute;left:8px;right:8px;bottom:28px;height:2px;background:var(--gray-400);}
 .curve-line{position:absolute;left:10px;right:10px;top:8px;bottom:28px;}
-.curve-dot{position:absolute;width:10px;height:10px;border-radius:50%;border:2px solid #fff;transform:translate(-50%,-50%);}
+.curve-dot{position:absolute;width:10px;height:10px;border-radius:50%;border:2px solid white;transform:translate(-50%,-50%);}
 .curve-label{position:absolute;font-size:10px;font-weight:700;white-space:nowrap;}
 .axis-label{position:absolute;font-size:9px;color:var(--gray-600);}
 
@@ -87,20 +88,20 @@ input[type=range]{width:100%;accent-color:var(--blue);}
 .sens-row{background:var(--gray-50);border:1px solid var(--gray-200);border-radius:10px;padding:14px;margin-bottom:12px;}
 .sens-q{font-size:13px;font-weight:600;color:var(--navy);margin-bottom:10px;}
 .dir-btns{display:flex;gap:8px;}
-.dir-btn{flex:1;padding:9px;border:2px solid var(--gray-300);border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;background:#fff;color:var(--gray-700);transition:all .15s;}
+.dir-btn{flex:1;padding:9px;border:2px solid var(--gray-300);border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;background:white;color:var(--gray-700);transition:all .15s;}
 .dir-btn:hover{border-color:var(--blue);color:var(--blue);}
-.dir-btn.selected{border-color:var(--blue);background:var(--blue);color:#fff;}
-.dir-btn.correct{border-color:var(--green);background:var(--green);color:#fff;}
+.dir-btn.selected{border-color:var(--blue);background:var(--blue);color:white;}
+.dir-btn.correct{border-color:var(--green);background:var(--green);color:white;}
 .dir-btn.wrong{border-color:var(--red);background:var(--red-lt);color:var(--red);}
 .sens-reveal{display:none;margin-top:10px;padding:10px 12px;background:var(--blue-lt);border-radius:8px;font-size:13px;line-height:1.5;}
 
 /* buttons */
 .btn{padding:9px 20px;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;transition:all .15s;}
-.btn-primary{background:var(--blue);color:#fff;}
-.btn-primary:hover{background:#1d4ed8;}
+.btn-primary{background:var(--blue);color:white;}
+.btn-primary:hover{background:var(--blue-700);}
 .btn-secondary{background:var(--gray-100);color:var(--gray-800);}
 .btn-secondary:hover{background:var(--gray-200);}
-.btn-green{background:var(--green);color:#fff;}
+.btn-green{background:var(--green);color:white;}
 .btn-group{display:flex;gap:10px;align-items:center;margin-top:12px;}
 
 .fb{display:none;border-radius:8px;overflow:hidden;margin-top:10px;}
@@ -108,12 +109,21 @@ input[type=range]{width:100%;accent-color:var(--blue);}
 .fb-banner{padding:10px 14px;font-size:13px;font-weight:700;display:flex;align-items:center;gap:8px;}
 .fb-ok{background:var(--green-lt);color:var(--green);}
 .fb-err{background:var(--red-lt);color:var(--red);}
-.fb-body{padding:12px 14px;font-size:13px;line-height:1.6;background:#fff;border:1px solid var(--gray-200);border-top:none;border-radius:0 0 8px 8px;}
+.fb-body{padding:12px 14px;font-size:13px;line-height:1.6;background:white;border:1px solid var(--gray-200);border-top:none;border-radius:0 0 8px 8px;}
 
 .tip{background:var(--gold-lt);border:1px solid var(--gold-bdr);border-radius:8px;padding:12px 14px;font-size:12px;line-height:1.6;margin-top:12px;}
 .tip-label{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--amber);margin-bottom:4px;}
 .pos{color:var(--green);font-weight:700;}
 .neg{color:var(--red);font-weight:700;}
+.summary-box{max-width:840px;margin:28px auto 48px;padding:0 20px;}
+.summary-inner{background:var(--green-lt);border:2px solid var(--green-bdr);border-radius:14px;padding:22px 24px;}
+.summary-inner h3{font-size:16px;font-weight:700;color:var(--green);margin-bottom:14px;}
+.summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:16px;}
+.summary-card{background:white;border:1px solid var(--green-bdr);border-radius:10px;padding:12px 14px;}
+.summary-card .sc-label{font-size:10px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--green);margin-bottom:6px;}
+.summary-card p{font-size:12.5px;line-height:1.55;color:var(--gray-700);}
+.continue-note{font-size:13px;color:var(--gray-700);border-top:1px solid var(--green-bdr);padding-top:14px;margin-top:4px;}
+.continue-note strong{color:var(--navy);}
 </style>
 </head>
 <body>
@@ -418,5 +428,27 @@ function ansSens(i,dir){
 renderNav();
 renderMain();
 </script>
+
+<div class="summary-box">
+  <div class="summary-inner">
+    <h3>Key Takeaways — Total Cost Comparator</h3>
+    <div class="summary-grid">
+      <div class="summary-card">
+        <div class="sc-label">Mode A — Q* vs. Alt Q</div>
+        <p>Ordering cost = K(R/Q) and holding cost = h(Q/2) trade off as Q changes. At Q*, ordering cost ≈ holding cost and their sum (OH cost) is minimized. Purchasing cost cR is constant — same no matter the order quantity.</p>
+      </div>
+      <div class="summary-card">
+        <div class="sc-label">Mode B — Orders/Year Slider</div>
+        <p>The minimum TC occurs at R/Q* orders per year. The TC curve is "flat-bottomed" — large deviations from Q* produce only small % increases in OH cost, making EOQ robust to estimation errors.</p>
+      </div>
+      <div class="summary-card">
+        <div class="sc-label">Mode C — Sensitivity</div>
+        <p>Q* ∝ √K and Q* ∝ √R and Q* ∝ 1/√h. Increasing ordering cost (K) or demand (R) pushes Q* up. Increasing holding cost (h) pushes Q* down. Changes to unit cost (c) do not affect Q*.</p>
+      </div>
+    </div>
+    <div class="continue-note"><strong>Ready to continue?</strong> Gate 2 includes EOQ calculation questions (Q1 and Q2) that apply these three relationships. The Case Analysis (Riverside Health System) asks you to compute TC at Q*, at an alternative quantity, and under a quantity discount — all concepts from Mode A.</div>
+  </div>
+</div>
+
 </body>
 </html>

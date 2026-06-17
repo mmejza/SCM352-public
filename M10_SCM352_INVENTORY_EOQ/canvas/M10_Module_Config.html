@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Canvas Module Config — M10 SCM 352</title>
 <style>
-:root{--navy:#1a3a5c;--blue:#2563a8;--blue-lt:#dbeafe;--blue-xlt:#eff6ff;--gold:#f59e0b;--gold-lt:#fffbeb;--gold-bdr:#fde68a;--green:#16a34a;--green-lt:#f0fdf4;--green-bdr:#bbf7d0;--red:#dc2626;--red-lt:#fef2f2;--red-bdr:#fecaca;--amber:#d97706;--amber-lt:#fffbeb;--amber-bdr:#fde68a;--gray-50:#f9fafb;--gray-100:#f3f4f6;--gray-200:#e5e7eb;--gray-400:#9ca3af;--gray-600:#4b5563;--gray-700:#374151;--gray-800:#1f2937;}
+:root{--navy:#1a3a5c;--blue:#2563a8;--blue-lt:#dbeafe;--blue-xlt:#eff6ff;--gold:#f59e0b;--gold-lt:#fffbeb;--gold-bdr:#fde68a;--green:#16a34a;--green-lt:#f0fdf4;--green-bdr:#bbf7d0;--red:#dc2626;--red-lt:#fef2f2;--red-bdr:#fecaca;--amber:#d97706;--amber-lt:#fffbeb;--amber-bdr:#fde68a;--gray-50:#f9fafb;--gray-100:#f3f4f6;--gray-200:#e5e7eb;--gray-400:#9ca3af;--gray-600:#4b5563;--gray-700:#374151;--gray-800:#1f2937;--ver-a-bg:#dcfce7;--ver-a-text:#166534;--ver-b-text:#1e40af;--ver-c-text:#6b21a8;--ver-d-bg:#fef9c3;--ver-d-text:#854d0e;--blue-bdr:#bfdbfe;--gold-dark:#92400e;--teal:#0891b2;--teal-lt:#f0fdfe;--teal-bdr:#a5f3fc;--purple:#7c3aed;--purple-lt:#faf5ff;--purple-bdr:#ddd6fe;}
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--gray-50);color:var(--gray-800);font-size:13.5px;line-height:1.55;}
 .pg-header{background:var(--navy);color:white;padding:18px 28px;display:flex;align-items:center;gap:14px;}
@@ -26,7 +26,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
 .alert-body strong{display:block;margin-bottom:3px;}
 .alert-gold{background:var(--gold-lt);border:1.5px solid var(--gold-bdr);}
 .alert-red{background:var(--red-lt);border:1.5px solid var(--red-bdr);}
-.alert-blue{background:var(--blue-xlt);border:1.5px solid #bfdbfe;}
+.alert-blue{background:var(--blue-xlt);border:1.5px solid var(--blue-bdr);}
 .checklist{display:flex;flex-direction:column;gap:6px;}
 .check-item{display:flex;align-items:flex-start;gap:10px;padding:9px 12px;border:1px solid var(--gray-200);border-radius:8px;background:var(--gray-50);cursor:pointer;transition:background 0.1s;}
 .check-item:hover{background:var(--blue-xlt);}
@@ -44,17 +44,17 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
 .seq-table tr:last-child td{border-bottom:none;}
 .seq-table tr:hover td{background:var(--gray-50);}
 .seq-table tr.gated td{background:var(--blue-xlt);}
-.seq-table tr.gated:hover td{background:#dbeefe;}
+.seq-table tr.gated:hover td{background:var(--blue-lt);}
 .item-num{width:26px;height:26px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:white;flex-shrink:0;}
 .n-open{background:var(--gray-400);}
 .n-gate{background:var(--gold);color:var(--navy);}
 .n-lock{background:var(--blue);}
 .type-pill{font-size:10px;font-weight:700;padding:2px 7px;border-radius:100px;letter-spacing:.03em;white-space:nowrap;display:inline-block;}
 .tp-page{background:var(--gray-100);color:var(--gray-600);}
-.tp-link{background:#f0fdfe;color:#0891b2;border:1px solid #a5f3fc;}
+.tp-link{background:var(--teal-lt);color:var(--teal);border:1px solid var(--teal-bdr);}
 .tp-quiz{background:var(--gold-lt);color:var(--amber);border:1px solid var(--gold-bdr);}
-.tp-media{background:#faf5ff;color:#7c3aed;border:1px solid #ddd6fe;}
-.tp-tool{background:var(--blue-xlt);color:var(--blue);border:1px solid #bfdbfe;}
+.tp-media{background:var(--purple-lt);color:var(--purple);border:1px solid var(--purple-bdr);}
+.tp-tool{background:var(--blue-xlt);color:var(--blue);border:1px solid var(--blue-bdr);}
 .tp-disc{background:var(--green-lt);color:var(--green);border:1px solid var(--green-bdr);}
 .tp-assign{background:var(--red-lt);color:var(--red);border:1px solid var(--red-bdr);}
 .lock-note{font-size:11px;color:var(--blue);font-weight:600;white-space:nowrap;}
@@ -72,14 +72,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
 .ver-table th{background:var(--navy);color:white;padding:8px 12px;text-align:left;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;}
 .ver-table td{padding:8px 12px;border-bottom:1px solid var(--gray-100);vertical-align:top;line-height:1.45;}
 .ver-table tr:last-child td{border-bottom:none;}
-.ver-a{background:#f0fdf4;} .ver-b{background:var(--blue-xlt);} .ver-c{background:#faf5ff;} .ver-d{background:var(--gold-lt);}
+.ver-a{background:var(--green-lt);} .ver-b{background:var(--blue-xlt);} .ver-c{background:var(--purple-lt);} .ver-d{background:var(--gold-lt);}
 .ver-badge{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:5px;font-size:11px;font-weight:800;}
-.vb-a{background:#dcfce7;color:#166534;} .vb-b{background:#dbeafe;color:#1e40af;} .vb-c{background:#faf5ff;color:#6b21a8;} .vb-d{background:#fef9c3;color:#854d0e;}
+.vb-a{background:var(--ver-a-bg);color:var(--ver-a-text);} .vb-b{background:var(--blue-lt);color:var(--ver-b-text);} .vb-c{background:var(--purple-lt);color:var(--ver-c-text);} .vb-d{background:var(--ver-d-bg);color:var(--ver-d-text);}
 .mon-row{display:flex;gap:14px;padding:12px 0;border-bottom:1px solid var(--gray-100);font-size:13px;line-height:1.55;}
 .mon-row:last-child{border-bottom:none;}
 .mon-day{font-size:11px;font-weight:800;padding:3px 9px;border-radius:100px;white-space:nowrap;align-self:flex-start;margin-top:1px;flex-shrink:0;}
 .day-3{background:var(--gold-lt);color:var(--amber);border:1px solid var(--gold-bdr);}
-.day-4{background:var(--blue-xlt);color:var(--blue);border:1px solid #bfdbfe;}
+.day-4{background:var(--blue-xlt);color:var(--blue);border:1px solid var(--blue-bdr);}
 .day-6{background:var(--red-lt);color:var(--red);border:1px solid var(--red-bdr);}
 .post{background:var(--green-lt);color:var(--green);border:1px solid var(--green-bdr);}
 code{font-family:'SF Mono','Fira Code',Menlo,monospace;font-size:12px;background:var(--gray-100);border:1px solid var(--gray-200);border-radius:4px;padding:1px 6px;color:var(--navy);}
@@ -103,7 +103,7 @@ code{font-family:'SF Mono','Fira Code',Menlo,monospace;font-size:12px;background
     <div class="sec-heading">Step 0 — Pre-Launch Checklist</div>
     <div class="card" style="margin-top:14px;">
       <div class="card-hd" style="background:var(--gold-lt);">
-        <div><h2 style="color:#92400e;">Complete before touching Canvas</h2><p style="color:#a16207;">All assets must be ready before configuring the module sequence</p></div>
+        <div><h2 style="color:var(--gold-dark);">Complete before touching Canvas</h2><p style="color:var(--gold-dark);">All assets must be ready before configuring the module sequence</p></div>
       </div>
       <div class="card-bd">
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
@@ -180,8 +180,8 @@ code{font-family:'SF Mono','Fira Code',Menlo,monospace;font-size:12px;background
     </div>
     <div class="spec-grid" style="margin-top:14px;">
 
-      <div class="spec-card" style="border-color:#fde68a;">
-        <div class="spec-hd" style="background:var(--gold-lt);border-color:#fde68a;">
+      <div class="spec-card" style="border-color:var(--gold-bdr);">
+        <div class="spec-hd" style="background:var(--gold-lt);border-color:var(--gold-bdr);">
           <div class="item-num n-gate" style="width:22px;height:22px;font-size:10px;">3</div>
           <h3>Gate 1 — Reading Check</h3>
           <span class="type-pill tp-quiz">Quiz</span>

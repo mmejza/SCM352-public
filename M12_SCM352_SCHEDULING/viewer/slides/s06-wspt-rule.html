@@ -1,0 +1,48 @@
+<section class="slide-page" data-title="WSPT Rule" data-lo="LO12-3 LO12-4" data-notes="WSPT — setup slide. Establish the ratio formula, the descending-sequence direction, and what it minimizes. WSPT is entirely chapter-exclusive and drives Gate 1 accountability. Do not rush this slide.">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">M12</span>
+      <span class="le-course">SCM 352 · Module 12</span>
+    </div>
+    <span class="le-pagenum">6 / 16</span>
+  </div>
+
+  <div class="le-titleblock">
+    <div class="le-title">WSPT — <span>Weighted Shortest Processing Time</span></div>
+    <div class="le-sub">Sequence descending by weight/processing-time ratio · Minimizes total weighted flow time</div>
+  </div>
+
+  <div class="le-body">
+    <div class="formula-box" style="margin-bottom:8px;">
+      WSPT Ratio &nbsp;=&nbsp; Weight &nbsp;÷&nbsp; Processing Time &nbsp;&nbsp;|&nbsp;&nbsp; Sequence: <span style="color:var(--teal);">DESCENDING</span> (highest ratio first)
+    </div>
+    <div class="three-col">
+      <div class="callout teal">
+        <div class="callout-label">Why Weights?</div>
+        <p>SPT treats all jobs equally. WSPT assigns each job a weight — revenue, urgency, strategic priority — and ensures high-weight jobs finish sooner regardless of processing time alone.</p>
+      </div>
+      <div class="callout teal">
+        <div class="callout-label">Why Descending?</div>
+        <p>High ratio = high weight AND/OR short processing time. Both properties make a job desirable to complete early. Descending ratio = highest combined desirability first.</p>
+      </div>
+      <div class="callout amber">
+        <div class="callout-label">What It Minimizes</div>
+        <p><strong>Total weighted flow time</strong> = Σ (weight × flow time). This ensures that the jobs you care most about — high weight — complete with the smallest total flow time cost.</p>
+      </div>
+    </div>
+    <div class="callout blue" style="margin-top:2px;">
+      <div class="callout-label">Real-World Application — Emergency Severity Index</div>
+      <p>Hospital ERs assign ESI scores 1–5 (1 = resuscitation, 5 = non-urgent). ESI is effectively a WSPT weight. A chest-pain patient (ESI 1) is treated before a minor laceration (ESI 4) not because the chest-pain visit is shorter, but because its weight is high enough that the ratio dominates.</p>
+    </div>
+  </div>
+
+  <div class="le-footer">
+    <div class="le-lo-pills">
+      <span class="le-lo-pill">LO12-3</span><span class="le-lo-pill">LO12-4</span>
+    </div>
+    <div><span class="le-ch-note">Ch. 18.3 — Chapter-exclusive</span></div>
+  </div>
+</section>

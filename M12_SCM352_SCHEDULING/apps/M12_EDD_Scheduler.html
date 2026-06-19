@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EDD Scheduler with Lateness and Tardiness Tracker — SCM 352 M12</title>
+<style>
+:root {
+  --navy:#1a3a5c; --blue:#2563a8; --blue-lt:#dbeafe; --blue-xlt:#eff6ff; --blue-bdr:#bfdbfe;
+  --gold:#f59e0b; --gold-lt:#fffbeb; --gold-bdr:#fde68a;
+  --green:#16a34a; --green-lt:#f0fdf4; --green-bdr:#bbf7d0; --green-dark:#15803d;
+  --red:#dc2626; --red-lt:#fef2f2; --red-bdr:#fecaca;
+  --amber:#d97706; --amber-lt:#fffbeb; --amber-bdr:#fde68a;
+  --gray-50:#f9fafb; --gray-100:#f3f4f6; --gray-200:#e5e7eb; --gray-300:#d1d5db;
+  --gray-400:#9ca3af; --gray-600:#4b5563; --gray-700:#374151; --gray-800:#1f2937;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--gray-50);color:var(--gray-800);min-height:100vh;}
+header{background:var(--navy);color:white;padding:14px 24px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+.hbadge{background:var(--gold);color:var(--navy);font-weight:700;font-size:11px;padding:3px 8px;border-radius:4px;letter-spacing:.05em;text-transform:uppercase;white-space:nowrap;}
+header h1{font-size:17px;font-weight:600;}
+.hlo{margin-left:auto;font-size:11px;color:rgba(255,255,255,.6);}
+.wrap{max-width:900px;margin:0 auto;padding:22px 20px;}
+.purpose{background:var(--blue-xlt);border-left:4px solid var(--blue);padding:12px 16px;border-radius:0 8px 8px 0;font-size:13px;line-height:1.65;margin-bottom:20px;}
+.purpose strong{color:var(--navy);}
+.card{background:white;border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;margin-bottom:18px;}
+.card-head{padding:12px 18px;border-bottom:1px solid var(--gray-200);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+.card-head h2{font-size:14px;font-weight:700;color:var(--navy);}
+.card-head p{font-size:12px;color:var(--gray-600);margin-top:2px;}
+.card-body{padding:18px;}
+.row{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap;}
+label{font-size:13px;font-weight:600;color:var(--gray-700);}
+select,input[type=number]{padding:7px 10px;border:2px solid var(--gray-300);border-radius:7px;font-size:13px;background:white;}
+select:focus,input[type=number]:focus{outline:none;border-color:var(--blue);}
+.job-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-bottom:14px;}
+.job-card{background:var(--gray-50);border:1px solid var(--gray-200);border-radius:8px;padding:10px 12px;}
+.job-card .job-label-val{font-size:15px;font-weight:700;color:var(--navy);margin-bottom:6px;}
+.field-lbl{font-size:11px;color:var(--gray-500);margin-bottom:2px;}
+.job-card input{width:100%;padding:6px 8px;border:2px solid var(--gray-300);border-radius:6px;font-size:13px;text-align:center;}
+.job-card input:focus{outline:none;border-color:var(--blue);}
+.action-row{display:flex;gap:10px;flex-wrap:wrap;}
+.btn{padding:9px 20px;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;transition:all .15s;}
+.btn-primary{background:var(--blue);color:white;}
+.btn-primary:hover{background:var(--navy);}
+.btn-secondary{background:var(--gray-200);color:var(--gray-700);}
+.btn-secondary:hover{background:var(--gray-300);}
+.btn-example{background:var(--gold-lt);border:1px solid var(--gold-bdr);color:var(--amber);}
+.btn-example:hover{background:var(--gold-bdr);}
+.btn-toggle{background:var(--blue-xlt);border:1px solid var(--blue-bdr);color:var(--blue);}
+.btn-toggle:hover{background:var(--blue-lt);}
+.btn-toggle.active{background:var(--blue);color:white;}
+.result-section{display:none;}
+.result-section.visible{display:block;}
+.tie-note{background:var(--amber-lt);border:1px solid var(--amber-bdr);border-radius:7px;padding:8px 12px;font-size:12px;color:var(--amber);margin-bottom:12px;}
+table.rt{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:16px;}
+table.rt th{background:var(--navy);color:white;padding:8px 10px;text-align:center;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;}
+table.rt td{padding:7px 8px;text-align:center;border-bottom:1px solid var(--gray-100);}
+table.rt tr:nth-child(even) td{background:var(--gray-50);}
+table.rt .total-row td{background:var(--blue-lt);font-weight:700;color:var(--navy);border-top:2px solid var(--blue-bdr);}
+td.tardy{background:var(--red-lt);color:var(--red);font-weight:700;}
+td.ontime{background:var(--green-lt);color:var(--green-dark);font-weight:700;}
+td.flowt{background:var(--blue-xlt);font-weight:700;color:var(--blue);}
+.summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:16px;}
+.sum-card{background:var(--blue-xlt);border:1px solid var(--blue-bdr);border-radius:8px;padding:12px;text-align:center;}
+.sum-card.red{background:var(--red-lt);border-color:var(--red-bdr);}
+.sum-card.green{background:var(--green-lt);border-color:var(--green-bdr);}
+.sum-card.amber{background:var(--amber-lt);border-color:var(--amber-bdr);}
+.sum-val{font-size:22px;font-weight:800;color:var(--navy);line-height:1.1;}
+.sum-card.red .sum-val{color:var(--red);}
+.sum-card.green .sum-val{color:var(--green-dark);}
+.sum-card.amber .sum-val{color:var(--amber);}
+.sum-lbl{font-size:10px;color:var(--gray-500);margin-top:3px;text-transform:uppercase;letter-spacing:.04em;}
+/* Bar chart */
+.chart-section h4{font-size:12px;font-weight:700;color:var(--gray-700);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;}
+.bar-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+.bar-job-lbl{width:45px;font-size:12px;font-weight:700;color:var(--navy);text-align:right;}
+.bar-track{flex:1;background:var(--gray-100);border-radius:4px;height:22px;position:relative;overflow:visible;}
+.bar-fill{height:100%;border-radius:4px;min-width:4px;display:flex;align-items:center;padding-left:6px;font-size:10px;font-weight:700;color:white;position:relative;transition:width .3s;}
+.bar-fill.ontime{background:var(--green);}
+.bar-fill.tardy{background:var(--red);}
+.due-marker{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--amber);border-radius:1px;z-index:2;}
+.due-marker-lbl{position:absolute;top:-16px;font-size:9px;color:var(--amber);font-weight:700;white-space:nowrap;transform:translateX(-50%);}
+.bar-flow-lbl{font-size:11px;color:var(--gray-600);width:40px;}
+.fcfs-compare{background:var(--gray-50);border:1px solid var(--gray-200);border-radius:8px;padding:14px;font-size:13px;margin-top:12px;}
+.fcfs-compare h4{font-size:12px;font-weight:700;color:var(--gray-700);margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em;}
+.error-msg{color:var(--red);font-size:12px;font-weight:600;margin-top:4px;}
+</style>
+</head>
+<body>
+
+<header>
+  <span class="hbadge">SCM 352 · M12</span>
+  <h1>EDD Scheduler — Lateness &amp; Tardiness Tracker</h1>
+  <span class="hlo">LO12-2 · LO12-3 · Chapter 18.2–18.3</span>
+</header>
+
+<div class="wrap">
+
+  <div class="purpose">
+    <strong>How to use this tool:</strong> Enter jobs with processing times and due dates. Click <em>Compute EDD Schedule</em> to see the EDD-sorted sequence, lateness, and tardiness for each job. Toggle the FCFS comparison to see how EDD reduces maximum tardiness vs. arrival order.
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <div>
+        <h2>Step 1 — Enter Job Data</h2>
+        <p>All times in consistent units (minutes, hours, or days). Due date measured from time zero.</p>
+      </div>
+      <button class="btn btn-example" onclick="loadExample()">Load Example (5 Jobs)</button>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <label for="numJobs">Number of jobs:</label>
+        <select id="numJobs" onchange="buildJobGrid()">
+          <option value="3">3 jobs</option>
+          <option value="4">4 jobs</option>
+          <option value="5" selected>5 jobs</option>
+          <option value="6">6 jobs</option>
+          <option value="7">7 jobs</option>
+        </select>
+      </div>
+      <div class="job-grid" id="jobGrid"></div>
+      <div class="error-msg" id="inputError"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <h2>Step 2 — Compute Schedule</h2>
+    </div>
+    <div class="card-body">
+      <div class="action-row">
+        <button class="btn btn-primary" onclick="compute()">Compute EDD Schedule</button>
+        <button class="btn btn-toggle" id="fcfsToggle" onclick="toggleFCFS()" style="display:none;">Show FCFS Comparison</button>
+        <button class="btn btn-secondary" onclick="resetAll()">Reset</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="result-section" id="resultSection">
+    <div class="card">
+      <div class="card-head">
+        <h2>EDD Schedule — Performance Table</h2>
+      </div>
+      <div class="card-body">
+        <div id="tieNote"></div>
+
+        <table class="rt" id="perfTable"></table>
+
+        <div class="summary-grid" id="summaryCards"></div>
+
+        <div class="chart-section">
+          <h4>Flow Time Chart — Due Date Markers Shown</h4>
+          <div id="barChart"></div>
+          <p style="font-size:11px;color:var(--gray-500);margin-top:4px;">Green bars finish before their due date marker. Red bars extend past their due date marker (tardy).</p>
+        </div>
+
+        <div class="fcfs-compare" id="fcfsSection" style="display:none;">
+          <h4>FCFS Comparison (Arrival Order)</h4>
+          <table class="rt" id="fcfsTable"></table>
+          <div id="fcfsSummary" style="margin-top:8px;font-size:13px;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const LABELS = ['A','B','C','D','E','F','G'];
+let showFCFS = false;
+let lastJobs = null;
+
+function buildJobGrid(n) {
+  n = n || parseInt(document.getElementById('numJobs').value);
+  const grid = document.getElementById('jobGrid');
+  grid.innerHTML = '';
+  for (let i = 0; i < n; i++) {
+    const card = document.createElement('div');
+    card.className = 'job-card';
+    card.innerHTML = `
+      <div class="job-label-val">Job ${LABELS[i]}</div>
+      <div class="field-lbl">Processing Time</div>
+      <input type="number" id="pt_${i}" min="0.01" step="0.1" placeholder="e.g. 5">
+      <div class="field-lbl" style="margin-top:6px;">Due Date (from time 0)</div>
+      <input type="number" id="dd_${i}" min="0.01" step="0.1" placeholder="e.g. 8">
+    `;
+    grid.appendChild(card);
+  }
+  document.getElementById('resultSection').classList.remove('visible');
+  document.getElementById('fcfsToggle').style.display = 'none';
+  showFCFS = false;
+}
+
+function loadExample() {
+  document.getElementById('numJobs').value = 5;
+  buildJobGrid(5);
+  // Example from architecture Section 7 App 2 spec: C(5,8), A(3,9), E(6,11), B(7,14), D(4,20)
+  const pts = [5, 3, 6, 7, 4];
+  const dds = [8, 9, 11, 14, 20];
+  for (let i = 0; i < 5; i++) {
+    document.getElementById(`pt_${i}`).value = pts[i];
+    document.getElementById(`dd_${i}`).value = dds[i];
+  }
+  document.getElementById('inputError').textContent = '';
+}
+
+function resetAll() {
+  buildJobGrid();
+  document.getElementById('resultSection').classList.remove('visible');
+  document.getElementById('fcfsToggle').style.display = 'none';
+  document.getElementById('inputError').textContent = '';
+  showFCFS = false;
+}
+
+function toggleFCFS() {
+  showFCFS = !showFCFS;
+  const btn = document.getElementById('fcfsToggle');
+  btn.classList.toggle('active', showFCFS);
+  btn.textContent = showFCFS ? 'Hide FCFS Comparison' : 'Show FCFS Comparison';
+  document.getElementById('fcfsSection').style.display = showFCFS ? 'block' : 'none';
+}
+
+function compute() {
+  const n = parseInt(document.getElementById('numJobs').value);
+  const jobs = [];
+  let err = '';
+
+  for (let i = 0; i < n; i++) {
+    const pt = parseFloat(document.getElementById(`pt_${i}`).value);
+    const dd = parseFloat(document.getElementById(`dd_${i}`).value);
+    if (isNaN(pt) || pt <= 0) { err = `Job ${LABELS[i]}: processing time must be a positive number.`; break; }
+    if (isNaN(dd) || dd <= 0) { err = `Job ${LABELS[i]}: due date must be a positive number.`; break; }
+    jobs.push({ label: LABELS[i], pt, dd, origIdx: i });
+  }
+
+  document.getElementById('inputError').textContent = err;
+  if (err) return;
+
+  lastJobs = jobs;
+
+  // EDD sort
+  const sorted = [...jobs].sort((a, b) => a.dd - b.dd);
+
+  // Check for ties
+  let hasTie = false;
+  for (let i = 0; i < sorted.length - 1; i++) {
+    if (sorted[i].dd === sorted[i+1].dd) { hasTie = true; break; }
+  }
+
+  // Compute flow, lateness, tardiness
+  let cum = 0;
+  for (const j of sorted) {
+    cum += j.pt;
+    j.flow = cum;
+    j.lateness = j.flow - j.dd;
+    j.tardiness = Math.max(0, j.lateness);
+  }
+
+  // FCFS compute (arrival order)
+  let fcfsCum = 0;
+  for (const j of jobs) {
+    fcfsCum += j.pt;
+    j.fcfsFlow = fcfsCum;
+    j.fcfsLateness = j.fcfsFlow - j.dd;
+    j.fcfsTardiness = Math.max(0, j.fcfsLateness);
+  }
+
+  // Render tie note
+  document.getElementById('tieNote').innerHTML = hasTie
+    ? `<div class="tie-note">⚠️ Tie detected: two or more jobs share the same due date. Either order is valid — EDD's guarantee on maximum tardiness holds for any tie-breaking choice.</div>`
+    : '';
+
+  // Performance table
+  let html = `<thead><tr>
+    <th>Job</th><th>Proc. Time</th><th>Flow Time</th>
+    <th>Due Date</th><th>Lateness (F−D)</th><th>Tardiness max(0,L)</th>
+  </tr></thead><tbody>`;
+
+  const maxFlow = sorted[sorted.length - 1].flow;
+
+  sorted.forEach(j => {
+    const tardClass = j.tardiness > 0 ? 'tardy' : 'ontime';
+    const latenessStr = j.lateness >= 0 ? `+${j.lateness.toFixed(2)}` : `${j.lateness.toFixed(2)}`;
+    html += `<tr>
+      <td><strong>Job ${j.label}</strong></td>
+      <td>${j.pt}</td>
+      <td class="flowt">${j.flow.toFixed(2)}</td>
+      <td>${j.dd}</td>
+      <td style="color:${j.lateness > 0 ? 'var(--red)' : 'var(--green-dark)'};">${latenessStr}</td>
+      <td class="${tardClass}">${j.tardiness.toFixed(2)}</td>
+    </tr>`;
+  });
+
+  const avgTardiness = sorted.reduce((s, j) => s + j.tardiness, 0) / n;
+  const maxTardiness = Math.max(...sorted.map(j => j.tardiness));
+  const tardyCount = sorted.filter(j => j.tardiness > 0).length;
+  const avgFlow = sorted.reduce((s, j) => s + j.flow, 0) / n;
+
+  html += `<tr class="total-row">
+    <td colspan="2">Summary</td>
+    <td>Avg: ${avgFlow.toFixed(2)}</td>
+    <td>—</td>
+    <td>—</td>
+    <td>Avg: ${avgTardiness.toFixed(2)} · Max: ${maxTardiness.toFixed(2)}</td>
+  </tr></tbody>`;
+  document.getElementById('perfTable').innerHTML = html;
+
+  // Summary cards
+  const sumDiv = document.getElementById('summaryCards');
+  sumDiv.innerHTML = `
+    <div class="sum-card green">
+      <div class="sum-val">${avgFlow.toFixed(2)}</div>
+      <div class="sum-lbl">Avg Flow Time</div>
+    </div>
+    <div class="sum-card ${avgTardiness > 0 ? 'red' : 'green'}">
+      <div class="sum-val">${avgTardiness.toFixed(2)}</div>
+      <div class="sum-lbl">Avg Tardiness</div>
+    </div>
+    <div class="sum-card ${maxTardiness > 0 ? 'red' : 'green'}">
+      <div class="sum-val">${maxTardiness.toFixed(2)}</div>
+      <div class="sum-lbl">Max Tardiness</div>
+    </div>
+    <div class="sum-card ${tardyCount > 0 ? 'amber' : 'green'}">
+      <div class="sum-val">${tardyCount} / ${n}</div>
+      <div class="sum-lbl">Tardy Jobs</div>
+    </div>`;
+
+  // Bar chart
+  const chartDiv = document.getElementById('barChart');
+  chartDiv.innerHTML = '';
+  sorted.forEach(j => {
+    const pct = (j.flow / maxFlow) * 100;
+    const duePct = (j.dd / maxFlow) * 100;
+    const isTardy = j.tardiness > 0;
+    const row = document.createElement('div');
+    row.className = 'bar-row';
+    row.innerHTML = `
+      <span class="bar-job-lbl">Job ${j.label}</span>
+      <div class="bar-track">
+        <div class="bar-fill ${isTardy ? 'tardy' : 'ontime'}" style="width:${Math.min(pct,100)}%;">${j.flow}</div>
+        ${duePct <= 105 ? `<div class="due-marker" style="left:${Math.min(duePct,100)}%;"><span class="due-marker-lbl">Due: ${j.dd}</span></div>` : ''}
+      </div>
+      <span class="bar-flow-lbl">F=${j.flow.toFixed(1)}</span>`;
+    chartDiv.appendChild(row);
+  });
+
+  // FCFS table (hidden until toggled)
+  let fcfsHtml = `<thead><tr>
+    <th>Job (Arrival)</th><th>Proc. Time</th><th>Flow Time</th>
+    <th>Due Date</th><th>Lateness</th><th>Tardiness</th>
+  </tr></thead><tbody>`;
+  jobs.forEach(j => {
+    const lStr = j.fcfsLateness >= 0 ? `+${j.fcfsLateness.toFixed(2)}` : `${j.fcfsLateness.toFixed(2)}`;
+    fcfsHtml += `<tr>
+      <td>Job ${j.label}</td><td>${j.pt}</td>
+      <td class="flowt">${j.fcfsFlow.toFixed(2)}</td>
+      <td>${j.dd}</td>
+      <td style="color:${j.fcfsLateness > 0 ? 'var(--red)' : 'var(--green-dark)'};">${lStr}</td>
+      <td class="${j.fcfsTardiness > 0 ? 'tardy' : 'ontime'}">${j.fcfsTardiness.toFixed(2)}</td>
+    </tr>`;
+  });
+  const fcfsAvgTardy = jobs.reduce((s, j) => s + j.fcfsTardiness, 0) / n;
+  const fcfsMaxTardy = Math.max(...jobs.map(j => j.fcfsTardiness));
+  fcfsHtml += `<tr class="total-row"><td colspan="5">FCFS Summary</td><td>Avg: ${fcfsAvgTardy.toFixed(2)} · Max: ${fcfsMaxTardy.toFixed(2)}</td></tr></tbody>`;
+  document.getElementById('fcfsTable').innerHTML = fcfsHtml;
+
+  const eddBetter = fcfsMaxTardy > maxTardiness;
+  document.getElementById('fcfsSummary').innerHTML = `
+    <strong>EDD max tardiness: ${maxTardiness.toFixed(2)}</strong> &nbsp;|&nbsp;
+    <strong>FCFS max tardiness: ${fcfsMaxTardy.toFixed(2)}</strong> &nbsp;|&nbsp;
+    <span style="color:${eddBetter ? 'var(--green-dark)' : 'var(--gray-600)'};">
+      ${eddBetter ? `EDD reduces maximum tardiness by ${(fcfsMaxTardy - maxTardiness).toFixed(2)} units vs. FCFS.`
+                  : 'EDD and FCFS produce the same maximum tardiness on this job set.'}
+    </span>`;
+
+  document.getElementById('resultSection').classList.add('visible');
+  document.getElementById('fcfsToggle').style.display = 'inline-block';
+}
+
+buildJobGrid();
+</script>
+
+</body>
+</html>

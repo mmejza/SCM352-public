@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SPT / WSPT Sequencing Tool — SCM 352 M12</title>
+<style>
+:root {
+  --navy:#1a3a5c; --blue:#2563a8; --blue-lt:#dbeafe; --blue-xlt:#eff6ff; --blue-bdr:#bfdbfe;
+  --gold:#f59e0b; --gold-lt:#fffbeb; --gold-bdr:#fde68a;
+  --green:#16a34a; --green-lt:#f0fdf4; --green-bdr:#bbf7d0; --green-dark:#15803d;
+  --red:#dc2626; --red-lt:#fef2f2; --red-bdr:#fecaca;
+  --amber:#d97706; --amber-lt:#fffbeb; --amber-bdr:#fde68a;
+  --gray-50:#f9fafb; --gray-100:#f3f4f6; --gray-200:#e5e7eb; --gray-300:#d1d5db;
+  --gray-400:#9ca3af; --gray-600:#4b5563; --gray-700:#374151; --gray-800:#1f2937;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--gray-50);color:var(--gray-800);min-height:100vh;}
+header{background:var(--navy);color:white;padding:14px 24px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+.hbadge{background:var(--gold);color:var(--navy);font-weight:700;font-size:11px;padding:3px 8px;border-radius:4px;letter-spacing:.05em;text-transform:uppercase;white-space:nowrap;}
+header h1{font-size:17px;font-weight:600;}
+.hlo{margin-left:auto;font-size:11px;color:rgba(255,255,255,.6);}
+.wrap{max-width:860px;margin:0 auto;padding:22px 20px;}
+.purpose{background:var(--blue-xlt);border-left:4px solid var(--blue);padding:12px 16px;border-radius:0 8px 8px 0;font-size:13px;line-height:1.65;margin-bottom:20px;}
+.purpose strong{color:var(--navy);}
+.card{background:white;border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;margin-bottom:18px;}
+.card-head{padding:12px 18px;border-bottom:1px solid var(--gray-200);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+.card-head h2{font-size:14px;font-weight:700;color:var(--navy);}
+.card-head p{font-size:12px;color:var(--gray-600);margin-top:2px;}
+.card-body{padding:18px;}
+.row{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap;}
+label{font-size:13px;font-weight:600;color:var(--gray-700);}
+select,input[type=number]{padding:7px 10px;border:2px solid var(--gray-300);border-radius:7px;font-size:13px;background:white;}
+select:focus,input[type=number]:focus{outline:none;border-color:var(--blue);}
+.job-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;margin-bottom:14px;}
+.job-card{background:var(--gray-50);border:1px solid var(--gray-200);border-radius:8px;padding:10px 12px;}
+.job-card label{display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--gray-600);margin-bottom:6px;}
+.job-card .job-label-val{font-size:15px;font-weight:700;color:var(--navy);margin-bottom:6px;}
+.job-card input{width:100%;padding:6px 8px;border:2px solid var(--gray-300);border-radius:6px;font-size:13px;text-align:center;}
+.job-card input:focus{outline:none;border-color:var(--blue);}
+.job-card .field-lbl{font-size:11px;color:var(--gray-500);margin-bottom:2px;}
+.toggle-row{display:flex;gap:0;background:var(--gray-100);border-radius:8px;padding:3px;margin-bottom:4px;width:fit-content;}
+.tbtn{padding:7px 22px;border:none;background:transparent;cursor:pointer;font-size:13px;font-weight:500;color:var(--gray-600);border-radius:6px;transition:all .15s;}
+.tbtn.active{background:var(--blue);color:white;font-weight:700;}
+.action-row{display:flex;gap:10px;flex-wrap:wrap;}
+.btn{padding:9px 20px;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;transition:all .15s;}
+.btn-primary{background:var(--blue);color:white;}
+.btn-primary:hover{background:var(--navy);}
+.btn-secondary{background:var(--gray-200);color:var(--gray-700);}
+.btn-secondary:hover{background:var(--gray-300);}
+.btn-example{background:var(--gold-lt);border:1px solid var(--gold-bdr);color:var(--amber);}
+.btn-example:hover{background:var(--gold-bdr);}
+.result-section{display:none;}
+.result-section.visible{display:block;}
+.seq-display{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:14px;}
+.seq-job{background:var(--blue);color:white;font-weight:700;font-size:15px;padding:6px 13px;border-radius:6px;}
+.seq-arrow{color:var(--gray-400);font-size:18px;}
+.tie-note{background:var(--amber-lt);border:1px solid var(--amber-bdr);border-radius:7px;padding:8px 12px;font-size:12px;color:var(--amber);margin-bottom:10px;}
+table.rt{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:14px;}
+table.rt th{background:var(--navy);color:white;padding:8px 10px;text-align:center;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;}
+table.rt td{padding:7px 8px;text-align:center;border-bottom:1px solid var(--gray-100);}
+table.rt tr:nth-child(even) td{background:var(--gray-50);}
+table.rt .total-row td{background:var(--blue-lt);font-weight:700;color:var(--navy);border-top:2px solid var(--blue-bdr);}
+td.highlight{background:var(--green-lt);font-weight:700;color:var(--green-dark);}
+.summary-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-bottom:14px;}
+.sum-card{background:var(--blue-xlt);border:1px solid var(--blue-bdr);border-radius:8px;padding:12px;text-align:center;}
+.sum-card.green{background:var(--green-lt);border-color:var(--green-bdr);}
+.sum-card.gold{background:var(--gold-lt);border-color:var(--gold-bdr);}
+.sum-val{font-size:24px;font-weight:800;color:var(--navy);line-height:1.1;}
+.sum-card.green .sum-val{color:var(--green-dark);}
+.sum-card.gold .sum-val{color:var(--amber);}
+.sum-lbl{font-size:11px;color:var(--gray-500);margin-top:3px;text-transform:uppercase;letter-spacing:.04em;}
+.fcfs-compare{background:var(--gray-50);border:1px solid var(--gray-200);border-radius:8px;padding:12px;font-size:13px;}
+.fcfs-compare h4{font-size:12px;font-weight:700;color:var(--gray-700);margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em;}
+.error-msg{color:var(--red);font-size:12px;font-weight:600;margin-top:4px;}
+</style>
+</head>
+<body>
+
+<header>
+  <span class="hbadge">SCM 352 · M12</span>
+  <h1>SPT / WSPT Sequencing Tool</h1>
+  <span class="hlo">LO12-3 · LO12-4 · Chapter 18.2–18.3</span>
+</header>
+
+<div class="wrap">
+
+  <div class="purpose">
+    <strong>How to use this tool:</strong> Enter your jobs (processing time and optional weight), choose a sequencing rule, then click <em>Compute Sequence</em>. The tool shows the sorted order, flow time for each job, and summary metrics. Use it to check hand calculations before Gate 2.
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <div>
+        <h2>Step 1 — Configure Jobs</h2>
+        <p>Select number of jobs, then enter processing time and weight for each.</p>
+      </div>
+      <button class="btn btn-example" onclick="loadExample()">Load Example (5 Jobs)</button>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <label for="numJobs">Number of jobs:</label>
+        <select id="numJobs" onchange="buildJobGrid()">
+          <option value="3">3 jobs</option>
+          <option value="4">4 jobs</option>
+          <option value="5" selected>5 jobs</option>
+          <option value="6">6 jobs</option>
+          <option value="7">7 jobs</option>
+          <option value="8">8 jobs</option>
+        </select>
+      </div>
+      <div class="job-grid" id="jobGrid"></div>
+      <div class="error-msg" id="inputError"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <div>
+        <h2>Step 2 — Choose Sequencing Rule</h2>
+        <p>SPT ignores weights and sequences by processing time. WSPT uses the weight ÷ processing time ratio.</p>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="toggle-row">
+        <button class="tbtn active" id="btnSPT" onclick="setRule('SPT')">SPT — Shortest Processing Time</button>
+        <button class="tbtn" id="btnWSPT" onclick="setRule('WSPT')">WSPT — Weighted Shortest Processing Time</button>
+      </div>
+      <div id="ruleDesc" style="font-size:12px;color:var(--gray-600);margin-top:8px;">
+        <strong>SPT:</strong> Sequence ascending by processing time. Minimizes average flow time. All weights ignored.
+      </div>
+      <div class="action-row" style="margin-top:14px;">
+        <button class="btn btn-primary" onclick="compute()">Compute Sequence</button>
+        <button class="btn btn-secondary" onclick="resetAll()">Reset</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="result-section" id="resultSection">
+    <div class="card">
+      <div class="card-head">
+        <h2 id="resultTitle">Results — SPT Sequence</h2>
+      </div>
+      <div class="card-body">
+        <div id="tieNote"></div>
+        <p style="font-size:12px;font-weight:700;color:var(--gray-600);margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em;">Sequence:</p>
+        <div class="seq-display" id="seqDisplay"></div>
+
+        <p style="font-size:12px;font-weight:700;color:var(--gray-600);margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em;">Performance Table:</p>
+        <table class="rt" id="perfTable"></table>
+
+        <div class="summary-cards" id="summaryCards"></div>
+
+        <div class="fcfs-compare" id="fcfsCompare"></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const LABELS = ['A','B','C','D','E','F','G','H'];
+let rule = 'SPT';
+
+function buildJobGrid(n) {
+  n = n || parseInt(document.getElementById('numJobs').value);
+  const grid = document.getElementById('jobGrid');
+  grid.innerHTML = '';
+  for (let i = 0; i < n; i++) {
+    const card = document.createElement('div');
+    card.className = 'job-card';
+    card.innerHTML = `
+      <div class="job-label-val">Job ${LABELS[i]}</div>
+      <div class="field-lbl">Processing Time (min/days)</div>
+      <input type="number" id="pt_${i}" min="0.01" step="0.1" placeholder="e.g. 7">
+      <div class="field-lbl" style="margin-top:6px;">Weight (optional — leave blank = 1)</div>
+      <input type="number" id="wt_${i}" min="0.01" step="0.1" placeholder="default: 1">
+    `;
+    grid.appendChild(card);
+  }
+  document.getElementById('resultSection').classList.remove('visible');
+}
+
+function setRule(r) {
+  rule = r;
+  document.getElementById('btnSPT').classList.toggle('active', r === 'SPT');
+  document.getElementById('btnWSPT').classList.toggle('active', r === 'WSPT');
+  const desc = document.getElementById('ruleDesc');
+  if (r === 'SPT') {
+    desc.innerHTML = '<strong>SPT:</strong> Sequence ascending by processing time. Minimizes average flow time. All weights ignored.';
+  } else {
+    desc.innerHTML = '<strong>WSPT:</strong> Compute ratio = Weight ÷ Processing Time for each job. Sequence descending by ratio (highest ratio first). Minimizes total weighted flow time.';
+  }
+}
+
+function loadExample() {
+  document.getElementById('numJobs').value = 5;
+  buildJobGrid(5);
+  const pts = [7, 3, 12, 5, 9];
+  const wts = [1, 4, 1, 3, 2];
+  for (let i = 0; i < 5; i++) {
+    document.getElementById(`pt_${i}`).value = pts[i];
+    document.getElementById(`wt_${i}`).value = wts[i];
+  }
+  document.getElementById('inputError').textContent = '';
+}
+
+function resetAll() {
+  buildJobGrid();
+  document.getElementById('resultSection').classList.remove('visible');
+  document.getElementById('inputError').textContent = '';
+}
+
+function compute() {
+  const n = parseInt(document.getElementById('numJobs').value);
+  const jobs = [];
+  let err = '';
+
+  for (let i = 0; i < n; i++) {
+    const ptVal = parseFloat(document.getElementById(`pt_${i}`).value);
+    const wtRaw = document.getElementById(`wt_${i}`).value.trim();
+    const wt = wtRaw === '' ? 1.0 : parseFloat(wtRaw);
+
+    if (isNaN(ptVal) || ptVal <= 0) { err = `Job ${LABELS[i]}: processing time must be a positive number.`; break; }
+    if (isNaN(wt) || wt <= 0) { err = `Job ${LABELS[i]}: weight must be a positive number (or leave blank for default 1).`; break; }
+
+    jobs.push({ label: LABELS[i], pt: ptVal, wt: wt, ratio: wt / ptVal, origIdx: i });
+  }
+
+  document.getElementById('inputError').textContent = err;
+  if (err) return;
+
+  // Sort
+  let sorted;
+  let hasTie = false;
+  let tieMsg = '';
+
+  if (rule === 'SPT') {
+    sorted = [...jobs].sort((a, b) => a.pt - b.pt);
+    for (let i = 0; i < sorted.length - 1; i++) {
+      if (sorted[i].pt === sorted[i+1].pt) { hasTie = true; break; }
+    }
+    if (hasTie) tieMsg = 'Tie detected: two or more jobs have the same processing time. Either order is valid — maximum tardiness is unaffected by the tie-breaking choice.';
+  } else {
+    sorted = [...jobs].sort((a, b) => b.ratio - a.ratio);
+    for (let i = 0; i < sorted.length - 1; i++) {
+      if (Math.abs(sorted[i].ratio - sorted[i+1].ratio) < 0.0001) { hasTie = true; break; }
+    }
+    if (hasTie) tieMsg = 'Tie detected: two or more jobs have the same W÷PT ratio. Either order is valid — total weighted flow time is unaffected by the tie-breaking choice.';
+  }
+
+  // Compute flow times
+  let cumFlow = 0;
+  for (const job of sorted) {
+    cumFlow += job.pt;
+    job.flow = cumFlow;
+    job.wflow = job.wt * job.flow;
+  }
+
+  // FCFS flow times
+  let fcfsCum = 0;
+  for (const job of jobs) {
+    fcfsCum += job.pt;
+    job.fcfsFlow = fcfsCum;
+  }
+  const fcfsAvgFlow = jobs.reduce((s, j) => s + j.fcfsFlow, 0) / n;
+
+  // Summary metrics
+  const avgFlow = sorted.reduce((s, j) => s + j.flow, 0) / n;
+  const totalWtdFlow = sorted.reduce((s, j) => s + j.wflow, 0);
+
+  // Render
+  document.getElementById('resultTitle').textContent = `Results — ${rule} Sequence`;
+
+  // Tie note
+  const tieNote = document.getElementById('tieNote');
+  if (hasTie) {
+    tieNote.innerHTML = `<div class="tie-note">⚠️ ${tieMsg}</div>`;
+  } else {
+    tieNote.innerHTML = '';
+  }
+
+  // Sequence display
+  const seqDiv = document.getElementById('seqDisplay');
+  seqDiv.innerHTML = '';
+  sorted.forEach((job, idx) => {
+    const badge = document.createElement('span');
+    badge.className = 'seq-job';
+    badge.textContent = `Job ${job.label}`;
+    seqDiv.appendChild(badge);
+    if (idx < sorted.length - 1) {
+      const arrow = document.createElement('span');
+      arrow.className = 'seq-arrow';
+      arrow.textContent = '→';
+      seqDiv.appendChild(arrow);
+    }
+  });
+
+  // Performance table
+  const tbl = document.getElementById('perfTable');
+  const wsptCol = rule === 'WSPT';
+  let html = `<thead><tr>
+    <th>Job</th>
+    <th>Proc. Time</th>
+    ${wsptCol ? '<th>Weight</th><th>Ratio (W÷PT)</th>' : ''}
+    <th>Flow Time</th>
+    ${wsptCol ? '<th>Wtd. Flow (W×F)</th>' : ''}
+  </tr></thead><tbody>`;
+
+  sorted.forEach(job => {
+    html += `<tr>
+      <td><strong>Job ${job.label}</strong></td>
+      <td>${job.pt}</td>
+      ${wsptCol ? `<td>${job.wt}</td><td>${job.ratio.toFixed(3)}</td>` : ''}
+      <td class="highlight">${job.flow}</td>
+      ${wsptCol ? `<td>${job.wflow}</td>` : ''}
+    </tr>`;
+  });
+
+  const colSpan = wsptCol ? 5 : 2;
+  html += `<tr class="total-row">
+    <td colspan="${wsptCol ? 3 : 1}">Average Flow Time</td>
+    ${wsptCol ? '<td>—</td>' : ''}
+    <td><strong>${avgFlow.toFixed(2)}</strong></td>
+    ${wsptCol ? `<td><strong>${totalWtdFlow.toFixed(1)}</strong></td>` : ''}
+  </tr></tbody>`;
+  tbl.innerHTML = html;
+
+  // Summary cards
+  const sumDiv = document.getElementById('summaryCards');
+  let sumHtml = `<div class="sum-card green">
+    <div class="sum-val">${avgFlow.toFixed(2)}</div>
+    <div class="sum-lbl">Average Flow Time</div>
+  </div>`;
+  if (wsptCol) {
+    sumHtml += `<div class="sum-card gold">
+      <div class="sum-val">${totalWtdFlow.toFixed(1)}</div>
+      <div class="sum-lbl">Total Weighted Flow Time</div>
+    </div>`;
+  }
+  sumDiv.innerHTML = sumHtml;
+
+  // FCFS comparison
+  const fcfsDiv = document.getElementById('fcfsCompare');
+  const improvement = ((fcfsAvgFlow - avgFlow) / fcfsAvgFlow * 100).toFixed(1);
+  fcfsDiv.innerHTML = `<h4>Comparison: ${rule} vs. FCFS (Arrival Order)</h4>
+    <div style="display:flex;gap:20px;flex-wrap:wrap;font-size:13px;">
+      <div><span style="font-weight:700;color:var(--green-dark);">${rule} Average Flow Time:</span> ${avgFlow.toFixed(2)}</div>
+      <div><span style="font-weight:700;color:var(--gray-600);">FCFS Average Flow Time:</span> ${fcfsAvgFlow.toFixed(2)}</div>
+      <div><span style="font-weight:700;color:var(--blue);">Improvement:</span> ${improvement}% reduction in average flow time vs. FCFS</div>
+    </div>`;
+
+  document.getElementById('resultSection').classList.add('visible');
+}
+
+// Initialize
+buildJobGrid();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,65 @@
+<section class="slide-page" data-title="EDD — Worked Example" data-lo="LO12-2 LO12-3" data-notes="Same 4 jobs as SPT example. EDD sequence differs from SPT — students see that the same job set produces different sequences and different tardiness outcomes. Key: EDD minimizes max tardiness, but avg flow time is higher than SPT.">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">M12</span>
+      <span class="le-course">SCM 352 · Module 12</span>
+    </div>
+    <span class="le-pagenum">9 / 16</span>
+  </div>
+
+  <div class="le-titleblock">
+    <div class="le-title">EDD — <span>Worked Example</span></div>
+    <div class="le-sub">Same 4 jobs · EDD sequence · Compare outcomes with SPT</div>
+  </div>
+
+  <div class="le-body">
+    <div class="two-col" style="gap:8px;">
+      <div>
+        <div class="callout teal" style="margin-bottom:6px;">
+          <div class="callout-label">Setup — EDD Sequence by Due Date</div>
+          <table class="clean-table" style="margin-top:4px;">
+            <thead><tr><th>Job</th><th>Proc.</th><th>Due Date</th><th>EDD Rank</th></tr></thead>
+            <tbody>
+              <tr><td>D</td><td>4</td><td>5</td><td>1st</td></tr>
+              <tr><td>B</td><td>2</td><td>6</td><td>2nd</td></tr>
+              <tr><td>A</td><td>6</td><td>8</td><td>3rd</td></tr>
+              <tr><td>C</td><td>9</td><td>14</td><td>4th</td></tr>
+            </tbody>
+          </table>
+          <p style="margin-top:4px;">EDD sequence: <strong>D → B → A → C</strong></p>
+        </div>
+      </div>
+      <div>
+        <div class="callout amber">
+          <div class="callout-label">Solution — EDD Performance Table</div>
+          <table class="clean-table" style="margin-top:4px;">
+            <thead><tr><th>Job</th><th>Proc.</th><th>Flow</th><th>Due</th><th>Late</th><th>Tardy</th></tr></thead>
+            <tbody>
+              <tr><td>D</td><td>4</td><td>4</td><td>5</td><td>−1</td><td class="pos">0</td></tr>
+              <tr><td>B</td><td>2</td><td>6</td><td>6</td><td>0</td><td class="pos">0</td></tr>
+              <tr><td>A</td><td>6</td><td>12</td><td>8</td><td class="neg">+4</td><td class="neg">4</td></tr>
+              <tr><td>C</td><td>9</td><td>21</td><td>14</td><td class="neg">+7</td><td class="neg">7</td></tr>
+              <tr class="total-row"><td colspan="2">Avg / Max</td><td>10.75</td><td>—</td><td>—</td><td>Max = 7</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout navy" style="margin-top:6px;">
+          <div class="callout-label" style="color:var(--teal);">SPT vs. EDD on this job set</div>
+          <p>SPT: avg flow = 10.25, avg tardiness = 3.0, max tardiness = 7</p>
+          <p>EDD: avg flow = 10.75, avg tardiness = 2.75, max tardiness = 7</p>
+          <p style="color:var(--amber);margin-top:3px;">On this job set the rules produce the same maximum tardiness. Comparison slide next.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="le-footer">
+    <div class="le-lo-pills">
+      <span class="le-lo-pill">LO12-2</span><span class="le-lo-pill">LO12-3</span>
+    </div>
+    <div><span class="le-ch-note">Ch. 18.2–18.3</span></div>
+  </div>
+</section>

@@ -1,0 +1,71 @@
+<section class="slide-page" data-title="Rule Comparison" data-lo="LO12-4 LO12-5" data-notes="Side-by-side summary. Each rule has a singular claim — one metric it provably minimizes. None dominates on all three metrics. This is the analytical core of LO12-4 and the basis for the Case Analysis Part 4 recommendation memo.">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">M12</span>
+      <span class="le-course">SCM 352 · Module 12</span>
+    </div>
+    <span class="le-pagenum">10 / 16</span>
+  </div>
+
+  <div class="le-titleblock">
+    <div class="le-title">Three Rules, <span>Three Objectives</span></div>
+    <div class="le-sub">No rule dominates on all metrics — choose based on what your organization actually measures</div>
+  </div>
+
+  <div class="le-body">
+    <table class="clean-table" style="margin-bottom:8px;">
+      <thead>
+        <tr>
+          <th>Rule</th>
+          <th>Sequence By</th>
+          <th>Provably Minimizes</th>
+          <th>Does NOT Control</th>
+          <th>Best When</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>SPT</strong></td>
+          <td>Proc. time ↑</td>
+          <td class="pos">Average flow time · Avg WIP</td>
+          <td>Due dates · Job priority</td>
+          <td>Throughput speed is the primary metric; all jobs roughly equal value</td>
+        </tr>
+        <tr>
+          <td><strong>WSPT</strong></td>
+          <td>W÷P ratio ↓</td>
+          <td class="pos">Total weighted flow time</td>
+          <td>Maximum tardiness</td>
+          <td>Jobs have meaningfully different priorities (revenue, urgency, strategic weight)</td>
+        </tr>
+        <tr>
+          <td><strong>EDD</strong></td>
+          <td>Due date ↑</td>
+          <td class="pos">Maximum tardiness · Max lateness</td>
+          <td>Average flow time</td>
+          <td>One late delivery is catastrophic; deadline adherence dominates all other concerns</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="two-col">
+      <div class="callout amber">
+        <div class="callout-label">Common Hybrid Practice</div>
+        <p>Apply EDD to identify at-risk jobs. Within the safe subset, use SPT to minimize average flow time. This captures EDD's deadline protection without sacrificing throughput on non-urgent work.</p>
+      </div>
+      <div class="callout red">
+        <div class="callout-label">What Rules Cannot Do</div>
+        <p>No rule eliminates variability in processing times or demand arrivals. Rules choose the <em>best possible sequence given fixed inputs</em> — they do not change the inputs themselves.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="le-footer">
+    <div class="le-lo-pills">
+      <span class="le-lo-pill">LO12-4</span><span class="le-lo-pill">LO12-5</span>
+    </div>
+    <div><span class="le-ch-note">Ch. 18.3</span></div>
+  </div>
+</section>

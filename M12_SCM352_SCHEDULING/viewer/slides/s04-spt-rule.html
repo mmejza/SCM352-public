@@ -1,0 +1,49 @@
+<section class="slide-page" data-title="SPT Rule" data-lo="LO12-3 LO12-4" data-notes="Setup slide for SPT — establish the rule, what it minimizes, and the documented limitation (job starvation). The worked example is on the next slide.">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">M12</span>
+      <span class="le-course">SCM 352 · Module 12</span>
+    </div>
+    <span class="le-pagenum">4 / 16</span>
+  </div>
+
+  <div class="le-titleblock">
+    <div class="le-title">SPT — <span>Shortest Processing Time</span></div>
+    <div class="le-sub">Sequence ascending by processing time · Minimizes average flow time</div>
+  </div>
+
+  <div class="le-body">
+    <div class="three-col">
+      <div class="callout teal">
+        <div class="callout-label">The Rule</div>
+        <p>Sequence jobs from <strong>shortest to longest</strong> processing time. Do the quickest job first.</p>
+      </div>
+      <div class="callout teal">
+        <div class="callout-label">What It Minimizes</div>
+        <p><strong>Average flow time</strong> across all jobs. Also minimizes average work-in-process inventory. Provably optimal — not just a heuristic.</p>
+      </div>
+      <div class="callout amber">
+        <div class="callout-label">What It Ignores</div>
+        <p>Due dates. Job importance. Revenue. Urgency. All jobs are treated as equally valuable.</p>
+      </div>
+    </div>
+    <div class="callout navy" style="margin-top:2px;">
+      <div class="callout-label" style="color:var(--teal);">Why It Works — The Intuition</div>
+      <p>Every job that follows another job inherits its processing time as wait. A long job first forces every subsequent job to absorb that duration into its own flow time. A short job first minimizes the inherited wait for all jobs that come after it. SPT distributes the waiting burden most efficiently across the whole queue.</p>
+    </div>
+    <div class="callout red" style="margin-top:2px;">
+      <div class="callout-label">Documented Limitation — Job Starvation</div>
+      <p>Long jobs can be repeatedly bumped behind shorter jobs indefinitely. Managers often use SPT as a default and manually override it for jobs that have waited too long or have tight due dates.</p>
+    </div>
+  </div>
+
+  <div class="le-footer">
+    <div class="le-lo-pills">
+      <span class="le-lo-pill">LO12-3</span><span class="le-lo-pill">LO12-4</span>
+    </div>
+    <div><span class="le-ch-note">Ch. 18.2–18.3</span></div>
+  </div>
+</section>

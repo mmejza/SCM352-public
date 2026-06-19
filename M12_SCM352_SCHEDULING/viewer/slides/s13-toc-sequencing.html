@@ -1,0 +1,51 @@
+<section class="slide-page" data-title="ToC — Sequencing at the Bottleneck" data-lo="LO12-6" data-notes="The SPT → LPT switch is the counterintuitive detail that separates textbook from real OM. Test note: Gate 2 Q5 tests this — students must identify the trigger condition (buffer nearly empty) and explain why LPT slows consumption to prevent starvation.">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">M12</span>
+      <span class="le-course">SCM 352 · Module 12</span>
+    </div>
+    <span class="le-pagenum">13 / 16</span>
+  </div>
+
+  <div class="le-titleblock">
+    <div class="le-title">Sequencing <span>at the Bottleneck</span></div>
+    <div class="le-sub">SPT as default · LPT when the upstream buffer is nearly empty</div>
+  </div>
+
+  <div class="le-body">
+    <div class="two-col" style="gap:8px;">
+      <div>
+        <div class="callout teal" style="margin-bottom:6px;">
+          <div class="callout-label">Normal Condition — Use SPT</div>
+          <p>At non-bottleneck upstream resources: SPT moves jobs to the bottleneck buffer quickly, keeping it full and preventing the bottleneck from idling.</p>
+          <p style="margin-top:4px;">At the bottleneck itself: SPT minimizes average flow time through the constraint — work clears the bottleneck as quickly as possible.</p>
+        </div>
+        <div class="callout amber">
+          <div class="callout-label">Why Use LPT At All?</div>
+          <p>If upstream resources fall behind, the buffer before the bottleneck shrinks. An empty buffer means the bottleneck idles — and bottleneck idle time is permanently lost throughput.</p>
+        </div>
+      </div>
+      <div>
+        <div class="callout navy">
+          <div class="callout-label" style="color:var(--teal);">Exception — Buffer Nearly Empty → Switch to LPT</div>
+          <p>By choosing the <strong style="color:#fff;">longest</strong> job in its current queue, the bottleneck slows its own consumption of the dwindling buffer. The bottleneck takes longer per job, buying time for upstream resources to replenish the queue.</p>
+          <p style="margin-top:6px;color:rgba(255,255,255,.7);">Once the buffer is healthy again → switch back to SPT.</p>
+        </div>
+        <div class="callout red" style="margin-top:6px;">
+          <div class="callout-label">The Counterintuitive Rule</div>
+          <p>Every instinct says "process faster when under pressure." But at the bottleneck under buffer stress, processing faster means idling sooner. LPT deliberately <strong>slows down</strong> to prevent starvation of the constraint.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="le-footer">
+    <div class="le-lo-pills">
+      <span class="le-lo-pill">LO12-6</span>
+    </div>
+    <div><span class="le-gate-note">Gate 2 Q5 · Ch. 18.5</span></div>
+  </div>
+</section>

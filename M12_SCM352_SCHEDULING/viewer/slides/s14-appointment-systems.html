@@ -1,0 +1,51 @@
+<section class="slide-page" data-title="Appointment Systems" data-lo="LO12-7" data-notes="Appointment systems manage WHEN demand arrives — not how much capacity exists. Key: they do not add capacity. The design trade-off is interval length vs. utilization/wait. This maps directly to Gate 2 Q6 and Case Part 5.">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">M12</span>
+      <span class="le-course">SCM 352 · Module 12</span>
+    </div>
+    <span class="le-pagenum">14 / 16</span>
+  </div>
+
+  <div class="le-titleblock">
+    <div class="le-title">Appointment <span>Systems</span></div>
+    <div class="le-sub">Managing the timing of arrivals — not capacity itself</div>
+  </div>
+
+  <div class="le-body">
+    <div class="callout navy" style="margin-bottom:7px;">
+      <div class="callout-label" style="color:var(--teal);">What Appointment Systems Do — and Do Not Do</div>
+      <p>An appointment system <strong style="color:#fff;">does not add capacity.</strong> It spreads arrivals across time to reduce the mismatch between supply and demand at any given moment. Without appointments: random arrivals cluster — overwhelmed one hour, idle the next. With appointments: arrivals are smoothed, matching the pace of available service capacity.</p>
+    </div>
+    <div class="two-col">
+      <div class="callout teal">
+        <div class="callout-label">Shorter Intervals (less than avg service time)</div>
+        <p>+ Higher provider utilization<br>
+        − Backlog builds through the day<br>
+        − Later patients wait longer<br>
+        Trade-off: efficiency over responsiveness</p>
+      </div>
+      <div class="callout amber">
+        <div class="callout-label">Longer Intervals (more than avg service time)</div>
+        <p>+ Very short wait times for all patients<br>
+        − Provider has idle time between patients<br>
+        − Lower utilization<br>
+        Trade-off: responsiveness over efficiency</p>
+      </div>
+    </div>
+    <div class="callout blue" style="margin-top:6px;">
+      <div class="callout-label">Service Variability Complication</div>
+      <p>If service times vary significantly (routine visit = 10 min; complex consultation = 45 min), slots sized to the average leave the provider idle on short visits and create delays on long visits. Solution: triage appointments by type and assign slot lengths accordingly.</p>
+    </div>
+  </div>
+
+  <div class="le-footer">
+    <div class="le-lo-pills">
+      <span class="le-lo-pill">LO12-7</span>
+    </div>
+    <div><span class="le-ch-note">Ch. 18.4</span></div>
+  </div>
+</section>

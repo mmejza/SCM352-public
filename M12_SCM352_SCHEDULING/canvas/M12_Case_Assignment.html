@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Case Analysis M12 — Riverside Health System: OR Scheduling — SCM 352</title>
+<style>
+:root{--navy:#1a3a5c;--blue:#2563a8;--blue-lt:#dbeafe;--blue-xlt:#eff6ff;--gold:#f59e0b;--gold-lt:#fffbeb;--gold-bdr:#fde68a;--green:#16a34a;--green-lt:#f0fdf4;--green-bdr:#bbf7d0;--red:#dc2626;--red-lt:#fef2f2;--red-bdr:#fecaca;--amber:#d97706;--amber-lt:#fffbeb;--amber-bdr:#fde68a;--purple:#7c3aed;--purple-lt:#faf5ff;--purple-bdr:#ddd6fe;--teal:#0891b2;--teal-lt:#f0fdfe;--teal-bdr:#a5f3fc;--gray-50:#f9fafb;--gray-100:#f3f4f6;--gray-200:#e5e7eb;--gray-300:#d1d5db;--gray-400:#9ca3af;--gray-600:#4b5563;--gray-700:#374151;--gray-800:#1f2937;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--gray-50);color:var(--gray-800);line-height:1.65;font-size:14px;}
+.pg-header{background:var(--navy);color:white;padding:24px 28px;}
+.pg-header-eyebrow{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
+.pg-header h1{font-size:22px;font-weight:700;letter-spacing:-.01em;margin-bottom:6px;}
+.pg-header p{font-size:13px;color:rgba(255,255,255,.68);}
+.meta-strip{background:white;border-bottom:2px solid var(--gray-200);display:flex;gap:0;overflow-x:auto;}
+.meta-cell{padding:11px 20px;border-right:1px solid var(--gray-200);flex-shrink:0;}
+.meta-cell:last-child{border-right:none;}
+.meta-lbl{font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--gray-400);margin-bottom:2px;}
+.meta-val{font-size:13px;font-weight:700;color:var(--navy);}
+.pg-body{max-width:860px;margin:0 auto;padding:28px 22px 60px;display:flex;flex-direction:column;gap:28px;}
+.version-banner{background:var(--navy);border-radius:12px;overflow:hidden;border:2px solid var(--navy);}
+.version-banner-hd{padding:13px 20px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,255,255,.15);}
+.version-banner-hd h2{font-size:14px;font-weight:700;color:white;}
+.version-banner-hd p{font-size:12px;color:rgba(255,255,255,.6);margin-top:2px;}
+.version-table{width:100%;border-collapse:collapse;font-size:13px;}
+.version-table th{padding:9px 16px;text-align:left;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:rgba(255,255,255,.55);border-bottom:1px solid rgba(255,255,255,.1);}
+.version-table td{padding:10px 16px;border-bottom:1px solid rgba(255,255,255,.07);color:rgba(255,255,255,.85);}
+.version-table tr:last-child td{border-bottom:none;}
+.ver-badge{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:6px;font-size:13px;font-weight:800;}
+.ver-a{background:#dcfce7;color:#166534;} .ver-b{background:#dbeafe;color:#1e40af;} .ver-c{background:#faf5ff;color:#6b21a8;} .ver-d{background:#fef9c3;color:#854d0e;}
+.alert{border-radius:10px;padding:13px 16px;font-size:13.5px;line-height:1.6;display:flex;gap:11px;align-items:flex-start;}
+.alert-icon{font-size:17px;flex-shrink:0;margin-top:1px;}
+.alert-body{flex:1;}
+.alert-body strong{display:block;margin-bottom:3px;}
+.alert-red{background:var(--red-lt);border:1.5px solid var(--red-bdr);}
+.alert-gold{background:var(--gold-lt);border:1.5px solid var(--gold-bdr);}
+.alert-blue{background:var(--blue-xlt);border:1.5px solid #bfdbfe;}
+.sec-div{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--gray-400);padding-bottom:10px;border-bottom:1px solid var(--gray-200);margin-bottom:-4px;}
+.section-card{background:white;border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;}
+.section-hd{padding:14px 20px;border-bottom:1px solid var(--gray-200);display:flex;align-items:center;gap:12px;}
+.part-badge{display:flex;align-items:center;justify-content:center;min-width:36px;height:36px;border-radius:8px;font-size:12px;font-weight:800;flex-shrink:0;}
+.section-hd-text h2{font-size:15px;font-weight:700;color:var(--navy);}
+.section-hd-text p{font-size:12px;color:var(--gray-600);margin-top:2px;}
+.pts-badge{margin-left:auto;flex-shrink:0;font-size:13px;font-weight:700;padding:4px 12px;border-radius:100px;}
+.section-bd{padding:20px;}
+.part1 .section-hd{background:var(--blue-xlt);} .part1 .part-badge{background:var(--blue);color:white;} .part1 .pts-badge{background:var(--blue-lt);color:var(--navy);}
+.part2 .section-hd{background:var(--green-lt);} .part2 .part-badge{background:var(--green);color:white;} .part2 .pts-badge{background:var(--green-bdr);color:var(--green);}
+.part3 .section-hd{background:var(--purple-lt);} .part3 .part-badge{background:var(--purple);color:white;} .part3 .pts-badge{background:var(--purple-bdr);color:var(--purple);}
+.part4 .section-hd{background:var(--teal-lt);} .part4 .part-badge{background:var(--teal);color:white;} .part4 .pts-badge{background:var(--teal-bdr);color:var(--teal);}
+.part5 .section-hd{background:var(--gold-lt);} .part5 .part-badge{background:var(--gold);color:var(--navy);} .part5 .pts-badge{background:var(--gold-bdr);color:#92400e;}
+.ver-tabs{border:1.5px solid var(--gray-200);border-radius:10px;overflow:hidden;margin:16px 0;}
+.ver-tab-hd{display:flex;border-bottom:1.5px solid var(--gray-200);background:var(--gray-50);}
+.ver-tab-btn{flex:1;padding:10px 0;border:none;background:none;cursor:pointer;font-size:13px;font-weight:700;color:var(--gray-400);border-right:1px solid var(--gray-200);transition:all 0.15s;display:flex;align-items:center;justify-content:center;gap:6px;}
+.ver-tab-btn:last-child{border-right:none;}
+.ver-tab-btn:hover{color:var(--navy);background:white;}
+.ver-tab-btn.active{color:var(--navy);background:white;box-shadow:inset 0 -2px 0 var(--blue);}
+.ver-tab-btn .vb{width:20px;height:20px;border-radius:4px;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;}
+.ver-tab-panel{display:none;padding:16px;}
+.ver-tab-panel.active{display:block;}
+.data-table{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px;}
+.data-table th{background:var(--navy);color:white;padding:9px 13px;text-align:left;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;}
+.data-table td{padding:9px 13px;border-bottom:1px solid var(--gray-100);}
+.data-table tr:last-child td{border-bottom:none;}
+.data-table td:first-child{font-weight:700;}
+.data-table td:nth-child(2),.data-table td:nth-child(3),.data-table td:nth-child(4){text-align:center;}
+.q-block{margin-bottom:16px;padding:14px 16px;border:1.5px solid var(--gray-200);border-radius:8px;background:var(--gray-50);}
+.q-block:last-child{margin-bottom:0;}
+.q-num{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--gray-400);margin-bottom:5px;}
+.q-text{font-size:13.5px;line-height:1.65;color:var(--gray-700);}
+.q-pts{display:inline-block;margin-top:7px;font-size:11px;font-weight:700;padding:2px 9px;border-radius:100px;background:var(--blue-lt);color:var(--navy);}
+.scenario-box{background:var(--gray-50);border:1.5px solid var(--gray-200);border-left:4px solid var(--teal);border-radius:0 8px 8px 0;padding:16px 18px;font-size:13.5px;line-height:1.75;color:var(--gray-700);margin:12px 0;}
+.submit-list{display:flex;flex-direction:column;gap:6px;}
+.submit-item{display:flex;gap:10px;align-items:flex-start;padding:9px 13px;background:var(--gray-50);border:1px solid var(--gray-200);border-radius:7px;font-size:13px;line-height:1.5;color:var(--gray-700);}
+.submit-item::before{content:'☐';font-size:16px;flex-shrink:0;color:var(--gray-400);margin-top:-1px;}
+.grade-table{width:100%;border-collapse:collapse;font-size:13px;}
+.grade-table th{background:var(--navy);color:white;padding:9px 13px;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;text-align:left;}
+.grade-table td{padding:9px 13px;border-bottom:1px solid var(--gray-100);}
+.grade-table tr:last-child td{border-bottom:none;}
+.grade-table tr.total td{font-weight:700;background:var(--blue-xlt);color:var(--navy);font-size:14px;}
+.pts-right{text-align:right;font-weight:700;font-size:15px;color:var(--navy);}
+.ref-note{font-size:11.5px;color:var(--gray-400);margin-top:8px;padding-left:2px;}
+</style>
+</head>
+<body>
+
+<div class="pg-header">
+  <div class="pg-header-eyebrow">SCM 352 · Module 12 · Case Analysis</div>
+  <h1>Riverside Health System: OR Scheduling</h1>
+  <p>Parameterized case — 4 versions · 35 points · Due Day 6 at 11:59 PM</p>
+</div>
+
+<div class="meta-strip">
+  <div class="meta-cell"><div class="meta-lbl">Points</div><div class="meta-val">35</div></div>
+  <div class="meta-cell"><div class="meta-lbl">Due</div><div class="meta-val">Day 6 · 11:59 PM</div></div>
+  <div class="meta-cell"><div class="meta-lbl">Format</div><div class="meta-val">PDF or Word (.docx)</div></div>
+  <div class="meta-cell"><div class="meta-lbl">Attempts</div><div class="meta-val">1</div></div>
+  <div class="meta-cell"><div class="meta-lbl">Allowed resources</div><div class="meta-val">Ch. 18 · Lectures · Apps · Slides</div></div>
+  <div class="meta-cell"><div class="meta-lbl">Min. length</div><div class="meta-val">600 words</div></div>
+</div>
+
+<div class="pg-body">
+
+  <!-- VERSION ASSIGNMENT -->
+  <div class="version-banner">
+    <div class="version-banner-hd">
+      <div><h2>Find Your Assigned Version</h2><p>Use the last digit of your student ID. Submit only your assigned version — write the version letter at the top of your document.</p></div>
+    </div>
+    <table class="version-table">
+      <thead><tr><th>Last digit of student ID</th><th>Your version</th><th>Procedure context</th></tr></thead>
+      <tbody>
+        <tr><td>0, 1, or 2</td><td><span class="ver-badge ver-a">A</span></td><td>General surgery mix: Appendectomy (emergent), Cholecystectomy, Hernia, Knee arthroscopy, Carpal tunnel</td></tr>
+        <tr><td>3, 4, or 5</td><td><span class="ver-badge ver-b">B</span></td><td>Complex case mix: Bowel resection (emergent, longest), Thyroidectomy, Hip replacement, Tonsillectomy, Cyst excision</td></tr>
+        <tr><td>6 or 7</td><td><span class="ver-badge ver-c">C</span></td><td>Mixed-urgency day: Appendectomy (emergent), Colon resection, Rotator cuff, Knee replacement, Hernia repair</td></tr>
+        <tr><td>8 or 9</td><td><span class="ver-badge ver-d">D</span></td><td>High-stakes mix: Appendectomy (emergent, tight deadline), Spinal fusion (longest), Mastectomy, Gallbladder, Wrist fracture</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- RULES -->
+  <div style="display:flex;flex-direction:column;gap:10px;">
+    <div class="alert alert-red">
+      <div class="alert-icon">🚫</div>
+      <div class="alert-body"><strong>Do not collaborate on version-specific calculations.</strong>Parts 1, 2, and 3 use data unique to your assigned version. Submitting another version's numbers constitutes academic dishonesty and will earn zero credit.</div>
+    </div>
+    <div class="alert alert-gold">
+      <div class="alert-icon">📋</div>
+      <div class="alert-body"><strong>Show all calculation steps with labeled intermediate values.</strong>Answers without supporting work will not receive full credit, even if numerically correct. For performance tables, build every row — do not summarize. Round flow times, lateness, and tardiness to whole minutes. Round WSPT ratios to three decimal places.</div>
+    </div>
+    <div class="alert alert-blue">
+      <div class="alert-icon">ℹ️</div>
+      <div class="alert-body">Parts 4 and 5 are the same for all versions. You may discuss the conceptual framework with classmates, but your written responses must be your own. All five parts build sequentially — complete Parts 1 through 3 before attempting Parts 4 and 5. Deadlines in hours must be converted to minutes before computing lateness and tardiness.</div>
+    </div>
+  </div>
+
+  <!-- BACKGROUND -->
+  <div>
+    <div class="sec-div">Background — All Versions</div>
+    <div class="section-card" style="margin-top:14px;">
+      <div class="section-bd" style="font-size:13.5px;line-height:1.75;color:var(--gray-700);">
+        <p>Riverside Health System operates a single general surgery operating room at a community hospital. The OR runs Monday–Friday, 7 AM–3 PM (8 hours = 480 minutes per day). The OR scheduling coordinator currently assigns procedures to the next available OR slot in the order they are booked — a first-come, first-served (FCFS) approach.</p>
+        <p style="margin-top:12px;">The OR team is evaluating its scheduling approach. The scheduling coordinator believes that switching to a priority-based sequencing system would reduce average case turnaround time and better protect urgent cases from experiencing delays. You have been hired as an operations analyst. Your task is to evaluate three alternative sequencing rules — SPT, WSPT, and EDD — and recommend a sequencing approach for the Riverside OR.</p>
+        <p style="margin-top:12px;font-size:13px;font-weight:600;color:var(--navy);">Setup for all versions:</p>
+        <p style="margin-top:6px;">You are given a set of five procedures scheduled for a particular Monday OR block. All procedures are available to be scheduled at 7 AM. The OR handles one procedure at a time; there are no setup times between procedures.</p>
+        <ul style="margin-top:10px;padding-left:18px;display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--gray-700);">
+          <li><strong>Processing time:</strong> estimated surgical duration in minutes</li>
+          <li><strong>Urgency weight:</strong> clinical priority score (1 = routine; 2 = elevated; 3 = urgent; 4 = emergent)</li>
+          <li><strong>Deadline:</strong> hours from 7 AM by which the procedure must be completed (e.g., 3.0 hrs = by 10:00 AM = 180 min)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- VERSION DATA TABLE -->
+  <div>
+    <div class="sec-div">Your Procedure Data — Select Your Assigned Version</div>
+    <div style="margin-top:14px;">
+      <div class="ver-tabs">
+        <div class="ver-tab-hd">
+          <button class="ver-tab-btn active" onclick="switchAllTabs('a')" id="main-tab-a"><span class="vb ver-a">A</span> Version A</button>
+          <button class="ver-tab-btn" onclick="switchAllTabs('b')" id="main-tab-b"><span class="vb ver-b">B</span> Version B</button>
+          <button class="ver-tab-btn" onclick="switchAllTabs('c')" id="main-tab-c"><span class="vb ver-c">C</span> Version C</button>
+          <button class="ver-tab-btn" onclick="switchAllTabs('d')" id="main-tab-d"><span class="vb ver-d">D</span> Version D</button>
+        </div>
+        <div class="ver-tab-panel active" id="main-panel-a">
+          <table class="data-table">
+            <thead><tr><th>Procedure</th><th>Processing Time (min)</th><th>Urgency Weight</th><th>Deadline (hrs from 7 AM)</th></tr></thead>
+            <tbody>
+              <tr><td>A — Appendectomy</td><td>60</td><td>4</td><td>2.0</td></tr>
+              <tr><td>B — Knee arthroscopy</td><td>45</td><td>2</td><td>6.0</td></tr>
+              <tr><td>C — Laparoscopic cholecystectomy</td><td>90</td><td>3</td><td>5.0</td></tr>
+              <tr><td>D — Carpal tunnel repair</td><td>30</td><td>1</td><td>7.5</td></tr>
+              <tr><td>E — Inguinal hernia repair</td><td>75</td><td>2</td><td>6.5</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="ver-tab-panel" id="main-panel-b">
+          <table class="data-table">
+            <thead><tr><th>Procedure</th><th>Processing Time (min)</th><th>Urgency Weight</th><th>Deadline (hrs from 7 AM)</th></tr></thead>
+            <tbody>
+              <tr><td>A — Bowel resection</td><td>120</td><td>4</td><td>3.0</td></tr>
+              <tr><td>B — Thyroidectomy</td><td>80</td><td>2</td><td>5.5</td></tr>
+              <tr><td>C — Hip replacement</td><td>100</td><td>2</td><td>7.5</td></tr>
+              <tr><td>D — Cyst excision</td><td>40</td><td>1</td><td>4.0</td></tr>
+              <tr><td>E — Tonsillectomy</td><td>50</td><td>3</td><td>4.5</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="ver-tab-panel" id="main-panel-c">
+          <table class="data-table">
+            <thead><tr><th>Procedure</th><th>Processing Time (min)</th><th>Urgency Weight</th><th>Deadline (hrs from 7 AM)</th></tr></thead>
+            <tbody>
+              <tr><td>A — Rotator cuff repair</td><td>70</td><td>2</td><td>4.0</td></tr>
+              <tr><td>B — Colon resection</td><td>110</td><td>3</td><td>5.0</td></tr>
+              <tr><td>C — Appendectomy</td><td>55</td><td>4</td><td>2.5</td></tr>
+              <tr><td>D — Knee replacement</td><td>95</td><td>2</td><td>7.0</td></tr>
+              <tr><td>E — Hernia repair</td><td>40</td><td>1</td><td>6.0</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="ver-tab-panel" id="main-panel-d">
+          <table class="data-table">
+            <thead><tr><th>Procedure</th><th>Processing Time (min)</th><th>Urgency Weight</th><th>Deadline (hrs from 7 AM)</th></tr></thead>
+            <tbody>
+              <tr><td>A — Gallbladder removal</td><td>65</td><td>2</td><td>5.0</td></tr>
+              <tr><td>B — Spinal fusion</td><td>130</td><td>3</td><td>6.0</td></tr>
+              <tr><td>C — Mastectomy</td><td>85</td><td>2</td><td>7.5</td></tr>
+              <tr><td>D — Appendectomy</td><td>50</td><td>4</td><td>1.5</td></tr>
+              <tr><td>E — Wrist fracture repair</td><td>35</td><td>1</td><td>5.5</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <p class="ref-note">Convert deadlines from hours to minutes before computing lateness and tardiness: hrs × 60 = min. (e.g., 3.0 hrs = 180 min)</p>
+    </div>
+  </div>
+
+  <!-- PART 1 -->
+  <div>
+    <div class="sec-div">Part 1 — SPT Analysis &nbsp;·&nbsp; Version-specific data</div>
+    <div class="section-card part1" style="margin-top:14px;">
+      <div class="section-hd">
+        <div class="part-badge">1</div>
+        <div class="section-hd-text">
+          <h2>SPT Analysis — Shortest Processing Time</h2>
+          <p>Use the procedure data for your assigned version only · Show all work</p>
+        </div>
+        <div class="pts-badge">8 pts</div>
+      </div>
+      <div class="section-bd">
+        <p style="font-size:13.5px;line-height:1.65;color:var(--gray-700);margin-bottom:16px;">Using the SPT rule (Shortest Processing Time), sequence your assigned procedures from shortest to longest processing time.</p>
+        <div class="q-block">
+          <div class="q-num">Question 1a</div>
+          <div class="q-text">List your SPT sequence (procedure letters in order). Then build the complete SPT performance table with the following columns: Procedure, Processing Time (min), Flow Time (min), Deadline (min), Lateness (min), Tardiness (min).<br><br><em>Reminder: Flow time = cumulative completion time from 7 AM. Lateness = Flow time − Deadline. Tardiness = max(0, Lateness).</em></div>
+          <span class="q-pts">3 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Question 1b</div>
+          <div class="q-text">Compute average flow time (sum of all flow times ÷ 5) and average tardiness (sum of all tardiness values ÷ 5). Show both computations explicitly.</div>
+          <span class="q-pts">3 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Question 1c</div>
+          <div class="q-text">Identify any procedure that is tardy under SPT. If none, state that explicitly. If one or more are tardy, identify the procedure by letter and name, and state its tardiness in minutes.</div>
+          <span class="q-pts">2 pts</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PART 2 -->
+  <div>
+    <div class="sec-div">Part 2 — WSPT Analysis &nbsp;·&nbsp; Version-specific data</div>
+    <div class="section-card part2" style="margin-top:14px;">
+      <div class="section-hd">
+        <div class="part-badge">2</div>
+        <div class="section-hd-text">
+          <h2>WSPT Analysis — Weighted Shortest Processing Time</h2>
+          <p>Use the procedure data for your assigned version only · Show ratio computation for each procedure</p>
+        </div>
+        <div class="pts-badge">6 pts</div>
+      </div>
+      <div class="section-bd">
+        <p style="font-size:13.5px;line-height:1.65;color:var(--gray-700);margin-bottom:16px;">Using the WSPT rule (Weighted Shortest Processing Time), compute the priority ratio for each procedure and sequence from highest ratio to lowest. If two procedures tie on ratio, sequence the shorter procedure first.</p>
+        <div class="q-block">
+          <div class="q-num">Question 2a</div>
+          <div class="q-text">For each procedure, compute the ratio: Urgency Weight ÷ Processing Time (round to 3 decimal places). Present these in a labeled column. Then sequence the procedures in descending order by ratio (highest ratio first).</div>
+          <span class="q-pts">3 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Question 2b</div>
+          <div class="q-text">Using your WSPT sequence, build the performance table: Procedure, Processing Time (min), Flow Time (min), Urgency Weight, Weighted Flow Time (Weight × Flow Time). Compute total weighted flow time (sum of all weighted flow time values).</div>
+          <span class="q-pts">3 pts</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PART 3 -->
+  <div>
+    <div class="sec-div">Part 3 — EDD Analysis &nbsp;·&nbsp; Version-specific data</div>
+    <div class="section-card part3" style="margin-top:14px;">
+      <div class="section-hd">
+        <div class="part-badge">3</div>
+        <div class="section-hd-text">
+          <h2>EDD Analysis — Earliest Due Date</h2>
+          <p>Convert deadlines from hours to minutes before sequencing</p>
+        </div>
+        <div class="pts-badge">6 pts</div>
+      </div>
+      <div class="section-bd">
+        <p style="font-size:13.5px;line-height:1.65;color:var(--gray-700);margin-bottom:16px;">Using the EDD rule (Earliest Due Date), sequence your assigned procedures in ascending order by deadline.</p>
+        <div class="q-block">
+          <div class="q-num">Question 3a</div>
+          <div class="q-text">Convert all deadlines from hours to minutes (hrs × 60). List your EDD sequence. Build the complete EDD performance table: Procedure, Processing Time (min), Flow Time (min), Deadline (min), Lateness (min), Tardiness (min).</div>
+          <span class="q-pts">3 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Question 3b</div>
+          <div class="q-text">Compute maximum tardiness under EDD (the single largest tardiness value across all five procedures). Identify which procedure has the maximum tardiness. If no procedure is tardy, state that explicitly and explain in one sentence why EDD tends to produce low maximum tardiness.</div>
+          <span class="q-pts">3 pts</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PART 4 -->
+  <div>
+    <div class="sec-div">Part 4 — Comparison and Recommendation &nbsp;·&nbsp; Same for all versions</div>
+    <div class="section-card part4" style="margin-top:14px;">
+      <div class="section-hd">
+        <div class="part-badge">4</div>
+        <div class="section-hd-text">
+          <h2>Comparison and Recommendation Memo</h2>
+          <p>Uses your computed results from Parts 1–3 · Minimum 150 words for Question 4b</p>
+        </div>
+        <div class="pts-badge">9 pts</div>
+      </div>
+      <div class="section-bd">
+        <div class="q-block">
+          <div class="q-num">Question 4a</div>
+          <div class="q-text">Construct a summary comparison table of SPT, WSPT, and EDD on three metrics using your computed results from Parts 1–3. Label each row and column clearly.<br><br>
+          <strong>Comparison Summary Table</strong><br>
+          <em>Rows: Average flow time (min) | Average tardiness (min) | Maximum tardiness (min)<br>
+          Columns: SPT | WSPT | EDD</em><br><br>
+          Note: For average flow time under WSPT, compute (sum of all flow times ÷ 5) from your Part 2 WSPT sequence. WSPT does not compute average tardiness — enter "N/A" for WSPT average tardiness and maximum tardiness rows.</div>
+          <span class="q-pts">3 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Question 4b</div>
+          <div class="q-text">Based on your comparison table, write a recommendation memo to Riverside's OR scheduling coordinator. Your memo must address all three of the following:<br><br>
+          (a) Which sequencing rule you recommend for the OR and the specific metric that justifies your choice.<br>
+          (b) What the OR loses by adopting your recommended rule — identify at least one metric that worsens compared to a different rule you considered.<br>
+          (c) One specific condition under which you would modify your recommendation — for example, a change in the patient mix, OR time horizon, or organizational priority that would shift the optimal rule choice.<br><br>
+          <em>Minimum 150 words. Vague references to "management judgment" do not satisfy part (c) — name the specific trigger condition. Cite Chapter 18 by section number at least once.</em></div>
+          <span class="q-pts">6 pts</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PART 5 -->
+  <div>
+    <div class="sec-div">Part 5 — Appointment Systems Connection &nbsp;·&nbsp; Same for all versions</div>
+    <div class="section-card part5" style="margin-top:14px;">
+      <div class="section-hd">
+        <div class="part-badge">5</div>
+        <div class="section-hd-text">
+          <h2>Appointment Systems — Overbooking Policy Analysis</h2>
+          <p>Applies Chapter 18 appointment system framework to the Riverside OR</p>
+        </div>
+        <div class="pts-badge">6 pts</div>
+      </div>
+      <div class="section-bd">
+        <div class="scenario-box">
+          The Riverside OR manager notes that 18% of OR slots are wasted each month because surgeons cancel procedures within 12 hours of the scheduled start time. The manager proposes overbooking the OR by scheduling one additional procedure in each half-day block (i.e., scheduling 3 procedures in a 240-minute block rather than 2).
+        </div>
+        <div class="q-block">
+          <div class="q-num">Question 5a</div>
+          <div class="q-text">Using Chapter 18's appointment system framework, explain the trade-off the OR manager is accepting by implementing overbooking. Your answer must identify what happens when more patients show up than expected AND what happens when the assumed cancellation rate turns out to be lower than 18%.</div>
+          <span class="q-pts">2 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Question 5b</div>
+          <div class="q-text">Identify one condition under which the overbooking policy would be harmful to patients rather than helpful. Be specific — name the patient population, procedure type, or operational scenario where the harm would materialize.</div>
+          <span class="q-pts">2 pts</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Question 5c</div>
+          <div class="q-text">Propose one alternative to overbooking that addresses the 18% waste rate without increasing the scheduling load beyond OR capacity. Your alternative must be operationally specific — not just "improve communication" — and must identify which party (surgeons, scheduler, OR coordinator, or patient) takes the concrete action.</div>
+          <span class="q-pts">2 pts</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUBMISSION CHECKLIST -->
+  <div>
+    <div class="sec-div">Submission Requirements</div>
+    <div class="section-card" style="margin-top:14px;">
+      <div class="section-hd" style="background:var(--gray-50);padding:13px 20px;border-bottom:1px solid var(--gray-200);">
+        <h2 style="font-size:14px;font-weight:700;color:var(--navy);">Before you submit, verify the following</h2>
+      </div>
+      <div class="section-bd">
+        <div class="submit-list">
+          <div class="submit-item">Your file is saved as <strong>PDF or Word (.docx)</strong>.</div>
+          <div class="submit-item">Your <strong>assigned version letter (A, B, C, or D)</strong> is written at the top of your document.</div>
+          <div class="submit-item">Your <strong>Part 1 and Part 2 SPT and WSPT tables</strong> show every row with labeled columns — no summarized or skipped steps.</div>
+          <div class="submit-item">All <strong>deadlines are converted to minutes</strong> in your Part 1 and Part 3 tables before computing lateness and tardiness.</div>
+          <div class="submit-item">Your <strong>Part 4b recommendation memo</strong> is at least 150 words and cites Chapter 18 by section number at least once.</div>
+          <div class="submit-item">Your total submission is at least <strong>600 words</strong> (Parts 4b and 5 are the primary narrative sections).</div>
+          <div class="submit-item">All tables are <strong>clearly labeled</strong> with a title (e.g., "Part 1 — SPT Performance Table, Version A").</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GRADING SUMMARY -->
+  <div class="section-card">
+    <div style="background:var(--blue-xlt);padding:13px 20px;border-bottom:1px solid var(--gray-200);">
+      <h2 style="font-size:14px;font-weight:700;color:var(--navy);">Grading Summary · 35 points total</h2>
+    </div>
+    <table class="grade-table">
+      <thead><tr><th>Part</th><th>Content</th><th style="text-align:right;">Points</th><th>Primary LO</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Part 1</strong></td><td>SPT sequencing table, avg flow time, avg tardiness, tardy identification</td><td class="pts-right">8</td><td>LO12-2</td></tr>
+        <tr><td><strong>Part 2</strong></td><td>WSPT ratios, sequence, weighted flow time table, total</td><td class="pts-right">6</td><td>LO12-3</td></tr>
+        <tr><td><strong>Part 3</strong></td><td>EDD sequencing table, maximum tardiness identification</td><td class="pts-right">6</td><td>LO12-4</td></tr>
+        <tr><td><strong>Part 4</strong></td><td>Three-rule comparison table + recommendation memo with trade-off and override condition</td><td class="pts-right">9</td><td>LO12-5</td></tr>
+        <tr><td><strong>Part 5</strong></td><td>Overbooking trade-off, harm condition, and alternative proposal</td><td class="pts-right">6</td><td>LO12-7</td></tr>
+        <tr class="total"><td colspan="2"><strong>Total</strong></td><td class="pts-right">35</td><td></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<script>
+function switchAllTabs(ver) {
+  ['a','b','c','d'].forEach(v => {
+    const btn   = document.getElementById('main-tab-' + v);
+    const panel = document.getElementById('main-panel-' + v);
+    if (btn)   btn.classList.toggle('active', v === ver);
+    if (panel) panel.classList.toggle('active', v === ver);
+  });
+}
+</script>
+</body>
+</html>

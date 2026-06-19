@@ -1,0 +1,57 @@
+<section class="slide-page" data-title="Theory of Constraints — Finding the Bottleneck" data-lo="LO12-6" data-notes="Theory of Constraints — Goldratt. Implied utilization = demand/capacity. Highest implied utilization = bottleneck. This is entirely chapter-exclusive (Ch. 18.5) — test note belongs in footer.">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">M12</span>
+      <span class="le-course">SCM 352 · Module 12</span>
+    </div>
+    <span class="le-pagenum">12 / 16</span>
+  </div>
+
+  <div class="le-titleblock">
+    <div class="le-title">Theory of <span>Constraints</span></div>
+    <div class="le-sub">Identifying the bottleneck · Implied utilization · Why only the bottleneck limits throughput</div>
+  </div>
+
+  <div class="le-body">
+    <div class="formula-box" style="margin-bottom:7px;">
+      Implied Utilization &nbsp;=&nbsp; Demand Rate &nbsp;÷&nbsp; Capacity &nbsp;&nbsp;|&nbsp;&nbsp; Bottleneck = Resource with <span style="color:var(--teal);">Highest</span> Implied Utilization
+    </div>
+    <div class="two-col">
+      <div>
+        <div class="callout teal" style="margin-bottom:6px;">
+          <div class="callout-label">Three-Resource Example</div>
+          <table class="clean-table" style="margin-top:4px;">
+            <thead><tr><th>Step</th><th>Capacity/wk</th><th>Implied Util.</th></tr></thead>
+            <tbody>
+              <tr><td>Step 1 (Machining)</td><td>280</td><td>71%</td></tr>
+              <tr style="background:var(--amb-lt);"><td><strong>Step 2 (Assembly)</strong></td><td>210</td><td class="neg"><strong>95% ← Bottleneck</strong></td></tr>
+              <tr><td>Step 3 (Testing)</td><td>350</td><td>57%</td></tr>
+            </tbody>
+          </table>
+          <p style="margin-top:4px;">System demand: 200 units/week. System ceiling: <strong>210 units/week</strong> — set by Step 2.</p>
+        </div>
+      </div>
+      <div>
+        <div class="callout amber" style="margin-bottom:6px;">
+          <div class="callout-label">The Core Claim</div>
+          <p>Investing in Step 1 or Step 3 — doubling their capacity — does not change the system output ceiling. Only improving the bottleneck (Step 2) increases throughput. Non-bottleneck investments produce only WIP inventory.</p>
+        </div>
+        <div class="callout navy">
+          <div class="callout-label" style="color:var(--teal);">Two Corollary Prescriptions</div>
+          <p><strong style="color:#fff;">1. Protect the bottleneck</strong> — idle time at the bottleneck = permanently lost output. Idle time at a non-bottleneck = buffer only.</p>
+          <p style="margin-top:4px;"><strong style="color:#fff;">2. Let the bottleneck set the pace</strong> — running non-bottlenecks faster than the bottleneck can absorb only creates excess WIP inventory.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="le-footer">
+    <div class="le-lo-pills">
+      <span class="le-lo-pill">LO12-6</span>
+    </div>
+    <div><span class="le-gate-note">Gate 1 — Chapter-exclusive (Ch. 18.5)</span></div>
+  </div>
+</section>

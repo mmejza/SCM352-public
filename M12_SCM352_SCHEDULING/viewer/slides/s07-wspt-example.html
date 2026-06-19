@@ -1,0 +1,64 @@
+<section class="slide-page" data-title="WSPT — Worked Example" data-lo="LO12-2 LO12-3" data-notes="Same 4 jobs as SPT example but with urgency weights added. Students see how adding weights changes the sequence and how total weighted flow time is computed.">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">M12</span>
+      <span class="le-course">SCM 352 · Module 12</span>
+    </div>
+    <span class="le-pagenum">7 / 16</span>
+  </div>
+
+  <div class="le-titleblock">
+    <div class="le-title">WSPT — <span>Worked Example</span></div>
+    <div class="le-sub">4 jobs with urgency weights · Ratio computation · Descending sequence</div>
+  </div>
+
+  <div class="le-body">
+    <div class="two-col" style="gap:8px;">
+      <div>
+        <div class="callout teal" style="margin-bottom:6px;">
+          <div class="callout-label">Setup — Job Data with Weights</div>
+          <table class="clean-table" style="margin-top:4px;">
+            <thead><tr><th>Job</th><th>Proc.</th><th>Weight</th><th>Ratio (W÷P)</th></tr></thead>
+            <tbody>
+              <tr><td>A</td><td>6</td><td>3</td><td>0.500</td></tr>
+              <tr><td>B</td><td>2</td><td>1</td><td>0.500</td></tr>
+              <tr><td>C</td><td>9</td><td>4</td><td>0.444</td></tr>
+              <tr><td>D</td><td>4</td><td>2</td><td>0.500</td></tr>
+            </tbody>
+          </table>
+          <p style="margin-top:4px;">A, B, D tie at 0.500 → sequence shorter first: <strong>B → D → A → C</strong></p>
+          <p style="font-size:9px;color:var(--muted);margin-top:2px;">Note: tie-breaking does not affect total weighted flow time</p>
+        </div>
+      </div>
+      <div>
+        <div class="callout amber">
+          <div class="callout-label">Solution — Weighted Flow Time</div>
+          <table class="clean-table" style="margin-top:4px;">
+            <thead><tr><th>Job</th><th>Flow</th><th>Wt</th><th>Wt × Flow</th></tr></thead>
+            <tbody>
+              <tr><td>B</td><td>2</td><td>1</td><td>2</td></tr>
+              <tr><td>D</td><td>6</td><td>2</td><td>12</td></tr>
+              <tr><td>A</td><td>12</td><td>3</td><td>36</td></tr>
+              <tr><td>C</td><td>21</td><td>4</td><td>84</td></tr>
+              <tr class="total-row"><td colspan="3">Total Weighted Flow Time</td><td>134</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout navy" style="margin-top:6px;">
+          <div class="callout-label" style="color:var(--teal);">Interpretation</div>
+          <p>WSPT ensures Job C (highest weight = 4) completes as soon as possible given the constraint of shorter high-ratio jobs ahead of it. Total weighted flow time = 134 — the minimum achievable for these weights and processing times.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="le-footer">
+    <div class="le-lo-pills">
+      <span class="le-lo-pill">LO12-2</span><span class="le-lo-pill">LO12-3</span>
+    </div>
+    <div><span class="le-ch-note">Ch. 18.3</span></div>
+  </div>
+</section>

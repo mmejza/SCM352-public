@@ -1,0 +1,56 @@
+<section class="slide-page" data-title="What Is Scheduling?" data-lo="LO12-1 LO12-2" data-notes="Scheduling = assigning work to resources at specific points in time. Flow time is the key output variable. Establish the two-job example here — the numerics will recur across SPT/WSPT/EDD slides.">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">M12</span>
+      <span class="le-course">SCM 352 · Module 12</span>
+    </div>
+    <span class="le-pagenum">3 / 16</span>
+  </div>
+
+  <div class="le-titleblock">
+    <div class="le-title">What Is <span>Scheduling?</span></div>
+    <div class="le-sub">Assigning work to resources at specific points in time — and why order matters</div>
+  </div>
+
+  <div class="le-body">
+    <div class="two-col">
+      <div>
+        <div class="callout navy" style="margin-bottom:8px;">
+          <div class="callout-label" style="color:var(--teal);">Scheduling vs. Capacity Planning</div>
+          <p>Capacity planning asks: <em>How much resource should we have?</em> Scheduling asks: <em>In what order do we use the resource we have?</em> Scheduling assumes capacity is fixed and manages how it is deployed.</p>
+        </div>
+        <div class="callout teal">
+          <div class="callout-label">Flow Time</div>
+          <p>Total elapsed time from when a job enters the system to when it is completed. <strong>Flow time = wait time + processing time.</strong> A job's flow time is determined by every job that runs before it.</p>
+        </div>
+      </div>
+      <div>
+        <div class="callout amber">
+          <div class="callout-label">Why Sequence Changes Performance</div>
+          <p>Two jobs: X = 3 days, Y = 7 days. Same total work either way.</p>
+        </div>
+        <table class="clean-table" style="margin-top:6px;">
+          <thead><tr><th>Order</th><th>Flow: X</th><th>Flow: Y</th><th>Avg Flow</th></tr></thead>
+          <tbody>
+            <tr><td>X → Y (short first)</td><td>3</td><td>10</td><td class="pos">6.5 days</td></tr>
+            <tr><td>Y → X (long first)</td><td>10</td><td>7</td><td class="neg">8.5 days</td></tr>
+          </tbody>
+        </table>
+        <div class="callout blue" style="margin-top:6px;">
+          <div class="callout-label">Key Insight</div>
+          <p>Every job that follows a job inherits that job's processing time as part of its wait. Put short jobs early — distribute the wait burden efficiently.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="le-footer">
+    <div class="le-lo-pills">
+      <span class="le-lo-pill">LO12-1</span><span class="le-lo-pill">LO12-2</span>
+    </div>
+    <div><span class="le-ch-note">Ch. 18.1–18.2</span></div>
+  </div>
+</section>

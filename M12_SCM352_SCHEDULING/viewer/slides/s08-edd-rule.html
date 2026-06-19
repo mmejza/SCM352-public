@@ -1,0 +1,56 @@
+<section class="slide-page" data-title="EDD Rule" data-lo="LO12-2 LO12-3 LO12-4" data-notes="EDD setup — establish lateness vs. tardiness distinction clearly. This is the #1 student error. EDD minimizes maximum tardiness only; it does not minimize average flow time. The limitation is symmetric with SPT's.">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">M12</span>
+      <span class="le-course">SCM 352 · Module 12</span>
+    </div>
+    <span class="le-pagenum">8 / 16</span>
+  </div>
+
+  <div class="le-titleblock">
+    <div class="le-title">EDD — <span>Earliest Due Date</span></div>
+    <div class="le-sub">Sequence ascending by due date · Minimizes maximum tardiness</div>
+  </div>
+
+  <div class="le-body">
+    <div class="two-col" style="gap:8px;">
+      <div>
+        <div class="callout teal" style="margin-bottom:6px;">
+          <div class="callout-label">The Rule</div>
+          <p>Sequence jobs from <strong>earliest to latest due date</strong>. The job with the tightest deadline goes first.</p>
+        </div>
+        <div class="callout amber">
+          <div class="callout-label">What It Minimizes</div>
+          <p><strong>Maximum tardiness</strong> — the single worst delay in the schedule. EDD is the only rule that minimizes the tail of the tardiness distribution. Provably optimal for this objective.</p>
+        </div>
+        <div class="callout blue" style="margin-top:6px;">
+          <div class="callout-label">When It Matters</div>
+          <p>When one catastrophic miss — a surgery window, a customs cutoff, a client cancellation — dominates organizational risk. EDD protects against the worst outcome, not the average.</p>
+        </div>
+      </div>
+      <div>
+        <div class="callout navy" style="margin-bottom:6px;">
+          <div class="callout-label" style="color:var(--teal);">Lateness vs. Tardiness — Critical Distinction</div>
+          <p style="margin-bottom:4px;"><strong style="color:#fff;">Lateness</strong> = Flow Time − Due Date (can be negative)</p>
+          <p style="margin-bottom:4px;"><strong style="color:#fff;">Tardiness</strong> = max(0, Lateness) — no credit for early finish</p>
+          <p>Job finishes at day 9, due day 12: Lateness = −3, Tardiness = 0</p>
+          <p>Job finishes at day 15, due day 12: Lateness = +3, Tardiness = 3</p>
+        </div>
+        <div class="callout red">
+          <div class="callout-label">Documented Limitation</div>
+          <p>EDD ignores processing times entirely. A very long job with an early due date goes first and can hold up everything behind it. EDD can produce poor average flow time when long jobs have early deadlines.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="le-footer">
+    <div class="le-lo-pills">
+      <span class="le-lo-pill">LO12-2</span><span class="le-lo-pill">LO12-3</span><span class="le-lo-pill">LO12-4</span>
+    </div>
+    <div><span class="le-ch-note">Ch. 18.2–18.3</span></div>
+  </div>
+</section>

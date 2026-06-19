@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Discussion: When Should a Manager Override the Algorithm? — SCM 352 M12</title>
+<style>
+:root {
+  --navy:#1a3a5c;--blue:#2563a8;--blue-lt:#dbeafe;--blue-xlt:#eff6ff;
+  --gold:#f59e0b;--gold-lt:#fffbeb;--gold-bdr:#fde68a;
+  --green:#16a34a;--green-lt:#f0fdf4;--green-bdr:#bbf7d0;
+  --red:#dc2626;--red-lt:#fef2f2;--red-bdr:#fecaca;
+  --purple:#7c3aed;--purple-lt:#faf5ff;--purple-bdr:#ddd6fe;
+  --teal:#0891b2;--teal-lt:#f0fdfe;--teal-bdr:#a5f3fc;
+  --gray-50:#f9fafb;--gray-100:#f3f4f6;--gray-200:#e5e7eb;
+  --gray-400:#9ca3af;--gray-600:#4b5563;--gray-700:#374151;--gray-800:#1f2937;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--gray-50);color:var(--gray-800);line-height:1.6;}
+.page-header{background:var(--navy);color:white;padding:20px 28px;display:flex;align-items:flex-start;gap:16px;}
+.header-badge{background:var(--gold);color:var(--navy);font-weight:700;font-size:11px;padding:3px 9px;border-radius:4px;letter-spacing:.05em;text-transform:uppercase;white-space:nowrap;flex-shrink:0;}
+.header-text h1{font-size:20px;font-weight:700;margin-bottom:4px;}
+.header-text p{font-size:13px;color:rgba(255,255,255,.7);}
+.meta-strip{display:flex;gap:0;flex-wrap:wrap;border-bottom:2px solid var(--gray-200);background:white;}
+.meta-pill{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;padding:9px 16px;border-right:1px solid var(--gray-200);color:var(--gray-700);}
+.pip{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.pg-body{max-width:860px;margin:0 auto;padding:28px 24px 48px;display:flex;flex-direction:column;gap:24px;}
+.sec-div{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--gray-400);padding-bottom:10px;border-bottom:1px solid var(--gray-200);margin-bottom:-4px;}
+.card{background:white;border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;}
+.card-hd{padding:14px 20px;border-bottom:1px solid var(--gray-200);display:flex;align-items:center;gap:10px;}
+.card-hd h2{font-size:15px;font-weight:700;color:var(--navy);}
+.card-hd p{font-size:12px;color:var(--gray-600);margin-top:2px;}
+.card-bd{padding:20px;}
+.alert{border-radius:10px;padding:13px 16px;font-size:13.5px;line-height:1.6;display:flex;gap:11px;align-items:flex-start;}
+.alert-icon{font-size:17px;flex-shrink:0;margin-top:1px;}
+.alert-body{flex:1;}
+.alert-body strong{display:block;margin-bottom:3px;}
+.alert-red{background:var(--red-lt);border:1.5px solid var(--red-bdr);}
+.alert-gold{background:var(--gold-lt);border:1.5px solid var(--gold-bdr);}
+.alert-blue{background:var(--blue-xlt);border:1.5px solid #bfdbfe;}
+.part{border:1.5px solid var(--gray-200);border-radius:10px;overflow:hidden;margin-bottom:14px;}
+.part:last-child{margin-bottom:0;}
+.part-header{padding:12px 16px;display:flex;align-items:center;gap:12px;border-bottom:1.5px solid var(--gray-200);}
+.part-num{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;flex-shrink:0;color:white;}
+.part-title{flex:1;font-size:14px;font-weight:700;color:var(--gray-800);}
+.part-pts{font-size:12px;font-weight:700;padding:3px 9px;border-radius:100px;white-space:nowrap;}
+.part-body{padding:14px 16px;font-size:13.5px;line-height:1.65;color:var(--gray-700);}
+.part-body p+p{margin-top:8px;}
+.part-1 .part-header{background:var(--blue-xlt);border-color:#bfdbfe;} .part-1 .part-num{background:var(--blue);} .part-1 .part-pts{background:var(--blue-lt);color:var(--navy);}
+.part-2 .part-header{background:var(--purple-lt);border-color:var(--purple-bdr);} .part-2 .part-num{background:var(--purple);} .part-2 .part-pts{background:var(--purple-bdr);color:var(--purple);}
+.part-3 .part-header{background:var(--teal-lt);border-color:var(--teal-bdr);} .part-3 .part-num{background:var(--teal);} .part-3 .part-pts{background:var(--teal-bdr);color:var(--teal);}
+.part-4 .part-header{background:var(--green-lt);border-color:var(--green-bdr);} .part-4 .part-num{background:var(--green);} .part-4 .part-pts{background:var(--green-bdr);color:var(--green);}
+.reply-part{display:flex;gap:14px;padding:14px 0;border-bottom:1px solid var(--gray-100);font-size:13.5px;line-height:1.6;color:var(--gray-700);}
+.reply-part:last-child{border-bottom:none;padding-bottom:0;}
+.reply-letter{width:28px;height:28px;border-radius:6px;background:var(--navy);color:white;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.reply-content{flex:1;}
+.reply-content strong{display:block;font-size:13px;color:var(--gray-800);margin-bottom:4px;}
+.reply-pts-tag{font-size:11px;font-weight:700;padding:2px 8px;border-radius:100px;background:var(--gray-100);color:var(--gray-600);margin-top:6px;display:inline-block;}
+.pts-table{width:100%;border-collapse:collapse;font-size:13.5px;}
+.pts-table th{background:var(--navy);color:white;padding:9px 14px;text-align:left;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;}
+.pts-table td{padding:9px 14px;border-bottom:1px solid var(--gray-100);vertical-align:top;}
+.pts-table tr:last-child td{border-bottom:none;}
+.pts-table tr.total-row td{font-weight:700;background:var(--gray-50);font-size:14px;border-top:2px solid var(--gray-200);}
+.pts-num{font-weight:700;font-size:15px;color:var(--navy);text-align:right;white-space:nowrap;}
+.tip-list{list-style:none;padding:0;display:flex;flex-direction:column;gap:8px;}
+.tip-list li{display:flex;gap:10px;font-size:13.5px;line-height:1.55;color:var(--gray-700);}
+.tip-list li::before{content:'→';color:var(--gold);font-weight:700;flex-shrink:0;margin-top:1px;}
+.prohibited-list{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;}
+.prohibited-tag{font-size:12px;font-weight:600;padding:3px 10px;border-radius:100px;background:var(--red-lt);color:var(--red);border:1px solid var(--red-bdr);}
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div class="header-badge">SCM 352 · M12</div>
+  <div class="header-text">
+    <h1>Discussion: When Should a Manager Override the Algorithm?</h1>
+    <p>Module M12 Discussion · 15 points · Item 9 of 11</p>
+  </div>
+</div>
+
+<div class="meta-strip">
+  <div class="meta-pill"><div class="pip" style="background:#2563a8"></div> Initial post due Day 4 · 11:59 PM</div>
+  <div class="meta-pill"><div class="pip" style="background:#16a34a"></div> Replies due following module close</div>
+  <div class="meta-pill"><div class="pip" style="background:#f59e0b"></div> 15 points total · 30–45 min</div>
+  <div class="meta-pill"><div class="pip" style="background:#0891b2"></div> LO12-2 · LO12-3 · LO12-4 · LO12-7</div>
+</div>
+
+<div class="pg-body">
+
+  <!-- Overview -->
+  <div class="card">
+    <div class="card-hd" style="background:var(--blue-xlt);">
+      <div><h2>What You Are Doing</h2><p>Identify a scheduling situation, diagnose the implicit rule, and argue when a manager should deviate from it</p></div>
+    </div>
+    <div class="card-bd">
+      <p style="font-size:13.5px;line-height:1.75;color:var(--gray-700);">Every scheduling algorithm optimizes for something. SPT minimizes average flow time. EDD minimizes maximum tardiness. WSPT balances speed and weight. But algorithms cannot account for everything — context, judgment, and relationships matter in real operations. This week, you will observe a real scheduling situation, diagnose which algorithm the business appears to be using (even if implicitly), and argue under what specific condition a manager should override it.</p>
+      <p style="font-size:13.5px;line-height:1.75;color:var(--gray-700);margin-top:12px;">Find a service business — a doctor's office, a bank, a service desk, a call center, a restaurant kitchen, a staffing coordinator's desk — where someone is deciding the order in which work gets done. Observe or describe the sequencing approach. Then apply the frameworks from Module 12 to analyze it.</p>
+    </div>
+  </div>
+
+  <!-- Rules -->
+  <div style="display:flex;flex-direction:column;gap:12px;">
+    <div class="alert alert-red">
+      <div class="alert-icon">🚫</div>
+      <div class="alert-body">
+        <strong>Do not name the specific business in your initial post.</strong>
+        Describe it by type (e.g., "a pediatric clinic," "a university IT helpdesk," "a commercial kitchen") — not by name. If your classmates can identify the specific location from your description, your post is too specific. <strong>Naming penalty: −5 points from your initial post score.</strong>
+      </div>
+    </div>
+    <div class="alert alert-red">
+      <div class="alert-icon">🚫</div>
+      <div class="alert-body">
+        <strong>Do not use businesses named as examples in Chapter 18 or in the lectures:</strong>
+        <div class="prohibited-list">
+          <span class="prohibited-tag">Airlines (overbooking example)</span>
+          <span class="prohibited-tag">Physician offices (generic no-show example)</span>
+          <span class="prohibited-tag">Any business described verbatim in the chapter</span>
+        </div>
+      </div>
+    </div>
+    <div class="alert alert-gold">
+      <div class="alert-icon">📅</div>
+      <div class="alert-body">
+        <strong>The situation must be one you have personally observed or interacted with this week.</strong>
+        Second-hand examples ("I heard that hospitals do this…") do not qualify. Your analysis must be grounded in a specific, recent, first-hand observation.
+      </div>
+    </div>
+  </div>
+
+  <!-- Initial Post -->
+  <div>
+    <div class="sec-div">Part 1 — Initial Post &nbsp;·&nbsp; Due Day 4 · 11:59 PM &nbsp;·&nbsp; 10 points &nbsp;·&nbsp; Minimum 150 words</div>
+    <div class="card" style="margin-top:16px;">
+      <div class="card-bd" style="padding:16px;">
+
+        <div class="part part-1">
+          <div class="part-header">
+            <div class="part-num">1</div>
+            <div class="part-title">Scheduling Setting — Describe the situation</div>
+            <div class="part-pts">2 pts</div>
+          </div>
+          <div class="part-body">
+            <p>Describe the business and the scheduling situation. What shared resource is being used (a worker, a machine, a room, a counter)? What jobs or customers are being sequenced? How does work arrive — walk-in, booked in advance, or called in by a dispatcher? Keep the description anonymous.</p>
+          </div>
+        </div>
+
+        <div class="part part-2">
+          <div class="part-header">
+            <div class="part-num">2</div>
+            <div class="part-title">Rule Diagnosis — What algorithm is in use?</div>
+            <div class="part-pts">3 pts</div>
+          </div>
+          <div class="part-body">
+            <p>What sequencing rule does this business appear to use — FCFS, SPT, WSPT, EDD, or a hybrid? You must name the specific rule using Module 12 terminology and explain what performance metric it optimizes. If the business uses no explicit algorithm (pure judgment), state that and identify what the decision-maker appears to maximize or minimize in practice.</p>
+          </div>
+        </div>
+
+        <div class="part part-3">
+          <div class="part-header">
+            <div class="part-num">3</div>
+            <div class="part-title">Override Condition — When should a manager deviate?</div>
+            <div class="part-pts">3 pts</div>
+          </div>
+          <div class="part-body">
+            <p>Identify one specific, concrete condition under which a manager at this business should override the algorithm. Your condition must describe a specific customer type, job characteristic, or operational scenario — not a vague statement like "when management judgment is needed." Name the trigger: what specific thing would you observe that should cause a departure from the rule?</p>
+            <p>Example of an acceptable condition: "When a procedure has less than 20 minutes before a safety window closes, the scheduler should move it ahead of the SPT queue regardless of its processing time." Example of an unacceptable condition: "When urgent cases arise."</p>
+          </div>
+        </div>
+
+        <div class="part part-4">
+          <div class="part-header">
+            <div class="part-num">4</div>
+            <div class="part-title">Trade-off — What does overriding cost?</div>
+            <div class="part-pts">2 pts</div>
+          </div>
+          <div class="part-body">
+            <p>What does the business lose by overriding the algorithm? Name the specific metric that worsens when a manager uses judgment instead of the rule (e.g., average flow time increases, maximum tardiness is no longer minimized). If the business overrides frequently, what risk does that create over the long run?</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Replies -->
+  <div>
+    <div class="sec-div">Part 2 — Replies &nbsp;·&nbsp; Due following module close &nbsp;·&nbsp; 5 points &nbsp;·&nbsp; 2 replies required</div>
+    <div class="card" style="margin-top:16px;">
+      <div class="card-bd" style="padding:16px;">
+        <div class="reply-part">
+          <div class="reply-letter">R1</div>
+          <div class="reply-content">
+            <strong>Reply 1 — Engage with a classmate's override condition (minimum 75 words)</strong>
+            Respond to one classmate's Part 3 (override condition). Do you agree that their trigger condition is specific enough to be operationally actionable? Would you modify the condition, and if so, how? Apply the scheduling vocabulary from Module 12 in your reply — references to "maximum tardiness," "WSPT," "flow time," etc. earn more credit than general agreement.
+            <div class="reply-pts-tag">2.5 pts</div>
+          </div>
+        </div>
+        <div class="reply-part">
+          <div class="reply-letter">R2</div>
+          <div class="reply-content">
+            <strong>Reply 2 — Engage with a different classmate's post (minimum 75 words)</strong>
+            Reply to a second classmate's post (different from Reply 1). You may engage with any part of their initial post — the rule diagnosis, the override condition, or the trade-off analysis. Ask a follow-up question, add a nuance they did not consider, or push back with a counter-example from your own observation.
+            <div class="reply-pts-tag">2.5 pts</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Points Summary -->
+  <div class="card">
+    <div class="card-hd" style="background:var(--blue-xlt);">
+      <div><h2>Points Summary</h2><p>15 points total · 9.4% of module grade</p></div>
+    </div>
+    <table class="pts-table">
+      <thead><tr><th>Component</th><th>Criteria</th><th style="text-align:right;">Points</th></tr></thead>
+      <tbody>
+        <tr><td rowspan="4" style="font-weight:600;color:var(--navy);vertical-align:top;padding-top:12px;">Initial Post<br><span style="font-weight:400;font-size:12px;color:var(--gray-600);">Min. 150 words · Due Day 4</span></td>
+          <td>1 — Scheduling setting (describe situation)</td><td class="pts-num">2</td></tr>
+        <tr><td>2 — Rule diagnosis (identify and explain algorithm)</td><td class="pts-num">3</td></tr>
+        <tr><td>3 — Override condition (specific trigger)</td><td class="pts-num">3</td></tr>
+        <tr><td>4 — Trade-off acknowledgment</td><td class="pts-num">2</td></tr>
+        <tr><td rowspan="2" style="font-weight:600;color:var(--navy);vertical-align:top;padding-top:12px;">Replies<br><span style="font-weight:400;font-size:12px;color:var(--gray-600);">Min. 75 words each · 2 required</span></td>
+          <td>Reply 1 — engage with classmate's override condition</td><td class="pts-num">2.5</td></tr>
+        <tr><td>Reply 2 — engage with a different classmate's post</td><td class="pts-num">2.5</td></tr>
+        <tr class="total-row"><td colspan="2">Total</td><td class="pts-num">15</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Tips -->
+  <div class="card">
+    <div class="card-hd" style="background:var(--gold-lt);border-color:var(--gold-bdr);">
+      <div><h2 style="color:#92400e;">Tips for Full Credit</h2></div>
+    </div>
+    <div class="card-bd">
+      <ul class="tip-list">
+        <li>Name the specific algorithm using Module 12 terminology (SPT, WSPT, EDD, FCFS). "They prioritize urgent customers" is not a rule diagnosis — "they appear to use WSPT where urgency serves as the weight" is.</li>
+        <li>The override condition in Part 3 is the most discriminating criterion. A vague trigger ("when it gets busy") earns 0–1 points. A specific trigger with a measurable threshold ("when the buffer ahead of the resource falls below two units") earns full credit.</li>
+        <li>For Part 4, name the specific metric that worsens. "Things get less efficient" earns partial credit. "Average flow time increases because overriding SPT moves long jobs forward in the queue" earns full credit.</li>
+        <li>Your replies earn full credit when they apply scheduling vocabulary — lateness, tardiness, flow time, bottleneck — to your classmate's scenario. Simple agreement ("great point!") earns minimal credit.</li>
+        <li>The Case Analysis (due same day as Gate 2) uses the same frameworks. Working through this discussion first — identifying a real SPT/EDD trade-off in context — is a natural warm-up for Parts 4 and 5 of the case.</li>
+        <li>If you cannot identify the algorithm clearly, that is itself a valid observation. Write: "The business appears to use pure judgment with no explicit rule" and then explain what observable pattern you are reasoning from.</li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

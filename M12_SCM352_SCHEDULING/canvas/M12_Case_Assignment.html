@@ -35,6 +35,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
 .alert-red{background:var(--red-lt);border:1.5px solid var(--red-bdr);}
 .alert-gold{background:var(--gold-lt);border:1.5px solid var(--gold-bdr);}
 .alert-blue{background:var(--blue-xlt);border:1.5px solid #bfdbfe;}
+.alert-green{background:var(--green-lt);border:1.5px solid var(--green-bdr);}
 .sec-div{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--gray-400);padding-bottom:10px;border-bottom:1px solid var(--gray-200);margin-bottom:-4px;}
 .section-card{background:white;border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;}
 .section-hd{padding:14px 20px;border-bottom:1px solid var(--gray-200);display:flex;align-items:center;gap:12px;}
@@ -44,7 +45,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
 .pts-badge{margin-left:auto;flex-shrink:0;font-size:13px;font-weight:700;padding:4px 12px;border-radius:100px;}
 .section-bd{padding:20px;}
 .part1 .section-hd{background:var(--blue-xlt);} .part1 .part-badge{background:var(--blue);color:white;} .part1 .pts-badge{background:var(--blue-lt);color:var(--navy);}
-.part2 .section-hd{background:var(--green-lt);} .part2 .part-badge{background:var(--green);color:white;} .part2 .pts-badge{background:var(--green-bdr);color:var(--green);}
 .part3 .section-hd{background:var(--purple-lt);} .part3 .part-badge{background:var(--purple);color:white;} .part3 .pts-badge{background:var(--purple-bdr);color:var(--purple);}
 .part4 .section-hd{background:var(--teal-lt);} .part4 .part-badge{background:var(--teal);color:white;} .part4 .pts-badge{background:var(--teal-bdr);color:var(--teal);}
 .part5 .section-hd{background:var(--gold-lt);} .part5 .part-badge{background:var(--gold);color:var(--navy);} .part5 .pts-badge{background:var(--gold-bdr);color:#92400e;}
@@ -68,10 +68,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
 .q-num{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--gray-400);margin-bottom:5px;}
 .q-text{font-size:13.5px;line-height:1.65;color:var(--gray-700);}
 .q-pts{display:inline-block;margin-top:7px;font-size:11px;font-weight:700;padding:2px 9px;border-radius:100px;background:var(--blue-lt);color:var(--navy);}
+.q-type{display:inline-block;margin-top:7px;margin-left:6px;font-size:11px;font-weight:700;padding:2px 9px;border-radius:100px;background:var(--gray-100);color:var(--gray-600);}
 .scenario-box{background:var(--gray-50);border:1.5px solid var(--gray-200);border-left:4px solid var(--teal);border-radius:0 8px 8px 0;padding:16px 18px;font-size:13.5px;line-height:1.75;color:var(--gray-700);margin:12px 0;}
-.submit-list{display:flex;flex-direction:column;gap:6px;}
-.submit-item{display:flex;gap:10px;align-items:flex-start;padding:9px 13px;background:var(--gray-50);border:1px solid var(--gray-200);border-radius:7px;font-size:13px;line-height:1.5;color:var(--gray-700);}
-.submit-item::before{content:'☐';font-size:16px;flex-shrink:0;color:var(--gray-400);margin-top:-1px;}
+.prep-list{display:flex;flex-direction:column;gap:6px;}
+.prep-item{display:flex;gap:10px;align-items:flex-start;padding:9px 13px;background:var(--gray-50);border:1px solid var(--gray-200);border-radius:7px;font-size:13px;line-height:1.5;color:var(--gray-700);}
+.prep-item::before{content:'→';font-size:15px;flex-shrink:0;color:var(--gold);font-weight:700;margin-top:0px;}
 .grade-table{width:100%;border-collapse:collapse;font-size:13px;}
 .grade-table th{background:var(--navy);color:white;padding:9px 13px;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;text-align:left;}
 .grade-table td{padding:9px 13px;border-bottom:1px solid var(--gray-100);}
@@ -86,16 +87,17 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
 <div class="pg-header">
   <div class="pg-header-eyebrow">SCM 352 · Module 12 · Case Analysis</div>
   <h1>Riverside Health System: OR Scheduling</h1>
-  <p>Parameterized case — 4 versions · 45 points · Due Day 6 at 11:59 PM</p>
+  <p>Parameterized Canvas quiz — 4 versions · 45 points · Due Day 6 at 11:59 PM · Auto-graded</p>
 </div>
 
 <div class="meta-strip">
   <div class="meta-cell"><div class="meta-lbl">Points</div><div class="meta-val">45</div></div>
   <div class="meta-cell"><div class="meta-lbl">Due</div><div class="meta-val">Day 6 · 11:59 PM</div></div>
-  <div class="meta-cell"><div class="meta-lbl">Format</div><div class="meta-val">PDF or Word (.docx)</div></div>
-  <div class="meta-cell"><div class="meta-lbl">Attempts</div><div class="meta-val">1</div></div>
+  <div class="meta-cell"><div class="meta-lbl">Format</div><div class="meta-val">Canvas Classic Quiz</div></div>
+  <div class="meta-cell"><div class="meta-lbl">Attempts</div><div class="meta-val" style="color:#dc2626;">1 — no retakes</div></div>
+  <div class="meta-cell"><div class="meta-lbl">Time limit</div><div class="meta-val" style="color:#dc2626;">60 minutes</div></div>
+  <div class="meta-cell"><div class="meta-lbl">Grading</div><div class="meta-val">Auto-graded</div></div>
   <div class="meta-cell"><div class="meta-lbl">Allowed resources</div><div class="meta-val">Ch. 18 · Lectures · Apps · Slides</div></div>
-  <div class="meta-cell"><div class="meta-lbl">Min. length</div><div class="meta-val">600 words</div></div>
 </div>
 
 <div class="pg-body">
@@ -103,32 +105,35 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
   <!-- VERSION ASSIGNMENT -->
   <div class="version-banner">
     <div class="version-banner-hd">
-      <div><h2>Find Your Assigned Version</h2><p>Use the last digit of your student ID. Submit only your assigned version — write the version letter at the top of your document.</p></div>
+      <div>
+        <h2>Version Assignment</h2>
+        <p>Canvas assigns your version automatically when you open the quiz — you do not select it. Study all four versions shown below. The data in Canvas will match one of them exactly.</p>
+      </div>
     </div>
     <table class="version-table">
-      <thead><tr><th>Last digit of student ID</th><th>Your version</th><th>Procedure context</th></tr></thead>
+      <thead><tr><th>Version</th><th>Procedure context</th></tr></thead>
       <tbody>
-        <tr><td>0, 1, or 2</td><td><span class="ver-badge ver-a">A</span></td><td>General surgery mix: Appendectomy (emergent), Cholecystectomy, Hernia, Knee arthroscopy, Carpal tunnel</td></tr>
-        <tr><td>3, 4, or 5</td><td><span class="ver-badge ver-b">B</span></td><td>Complex case mix: Bowel resection (emergent, longest), Thyroidectomy, Hip replacement, Tonsillectomy, Cyst excision</td></tr>
-        <tr><td>6 or 7</td><td><span class="ver-badge ver-c">C</span></td><td>Mixed-urgency day: Appendectomy (emergent), Colon resection, Rotator cuff, Knee replacement, Hernia repair</td></tr>
-        <tr><td>8 or 9</td><td><span class="ver-badge ver-d">D</span></td><td>High-stakes mix: Appendectomy (emergent, tight deadline), Spinal fusion (longest), Mastectomy, Gallbladder, Wrist fracture</td></tr>
+        <tr><td><span class="ver-badge ver-a">A</span></td><td>General surgery mix: Appendectomy (emergent), Cholecystectomy, Hernia, Knee arthroscopy, Carpal tunnel</td></tr>
+        <tr><td><span class="ver-badge ver-b">B</span></td><td>Complex case mix: Bowel resection (emergent, longest), Thyroidectomy, Hip replacement, Tonsillectomy, Cyst excision</td></tr>
+        <tr><td><span class="ver-badge ver-c">C</span></td><td>Mixed-urgency day: Appendectomy (emergent), Colon resection, Rotator cuff, Knee replacement, Hernia repair</td></tr>
+        <tr><td><span class="ver-badge ver-d">D</span></td><td>High-stakes mix: Appendectomy (emergent, tight deadline), Spinal fusion (longest), Mastectomy, Gallbladder, Wrist fracture</td></tr>
       </tbody>
     </table>
   </div>
 
-  <!-- RULES -->
+  <!-- RULES / PREP ALERTS -->
   <div style="display:flex;flex-direction:column;gap:10px;">
     <div class="alert alert-red">
-      <div class="alert-icon">🚫</div>
-      <div class="alert-body"><strong>Do not collaborate on version-specific calculations.</strong>Parts 1, 2, and 3 use data unique to your assigned version. Submitting another version's numbers constitutes academic dishonesty and will earn zero credit.</div>
+      <div class="alert-icon">🔴</div>
+      <div class="alert-body"><strong>This quiz has a single attempt. Have scratch paper ready before clicking Begin.</strong> Parts 1 and 3 require building complete sequencing tables on paper before entering any values in Canvas. The 60-minute timer starts immediately when you open the quiz — it does not pause.</div>
     </div>
     <div class="alert alert-gold">
       <div class="alert-icon">📋</div>
-      <div class="alert-body"><strong>Show all calculation steps with labeled intermediate values.</strong>Answers without supporting work will not receive full credit, even if numerically correct. For performance tables, build every row — do not summarize. Round flow times, lateness, and tardiness to whole minutes. Round WSPT ratios to three decimal places.</div>
+      <div class="alert-body"><strong>Work out complete tables on scratch paper first — then enter all values in Canvas.</strong> Build every row of your SPT and EDD performance tables (sequence, flow time, deadline in minutes, lateness, tardiness) before touching the fill-in-the-blank fields. Critical trap: flow time is cumulative — it is not each job's own processing time. Tardiness = max(0, Lateness); never enter a negative value in a tardiness blank.</div>
     </div>
     <div class="alert alert-blue">
       <div class="alert-icon">ℹ️</div>
-      <div class="alert-body">Parts 4 and 5 are the same for all versions. You may discuss the conceptual framework with classmates, but your written responses must be your own. All five parts build sequentially — complete Parts 1 through 3 before attempting Parts 4 and 5. Deadlines in hours must be converted to minutes before computing lateness and tardiness.</div>
+      <div class="alert-body">Parts 4 and 5 are the same for all versions and are auto-graded multiple-choice. You may discuss the conceptual framework with classmates, but your responses in Canvas are submitted individually. Deadlines in hours must be converted to minutes before computing lateness and tardiness: hrs × 60 = min.</div>
     </div>
   </div>
 
@@ -138,7 +143,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
     <div class="section-card" style="margin-top:14px;">
       <div class="section-bd" style="font-size:13.5px;line-height:1.75;color:var(--gray-700);">
         <p>Riverside Health System operates a single general surgery operating room at a community hospital. The OR runs Monday–Friday, 7 AM–3 PM (8 hours = 480 minutes per day). The OR scheduling coordinator currently assigns procedures to the next available OR slot in the order they are booked — a first-come, first-served (FCFS) approach.</p>
-        <p style="margin-top:12px;">The OR team is evaluating its scheduling approach. The scheduling coordinator believes that switching to a priority-based sequencing system would reduce average case turnaround time and better protect urgent cases from experiencing delays. You have been hired as an operations analyst. Your task is to evaluate three alternative sequencing rules — SPT, WSPT, and EDD — and recommend a sequencing approach for the Riverside OR.</p>
+        <p style="margin-top:12px;">The OR team is evaluating its scheduling approach. The scheduling coordinator believes that switching to a priority-based sequencing system would reduce average case turnaround time and better protect urgent cases from experiencing delays. You have been hired as an operations analyst. Your task is to evaluate two alternative sequencing rules — SPT and EDD — and recommend a sequencing approach for the Riverside OR.</p>
         <p style="margin-top:12px;font-size:13px;font-weight:600;color:var(--navy);">Setup for all versions:</p>
         <p style="margin-top:6px;">You are given a set of five procedures scheduled for a particular Monday OR block. All procedures are available to be scheduled at 7 AM. The OR handles one procedure at a time; there are no setup times between procedures.</p>
         <ul style="margin-top:10px;padding-left:18px;display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--gray-700);">
@@ -152,7 +157,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
 
   <!-- VERSION DATA TABLE -->
   <div>
-    <div class="sec-div">Your Procedure Data — Select Your Assigned Version</div>
+    <div class="sec-div">Your Procedure Data — Study All Versions (Canvas Assigns One Randomly)</div>
     <div style="margin-top:14px;">
       <div class="ver-tabs">
         <div class="ver-tab-hd">
@@ -216,60 +221,27 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
 
   <!-- PART 1 -->
   <div>
-    <div class="sec-div">Part 1 — SPT Analysis &nbsp;·&nbsp; Version-specific data</div>
+    <div class="sec-div">Part 1 — SPT Analysis &nbsp;·&nbsp; Version-specific · Auto-graded FIMB</div>
     <div class="section-card part1" style="margin-top:14px;">
       <div class="section-hd">
         <div class="part-badge">1</div>
         <div class="section-hd-text">
           <h2>SPT Analysis — Shortest Processing Time</h2>
-          <p>Use the procedure data for your assigned version only · Show all work</p>
+          <p>Uses your assigned version's data · Fill in the blanks in Canvas</p>
         </div>
-        <div class="pts-badge">10 pts</div>
+        <div class="pts-badge">Part of 22-pt calculation block</div>
       </div>
       <div class="section-bd">
-        <p style="font-size:13.5px;line-height:1.65;color:var(--gray-700);margin-bottom:16px;">Using the SPT rule (Shortest Processing Time), sequence your assigned procedures from shortest to longest processing time.</p>
+        <p style="font-size:13.5px;line-height:1.65;color:var(--gray-700);margin-bottom:16px;">Using the SPT rule (Shortest Processing Time), sequence your assigned procedures from shortest to longest processing time. Then complete the performance table in Canvas.</p>
         <div class="q-block">
-          <div class="q-num">Question 1a</div>
-          <div class="q-text">List your SPT sequence (procedure letters in order). Then build the complete SPT performance table with the following columns: Procedure, Processing Time (min), Flow Time (min), Deadline (min), Lateness (min), Tardiness (min).<br><br><em>Reminder: Flow time = cumulative completion time from 7 AM. Lateness = Flow time − Deadline. Tardiness = max(0, Lateness).</em></div>
-          <span class="q-pts">4 pts</span>
+          <div class="q-num">Question 1a — SPT Sequence and Performance Table</div>
+          <div class="q-text">In Canvas, fill in: (1) the SPT sequence — procedure letters in order; (2) the flow time for each procedure (cumulative completion time from 7 AM); (3) lateness for each procedure (Flow Time − Deadline in minutes); (4) tardiness for each procedure (max(0, Lateness)).<br><br><em>Build the full table on scratch paper first. Flow time = cumulative sum of processing times, not each procedure's own time. Lateness can be negative. Tardiness is never negative — if lateness is negative, tardiness is 0.</em></div>
+          <span class="q-type">FIMB — auto-graded</span>
         </div>
         <div class="q-block">
-          <div class="q-num">Question 1b</div>
-          <div class="q-text">Compute average flow time (sum of all flow times ÷ 5) and average tardiness (sum of all tardiness values ÷ 5). Show both computations explicitly.</div>
-          <span class="q-pts">4 pts</span>
-        </div>
-        <div class="q-block">
-          <div class="q-num">Question 1c</div>
-          <div class="q-text">Identify any procedure that is tardy under SPT. If none, state that explicitly. If one or more are tardy, identify the procedure by letter and name, and state its tardiness in minutes.</div>
-          <span class="q-pts">2 pts</span>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- PART 2 -->
-  <div>
-    <div class="sec-div">Part 2 — WSPT Analysis &nbsp;·&nbsp; Version-specific data</div>
-    <div class="section-card part2" style="margin-top:14px;">
-      <div class="section-hd">
-        <div class="part-badge">2</div>
-        <div class="section-hd-text">
-          <h2>WSPT Analysis — Weighted Shortest Processing Time</h2>
-          <p>Use the procedure data for your assigned version only · Show ratio computation for each procedure</p>
-        </div>
-        <div class="pts-badge">8 pts</div>
-      </div>
-      <div class="section-bd">
-        <p style="font-size:13.5px;line-height:1.65;color:var(--gray-700);margin-bottom:16px;">Using the WSPT rule (Weighted Shortest Processing Time), compute the priority ratio for each procedure and sequence from highest ratio to lowest. If two procedures tie on ratio, sequence the shorter procedure first.</p>
-        <div class="q-block">
-          <div class="q-num">Question 2a</div>
-          <div class="q-text">For each procedure, compute the ratio: Urgency Weight ÷ Processing Time (round to 3 decimal places). Present these in a labeled column. Then sequence the procedures in descending order by ratio (highest ratio first).</div>
-          <span class="q-pts">4 pts</span>
-        </div>
-        <div class="q-block">
-          <div class="q-num">Question 2b</div>
-          <div class="q-text">Using your WSPT sequence, build the performance table: Procedure, Processing Time (min), Flow Time (min), Urgency Weight, Weighted Flow Time (Weight × Flow Time). Compute total weighted flow time (sum of all weighted flow time values).</div>
-          <span class="q-pts">4 pts</span>
+          <div class="q-num">Question 1b — Summary Metrics</div>
+          <div class="q-text">Fill in: average flow time (sum of all flow times ÷ 5) and average tardiness (sum of all tardiness values ÷ 5). Identify which procedure, if any, is tardy under SPT and by how many minutes.</div>
+          <span class="q-type">FIMB — auto-graded</span>
         </div>
       </div>
     </div>
@@ -277,27 +249,27 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
 
   <!-- PART 3 -->
   <div>
-    <div class="sec-div">Part 3 — EDD Analysis &nbsp;·&nbsp; Version-specific data</div>
+    <div class="sec-div">Part 3 — EDD Analysis &nbsp;·&nbsp; Version-specific · Auto-graded FIMB</div>
     <div class="section-card part3" style="margin-top:14px;">
       <div class="section-hd">
         <div class="part-badge">3</div>
         <div class="section-hd-text">
           <h2>EDD Analysis — Earliest Due Date</h2>
-          <p>Convert deadlines from hours to minutes before sequencing</p>
+          <p>Convert deadlines from hours to minutes before sequencing · Fill in the blanks in Canvas</p>
         </div>
-        <div class="pts-badge">8 pts</div>
+        <div class="pts-badge">Part of 22-pt calculation block</div>
       </div>
       <div class="section-bd">
-        <p style="font-size:13.5px;line-height:1.65;color:var(--gray-700);margin-bottom:16px;">Using the EDD rule (Earliest Due Date), sequence your assigned procedures in ascending order by deadline.</p>
+        <p style="font-size:13.5px;line-height:1.65;color:var(--gray-700);margin-bottom:16px;">Using the EDD rule (Earliest Due Date), sequence your assigned procedures in ascending order by deadline (convert hours to minutes first). Then complete the performance table in Canvas.</p>
         <div class="q-block">
-          <div class="q-num">Question 3a</div>
-          <div class="q-text">Convert all deadlines from hours to minutes (hrs × 60). List your EDD sequence. Build the complete EDD performance table: Procedure, Processing Time (min), Flow Time (min), Deadline (min), Lateness (min), Tardiness (min).</div>
-          <span class="q-pts">4 pts</span>
+          <div class="q-num">Question 3a — EDD Sequence and Performance Table</div>
+          <div class="q-text">Convert all deadlines from hours to minutes (hrs × 60). In Canvas, fill in: the EDD sequence and the complete performance table — flow time, deadline (minutes), lateness, and tardiness for each procedure.</div>
+          <span class="q-type">FIMB — auto-graded</span>
         </div>
         <div class="q-block">
-          <div class="q-num">Question 3b</div>
-          <div class="q-text">Compute maximum tardiness under EDD (the single largest tardiness value across all five procedures). Identify which procedure has the maximum tardiness. If no procedure is tardy, state that explicitly and explain in one sentence why EDD tends to produce low maximum tardiness.</div>
-          <span class="q-pts">4 pts</span>
+          <div class="q-num">Question 3b — Maximum Tardiness</div>
+          <div class="q-text">Fill in: the maximum tardiness value across all five procedures under EDD. If no procedure is tardy, enter 0. Also identify which procedure (by letter) has the highest tardiness — or enter NONE if every procedure finishes on time.</div>
+          <span class="q-type">FIMB — auto-graded</span>
         </div>
       </div>
     </div>
@@ -305,34 +277,47 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
 
   <!-- PART 4 -->
   <div>
-    <div class="sec-div">Part 4 — Comparison and Recommendation &nbsp;·&nbsp; Same for all versions</div>
+    <div class="sec-div">Part 4 — Comparison and Recommendation &nbsp;·&nbsp; Same for all versions · Auto-graded MC</div>
     <div class="section-card part4" style="margin-top:14px;">
       <div class="section-hd">
         <div class="part-badge">4</div>
         <div class="section-hd-text">
-          <h2>Comparison and Recommendation Memo</h2>
-          <p>Uses your computed results from Parts 1–3 · Minimum 150 words for Question 4b</p>
+          <h2>SPT vs. EDD Comparison</h2>
+          <p>Uses your computed results from Parts 1 and 3 · Multiple choice</p>
         </div>
-        <div class="pts-badge">12 pts</div>
+        <div class="pts-badge">16 pts</div>
       </div>
       <div class="section-bd">
+        <p style="font-size:13px;line-height:1.6;color:var(--gray-600);margin-bottom:14px;">All five items below are multiple choice. Use your computed results from Parts 1 and 3 to answer 4a-i and 4a-ii; 4b-i through 4b-iii test your interpretation and recommendation.</p>
         <div class="q-block">
-          <div class="q-num">Question 4a</div>
-          <div class="q-text">Construct a summary comparison table of SPT, WSPT, and EDD on three metrics using your computed results from Parts 1–3. Label each row and column clearly.<br><br>
-          <strong>Comparison Summary Table</strong><br>
-          <em>Rows: Average flow time (min) | Average tardiness (min) | Maximum tardiness (min)<br>
-          Columns: SPT | WSPT | EDD</em><br><br>
-          Note: For average flow time under WSPT, compute (sum of all flow times ÷ 5) from your Part 2 WSPT sequence. WSPT does not compute average tardiness — enter "N/A" for WSPT average tardiness and maximum tardiness rows.</div>
-          <span class="q-pts">4 pts</span>
+          <div class="q-num">Question 4a-i — Average Flow Time Comparison</div>
+          <div class="q-text">Multiple choice: Which sequencing rule produced the lower average flow time for your assigned version — SPT or EDD?</div>
+          <span class="q-pts">2 pts</span>
+          <span class="q-type">MC — auto-graded</span>
         </div>
         <div class="q-block">
-          <div class="q-num">Question 4b</div>
-          <div class="q-text">Based on your comparison table, write a recommendation memo to Riverside's OR scheduling coordinator. Your memo must address all three of the following:<br><br>
-          (a) Which sequencing rule you recommend for the OR and the specific metric that justifies your choice.<br>
-          (b) What the OR loses by adopting your recommended rule — identify at least one metric that worsens compared to a different rule you considered.<br>
-          (c) One specific condition under which you would modify your recommendation — for example, a change in the patient mix, OR time horizon, or organizational priority that would shift the optimal rule choice.<br><br>
-          <em>Minimum 150 words. Vague references to "management judgment" do not satisfy part (c) — name the specific trigger condition. Cite Chapter 18 by section number at least once.</em></div>
-          <span class="q-pts">8 pts</span>
+          <div class="q-num">Question 4a-ii — Zero-Tardiness Rule</div>
+          <div class="q-text">Multiple choice: Which sequencing rule resulted in zero tardiness across all procedures for your assigned version — SPT or EDD?</div>
+          <span class="q-pts">2 pts</span>
+          <span class="q-type">MC — auto-graded</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Question 4b-i — OR Adoption Recommendation</div>
+          <div class="q-text">Multiple choice: Based on your results, which sequencing rule should Riverside's OR scheduling coordinator adopt? Select the rule and the reason that most directly supports the recommendation in an OR setting.</div>
+          <span class="q-pts">5 pts</span>
+          <span class="q-type">MC — auto-graded</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Question 4b-ii — Trade-off of Choosing EDD</div>
+          <div class="q-text">Multiple choice: If the OR adopts EDD, what does it give up compared to SPT? Select the performance metric that EDD sacrifices relative to SPT.</div>
+          <span class="q-pts">4 pts</span>
+          <span class="q-type">MC — auto-graded</span>
+        </div>
+        <div class="q-block">
+          <div class="q-num">Question 4b-iii — Override Condition for SPT</div>
+          <div class="q-text">Multiple choice: Under which operational condition should the OR coordinator reconsider SPT instead of EDD? Identify the scenario in which minimizing average flow time takes priority over protecting deadline adherence.</div>
+          <span class="q-pts">3 pts</span>
+          <span class="q-type">MC — auto-graded</span>
         </div>
       </div>
     </div>
@@ -340,13 +325,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
 
   <!-- PART 5 -->
   <div>
-    <div class="sec-div">Part 5 — Appointment Systems Connection &nbsp;·&nbsp; Same for all versions</div>
+    <div class="sec-div">Part 5 — Appointment Systems Connection &nbsp;·&nbsp; Same for all versions · Auto-graded MC</div>
     <div class="section-card part5" style="margin-top:14px;">
       <div class="section-hd">
         <div class="part-badge">5</div>
         <div class="section-hd-text">
           <h2>Appointment Systems — Overbooking Policy Analysis</h2>
-          <p>Applies Chapter 18 appointment system framework to the Riverside OR</p>
+          <p>Applies Chapter 18 appointment system framework to the Riverside OR · Multiple choice</p>
         </div>
         <div class="pts-badge">7 pts</div>
       </div>
@@ -355,40 +340,42 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
           The Riverside OR manager notes that 18% of OR slots are wasted each month because surgeons cancel procedures within 12 hours of the scheduled start time. The manager proposes overbooking the OR by scheduling one additional procedure in each half-day block (i.e., scheduling 3 procedures in a 240-minute block rather than 2).
         </div>
         <div class="q-block">
-          <div class="q-num">Question 5a</div>
-          <div class="q-text">Using Chapter 18's appointment system framework, explain the trade-off the OR manager is accepting by implementing overbooking. Your answer must identify what happens when more patients show up than expected AND what happens when the assumed cancellation rate turns out to be lower than 18%.</div>
+          <div class="q-num">Question 5a — Overbooking Trade-off</div>
+          <div class="q-text">Select ALL that apply (select exactly 2): Using Chapter 18's appointment system framework, which two statements together best describe the trade-off the OR manager is accepting? One correct answer addresses what happens when more patients show up than expected; the other addresses what happens when the actual cancellation rate is lower than 18%. Partial or over-inclusive selections score zero — select both correct options and no others.</div>
           <span class="q-pts">2 pts</span>
+          <span class="q-type">Multiple Answers — select 2 · all-or-nothing · auto-graded</span>
         </div>
         <div class="q-block">
-          <div class="q-num">Question 5b</div>
-          <div class="q-text">Identify one condition under which the overbooking policy would be harmful to patients rather than helpful. Be specific — name the patient population, procedure type, or operational scenario where the harm would materialize.</div>
+          <div class="q-num">Question 5b — When Overbooking Harms Patients</div>
+          <div class="q-text">Multiple choice: Which single condition would make the overbooking policy most harmful to patients? Consider the procedure characteristics and the scenario under which a real cancellation shortfall directly delays patients who have already arrived.</div>
           <span class="q-pts">2 pts</span>
+          <span class="q-type">MC — auto-graded</span>
         </div>
         <div class="q-block">
-          <div class="q-num">Question 5c</div>
-          <div class="q-text">Propose one alternative to overbooking that addresses the 18% waste rate without increasing the scheduling load beyond OR capacity. Your alternative must be operationally specific — not just "improve communication" — and must identify which party (surgeons, scheduler, OR coordinator, or patient) takes the concrete action.</div>
+          <div class="q-num">Question 5c — Alternative to Overbooking</div>
+          <div class="q-text">Multiple choice: Which alternative best addresses the 18% waste rate without increasing scheduling load beyond OR capacity? The correct answer identifies a specific operational mechanism and names which party takes the concrete action.</div>
           <span class="q-pts">3 pts</span>
+          <span class="q-type">MC — auto-graded</span>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- SUBMISSION CHECKLIST -->
+  <!-- QUIZ PREPARATION -->
   <div>
-    <div class="sec-div">Submission Requirements</div>
+    <div class="sec-div">Before You Begin — Preparation Checklist</div>
     <div class="section-card" style="margin-top:14px;">
-      <div class="section-hd" style="background:var(--gray-50);padding:13px 20px;border-bottom:1px solid var(--gray-200);">
-        <h2 style="font-size:14px;font-weight:700;color:var(--navy);">Before you submit, verify the following</h2>
+      <div class="section-hd" style="background:var(--gold-lt);padding:13px 20px;border-bottom:1px solid var(--gold-bdr);">
+        <h2 style="font-size:14px;font-weight:700;color:var(--navy);">Complete these steps before clicking Begin</h2>
       </div>
       <div class="section-bd">
-        <div class="submit-list">
-          <div class="submit-item">Your file is saved as <strong>PDF or Word (.docx)</strong>.</div>
-          <div class="submit-item">Your <strong>assigned version letter (A, B, C, or D)</strong> is written at the top of your document.</div>
-          <div class="submit-item">Your <strong>Part 1 and Part 2 SPT and WSPT tables</strong> show every row with labeled columns — no summarized or skipped steps.</div>
-          <div class="submit-item">All <strong>deadlines are converted to minutes</strong> in your Part 1 and Part 3 tables before computing lateness and tardiness.</div>
-          <div class="submit-item">Your <strong>Part 4b recommendation memo</strong> is at least 150 words and cites Chapter 18 by section number at least once.</div>
-          <div class="submit-item">Your total submission is at least <strong>600 words</strong> (Parts 4b and 5 are the primary narrative sections).</div>
-          <div class="submit-item">All tables are <strong>clearly labeled</strong> with a title (e.g., "Part 1 — SPT Performance Table, Version A").</div>
+        <div class="prep-list">
+          <div class="prep-item">Have <strong>scratch paper and a pen</strong> ready. You will build two full sequencing tables (SPT and EDD) on paper before entering values in Canvas. Each table has 5 rows and 6 columns.</div>
+          <div class="prep-item">Review the <strong>data for all 4 versions</strong> above (Versions A–D). You will receive one at random. Knowing all versions in advance is not a shortcut — Canvas assigns your specific version only when the quiz loads. Studying all four is good preparation.</div>
+          <div class="prep-item">Know the <strong>formulas</strong>: Flow Time = cumulative sum of processing times in your sequence. Lateness = Flow Time − Deadline (in minutes). Tardiness = max(0, Lateness).</div>
+          <div class="prep-item">Know the <strong>rules</strong>: SPT sequences by ascending processing time (minimizes average flow time). EDD sequences by ascending deadline after converting to minutes (minimizes maximum lateness and tardiness).</div>
+          <div class="prep-item">For Part 4: five multiple-choice items ask you to compare SPT and EDD results and make a rule recommendation. Have both your sequencing tables fully computed before starting Part 4 — you'll need average flow time, average tardiness, and maximum tardiness for each rule.</div>
+          <div class="prep-item">For Part 5: review Chapter 18 section on appointment systems — overbooking, no-show rates, and utilization vs. wait-time trade-offs.</div>
         </div>
       </div>
     </div>
@@ -397,19 +384,20 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
   <!-- GRADING SUMMARY -->
   <div class="section-card">
     <div style="background:var(--blue-xlt);padding:13px 20px;border-bottom:1px solid var(--gray-200);">
-      <h2 style="font-size:14px;font-weight:700;color:var(--navy);">Grading Summary · 45 points total</h2>
+      <h2 style="font-size:14px;font-weight:700;color:var(--navy);">Grading Summary · 45 points total · Auto-graded in Canvas</h2>
     </div>
     <table class="grade-table">
-      <thead><tr><th>Part</th><th>Content</th><th style="text-align:right;">Points</th><th>Primary LO</th></tr></thead>
+      <thead><tr><th>Block</th><th>Content</th><th style="text-align:right;">Points</th><th>Format</th></tr></thead>
       <tbody>
-        <tr><td><strong>Part 1</strong></td><td>SPT sequencing table, avg flow time, avg tardiness, tardy identification</td><td class="pts-right">10</td><td>LO12-2</td></tr>
-        <tr><td><strong>Part 2</strong></td><td>WSPT ratios, sequence, weighted flow time table, total</td><td class="pts-right">8</td><td>LO12-3</td></tr>
-        <tr><td><strong>Part 3</strong></td><td>EDD sequencing table, maximum tardiness identification</td><td class="pts-right">8</td><td>LO12-4</td></tr>
-        <tr><td><strong>Part 4</strong></td><td>Three-rule comparison table + recommendation memo with trade-off and override condition</td><td class="pts-right">12</td><td>LO12-5</td></tr>
-        <tr><td><strong>Part 5</strong></td><td>Overbooking trade-off, harm condition, and alternative proposal</td><td class="pts-right">7</td><td>LO12-7</td></tr>
+        <tr><td><strong>Parts 1 &amp; 3</strong></td><td>SPT sequencing table + metrics (12 pts) · EDD sequencing table + max tardiness (10 pts) — one FIMB item per version</td><td class="pts-right">22</td><td style="color:var(--gray-600);font-size:12px;">FIMB only — version-specific; assigned randomly by Canvas</td></tr>
+        <tr><td><strong>Part 4</strong></td><td>5 MC items: avg flow time comparison (2) · zero-tardiness rule (2) · adoption recommendation (5) · EDD trade-off (4) · SPT override condition (3)</td><td class="pts-right">16</td><td style="color:var(--gray-600);font-size:12px;">5 MC items · same for all versions</td></tr>
+        <tr><td><strong>Part 5</strong></td><td>Overbooking trade-off (2 · MA) · when overbooking harms patients (2 · MC) · alternative proposal (3 · MC)</td><td class="pts-right">7</td><td style="color:var(--gray-600);font-size:12px;">Multiple Answers + 2 MC · same for all versions</td></tr>
         <tr class="total"><td colspan="2"><strong>Total</strong></td><td class="pts-right">45</td><td></td></tr>
       </tbody>
     </table>
+    <div style="padding:10px 14px;background:var(--green-lt);border-top:1px solid var(--green-bdr);font-size:12px;color:var(--green);font-weight:600;">
+      All items are auto-graded. Your score is visible immediately after the quiz closes.
+    </div>
   </div>
 
 </div>

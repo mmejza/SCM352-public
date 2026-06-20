@@ -36,10 +36,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
 .q-num{font-weight:800;color:var(--navy);font-size:13px;}
 .type-badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:100px;letter-spacing:.03em;white-space:nowrap;display:inline-block;}
 .t-calc{background:var(--green-lt);color:var(--green);border:1px solid var(--green-bdr);}
-.t-essay{background:var(--purple-lt);color:var(--purple);border:1px solid var(--purple-bdr);}
 .t-data{background:var(--blue-lt);color:var(--navy);border:1px solid var(--blue-bdr);}
 .ver-badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:100px;background:var(--gold-lt);color:var(--gold-dark);border:1px solid var(--gold-bdr);white-space:nowrap;display:inline-block;margin-left:4px;}
 .pts-cell{font-weight:700;color:var(--navy);text-align:right;white-space:nowrap;}
+.items-note{font-size:11px;color:var(--gray-400);white-space:nowrap;}
 .instr-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
 @media(max-width:640px){.instr-grid{grid-template-columns:1fr;}}
 .instr-card{background:white;border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;}
@@ -52,17 +52,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
 .type-section:last-child{border-bottom:none;}
 .type-section-lbl{font-size:10px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--gray-400);margin-bottom:5px;}
 .type-section-body{font-size:12.5px;line-height:1.55;color:var(--gray-700);}
-.time-table{width:100%;border-collapse:collapse;font-size:12.5px;background:white;border-radius:10px;overflow:hidden;border:1px solid var(--gray-200);}
-.time-table th{background:var(--navy);color:white;padding:8px 12px;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;text-align:left;}
-.time-table td{padding:8px 12px;border-bottom:1px solid var(--gray-100);}
-.time-table tr:last-child td{border-bottom:none;}
-.time-row-total td{font-weight:700;background:var(--blue-xlt);color:var(--navy);}
-.grading-wrap{background:white;border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;}
-.grading-row{display:flex;gap:14px;padding:11px 16px;border-bottom:1px solid var(--gray-100);font-size:13px;line-height:1.55;color:var(--gray-700);}
-.grading-row:last-child{border-bottom:none;}
-.grading-label{font-size:11px;font-weight:700;padding:3px 9px;border-radius:100px;white-space:nowrap;align-self:flex-start;margin-top:1px;flex-shrink:0;}
-.gl-grading{background:var(--blue-xlt);color:var(--blue);border:1px solid var(--blue-bdr);}
-.gl-contact{background:var(--gray-100);color:var(--gray-600);border:1px solid var(--gray-200);}
 .formula-ref{background:white;border:1.5px solid var(--blue-bdr);border-radius:12px;padding:16px 20px;}
 .formula-ref h3{font-size:12px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--blue);margin-bottom:12px;}
 .formula-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
@@ -71,6 +60,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
 .formula-lbl{font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--blue);margin-bottom:4px;}
 .formula-eq{font-size:13px;font-weight:600;color:var(--navy);font-family:Georgia,serif;letter-spacing:.01em;}
 .formula-note{font-size:11px;color:var(--gray-600);margin-top:3px;line-height:1.4;}
+.grading-wrap{background:white;border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;}
+.grading-row{display:flex;gap:14px;padding:11px 16px;border-bottom:1px solid var(--gray-100);font-size:13px;line-height:1.55;color:var(--gray-700);}
+.grading-row:last-child{border-bottom:none;}
+.grading-label{font-size:11px;font-weight:700;padding:3px 9px;border-radius:100px;white-space:nowrap;align-self:flex-start;margin-top:1px;flex-shrink:0;}
+.gl-grading{background:var(--blue-xlt);color:var(--blue);border:1px solid var(--blue-bdr);}
+.gl-contact{background:var(--gray-100);color:var(--gray-600);border:1px solid var(--gray-200);}
 .integrity-footer{background:var(--navy);border-radius:12px;padding:20px 24px;color:white;}
 .integrity-footer h3{font-size:14px;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:8px;}
 .integrity-footer p{font-size:13px;line-height:1.65;color:rgba(255,255,255,.8);}
@@ -83,15 +78,15 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
   <div class="header-badge">SCM 352 · M12</div>
   <div class="header-text">
     <h1>Gate 2 Quiz — Scheduling: Sequencing, Constraints, and Appointments</h1>
-    <p>Module 12 · Chapter 18 + Lecture + Apps Synthesis · Open-book, open-notes</p>
+    <p>Module 12 · Chapter 18 + Lecture + Apps Synthesis · Open-book, open-notes · Fully auto-graded</p>
   </div>
-  <div class="header-right">100 points<br>1 attempt · 90 min</div>
+  <div class="header-right">100 points<br>1 attempt · 70 min</div>
 </div>
 
 <div class="stats-strip">
   <div class="stat-cell"><div class="stat-label">Attempts</div><div class="stat-val warn">1 — no retakes</div></div>
-  <div class="stat-cell"><div class="stat-label">Time limit</div><div class="stat-val warn">90 minutes</div></div>
-  <div class="stat-cell"><div class="stat-label">Questions</div><div class="stat-val">6 questions</div></div>
+  <div class="stat-cell"><div class="stat-label">Time limit</div><div class="stat-val warn">70 minutes</div></div>
+  <div class="stat-cell"><div class="stat-label">Items in Canvas</div><div class="stat-val">16 items</div></div>
   <div class="stat-cell"><div class="stat-label">Points</div><div class="stat-val">100 points</div></div>
   <div class="stat-cell"><div class="stat-label">Due</div><div class="stat-val">Day 6 · 11:59 PM</div></div>
   <div class="stat-cell"><div class="stat-label">Sources allowed</div><div class="stat-val">Chapter 18 · Lectures · Apps · Slides</div></div>
@@ -104,7 +99,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
     <div class="alert-icon">⚠️</div>
     <div class="alert-body">
       <strong>Version Assignment — Questions 1 and 2 are parameterized.</strong>
-      Both questions will display a scenario and data table specific to your version. Canvas assigns your version automatically when the quiz loads — you will not see a version label and you do not need to look anything up. Each versioned question is self-contained: use only the data and parameters shown in that question. Questions 3, 4, 5, and 6 are identical for all students.
+      Both questions will display a scenario and data table specific to your version. Canvas assigns your version automatically when the quiz loads — you will not see a version label and you do not need to look anything up. Questions 3 through 6 present the same content to all students.
     </div>
   </div>
 
@@ -113,7 +108,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
     <div class="alert alert-red">
       <div class="alert-icon">🔴</div>
       <div class="alert-body">
-        <strong>The 90-minute timer starts the moment you click Begin. It does not pause.</strong>
+        <strong>The 70-minute timer starts the moment you click Begin. It does not pause.</strong>
         Have scratch paper and your notes ready before you click Begin. Q1 and Q2 require building complete sequencing tables — work out the full table on paper before entering any values in Canvas.
       </div>
     </div>
@@ -121,14 +116,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
       <div class="alert-icon">🔴</div>
       <div class="alert-body">
         <strong>Do not refresh the page or navigate away from a question mid-entry.</strong>
-        Canvas does not save a partially entered answer when you leave a question field. Complete each sequencing table on scratch paper first, then transcribe your final values. For Q1, write the full SPT table — sequence, flow time, lateness, tardiness — before entering any single number.
+        Canvas does not save a partially entered answer when you leave a fill-in-the-blank field. Complete each sequencing table on scratch paper first, then transcribe all values in one pass. For Q1 and Q2: write the full table — sequence, flow time, lateness, tardiness — before touching Canvas.
       </div>
     </div>
     <div class="alert alert-blue">
       <div class="alert-icon">📖</div>
       <div class="alert-body">
         <strong>This quiz is open-book and open-notes.</strong>
-        You may use Chapter 18, your personal notes, the lecture slides, and any module materials. The EDD App and SPT/WSPT App are available and may be used to verify your hand calculations — but answers submitted without shown work earn 50% maximum on calculation questions. AI tools are not permitted — see the Academic Integrity section below.
+        You may use Chapter 18, your personal notes, the lecture slides, and any module materials. The EDD App and SPT/WSPT App are available and may be used to check your hand calculations. AI tools are not permitted — see the Academic Integrity section below.
       </div>
     </div>
   </div>
@@ -172,73 +167,89 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
 
   <!-- QUESTION BREAKDOWN TABLE -->
   <div>
-    <div class="sec-heading">Question Breakdown</div>
+    <div class="sec-heading">Question Breakdown — 16 Canvas Items · 100 Points</div>
     <div style="border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;margin-top:14px;background:white;">
       <table class="q-table">
         <thead>
           <tr>
-            <th style="width:5%">#</th>
-            <th style="width:52%">Topic</th>
-            <th style="width:16%">Type</th>
+            <th style="width:4%">#</th>
+            <th style="width:44%">Topic</th>
+            <th style="width:14%">Type</th>
             <th style="width:12%">Versioned?</th>
-            <th style="width:15%;text-align:right;">Points</th>
+            <th style="width:10%">Items</th>
+            <th style="width:16%;text-align:right;">Points</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td class="q-num">1</td>
-            <td>SPT Sequencing — Full Performance Table <span class="ver-badge">VERSIONED</span><br><span style="font-size:12px;color:var(--gray-600);">Sequence 4 jobs by SPT rule · Build the complete table: sequence, flow time, deadline, lateness, tardiness · Compute average flow time and average tardiness · Identify any tardy jobs</span></td>
+            <td>SPT Sequencing — Full Performance Table <span class="ver-badge">VERSIONED</span><br>
+            <span style="font-size:12px;color:var(--gray-600);">Sequence jobs by SPT rule · Build the complete table: sequence, flow time, lateness, tardiness · Compute average flow time and average tardiness · Identify any tardy jobs · Explain in one MC why SPT beats FCFS on average flow time</span></td>
             <td><span class="type-badge t-calc">Calculation</span></td>
             <td><span class="ver-badge">VERSIONED</span></td>
-            <td class="pts-cell">20</td>
+            <td class="items-note">2 items<br><span style="font-size:10px;">(FIMB + MC)</span></td>
+            <td class="pts-cell">18</td>
           </tr>
           <tr>
             <td class="q-num">2</td>
-            <td>WSPT Ratio and Weighted Flow Time <span class="ver-badge">VERSIONED</span><br><span style="font-size:12px;color:var(--gray-600);">For each of 4 jobs, compute Weight ÷ Processing Time ratio · Sequence jobs in descending ratio order · Build the performance table: sequence, flow time, weight, weighted flow time · Compute total weighted flow time</span></td>
+            <td>WSPT Ratio and Weighted Flow Time <span class="ver-badge">VERSIONED</span><br>
+            <span style="font-size:12px;color:var(--gray-600);">Compute Weight ÷ Processing Time ratio for each job · Sequence in descending ratio order · Build the performance table: flow time, weight, weighted flow time · Compute total weighted flow time · Explain in one MC what the weight represents</span></td>
             <td><span class="type-badge t-calc">Calculation</span></td>
             <td><span class="ver-badge">VERSIONED</span></td>
-            <td class="pts-cell">20</td>
+            <td class="items-note">2 items<br><span style="font-size:10px;">(FIMB + MC)</span></td>
+            <td class="pts-cell">18</td>
           </tr>
           <tr>
             <td class="q-num">3</td>
-            <td>EDD Sequencing — Minimizing Maximum Tardiness<br><span style="font-size:12px;color:var(--gray-600);">Sequence 4 jobs by EDD rule · Build the complete performance table · Identify the maximum tardiness under EDD and explain in one sentence why EDD tends to produce lower maximum tardiness than SPT</span></td>
+            <td>EDD Sequencing — Minimizing Maximum Tardiness<br>
+            <span style="font-size:12px;color:var(--gray-600);">Fixed scenario: Legal firm with 4 briefs (same for all students) · Sequence by EDD rule · Build the complete performance table · Compute average tardiness and identify maximum tardiness · Explain in one MC what EDD minimizes</span></td>
             <td><span class="type-badge t-calc">Calculation</span></td>
-            <td style="color:var(--gray-400);font-size:12px;">Same for all</td>
-            <td class="pts-cell">15</td>
+            <td style="color:var(--gray-400);font-size:12px;">Fixed — same for all</td>
+            <td class="items-note">2 items<br><span style="font-size:10px;">(FIMB + MC)</span></td>
+            <td class="pts-cell">18</td>
           </tr>
           <tr>
             <td class="q-num">4</td>
-            <td>Rule Comparison and Manager Recommendation<br><span style="font-size:12px;color:var(--gray-600);">Given a summary table showing SPT vs. EDD outcomes on three metrics, recommend a sequencing rule for a described operating context · Explain what is sacrificed by your recommended rule · Name one specific condition that would cause you to switch rules</span></td>
-            <td><span class="type-badge t-essay">Essay</span></td>
-            <td style="color:var(--gray-400);font-size:12px;">Same for all</td>
-            <td class="pts-cell">15</td>
+            <td>SPT vs. EDD — Side-by-Side Comparison<br>
+            <span style="font-size:12px;color:var(--gray-600);">Fixed dataset: food distribution company · Apply SPT then EDD to the same 5 jobs · Fill in sequence, flow times, lateness, tardiness for both rules · Then select which rule the manager should prefer and why</span></td>
+            <td><span class="type-badge t-calc">Calculation</span></td>
+            <td style="color:var(--gray-400);font-size:12px;">Fixed — same for all</td>
+            <td class="items-note">2 items<br><span style="font-size:10px;">(FIMB + MC)</span></td>
+            <td class="pts-cell">16</td>
           </tr>
           <tr>
             <td class="q-num">5</td>
-            <td>Theory of Constraints — Bottleneck Identification and Sequencing<br><span style="font-size:12px;color:var(--gray-600);">Given implied utilization data for three sequential resources, identify the bottleneck · Determine which investment increases throughput · Explain the SPT-vs-LPT sequencing decision at the bottleneck and the specific trigger condition for switching rules</span></td>
+            <td>Theory of Constraints — Bottleneck Identification and Sequencing<br>
+            <span style="font-size:12px;color:var(--gray-600);">Identify the bottleneck from implied utilization data · Determine which of 3 investments increases throughput · Explain why the other 2 fail · Identify the one condition under which the bottleneck switches from SPT to LPT and explain the logic</span></td>
             <td><span class="type-badge t-data">Data Analysis</span></td>
-            <td style="color:var(--gray-400);font-size:12px;">Same for all</td>
+            <td style="color:var(--gray-400);font-size:12px;">Fixed — same for all</td>
+            <td class="items-note">4 items<br><span style="font-size:10px;">(3 MC + 1 MA)</span></td>
             <td class="pts-cell">15</td>
           </tr>
           <tr>
             <td class="q-num">6</td>
-            <td>Appointment System Design — Trade-offs and No-Show Policy<br><span style="font-size:12px;color:var(--gray-600);">Explain what appointment systems do and do not add to a service process · Evaluate the effect of shortening appointment intervals on utilization and customer wait time · Analyze an overbooking scenario: identify who bears the risk and under what condition overbooking is harmful</span></td>
-            <td><span class="type-badge t-essay">Essay</span></td>
-            <td style="color:var(--gray-400);font-size:12px;">Same for all</td>
+            <td>Appointment System Design — Trade-offs and No-Show Policy<br>
+            <span style="font-size:12px;color:var(--gray-600);">Explain what appointment systems do and do not add · Evaluate the effect of shortening vs. lengthening appointment intervals on utilization and wait time · Analyze an overbooking scenario: identify the trade-off and the condition under which overbooking harms patients</span></td>
+            <td><span class="type-badge t-data">Data Analysis</span></td>
+            <td style="color:var(--gray-400);font-size:12px;">Fixed — same for all</td>
+            <td class="items-note">4 items<br><span style="font-size:10px;">(all MC)</span></td>
             <td class="pts-cell">15</td>
           </tr>
           <tr style="background:var(--blue-xlt);">
-            <td colspan="4" style="font-weight:700;font-size:13px;color:var(--navy);padding:10px 13px;">Total</td>
+            <td colspan="5" style="font-weight:700;font-size:13px;color:var(--navy);padding:10px 13px;">Total · 16 Canvas items</td>
             <td class="pts-cell" style="font-size:15px;">100</td>
           </tr>
         </tbody>
       </table>
     </div>
+    <p style="font-size:11.5px;color:var(--gray-400);margin-top:6px;padding-left:4px;">
+      <strong>Item types in this quiz:</strong> Fill-in-the-Blank (FIMB) for sequencing and calculation sub-questions; Multiple Choice (single answer) for conceptual items; Multiple Answers (select all correct) for Q5b-ii only. All items are auto-graded by Canvas — no manual review.
+    </p>
   </div>
 
   <!-- INSTRUCTIONS GRID -->
   <div>
-    <div class="sec-heading">Before You Begin · How to Answer Each Type</div>
+    <div class="sec-heading">Before You Begin · How to Answer Each Item Type</div>
     <div class="instr-grid" style="margin-top:14px;">
 
       <div class="instr-card">
@@ -247,56 +258,36 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
         </div>
         <ul class="instr-list">
           <li>Have <strong>Chapter 18</strong> open and your App notes nearby. The SPT/WSPT Sequencer and EDD Scheduler outputs are valid references for checking your hand calculations.</li>
-          <li>Have <strong>scratch paper ready</strong> — Q1 and Q2 each require a full 4-job sequencing table. Build the complete table by hand before entering any value in Canvas.</li>
+          <li>Have <strong>scratch paper ready</strong> before clicking Begin. Q1, Q2, Q3, and Q4 each require complete sequencing tables. Build every table by hand before entering any value in Canvas.</li>
           <li>The timer <strong>starts immediately</strong> when you click Begin. There is no way to pause it.</li>
-          <li><strong>Do not refresh</strong> or navigate away — Canvas will not save a partially entered answer.</li>
-          <li>For Q1 and Q2: each question provides its own job data. Do not carry numbers from Q1 into Q2 — they use different data tables.</li>
-          <li><strong>Q1 critical trap:</strong> flow time is cumulative — it is not the job's own processing time. Add up all processing times through the job's position in the sequence.</li>
+          <li><strong>Do not refresh</strong> or navigate away — Canvas will not save a partially entered answer in a fill-in-the-blank field.</li>
+          <li>For Q1 and Q2: each question has its own version-specific job data. Do not carry numbers across — they use different data tables.</li>
+          <li><strong>Critical trap:</strong> flow time is cumulative — it is <em>not</em> the job's own processing time. Sum all processing times up to and including the job's position in the sequence.</li>
         </ul>
       </div>
 
       <div class="instr-card">
         <div class="instr-card-hd" style="background:var(--gold-lt);border-color:var(--gold-bdr);">
-          <h3 style="color:var(--gold-dark);">Answering Each Question Type</h3>
+          <h3 style="color:var(--gold-dark);">Answering Each Item Type</h3>
         </div>
         <div class="type-section">
-          <div class="type-section-lbl">Calculation questions (Q1, Q2, Q3)</div>
-          <div class="type-section-body">State the rule or formula first, then sequence jobs, then build each column step by step. <strong>A correct final answer without shown work earns 50% maximum.</strong> Write every row of your performance table — do not skip steps or summarize intermediate values.</div>
+          <div class="type-section-lbl">Fill-in-the-Blank items (Q1–Q4 calculation parts)</div>
+          <div class="type-section-body">Type your answer directly into each blank field. Canvas accepts common formatting variants for sequences (e.g., B-D-A-E-C or B,D,A,E,C). Work out your complete table on scratch paper first — enter values only when you have the full table in front of you. Do not leave a blank empty and plan to return; partial saves are not reliable.</div>
         </div>
         <div class="type-section">
-          <div class="type-section-lbl">Critical Q1 trap: Tardiness ≥ 0</div>
-          <div class="type-section-body">Tardiness = max(0, Lateness). If lateness is negative (the job finishes early), tardiness is zero — not the lateness value. There is no "negative tardiness." Entering a negative number in the tardiness column is a common error worth significant partial credit.</div>
+          <div class="type-section-lbl">Tardiness trap — applies to all sequencing items</div>
+          <div class="type-section-body">Tardiness = max(0, Lateness). If lateness is negative (the job finishes early), tardiness is zero — not the lateness value. There is no negative tardiness. Entering a negative number in a tardiness blank will score as wrong.</div>
         </div>
         <div class="type-section">
-          <div class="type-section-lbl">Data Analysis (Q5) and Essay questions (Q4, Q6)</div>
-          <div class="type-section-body">All sub-parts must be answered. Use Chapter 18 terminology: "implied utilization," "bottleneck," "Theory of Constraints," "SPT," "LPT," "appointment interval," "overbooking," "no-show rate," "open-access scheduling." Generic answers without reference to the specific scenario earn partial or no credit.</div>
+          <div class="type-section-lbl">Multiple Choice items (Q1–Q6 conceptual parts)</div>
+          <div class="type-section-body">Select the single best answer. These items test understanding of SPT/WSPT/EDD theory, Theory of Constraints (Chapter 18.5), and appointment system design (Chapter 18.6). Use Chapter 18 terminology precisely — "bottleneck," "implied utilization," "SPT," "LPT," "overbooking," "no-show rate."</div>
         </div>
         <div class="type-section">
-          <div class="type-section-lbl">Q5 bottleneck trap: invest at the bottleneck only</div>
-          <div class="type-section-body">The most common Q5 error is investing in the resource with the lowest utilization to "balance" the system. Theory of Constraints says only bottleneck investments increase throughput. Investments at non-bottlenecks do not change the system throughput ceiling.</div>
+          <div class="type-section-lbl">Multiple Answers item (Q5b-ii only — select ALL that apply)</div>
+          <div class="type-section-body">Q5b-ii asks which investments <em>fail</em> to improve throughput. Select every correct answer — this item is all-or-nothing: selecting all correct options earns full credit; a partial or over-inclusive selection earns zero. Read all options before selecting.</div>
         </div>
       </div>
 
-    </div>
-  </div>
-
-  <!-- TIME ALLOCATION -->
-  <div>
-    <div class="sec-heading">Suggested Time Allocation · 90 minutes total</div>
-    <div style="margin-top:14px;">
-      <table class="time-table">
-        <thead><tr><th>Q#</th><th>Topic</th><th>Points</th><th>Versioned?</th><th style="text-align:right;">Suggested Time</th></tr></thead>
-        <tbody>
-          <tr><td><strong>Q1</strong></td><td>SPT Sequencing — Performance Table</td><td>20</td><td style="color:var(--amber);font-size:12px;font-weight:700;">VERSIONED</td><td style="text-align:right;">16 min</td></tr>
-          <tr><td><strong>Q2</strong></td><td>WSPT Ratio and Weighted Flow Time</td><td>20</td><td style="color:var(--amber);font-size:12px;font-weight:700;">VERSIONED</td><td style="text-align:right;">14 min</td></tr>
-          <tr><td><strong>Q3</strong></td><td>EDD Sequencing</td><td>15</td><td style="color:var(--gray-400);font-size:12px;">Fixed</td><td style="text-align:right;">13 min</td></tr>
-          <tr><td><strong>Q4</strong></td><td>Rule Comparison and Recommendation</td><td>15</td><td style="color:var(--gray-400);font-size:12px;">Fixed</td><td style="text-align:right;">13 min</td></tr>
-          <tr><td><strong>Q5</strong></td><td>Theory of Constraints</td><td>15</td><td style="color:var(--gray-400);font-size:12px;">Fixed</td><td style="text-align:right;">11 min</td></tr>
-          <tr><td><strong>Q6</strong></td><td>Appointment System Design</td><td>15</td><td style="color:var(--gray-400);font-size:12px;">Fixed</td><td style="text-align:right;">13 min</td></tr>
-          <tr class="time-row-total"><td colspan="4"><strong>Total (+ 10-min review buffer)</strong></td><td style="text-align:right;"><strong>90 min</strong></td></tr>
-        </tbody>
-      </table>
-      <p style="font-size:12px;color:var(--gray-400);margin-top:6px;padding-left:4px;">Recommendation: complete Q1 and Q2 on scratch paper before you start the quiz clock if possible — knowing your table values in advance lets you enter Q1 and Q2 quickly and spend more time on the interpretation questions (Q4–Q6). Q5 is fast if you remember the bottleneck identification rule: highest implied utilization = bottleneck.</p>
     </div>
   </div>
 
@@ -306,7 +297,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
     <div class="grading-wrap" style="margin-top:14px;">
       <div class="grading-row">
         <div class="grading-label gl-grading">Grading</div>
-        <div>Numeric sub-parts of Q1–Q3 may be auto-scored; all explanation, essay, and interpretation sub-parts are reviewed manually by the instructor. <strong>Turnaround: within 5 business days of the due date.</strong> Partial credit is available on all calculation questions — correct setup and method with one arithmetic error earns more than a correct final answer with no work shown.</div>
+        <div>All 16 items are auto-graded by Canvas. Your score will appear when the quiz closes. <strong>Turnaround: scores visible at close of quiz window.</strong> Fill-in-the-blank items accept multiple answer formats (e.g., hyphens or commas in sequences, minor decimal rounding) — if your answer is substantively correct but Canvas marks it wrong, contact your instructor immediately with a screenshot.</div>
       </div>
       <div class="grading-row">
         <div class="grading-label gl-contact">Technical issues</div>

@@ -16,7 +16,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
 .meta-cell{padding:11px 20px;border-right:1px solid var(--gray-200);flex-shrink:0;}
 .meta-cell:last-child{border-right:none;}
 .meta-lbl{font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--gray-400);margin-bottom:2px;}
-.meta-val{font-size:13px;font-weight:700;color:var(--navy);}
+.meta-val{font-size:13px;font-weight:700;color:var(--navy);} .meta-val.warn{color:var(--red);}
 .pg-body{max-width:860px;margin:0 auto;padding:28px 22px 60px;display:flex;flex-direction:column;gap:28px;}
 .version-banner{background:var(--navy);border-radius:12px;overflow:hidden;border:2px solid var(--navy);}
 .version-banner-hd{padding:13px 20px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,255,255,.15);}
@@ -94,13 +94,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
 <div class="pg-header">
   <div class="pg-header-eyebrow">SCM 352 · Module M08 · Case Analysis</div>
   <h1>Riverside Health System Central Supply:<br>Inventory Performance and Cost Analysis</h1>
-  <p>Parameterized case — 4 versions (A–D) · 100 points · Due Day 6 at 11:59 PM</p>
+  <p>Canvas Quiz · Auto-graded · 4 versions (A–D) randomly assigned · 100 points · 75-minute timer · Due Day 6 at 11:59 PM</p>
 </div>
 
 <div class="meta-strip">
   <div class="meta-cell"><div class="meta-lbl">Points</div><div class="meta-val">100</div></div>
   <div class="meta-cell"><div class="meta-lbl">Due</div><div class="meta-val">Day 6 · 11:59 PM</div></div>
-  <div class="meta-cell"><div class="meta-lbl">Format</div><div class="meta-val">PDF or Word</div></div>
+  <div class="meta-cell"><div class="meta-lbl">Format</div><div class="meta-val">Canvas Quiz (auto-graded)</div></div>
+  <div class="meta-cell"><div class="meta-lbl">Timer</div><div class="meta-val warn">75 minutes</div></div>
   <div class="meta-cell"><div class="meta-lbl">Attempts</div><div class="meta-val">1</div></div>
   <div class="meta-cell"><div class="meta-lbl">Allowed resources</div><div class="meta-val">Ch. 10 · Lectures · Apps · Slides</div></div>
 </div>
@@ -110,15 +111,15 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
   <!-- VERSION ASSIGNMENT -->
   <div class="version-banner">
     <div class="version-banner-hd">
-      <div><h2>Find Your Assigned Version</h2><p>Use the last digit of your student ID. Write your version at the top of every page you submit.</p></div>
+      <div><h2>Version Assignment — Canvas Assigns Automatically</h2><p>When the quiz opens, Canvas randomly assigns you one version (A, B, C, or D). The version data table appears at the top of the computational item — use only those numbers throughout.</p></div>
     </div>
     <table class="version-table">
-      <thead><tr><th>Last digit of student ID</th><th>Your version</th><th>Identifying parameter</th></tr></thead>
+      <thead><tr><th>Version</th><th>Identifying parameter — shown at the top of your quiz item</th></tr></thead>
       <tbody>
-        <tr><td>0 or 1</td><td><span class="ver-badge ver-a">A</span></td><td>Central Supply avg. inventory = $8.4M · Annual holding cost = 25%</td></tr>
-        <tr><td>2 or 3</td><td><span class="ver-badge ver-b">B</span></td><td>Central Supply avg. inventory = $6.2M · Annual holding cost = 22%</td></tr>
-        <tr><td>4 or 5</td><td><span class="ver-badge ver-c">C</span></td><td>Central Supply avg. inventory = $11.8M · Annual holding cost = 28%</td></tr>
-        <tr><td>6, 7, 8, or 9</td><td><span class="ver-badge ver-d">D</span></td><td>Central Supply avg. inventory = $5.0M · Annual holding cost = 20%</td></tr>
+        <tr><td><span class="ver-badge ver-a">A</span></td><td>Central Supply avg. inventory = $8.4M · Annual holding cost = 25% · IV antibiotic unit cost = $85 · NEW_TURNS = 15.0</td></tr>
+        <tr><td><span class="ver-badge ver-b">B</span></td><td>Central Supply avg. inventory = $6.2M · Annual holding cost = 22% · IV antibiotic unit cost = $120 · NEW_TURNS = 18.0</td></tr>
+        <tr><td><span class="ver-badge ver-c">C</span></td><td>Central Supply avg. inventory = $11.8M · Annual holding cost = 28% · IV antibiotic unit cost = $60 · NEW_TURNS = 13.0</td></tr>
+        <tr><td><span class="ver-badge ver-d">D</span></td><td>Central Supply avg. inventory = $5.0M · Annual holding cost = 20% · IV antibiotic unit cost = $150 · NEW_TURNS = 20.0</td></tr>
       </tbody>
     </table>
   </div>
@@ -126,16 +127,16 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
   <!-- RULES -->
   <div style="display:flex;flex-direction:column;gap:10px;">
     <div class="alert alert-red">
-      <div class="alert-icon">🚫</div>
-      <div class="alert-body"><strong>Do not collaborate on version-specific calculations.</strong> Parts 2, 3, and 4 use data unique to your version. Submitting another version's numbers constitutes academic dishonesty and will result in a zero for the entire case.</div>
+      <div class="alert-icon">🔴</div>
+      <div class="alert-body"><strong>The 75-minute timer starts the moment you click Begin. It does not pause.</strong> Have scratch paper ready before opening the quiz. Work computations on paper, then type final answers into Canvas.</div>
     </div>
     <div class="alert alert-gold">
-      <div class="alert-icon">📋</div>
-      <div class="alert-body"><strong>Show all calculation steps with labeled intermediate values.</strong> Answers without supporting work will not receive full credit, even if numerically correct. Label each step (e.g., "Step 1: Compute annual turns = R/I = $100.8M / $8.4M = 12.0 turns").</div>
+      <div class="alert-icon">⚠️</div>
+      <div class="alert-body"><strong>This is a Canvas Quiz — all items are multiple choice or fill-in-blanks.</strong> Computational blanks (Parts 2, 3, and 4) accept numeric answers only. Multiple accepted rounding variants are programmed. If your answer is rejected but you believe it is correct, contact the instructor with your scratch work.</div>
     </div>
     <div class="alert alert-blue">
       <div class="alert-icon">ℹ️</div>
-      <div class="alert-body">Parts 1 and 5 are the same for all versions. You may discuss the concepts, but your written responses must be your own. Part 4(e) contains a key insight — read the question carefully before computing.</div>
+      <div class="alert-body">Parts 1 and 5 are multiple choice items, identical for all versions. The computational item (Parts 2–4) is one fill-in-blanks item with your assigned version's data displayed at the top. Part 4(e) contains a key conceptual insight — read the blank labels carefully before entering values.</div>
     </div>
   </div>
 
@@ -593,17 +594,17 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
     <div class="sec-div">Submission Requirements</div>
     <div class="section-card" style="margin-top:14px;">
       <div class="section-hd" style="background:var(--gray-50);padding:13px 20px;border-bottom:1px solid var(--gray-200);">
-        <h2 style="font-size:14px;font-weight:700;color:var(--navy);">Before you submit, verify the following</h2>
+        <h2 style="font-size:14px;font-weight:700;color:var(--navy);">Before you click Begin, prepare the following</h2>
       </div>
       <div class="section-bd">
         <div class="submit-list">
-          <div class="submit-item">Your file is saved as <strong>PDF or Word (.docx)</strong>.</div>
-          <div class="submit-item">Your <strong>assigned version (A, B, C, or D)</strong> is written at the top of your document — first line, clearly labeled.</div>
-          <div class="submit-item">Part 1: All four sub-parts include a <strong>classification AND an explanation sentence</strong>. Bare classifications without explanation receive partial credit.</div>
-          <div class="submit-item">Part 2: All calculations show <strong>formula + substituted values + result</strong>. Part 2d includes a written interpretation comparing to the benchmark.</div>
-          <div class="submit-item">Part 3: Part 3a clearly identifies which line item is the correct flow rate <strong>before</strong> computing in 3b. Part 3d addresses the board member's specific wrong calculation from your version's data panel.</div>
-          <div class="submit-item">Part 4a explicitly lists all four components and shows they sum to your version's HOLD_PCT. Part 4e addresses both the per-unit question and the total holding cost question.</div>
-          <div class="submit-item">Part 5c references <strong>Table 10.3 explicitly</strong> — not just "stockout costs" in general.</div>
+          <div class="submit-item">You have scratch paper ready — all computational blanks require intermediate steps before you can enter a final answer.</div>
+          <div class="submit-item">You have Chapter 10 open to <strong>Tables 10.1 and 10.3</strong> (benchmark and customer response framework).</div>
+          <div class="submit-item">Do <strong>not</strong> click Begin until you are ready — the 75-minute timer is non-pausable.</div>
+          <div class="submit-item">For the computational item (Parts 2–4): confirm which version is displayed in the data table at the top, and use only those numbers throughout.</div>
+          <div class="submit-item">For Part 4c: enter <strong>actual HCP% and actual HC per unit</strong> — not the annual HCP%. These are different numbers.</div>
+          <div class="submit-item">For Part 4e: the savings blank asks for the dollar savings from reducing average inventory to R/NEW_TURNS. The insight MC item asks a conceptual question about total HC — these are separate items.</div>
+          <div class="submit-item">For Part 5 MC items: read all four options before selecting — the correct option includes the Chapter 10 category name <strong>and</strong> the strongest explanation.</div>
         </div>
       </div>
     </div>
@@ -612,7 +613,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
   <!-- GRADING SUMMARY -->
   <div class="section-card">
     <div style="background:var(--blue-xlt);padding:13px 20px;border-bottom:1px solid var(--gray-200);">
-      <h2 style="font-size:14px;font-weight:700;color:var(--navy);">Grading Summary · 100 points total</h2>
+      <h2 style="font-size:14px;font-weight:700;color:var(--navy);">Grading Summary · 100 points total · Fully auto-graded</h2>
     </div>
     <table class="grade-table">
       <thead><tr><th>Part</th><th>Content</th><th style="text-align:right;">Points</th><th>Primary LO</th></tr></thead>

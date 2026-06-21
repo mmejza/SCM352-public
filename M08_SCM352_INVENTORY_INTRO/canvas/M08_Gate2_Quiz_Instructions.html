@@ -36,8 +36,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
 .q-topic{font-size:13px;color:var(--gray-800);line-height:1.4;}
 .q-sub{font-size:11px;color:var(--gray-400);margin-top:2px;}
 .type-badge{font-size:10px;font-weight:700;padding:3px 9px;border-radius:100px;letter-spacing:.03em;white-space:nowrap;}
-.tb-calc{background:var(--green-lt);color:var(--green);border:1px solid var(--green-bdr);}
-.tb-essay{background:var(--purple-lt);color:var(--purple);border:1px solid var(--purple-bdr);}
+.tb-mc{background:var(--blue-xlt);color:var(--blue);border:1px solid var(--blue-bdr);}
+.tb-fimb{background:var(--green-lt);color:var(--green);border:1px solid var(--green-bdr);}
 .ver-badge-sm{font-size:9px;font-weight:800;padding:2px 7px;border-radius:100px;background:var(--gold-lt);color:var(--amber);border:1px solid var(--gold-bdr);margin-left:6px;white-space:nowrap;letter-spacing:.04em;text-transform:uppercase;}
 .pts-cell{font-weight:700;font-size:13.5px;color:var(--navy);text-align:right;white-space:nowrap;}
 .pts-total-row td{font-weight:800;font-size:14px;background:var(--blue-xlt);color:var(--navy);}
@@ -79,18 +79,18 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
   <div class="header-badge">SCM 352 · M08</div>
   <div class="header-text">
     <h1>Gate 2 Quiz — Introduction to Inventory Management</h1>
-    <p>Open-book · Open-notes · 8 questions · 100 points · 90-minute timer · 1 attempt</p>
+    <p>Open-book · Open-notes · 8 questions · 100 points · 75-minute timer · 1 attempt · Auto-graded</p>
   </div>
 </div>
 
 <!-- QUICK STATS ROW -->
 <div class="stats-row">
   <div class="stat-cell"><div class="stat-lbl">Attempts</div><div class="stat-val warn">1 — no retake</div></div>
-  <div class="stat-cell"><div class="stat-lbl">Time limit</div><div class="stat-val warn">90 minutes</div></div>
+  <div class="stat-cell"><div class="stat-lbl">Time limit</div><div class="stat-val warn">75 minutes</div></div>
   <div class="stat-cell"><div class="stat-lbl">Questions</div><div class="stat-val">8 questions</div></div>
   <div class="stat-cell"><div class="stat-lbl">Points</div><div class="stat-val">100 points</div></div>
   <div class="stat-cell"><div class="stat-lbl">Due</div><div class="stat-val">Day 6 · 11:59 PM</div></div>
-  <div class="stat-cell"><div class="stat-lbl">Question types</div><div class="stat-val">Calculation · Essay</div></div>
+  <div class="stat-cell"><div class="stat-lbl">Question types</div><div class="stat-val">Multiple Choice · Fill-in-Blanks</div></div>
 </div>
 
 <div class="pg-body">
@@ -109,7 +109,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
     <div class="alert alert-red">
       <div class="alert-icon">🔴</div>
       <div class="alert-body">
-        <strong>The 90-minute timer starts the moment you click Begin. It does not pause.</strong>
+        <strong>The 75-minute timer starts the moment you click Begin. It does not pause.</strong>
         Do not click Begin until you have scratch paper ready and your notes available. The timer runs even if you close the browser tab.
       </div>
     </div>
@@ -147,14 +147,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
           <tr>
             <td class="q-num">1</td>
             <td><div class="q-topic">Inventory Classification — Multi-Process Context</div><div class="q-sub">Classify raw material, WIP, and finished goods across a production process; explain context-dependence of classification (4 sub-parts)</div></td>
-            <td><span class="type-badge tb-essay">Essay</span></td>
+            <td><span class="type-badge tb-mc">Multiple Choice</span></td>
             <td style="font-size:12px;color:var(--gray-600);">LO8-1</td>
             <td class="pts-cell">10</td>
           </tr>
           <tr>
             <td class="q-num">2</td>
-            <td><div class="q-topic">Six Reasons for Holding Inventory — Applied Scenarios</div><div class="q-sub">Identify the primary reason for each of 5 operational scenarios; explain your selection in one sentence each</div></td>
-            <td><span class="type-badge tb-essay">Essay</span></td>
+            <td><div class="q-topic">Six Reasons for Holding Inventory — Applied Scenarios</div><div class="q-sub">Identify the primary reason for each of 5 operational scenarios (5 independent multiple-choice sub-parts)</div></td>
+            <td><span class="type-badge tb-mc">Multiple Choice</span></td>
             <td style="font-size:12px;color:var(--gray-600);">LO8-2</td>
             <td class="pts-cell">10</td>
           </tr>
@@ -164,7 +164,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
               <div class="q-topic">Days-of-Supply and Inventory Turns — Unit-Based <span class="ver-badge-sm">VERSIONED</span></div>
               <div class="q-sub">Compute DoS and turns from scenario data; recompute after inventory reduction; compare to competitor (4 sub-parts)</div>
             </td>
-            <td><span class="type-badge tb-calc">Calculation</span></td>
+            <td><span class="type-badge tb-fimb">Fill-in-Blanks</span></td>
             <td style="font-size:12px;color:var(--gray-600);">LO8-3</td>
             <td class="pts-cell">14</td>
           </tr>
@@ -174,7 +174,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
               <div class="q-topic">Multi-Period Conversion <span class="ver-badge-sm">VERSIONED</span></div>
               <div class="q-sub">Convert annual turns to weekly and monthly; evaluate a manager's interpretation of days-of-supply (4 sub-parts)</div>
             </td>
-            <td><span class="type-badge tb-calc">Calculation</span></td>
+            <td><span class="type-badge tb-fimb">Fill-in-Blanks</span></td>
             <td style="font-size:12px;color:var(--gray-600);">LO8-3</td>
             <td class="pts-cell">12</td>
           </tr>
@@ -184,14 +184,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
               <div class="q-topic">Financial Statement Turns and Days-of-Supply <span class="ver-badge-sm">VERSIONED</span></div>
               <div class="q-sub">Select correct flow rate (COGS vs. revenue), compute turns and DoS, compare to Table 10.1 benchmark (4 sub-parts)</div>
             </td>
-            <td><span class="type-badge tb-calc">Calculation</span></td>
+            <td><span class="type-badge tb-fimb">Fill-in-Blanks</span></td>
             <td style="font-size:12px;color:var(--gray-600);">LO8-4</td>
             <td class="pts-cell">14</td>
           </tr>
           <tr>
             <td class="q-num">6</td>
             <td><div class="q-topic">Holding Cost Component Analysis — Supplier Comparison</div><div class="q-sub">Calculate annual holding cost %, actual holding cost per unit, and compare two suppliers on holding cost grounds (3 sub-parts)</div></td>
-            <td><span class="type-badge tb-calc">Calculation</span></td>
+            <td><span class="type-badge tb-fimb">Fill-in-Blanks</span></td>
             <td style="font-size:12px;color:var(--gray-600);">LO8-5</td>
             <td class="pts-cell">10</td>
           </tr>
@@ -201,14 +201,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
               <div class="q-topic">Holding Cost per Unit — Turns-Based Calculation <span class="ver-badge-sm">VERSIONED</span></div>
               <div class="q-sub">Compute annual HC, actual HC%, actual HC per unit, and per-unit savings from turns improvement (4 sub-parts)</div>
             </td>
-            <td><span class="type-badge tb-calc">Calculation</span></td>
+            <td><span class="type-badge tb-fimb">Fill-in-Blanks</span></td>
             <td style="font-size:12px;color:var(--gray-600);">LO8-5</td>
             <td class="pts-cell">12</td>
           </tr>
           <tr>
             <td class="q-num">8</td>
             <td><div class="q-topic">Stockout Cost Analysis and Inventory Decision</div><div class="q-sub">Classify stockout incidents by Table 10.3 customer response type; estimate cost of permanent customer loss; recommend inventory policy (4 sub-parts)</div></td>
-            <td><span class="type-badge tb-essay">Essay</span></td>
+            <td><span class="type-badge tb-mc">Multiple Choice</span></td>
             <td style="font-size:12px;color:var(--gray-600);">LO8-6</td>
             <td class="pts-cell">18</td>
           </tr>
@@ -235,7 +235,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
             <li><div class="icon">📚</div>Have Chapter 10 open to Tables 10.1, 10.2, and 10.3 before clicking Begin.</li>
             <li><div class="icon">📝</div>Have scratch paper ready — all calculation questions require intermediate steps before you can type a final answer.</li>
             <li><div class="icon">📋</div>Bring your module notes and lecture slides. Questions 2, 3, and 7 draw directly on concepts from the lecture segments and apps.</li>
-            <li><div class="icon">⏱️</div>The 90-minute timer starts immediately when you click Begin. There is no way to pause or extend it after the quiz opens.</li>
+            <li><div class="icon">⏱️</div>The 75-minute timer starts immediately when you click Begin. There is no way to pause or extend it after the quiz opens.</li>
             <li><div class="icon">🔒</div>Once you click Begin, do not close the browser, refresh the page, or navigate away — Canvas will not recover unsaved work.</li>
           </ul>
         </div>
@@ -247,16 +247,16 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
         </div>
         <div class="inst-card-bd">
           <div class="type-section">
-            <div class="type-section-lbl">Calculation Questions (Q3, Q4, Q5, Q6, Q7)</div>
-            <div class="type-section-body">Work the calculation on scratch paper first. Show your formula, substitute values, and compute the result. Then type your <strong>final answer with units</strong> into Canvas. Answers without shown work receive at most 50% credit even if correct — write your work in the text response field and include your formula and intermediate steps.</div>
+            <div class="type-section-lbl">Fill-in-Blanks Questions (Q3, Q4, Q5, Q6, Q7)</div>
+            <div class="type-section-body">Work each calculation on scratch paper first. When you open a fill-in-blanks question, you will see labeled input boxes — one per sub-part. Type your numeric answer into the correct box. Enter numbers only (no dollar signs or units unless instructed). Canvas auto-grades these answers immediately on submission.</div>
           </div>
           <div class="type-section">
-            <div class="type-section-lbl">Essay Questions (Q1, Q2, Q8)</div>
-            <div class="type-section-body">Every sub-part must be answered. Vague or incomplete answers receive partial or no credit. Use Chapter 10 vocabulary precisely — "raw material," "WIP," "finished goods," the six reason names, and Table 10.3 category names. Restating a question without answering it does not earn credit.</div>
+            <div class="type-section-lbl">Multiple Choice Questions (Q1, Q2, Q8)</div>
+            <div class="type-section-body">Each sub-part is a separate question with 4 options. Read each option carefully — the correct answer is the one that is both accurate <em>and</em> provides the strongest Chapter 10 justification. Options that are partially correct but miss the key concept will not earn credit.</div>
           </div>
           <div class="type-section">
             <div class="type-section-lbl">For versioned questions (Q3, Q4, Q5, Q7)</div>
-            <div class="type-section-body">Use only the numbers shown in your question's scenario data table. Do not import data from another question or from the Case Analysis. Each versioned question is self-contained.</div>
+            <div class="type-section-body">Canvas assigns your data version when the quiz loads. Use only the numbers shown in your question's scenario data table. Do not import data from another question or from the Case Analysis.</div>
           </div>
         </div>
       </div>
@@ -266,20 +266,20 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
 
   <!-- TIME MANAGEMENT GUIDE -->
   <div>
-    <div class="sec-div">Suggested Time Allocation &nbsp;·&nbsp; 90 minutes total</div>
+    <div class="sec-div">Suggested Time Allocation &nbsp;·&nbsp; 75 minutes total</div>
     <div style="margin-top:16px;">
       <table class="time-table">
         <thead><tr><th>Question</th><th>Topic</th><th>Points</th><th style="text-align:right;">Suggested Time</th></tr></thead>
         <tbody>
-          <tr><td><strong>Q1</strong></td><td>Inventory Classification</td><td>10</td><td style="text-align:right;">8 min</td></tr>
-          <tr><td><strong>Q2</strong></td><td>Six Reasons for Inventory</td><td>10</td><td style="text-align:right;">10 min</td></tr>
-          <tr><td><strong>Q3</strong></td><td>Unit-Based Turns (versioned)</td><td>14</td><td style="text-align:right;">13 min</td></tr>
-          <tr><td><strong>Q4</strong></td><td>Multi-Period Conversion (versioned)</td><td>12</td><td style="text-align:right;">11 min</td></tr>
-          <tr><td><strong>Q5</strong></td><td>Financial Statement Turns (versioned)</td><td>14</td><td style="text-align:right;">13 min</td></tr>
-          <tr><td><strong>Q6</strong></td><td>Holding Cost Component Analysis</td><td>10</td><td style="text-align:right;">9 min</td></tr>
-          <tr><td><strong>Q7</strong></td><td>Holding Cost per Unit (versioned)</td><td>12</td><td style="text-align:right;">11 min</td></tr>
-          <tr><td><strong>Q8</strong></td><td>Stockout Cost Analysis</td><td>18</td><td style="text-align:right;">15 min</td></tr>
-          <tr class="time-row-total"><td colspan="3"><strong>Total (+ 5-min review buffer)</strong></td><td style="text-align:right;"><strong>90 min</strong></td></tr>
+          <tr><td><strong>Q1</strong></td><td>Inventory Classification (4 MC sub-parts)</td><td>10</td><td style="text-align:right;">6 min</td></tr>
+          <tr><td><strong>Q2</strong></td><td>Six Reasons for Inventory (5 MC sub-parts)</td><td>10</td><td style="text-align:right;">6 min</td></tr>
+          <tr><td><strong>Q3</strong></td><td>Unit-Based Turns (versioned, fill-in-blanks)</td><td>14</td><td style="text-align:right;">12 min</td></tr>
+          <tr><td><strong>Q4</strong></td><td>Multi-Period Conversion (versioned, fill-in-blanks)</td><td>12</td><td style="text-align:right;">10 min</td></tr>
+          <tr><td><strong>Q5</strong></td><td>Financial Statement Turns (versioned, fill-in-blanks)</td><td>14</td><td style="text-align:right;">11 min</td></tr>
+          <tr><td><strong>Q6</strong></td><td>Holding Cost Component Analysis (fill-in-blanks)</td><td>10</td><td style="text-align:right;">9 min</td></tr>
+          <tr><td><strong>Q7</strong></td><td>Holding Cost per Unit (versioned, fill-in-blanks)</td><td>12</td><td style="text-align:right;">9 min</td></tr>
+          <tr><td><strong>Q8</strong></td><td>Stockout Cost Analysis (4 MC sub-parts)</td><td>18</td><td style="text-align:right;">7 min</td></tr>
+          <tr class="time-row-total"><td colspan="3"><strong>Total (+ 5-min review buffer)</strong></td><td style="text-align:right;"><strong>75 min</strong></td></tr>
         </tbody>
       </table>
       <p style="font-size:12px;color:var(--gray-400);margin-top:6px;padding-left:4px;">Recommendation: Work questions 3–7 first if you are confident in the calculation framework — these have definite right answers and earn the most points per minute of time spent.</p>
@@ -289,9 +289,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
   <!-- GRADING NOTE -->
   <div class="grading-card">
     <h3>Grading and Technical Issues</h3>
-    <div class="grading-row"><div class="grading-key">Autograded</div><div>Numeric calculation sub-parts (where you enter a number)</div></div>
-    <div class="grading-row"><div class="grading-key">Manually graded</div><div>All essay questions (Q1, Q2, Q8) and explanation sub-parts within calculation questions — reviewed by instructor within 5 business days of the due date</div></div>
-    <div class="grading-row"><div class="grading-key">Partial credit</div><div>Available on all questions. Calculation questions with shown intermediate work receive credit for correct method even when the final answer contains arithmetic errors.</div></div>
+    <div class="grading-row"><div class="grading-key">Fully auto-graded</div><div>All questions — multiple choice and fill-in-blanks. Grades appear in Canvas immediately after submission.</div></div>
+    <div class="grading-row"><div class="grading-key">Fill-in-blanks</div><div>Multiple accepted answer variants are programmed for each numeric blank. Common rounding variants (e.g., 30.4 vs. 30.42) are accepted. If your answer is rejected but you believe it is correct, contact the instructor with your scratch work.</div></div>
+    <div class="grading-row"><div class="grading-key">Multiple choice</div><div>One correct answer per sub-part. No partial credit. Each option is written so that only the fully-correct explanation earns the point — read all options before selecting.</div></div>
     <div class="grading-row"><div class="grading-key">Technical issues</div><div>If Canvas freezes or you are disconnected mid-quiz, contact your instructor immediately with a screenshot. Issues reported more than 24 hours after the quiz window closes will not be accommodated.</div></div>
   </div>
 

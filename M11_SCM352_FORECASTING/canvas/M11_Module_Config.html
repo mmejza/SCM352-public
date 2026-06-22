@@ -110,24 +110,26 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
           <div>
             <div style="font-size:11px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--gray-400);margin-bottom:8px;">Files to Have Ready</div>
             <div class="checklist">
-              <div class="check-item"><input type="checkbox"><label><strong>Gates QTI zip</strong> — <code>gates/SCM352_M11_Gates_QTI.zip</code></label><span class="check-tag tag-file">FILE</span></div>
+              <div class="check-item"><input type="checkbox"><label><strong>Gate 2 QTI zip</strong> — <code>gates/M11_Gate2_AutoGraded_QTI_1_2.zip</code></label><span class="check-tag tag-file">FILE</span></div>
               <div class="check-item"><input type="checkbox"><label><strong>App 1 HTML</strong> — <code>apps/M11_Forecasting_Method_Workbench.html</code></label><span class="check-tag tag-file">FILE</span></div>
               <div class="check-item"><input type="checkbox"><label><strong>App 2 HTML</strong> — <code>apps/M11_MAD_Bias_Calculator.html</code></label><span class="check-tag tag-file">FILE</span></div>
               <div class="check-item"><input type="checkbox"><label><strong>App 3 HTML (optional)</strong> — <code>apps/M11_Seasonal_Forecast_Builder.html</code> — enrichment only, not required</label><span class="check-tag tag-file">FILE</span></div>
               <div class="check-item"><input type="checkbox"><label><strong>Slide viewer</strong> — <code>viewer/</code> (index.html + slides/)</label><span class="check-tag tag-file">FILE</span></div>
               <div class="check-item"><input type="checkbox"><label><strong>Lecture videos</strong> — recorded + captioned from <code>video/</code> scripts</label><span class="check-tag tag-file">FILE</span></div>
-              <div class="check-item"><input type="checkbox"><label><strong>Case PDF</strong> — exported from <code>assessments/M11_Case.md</code></label><span class="check-tag tag-file">FILE</span></div>
+              <div class="check-item"><input type="checkbox"><label><strong>Case QTI zip</strong> — <code>assessments/M11_Case_AutoGraded_QTI_1_2.zip</code></label><span class="check-tag tag-file">FILE</span></div>
               <div class="check-item"><input type="checkbox"><label><strong>Publisher reading URL</strong> — Chapter 15 link</label><span class="check-tag tag-file">FILE</span></div>
             </div>
           </div>
           <div>
             <div style="font-size:11px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--gray-400);margin-bottom:8px;">Canvas Actions</div>
             <div class="checklist">
-              <div class="check-item"><input type="checkbox"><label><strong>Import Gates QTI</strong> — Course Settings → Import → QTI .zip</label><span class="check-tag tag-canvas">CANVAS</span></div>
+              <div class="check-item"><input type="checkbox"><label><strong>Import Gate 2 QTI</strong> — Course Settings → Import → QTI .zip (<code>M11_Gate2_AutoGraded_QTI_1_2.zip</code>)</label><span class="check-tag tag-canvas">CANVAS</span></div>
+              <div class="check-item"><input type="checkbox"><label><strong>Import Case QTI</strong> — Course Settings → Import → QTI .zip (<code>M11_Case_AutoGraded_QTI_1_2.zip</code>)</label><span class="check-tag tag-canvas">CANVAS</span></div>
               <div class="check-item"><input type="checkbox"><label><strong>Upload app files</strong> — Files → M11_Apps folder</label><span class="check-tag tag-canvas">CANVAS</span></div>
               <div class="check-item"><input type="checkbox"><label><strong>Upload slide viewer</strong> — Files → M11_Viewer folder</label><span class="check-tag tag-canvas">CANVAS</span></div>
               <div class="check-item"><input type="checkbox"><label><strong>Upload lecture videos</strong> — Canvas Media → M11 folder + captions</label><span class="check-tag tag-canvas">CANVAS</span></div>
-              <div class="check-item"><input type="checkbox"><label><strong>Configure Gate 2 versions</strong> — Question Groups for Q1 and Q2 (V1–V4)</label><span class="check-tag tag-config">CONFIG</span></div>
+              <div class="check-item"><input type="checkbox"><label><strong>Verify Gate 2 question groups</strong> — Q1, Q2, Q3, Q6 each have 4 versions (QTI imports these automatically); confirm 75-min timer</label><span class="check-tag tag-config">CONFIG</span></div>
+              <div class="check-item"><input type="checkbox"><label><strong>Verify Case question group</strong> — 1 versioned bundle with 4 versions (A–D); confirm 75-min timer</label><span class="check-tag tag-config">CONFIG</span></div>
               <div class="check-item"><input type="checkbox"><label><strong>Create Canvas Module</strong> — name + enable sequential</label><span class="check-tag tag-canvas">CANVAS</span></div>
               <div class="check-item"><input type="checkbox"><label><strong>Verify Gate 1 lock</strong> — test in Student View</label><span class="check-tag tag-verify">VERIFY</span></div>
             </div>
@@ -164,8 +166,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
           <tr class="gated"><td><div class="item-num n-lock">8</div></td><td><strong>App 2: MAD and Bias Calculator</strong></td><td><span class="type-pill tp-tool">Ext. Tool</span></td><td>—</td><td>After Gate 1</td><td>—</td><td><span class="lock-note">🔒 Must view #7</span></td></tr>
           <tr class="gated"><td><div class="item-num n-lock">9</div></td><td><strong>App 3: Seasonal Forecast Builder (Optional)</strong></td><td><span class="type-pill tp-tool">Ext. Tool</span></td><td>—</td><td>After Gate 1</td><td>—</td><td><span class="lock-note">🔒 Must view #8 · Optional enrichment — not required</span></td></tr>
           <tr class="gated"><td><div class="item-num n-lock">10</div></td><td><strong>Discussion: Forecasting Failures and Fixes</strong></td><td><span class="type-pill tp-disc">Discussion</span></td><td>30</td><td>Following module close</td><td>—</td><td><span class="lock-note">🔒 Must view #8</span></td></tr>
-          <tr class="gated"><td><div class="item-num n-lock">11</div></td><td><strong>Gate 2 Quiz</strong></td><td><span class="type-pill tp-quiz">Quiz</span></td><td>100</td><td>Due Day 6<br>11:59 PM</td><td>90 min<br>1 attempt</td><td><span class="lock-note">🔒 Must post #10</span></td></tr>
-          <tr class="gated"><td><div class="item-num n-lock">12</div></td><td><strong>Case Analysis M11</strong></td><td><span class="type-pill tp-assign">Assignment</span></td><td>100</td><td>Due Day 6<br>11:59 PM</td><td>—</td><td><span class="lock-note">🔒 Must submit #11</span></td></tr>
+          <tr class="gated"><td><div class="item-num n-lock">11</div></td><td><strong>Gate 2 Quiz</strong></td><td><span class="type-pill tp-quiz">Quiz</span></td><td>100</td><td>Due Day 6<br>11:59 PM</td><td>75 min<br>1 attempt<br>Auto-graded</td><td><span class="lock-note">🔒 Must post #10</span></td></tr>
+          <tr class="gated"><td><div class="item-num n-lock">12</div></td><td><strong>Case Analysis M11</strong></td><td><span class="type-pill tp-quiz">Quiz</span></td><td>100</td><td>Due Day 6<br>11:59 PM</td><td>75 min<br>1 attempt<br>Auto-graded</td><td><span class="lock-note">🔒 Must submit #11</span></td></tr>
         </tbody>
       </table>
     </div>
@@ -208,9 +210,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
         <div class="spec-bd">
           <div class="spec-row"><span class="spec-key">Points</span><span class="spec-val">100</span></div>
           <div class="spec-row"><span class="spec-key">Attempts</span><span class="spec-val" style="color:var(--red);font-weight:800;">1 only</span></div>
-          <div class="spec-row"><span class="spec-key">Time limit</span><span class="spec-val" style="color:var(--red);font-weight:800;">90 minutes</span></div>
+          <div class="spec-row"><span class="spec-key">Time limit</span><span class="spec-val" style="color:var(--red);font-weight:800;">75 minutes</span></div>
+          <div class="spec-row"><span class="spec-key">Grading</span><span class="spec-val">Auto-graded (FIMB + MC)</span></div>
           <div class="spec-row"><span class="spec-key">Due</span><span class="spec-val">Day 6 · 11:59 PM</span></div>
-          <div class="spec-row"><span class="spec-key">Versions</span><span class="spec-val">V1–V4 for Q1 + Q2</span></div>
+          <div class="spec-row"><span class="spec-key">Versions</span><span class="spec-val">V1–V4 for Q1, Q2, Q3, Q6 (17 items total)</span></div>
         </div>
       </div>
 
@@ -219,23 +222,23 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
 
   <!-- GATE 2 VERSION TABLE -->
   <div>
-    <div class="sec-heading">Step 3 — Gate 2 Version Reference (Q1 and Q2)</div>
+    <div class="sec-heading">Step 3 — Gate 2 Version Reference (Q1, Q2, Q3, Q6)</div>
     <div class="alert alert-blue" style="margin-top:12px;">
       <div class="alert-icon">ℹ️</div>
-      <div class="alert-body"><strong>Canvas question group configuration:</strong> Q1 (Moving Average) and Q2 (Exponential Smoothing) are parameterized as Canvas question groups with 4 versions each (V1–V4). Canvas auto-assigns one version per student at quiz load. Q3, Q4, Q5, Q6, Q7, Q8 are single fixed versions.</div>
+      <div class="alert-body"><strong>Auto-graded QTI — question groups are embedded in the QTI zip.</strong> Q1, Q2, Q3, and Q6 are FIMB question groups, each with 4 versions. Canvas auto-assigns 1-of-4 per group per student. Q3 and Q6 version draws are independent from Q1/Q2 — each table is self-contained. Q3d, Q4a–c, Q5a–b, Q6c, Q7a–c, Q8a–c are fixed MC. QTI file: <code>gates/M11_Gate2_AutoGraded_QTI_1_2.zip</code></div>
     </div>
     <div style="border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;margin-top:14px;background:white;">
       <table class="ver-table">
-        <thead><tr><th>Version</th><th>Q1 Industry Context</th><th>Q1 Demand Series</th><th>Q1 Windows</th><th>Q2 Alpha / F₁</th><th>Q2 Product Scale</th></tr></thead>
+        <thead><tr><th>Version</th><th>Q1 Product</th><th>Q1 Demand Series</th><th>Q1 Windows</th><th>Q2 Alpha / F₁</th><th>Q3/Q6 Scale</th></tr></thead>
         <tbody>
-          <tr class="ver-a"><td><strong>V1 (A)</strong></td><td>Riverside Health System — surgical glove boxes</td><td>120,130,115,125,132,128,140,135 (N=8, Wk 9 actual=138)</td><td>3-week vs. 5-week</td><td>α=0.30 / F₁=500</td><td>~500 units/week</td></tr>
-          <tr class="ver-b"><td><strong>V2 (B)</strong></td><td>Regional hospital pharmacy — IV solution bags</td><td>85,90,88,92,95,91,98,96,100 (N=9, Wk 10 actual=102)</td><td>4-week vs. 6-week</td><td>α=0.20 / F₁=800</td><td>~800 units/week</td></tr>
-          <tr class="ver-c"><td><strong>V3 (C)</strong></td><td>Hospital lab — reagent kit units</td><td>200,195,210,205,198,215,208,220 (N=8, Wk 9 actual=225)</td><td>3-week vs. 5-week</td><td>α=0.40 / F₁=150</td><td>~150 units/week</td></tr>
-          <tr class="ver-d"><td><strong>V4 (D)</strong></td><td>Health system — orthopedic supply units</td><td>310,295,320,305,315,330,318,340,328,345 (N=10, Wk 11 actual=350)</td><td>4-week vs. 8-week</td><td>α=0.25 / F₁=1200</td><td>~1200 units/week</td></tr>
+          <tr class="ver-a"><td><strong>V-A</strong></td><td>Surgical glove boxes — Riverside General</td><td>120,130,115,125,132,128,140,135 (N=8, Wk 9 actual=138)</td><td>3-wk vs. 5-wk</td><td>α=0.30 / F₁=500</td><td>~500 units</td></tr>
+          <tr class="ver-b"><td><strong>V-B</strong></td><td>IV solution bags — Memorial Medical</td><td>85,90,88,92,95,91,98,96,100 (N=9, Wk 10 actual=102)</td><td>4-wk vs. 6-wk</td><td>α=0.20 / F₁=800</td><td>~800 units</td></tr>
+          <tr class="ver-c"><td><strong>V-C</strong></td><td>Sterile dressing kits — Central Valley Clinic</td><td>200,195,210,205,198,215,208,220 (N=8, Wk 9 actual=225)</td><td>3-wk vs. 5-wk</td><td>α=0.40 / F₁=150</td><td>~150 units</td></tr>
+          <tr class="ver-d"><td><strong>V-D</strong></td><td>Orthopedic supply units — University Hospital</td><td>310,295,320,305,315,330,318,340,328,345 (N=10, Wk 11 actual=350)</td><td>4-wk vs. 8-wk</td><td>α=0.25 / F₁=1200</td><td>~1200 units</td></tr>
         </tbody>
       </table>
     </div>
-    <p style="font-size:11.5px;color:var(--gray-400);margin-top:6px;padding-left:4px;">Gate 2 Q2 uses the original architecture F₁ values (500/800/150/1200). The Case Analysis M11 uses corrected F₁=D₁ values — these are different assessments with different parameters. Do not cross-apply.</p>
+    <p style="font-size:11.5px;color:var(--gray-400);margin-top:6px;padding-left:4px;">Gate 2 Q2 F₁ values (500/800/150/1200) are independent given values — not D₁. The Case Analysis uses F₁=D₁ by design — these are different assessments with different parameters. Answer key and validation: <code>gates/M11_Gate2_ANSWER_KEY_AND_REVIEW_NOTES.md</code>.</p>
   </div>
 
   <!-- MONITORING -->
@@ -260,13 +263,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
         <thead><tr><th>Assessment</th><th>Points</th><th>Autograded?</th><th>Est. Time / Student</th><th>Notes</th></tr></thead>
         <tbody>
           <tr><td><strong>Gate 1</strong></td><td>0</td><td style="color:var(--green);font-weight:700;">Yes</td><td>0 min</td><td>Monitor completion rates only</td></tr>
-          <tr><td><strong>Gate 2 Q1, Q2</strong></td><td>26 pts combined</td><td style="color:var(--green);font-weight:700;">Yes — numeric</td><td>~2 min</td><td>Verify window bounds for Q1; verify ES chain at F₂ and F₅ for Q2</td></tr>
-          <tr><td><strong>Gate 2 Q3</strong></td><td>14 pts</td><td style="color:var(--green);font-weight:700;">Partial — check bias sign</td><td>~4 min</td><td>Verify MAD denominator; verify signed errors for bias (not absolute)</td></tr>
-          <tr><td><strong>Gate 2 Q4, Q5</strong></td><td>20 pts combined</td><td style="color:var(--red);font-weight:700;">No — rubric</td><td>~5 min</td><td>Q4(c) requires acknowledgment that MA/ES cannot handle seasonality — accept any answer noting this structural limitation</td></tr>
-          <tr><td><strong>Gate 2 Q6</strong></td><td>14 pts</td><td style="color:var(--green);font-weight:700;">Partial — check denominator</td><td>~5 min</td><td>MAPE denominator must be actual demand (not forecast); award partial for correct per-period APE even if summary average is wrong</td></tr>
-          <tr><td><strong>Gate 2 Q7, Q8</strong></td><td>26 pts combined</td><td style="color:var(--red);font-weight:700;">No — rubric</td><td>~8 min</td><td>Q7(b) requires naming anchoring AND structural trigger; Q8 bias sign interpretation is often reversed</td></tr>
+          <tr><td><strong>Gate 2 (all items)</strong></td><td>100 pts</td><td style="color:var(--green);font-weight:700;">Yes — fully auto-graded</td><td>~0 min</td><td>Scores available immediately. Review score distribution after close — flag students who enter "underforecasting" (missing hyphen) or who got 0 on a FIMB item for possible regrade of accepted variant.</td></tr>
+          <tr><td><strong>Case Analysis (all items)</strong></td><td>100 pts</td><td style="color:var(--green);font-weight:700;">Yes — fully auto-graded</td><td>~0 min</td><td>Scores available immediately. V-D "better" answer is "ES" (not "managers") — the only version where ES outperforms combined judgment. Check any student who gets Part 4c blank wrong in V-D.</td></tr>
           <tr><td><strong>Discussion</strong></td><td>30</td><td style="color:var(--red);font-weight:700;">No — rubric</td><td>3–5 min</td><td>Initial post only; see M11_Discussion_Rubric.html</td></tr>
-          <tr><td><strong>Case Analysis</strong></td><td>100</td><td style="color:var(--red);font-weight:700;">No — rubric</td><td>8–12 min</td><td>Version-specific Parts 1–2; see M11_Case_Rubric.html; propagation rule applies</td></tr>
         </tbody>
       </table>
     </div>

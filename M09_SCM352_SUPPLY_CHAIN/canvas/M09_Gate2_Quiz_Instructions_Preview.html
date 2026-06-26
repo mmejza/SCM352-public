@@ -61,7 +61,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
 </head>
 <body>
 
-<div class="preview-banner">PREVIEW — Question Breakdown and Before You Begin card removed (M09 has no Formula Quick Reference)</div>
 
 <div class="pg-header">
   <div class="header-badge">SCM 352 · M09</div>
@@ -73,8 +72,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
 </div>
 
 <div class="stats-strip">
-  <div class="stat-cell"><div class="stat-label">Attempts</div><div class="stat-val">1 — no retakes</div></div>
-  <div class="stat-cell"><div class="stat-label">Time limit</div><div class="stat-val">90 minutes</div></div>
+  <div class="stat-cell"><div class="stat-label">Attempts</div><div class="stat-val warn">1 — no retakes</div></div>
+  <div class="stat-cell"><div class="stat-label">Time limit</div><div class="stat-val warn">90 minutes</div></div>
   <div class="stat-cell"><div class="stat-label">Questions</div><div class="stat-val">21 per student (27 in bank)</div></div>
   <div class="stat-cell"><div class="stat-label">Question types</div><div class="stat-val">Multiple Choice · Fill-in-Blank</div></div>
   <div class="stat-cell"><div class="stat-label">Sources allowed</div><div class="stat-val">Chapter 11 · Lectures · Apps · Slides</div></div>
@@ -91,6 +90,42 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
     </div>
   </div>
 
+  <!-- KEY RULES -->
+  <div style="display:flex;flex-direction:column;gap:10px;">
+    <div class="alert alert-red">
+      <div class="alert-icon">🔴</div>
+      <div class="alert-body">
+        <strong>Do not refresh the page or navigate away from a question mid-entry.</strong>
+        Canvas does not save a partially entered answer when you leave a question field. Complete all calculations on scratch paper first, then type your final answers.
+      </div>
+    </div>
+    <div class="alert alert-blue">
+      <div class="alert-icon">📖</div>
+      <div class="alert-body">
+        <strong>This quiz is open-book and open-notes.</strong>
+        You may use Chapter 11, your personal notes, the lecture slides, and any module materials. AI tools are not permitted — see the Academic Integrity section below.
+      </div>
+    </div>
+  </div>
+
+  <!-- ANSWER FORMAT RULES -->
+  <div>
+    <div class="sec-heading">Answer Format — Your Responsibility</div>
+    <div class="alert alert-gold" style="margin-top:14px;">
+      <div class="alert-icon">⚠️</div>
+      <div class="alert-body">
+        <strong>Canvas matches fill-in-blank answers exactly — format errors score as wrong.</strong>
+        It is your responsibility to enter every blank in the accepted format before submitting. This applies to all fill-in-blank fields, including FIMB items. There are no regrade requests for format mismatches.
+        <div style="margin-top:8px;display:flex;flex-direction:column;gap:5px;font-size:13px;line-height:1.55;">
+          <div>→ <strong>No units or labels:</strong> enter <em>14.6</em>, not "14.6 days" or "14.6 units"</div>
+          <div>→ <strong>Decimal places:</strong> round to 2 decimal places unless the question specifies otherwise — do not add trailing zeros (e.g., enter <em>14.60</em>, not "14.600")</div>
+          <div>→ <strong>Numbers only:</strong> no parenthetical notes, abbreviations, or explanatory text in numeric fields</div>
+          <div>→ <strong>Text blanks:</strong> use the exact phrase shown — "above", "at", or "below" — no variations</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- HOW TO ANSWER -->
   <div>
     <div class="sec-heading">How to Answer Each Question Type</div>
@@ -100,10 +135,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
           <h3 style="color:var(--gold-dark);">Answering Each Question Type</h3>
         </div>
         <ul class="instr-list">
-          <li><strong>Fill-in-Blank (FIMB) questions (Q1, Q2, Q3, Q5, Q6):</strong> Type the answer directly into the blank field. Use the exact Chapter 11 term where prompted. Numbers: match the rounding shown in your data (e.g., "14.6" not "14.60").</li>
-          <li><strong>Multiple Choice (Q4, Q7, Q8 + MC sub-parts):</strong> Select one answer. Options are written to distinguish precise Chapter 11 reasoning from surface-level vocabulary — read all four before choosing.</li>
-          <li><strong>Q3 note:</strong> "Upstream" means closer to raw materials, farther from the customer. A decoupling point that shifts upstream is moving away from the customer. Type "above", "at", or "below" for the benchmark comparison blank in Q1.</li>
-          <li><strong>This quiz is auto-graded.</strong> Your score is available immediately after submission. Blanks are case-insensitive but must match accepted spellings — do not use abbreviations not shown in the textbook.</li>
+          <li><strong>Fill-in-Blank (FIMB) questions:</strong> Type the answer directly into the blank field. Use the exact Chapter 11 term where prompted. </li>
+          <li><strong>Multiple Choice:</strong>   Select one answer. </li>
         </ul>
       </div>
     </div>
@@ -115,7 +148,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
     <div style="background:white;border:1px solid var(--gray-200);border-radius:12px;padding:0 0 4px;margin-top:14px;">
       <div class="timing-row" style="padding:12px 16px;">
         <div class="timing-label tl-grading">Grading</div>
-        <div>This quiz is <strong>auto-graded</strong> — your score appears immediately after submission. Fill-in-Blank blanks accept multiple answer variants; if your answer is correct but was not accepted by Canvas, contact your instructor with a screenshot. <strong>Some items are marked [DRAFT — REVIEW]; the instructor may apply grade corrections within 5 business days.</strong></div>
+        <div>This quiz is <strong>auto-graded</strong> — your score appears immediately after submission. </div>
       </div>
       <div class="timing-row" style="padding:12px 16px;">
         <div class="timing-label tl-contact">Technical issues</div>

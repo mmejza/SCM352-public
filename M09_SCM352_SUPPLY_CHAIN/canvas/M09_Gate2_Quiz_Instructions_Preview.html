@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gate 2 Quiz — Supply Chain Management — SCM 352 M09 (Preview: no Question Breakdown)</title>
+<style>
+:root {
+  --navy:#1a3a5c;--blue:#2563a8;--blue-lt:#dbeafe;--blue-xlt:#eff6ff;--blue-bdr:#bfdbfe;
+  --gold:#f59e0b;--gold-lt:#fffbeb;--gold-bdr:#fde68a;--gold-dark:#92400e;
+  --green:#16a34a;--green-lt:#f0fdf4;--green-bdr:#bbf7d0;
+  --red:#dc2626;--red-lt:#fef2f2;--red-bdr:#fecaca;
+  --amber:#d97706;--amber-lt:#fffbeb;--amber-bdr:#fde68a;
+  --purple:#7c3aed;--purple-lt:#faf5ff;--purple-bdr:#ddd6fe;
+  --teal:#0891b2;--teal-lt:#f0fdfe;--teal-bdr:#a5f3fc;
+  --gray-50:#f9fafb;--gray-100:#f3f4f6;--gray-200:#e5e7eb;
+  --gray-300:#d1d5db;--gray-400:#9ca3af;--gray-600:#4b5563;
+  --gray-700:#374151;--gray-800:#1f2937;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--gray-50);color:var(--gray-800);font-size:14px;line-height:1.6;}
+.pg-header{background:var(--navy);color:white;padding:20px 28px;display:flex;align-items:flex-start;gap:14px;}
+.header-badge{background:var(--gold);color:var(--navy);font-weight:700;font-size:11px;padding:3px 9px;border-radius:4px;letter-spacing:.05em;text-transform:uppercase;white-space:nowrap;flex-shrink:0;margin-top:2px;}
+.header-text h1{font-size:20px;font-weight:700;margin-bottom:4px;}
+.header-text p{font-size:13px;color:rgba(255,255,255,.7);}
+.header-right{margin-left:auto;text-align:right;font-size:12px;color:rgba(255,255,255,.55);line-height:1.7;flex-shrink:0;}
+.stats-strip{background:white;border-bottom:2px solid var(--gray-200);display:flex;flex-wrap:wrap;gap:0;}
+.stat-cell{padding:12px 20px;border-right:1px solid var(--gray-200);flex-shrink:0;}
+.stat-cell:last-child{border-right:none;}
+.stat-label{font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--gray-400);margin-bottom:3px;}
+.stat-val{font-size:13px;font-weight:700;color:var(--navy);}
+.pg-body{max-width:860px;margin:0 auto;padding:28px 22px 60px;display:flex;flex-direction:column;gap:24px;}
+.sec-heading{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--gray-400);padding-bottom:10px;border-bottom:1px solid var(--gray-200);margin-bottom:-4px;}
+.alert{border-radius:10px;padding:13px 16px;font-size:13.5px;line-height:1.65;display:flex;gap:11px;align-items:flex-start;}
+.alert-icon{font-size:18px;flex-shrink:0;margin-top:1px;}
+.alert-body{flex:1;}
+.alert-body strong{display:block;margin-bottom:4px;}
+.alert-gold{background:var(--gold-lt);border:1.5px solid var(--gold-bdr);}
+.alert-blue{background:var(--blue-xlt);border:1.5px solid var(--blue-bdr);}
+.alert-red{background:var(--red-lt);border:1.5px solid var(--red-bdr);}
+.instr-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+@media(max-width:640px){.instr-grid{grid-template-columns:1fr;}}
+.instr-card{background:white;border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;}
+.instr-card-hd{padding:13px 16px;border-bottom:1px solid var(--gray-200);}
+.instr-card-hd h3{font-size:13px;font-weight:700;color:var(--navy);}
+.instr-list{list-style:none;padding:14px 16px;display:flex;flex-direction:column;gap:8px;}
+.instr-list li{display:flex;gap:9px;font-size:13px;line-height:1.55;color:var(--gray-700);}
+.instr-list li::before{content:'→';color:var(--gold);font-weight:700;flex-shrink:0;margin-top:1px;}
+.timing-row{display:flex;gap:14px;padding:12px 0;border-bottom:1px solid var(--gray-100);font-size:13px;line-height:1.55;color:var(--gray-700);}
+.timing-row:last-child{border-bottom:none;}
+.timing-label{font-size:11px;font-weight:700;padding:3px 9px;border-radius:100px;white-space:nowrap;align-self:flex-start;margin-top:1px;flex-shrink:0;}
+.tl-grading{background:var(--blue-xlt);color:var(--blue);border:1px solid var(--blue-bdr);}
+.tl-contact{background:var(--gray-100);color:var(--gray-600);}
+.integrity-footer{background:var(--navy);border-radius:12px;padding:20px 24px;color:white;}
+.integrity-footer h3{font-size:14px;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+.integrity-footer p{font-size:13px;line-height:1.65;color:rgba(255,255,255,.8);}
+.integrity-footer strong{color:white;}
+/* Preview banner */
+.preview-banner{background:#4a1d96;color:white;padding:10px 22px;font-size:12px;font-weight:600;letter-spacing:.04em;text-align:center;}
+</style>
+</head>
+<body>
+
+<div class="preview-banner">PREVIEW — Question Breakdown and Before You Begin card removed (M09 has no Formula Quick Reference)</div>
+
+<div class="pg-header">
+  <div class="header-badge">SCM 352 · M09</div>
+  <div class="header-text">
+    <h1>Gate 2 Quiz — Supply Chain Management</h1>
+    <p>Module 9 · Chapter 11 + Lecture + Apps Synthesis · Open-book, open-notes</p>
+  </div>
+  <div class="header-right">100 points<br>1 attempt · 90 min</div>
+</div>
+
+<div class="stats-strip">
+  <div class="stat-cell"><div class="stat-label">Attempts</div><div class="stat-val">1 — no retakes</div></div>
+  <div class="stat-cell"><div class="stat-label">Time limit</div><div class="stat-val">90 minutes</div></div>
+  <div class="stat-cell"><div class="stat-label">Questions</div><div class="stat-val">21 per student (27 in bank)</div></div>
+  <div class="stat-cell"><div class="stat-label">Question types</div><div class="stat-val">Multiple Choice · Fill-in-Blank</div></div>
+  <div class="stat-cell"><div class="stat-label">Sources allowed</div><div class="stat-val">Chapter 11 · Lectures · Apps · Slides</div></div>
+</div>
+
+<div class="pg-body">
+
+  <!-- VERSION ASSIGNMENT CALLOUT -->
+  <div class="alert alert-gold">
+    <div class="alert-icon">⚠️</div>
+    <div class="alert-body">
+      <strong>Version Assignment — Questions 1 and 3 are parameterized.</strong>
+      Both questions will display a scenario and data table specific to your version. Your version is assigned automatically by Canvas when the quiz loads — you do not need to look it up. Answer using the scenario and numbers displayed for you; do not seek out or use a different version's numbers. This quiz is <strong>auto-graded</strong> — you will see your score immediately after submission.
+    </div>
+  </div>
+
+  <!-- HOW TO ANSWER -->
+  <div>
+    <div class="sec-heading">How to Answer Each Question Type</div>
+    <div style="margin-top:14px;">
+      <div class="instr-card">
+        <div class="instr-card-hd" style="background:var(--gold-lt);border-color:var(--gold-bdr);">
+          <h3 style="color:var(--gold-dark);">Answering Each Question Type</h3>
+        </div>
+        <ul class="instr-list">
+          <li><strong>Fill-in-Blank (FIMB) questions (Q1, Q2, Q3, Q5, Q6):</strong> Type the answer directly into the blank field. Use the exact Chapter 11 term where prompted. Numbers: match the rounding shown in your data (e.g., "14.6" not "14.60").</li>
+          <li><strong>Multiple Choice (Q4, Q7, Q8 + MC sub-parts):</strong> Select one answer. Options are written to distinguish precise Chapter 11 reasoning from surface-level vocabulary — read all four before choosing.</li>
+          <li><strong>Q3 note:</strong> "Upstream" means closer to raw materials, farther from the customer. A decoupling point that shifts upstream is moving away from the customer. Type "above", "at", or "below" for the benchmark comparison blank in Q1.</li>
+          <li><strong>This quiz is auto-graded.</strong> Your score is available immediately after submission. Blanks are case-insensitive but must match accepted spellings — do not use abbreviations not shown in the textbook.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- GRADING AND TIMING NOTE -->
+  <div>
+    <div class="sec-heading">Grading and Timing</div>
+    <div style="background:white;border:1px solid var(--gray-200);border-radius:12px;padding:0 0 4px;margin-top:14px;">
+      <div class="timing-row" style="padding:12px 16px;">
+        <div class="timing-label tl-grading">Grading</div>
+        <div>This quiz is <strong>auto-graded</strong> — your score appears immediately after submission. Fill-in-Blank blanks accept multiple answer variants; if your answer is correct but was not accepted by Canvas, contact your instructor with a screenshot. <strong>Some items are marked [DRAFT — REVIEW]; the instructor may apply grade corrections within 5 business days.</strong></div>
+      </div>
+      <div class="timing-row" style="padding:12px 16px;">
+        <div class="timing-label tl-contact">Technical issues</div>
+        <div>If Canvas freezes or you lose your connection during the quiz, <strong>do not refresh.</strong> Contact your instructor immediately with a screenshot showing your elapsed time and question position. Do not re-enter the quiz without instructor confirmation.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ACADEMIC INTEGRITY FOOTER -->
+  <div class="integrity-footer">
+    <h3>🔒 Academic Integrity</h3>
+    <p>This quiz is open-book and open-notes. You may use your personal notes, slides, and textbook. You may <strong>not</strong> communicate with other students, share question content, or use AI tools to generate answers. Violations are subject to university academic dishonesty policy.</p>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Discussion M13 — Projects That Went Wrong — SCM 352</title>
+<style>
+:root{--navy:#1a3a5c;--blue:#2563a8;--blue-lt:#dbeafe;--blue-xlt:#eff6ff;--blue-bdr:#bfdbfe;--gold:#f59e0b;--gold-lt:#fffbeb;--gold-bdr:#fde68a;--gold-dark:#92400e;--green:#16a34a;--green-lt:#f0fdf4;--green-bdr:#bbf7d0;--red:#dc2626;--red-lt:#fef2f2;--red-bdr:#fecaca;--gray-50:#f9fafb;--gray-100:#f3f4f6;--gray-200:#e5e7eb;--gray-300:#d1d5db;--gray-400:#9ca3af;--gray-600:#4b5563;--gray-700:#374151;--gray-800:#1f2937;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--gray-50);color:var(--gray-800);font-size:14px;line-height:1.6;}
+.pg-header{background:linear-gradient(135deg,#1a3a5c 0%,#2a4f77 100%);color:white;padding:24px 28px 20px;}
+.header-eyebrow{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
+.pg-header h1{font-size:22px;font-weight:700;line-height:1.2;margin-bottom:8px;}
+.pg-header p{font-size:13px;color:rgba(255,255,255,.7);max-width:680px;line-height:1.55;}
+.stats-strip{background:white;border-bottom:2px solid var(--gray-200);display:flex;flex-wrap:wrap;}
+.stat-cell{padding:12px 20px;border-right:1px solid var(--gray-200);flex-shrink:0;}
+.stat-cell:last-child{border-right:none;}
+.stat-label{font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--gray-400);margin-bottom:3px;}
+.stat-val{font-size:13px;font-weight:700;color:var(--navy);}
+.pg-body{max-width:800px;margin:0 auto;padding:28px 22px 60px;display:flex;flex-direction:column;gap:24px;}
+.sec-heading{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--gray-400);padding-bottom:10px;border-bottom:1px solid var(--gray-200);margin-bottom:4px;}
+.alert{border-radius:10px;padding:13px 16px;font-size:13.5px;line-height:1.65;display:flex;gap:11px;align-items:flex-start;}
+.alert-icon{font-size:18px;flex-shrink:0;margin-top:1px;}
+.alert-body{flex:1;}
+.alert-body strong{display:block;margin-bottom:4px;}
+.alert-gold{background:var(--gold-lt);border:1.5px solid var(--gold-bdr);}
+.alert-blue{background:var(--blue-xlt);border:1.5px solid var(--blue-bdr);}
+.alert-red{background:var(--red-lt);border:1.5px solid var(--red-bdr);}
+.prompt-card{background:white;border:2px solid var(--navy);border-radius:14px;overflow:hidden;}
+.prompt-hd{background:var(--navy);color:white;padding:14px 20px;}
+.prompt-hd h2{font-size:15px;font-weight:700;}
+.prompt-hd p{font-size:12px;color:rgba(255,255,255,.65);margin-top:3px;}
+.prompt-body{padding:20px 22px;display:flex;flex-direction:column;gap:14px;}
+.prompt-item{display:flex;gap:12px;padding:13px 16px;background:var(--gray-50);border-radius:10px;border-left:3px solid var(--blue);}
+.prompt-num{font-weight:800;color:var(--navy);font-size:13px;flex-shrink:0;min-width:22px;margin-top:1px;}
+.prompt-text{font-size:13.5px;line-height:1.65;color:var(--gray-700);}
+.prompt-text strong{color:var(--navy);}
+.rubric-table{width:100%;border-collapse:collapse;font-size:12.5px;}
+.rubric-table th{background:var(--navy);color:white;padding:9px 13px;text-align:left;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;}
+.rubric-table td{padding:9px 13px;border-bottom:1px solid var(--gray-100);vertical-align:top;line-height:1.5;color:var(--gray-700);}
+.rubric-table tr:last-child td{border-bottom:none;}
+.pts-pill{font-weight:700;color:var(--navy);white-space:nowrap;}
+.examples-box{background:white;border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;}
+.examples-box-hd{padding:12px 16px;border-bottom:1px solid var(--gray-100);background:var(--gray-50);}
+.examples-box-hd h3{font-size:13px;font-weight:700;color:var(--navy);}
+.examples-body{padding:14px 16px;display:flex;flex-direction:column;gap:8px;font-size:13px;color:var(--gray-700);line-height:1.55;}
+.ex-item{display:flex;gap:9px;}
+.ex-item::before{content:'✓';color:var(--green);font-weight:700;flex-shrink:0;}
+.excluded-item{display:flex;gap:9px;}
+.excluded-item::before{content:'✗';color:var(--red);font-weight:700;flex-shrink:0;}
+.excluded-item{color:var(--gray-600);}
+.word-count{background:var(--green-lt);border:1.5px solid var(--green-bdr);border-radius:10px;padding:12px 16px;font-size:13px;line-height:1.6;color:var(--gray-700);}
+</style>
+</head>
+<body>
+
+<div class="pg-header">
+  <div class="header-eyebrow">SCM 352 · M13 · Discussion · 30 Points</div>
+  <h1>Discussion: Projects That Went Wrong</h1>
+  <p>Real project failures are almost always dependency failures — an assumption that activity X would be done before activity Y began, that turned out to be wrong. Connect a real-world project failure to the CPM and PM tools from this module.</p>
+</div>
+
+<div class="stats-strip">
+  <div class="stat-cell"><div class="stat-label">Points</div><div class="stat-val">30 points</div></div>
+  <div class="stat-cell"><div class="stat-label">Due</div><div class="stat-val">Day 4 · 11:59 PM</div></div>
+  <div class="stat-cell"><div class="stat-label">Post required</div><div class="stat-val">Initial post only</div></div>
+  <div class="stat-cell"><div class="stat-label">Replies required</div><div class="stat-val" style="color:var(--green);">None required</div></div>
+</div>
+
+<div class="pg-body">
+
+  <div class="alert alert-gold">
+    <div class="alert-icon">⚠️</div>
+    <div class="alert-body">
+      <strong>Only your initial post is required — no peer replies.</strong>
+      You do not need to comment on any classmates' posts. Your grade is based entirely on your initial post. You are welcome to read and reply to others, but it is not required and will not affect your grade.
+    </div>
+  </div>
+
+  <div class="alert alert-red">
+    <div class="alert-icon">🚫</div>
+    <div class="alert-body">
+      <strong>Do not use any of the following examples — they have been used in course materials:</strong>
+      Denver International Airport (DIA) baggage system · The Big Dig (Boston) · Any example referenced in the textbook · Any example I have used in lectures, slides, or video segments. These are excluded because I'm looking for your own research, not a summary of something I've already analyzed for you.
+    </div>
+  </div>
+
+  <!-- PROMPT CARD -->
+  <div class="prompt-card">
+    <div class="prompt-hd">
+      <h2>The Prompt — Five Parts · Address All Five in Your Post</h2>
+      <p>Aim for approximately 400–550 words. All five parts must be addressed to earn full credit.</p>
+    </div>
+    <div class="prompt-body">
+      <div class="prompt-item">
+        <div class="prompt-num">①</div>
+        <div class="prompt-text"><strong>Identify the project and its failure.</strong> Name the project, the organization or context, and the approximate time period. Briefly describe what the project was supposed to accomplish and what went wrong. Cite at least one external source (news article, academic article, government report, or industry report). Do not use Wikipedia as your primary source.</div>
+      </div>
+      <div class="prompt-item">
+        <div class="prompt-num">②</div>
+        <div class="prompt-text"><strong>Apply dependency matrix thinking.</strong> Identify at least two activities from the project where the dependency assumption broke down — where an activity began before its predecessor was actually complete, or where a dependency that should have existed was not recognized. Explain the consequence: which downstream activity was affected, and how did the failure propagate?</div>
+      </div>
+      <div class="prompt-item">
+        <div class="prompt-num">③</div>
+        <div class="prompt-text"><strong>Apply critical path thinking to the failure.</strong> Based on what you know about this project, identify the activities you believe were on the critical path — the sequence with zero slack where any delay propagated directly to the project deadline. Then identify at least one activity that was treated as non-critical (assumed to have slack) but whose delay ended up affecting the project. Explain how the team's understanding of which activities were "safe to delay" turned out to be wrong — and what a properly constructed CPM analysis might have revealed before the crisis began.</div>
+      </div>
+      <div class="prompt-item">
+        <div class="prompt-num">④</div>
+        <div class="prompt-text"><strong>Connect to one additional OM tool from SCM 352.</strong> Choose any concept, tool, or framework from Modules 1–12 of this course that is relevant to this project failure. Explain the connection: if that OM tool had been applied correctly, how might the failure have been avoided or reduced in severity? Be specific — name the tool and state the mechanism of intervention.</div>
+      </div>
+      <div class="prompt-item">
+        <div class="prompt-num">⑤</div>
+        <div class="prompt-text"><strong>State the correctable root cause.</strong> In one or two sentences: what is the single most actionable root cause of this failure that a project manager could have addressed before the project began? Distinguish between a root cause (something that, if fixed, would have prevented the failure) and a symptom (something that appeared because of the failure).</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WORD COUNT -->
+  <div class="word-count">
+    <strong>Target length: approximately 400–550 words.</strong> You will not be penalized for going slightly over. Posts under 300 words are unlikely to address all five parts in sufficient depth to earn full credit. Write for a reader who has taken this course — you do not need to define basic CPM terms, but do explain specifically how they apply to your project.
+  </div>
+
+  <!-- ELIGIBLE EXAMPLES -->
+  <div>
+    <div class="sec-heading">What Counts as an Eligible Example</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px;">
+
+      <div class="examples-box">
+        <div class="examples-box-hd"><h3 style="color:var(--green);">Eligible examples include:</h3></div>
+        <div class="examples-body">
+          <div class="ex-item">Government IT projects (Healthcare.gov 2013 launch, UK NHS EHR rollout)</div>
+          <div class="ex-item">Infrastructure projects (bridges, highways, stadiums)</div>
+          <div class="ex-item">Military or defense procurement projects</div>
+          <div class="ex-item">Large-scale ERP implementations (SAP rollouts, Oracle failures)</div>
+          <div class="ex-item">Construction and real estate megaprojects</div>
+          <div class="ex-item">Product development failures (Boeing 737 MAX certification, Challenger shuttle)</div>
+          <div class="ex-item">Event or venue projects (Olympics, World Cup stadiums)</div>
+          <div class="ex-item">Retail or supply chain IT projects (Target Canada launch)</div>
+        </div>
+      </div>
+
+      <div class="examples-box">
+        <div class="examples-box-hd"><h3 style="color:var(--red);">Excluded (used in course materials):</h3></div>
+        <div class="examples-body">
+          <div class="excluded-item">Denver International Airport baggage system (DIA)</div>
+          <div class="excluded-item">The Big Dig (Boston Highway)</div>
+          <div class="excluded-item">Any textbook example or textbook case study</div>
+          <div class="excluded-item">Any example cited in lectures, slides, or video segments this module</div>
+          <div class="excluded-item">Generic or fictional examples (must be a real project)</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- RUBRIC -->
+  <div>
+    <div class="sec-heading">Grading Rubric — 30 Points</div>
+    <div style="border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;margin-top:14px;background:white;">
+      <table class="rubric-table">
+        <thead><tr><th style="width:36%">Criterion</th><th>Full Credit</th><th style="width:10%;text-align:right;">Pts</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Project identification and source</strong></td>
+            <td>Names the project and organization clearly; describes the intended goal and what failed; cites at least one credible external source (not Wikipedia as primary)</td>
+            <td class="pts-pill" style="text-align:right;">6</td>
+          </tr>
+          <tr>
+            <td><strong>Dependency breakdown analysis</strong></td>
+            <td>Identifies two or more specific activities where the dependency assumption failed; explains which downstream activity was affected and how the failure propagated through the project; uses dependency matrix language accurately</td>
+            <td class="pts-pill" style="text-align:right;">8</td>
+          </tr>
+          <tr>
+            <td><strong>Critical path and slack analysis</strong></td>
+            <td>Identifies activities likely on the critical path; identifies at least one activity treated as non-critical whose delay affected the project; explains the gap between the team's planning assumptions and what a CPM analysis might have revealed; uses critical path and slack language accurately</td>
+            <td class="pts-pill" style="text-align:right;">7</td>
+          </tr>
+          <tr>
+            <td><strong>SCM 352 OM tool connection</strong></td>
+            <td>Identifies a specific tool or concept from Modules 1–12; states the mechanism by which it would have reduced or prevented the failure; connection is substantive (not superficial)</td>
+            <td class="pts-pill" style="text-align:right;">6</td>
+          </tr>
+          <tr>
+            <td><strong>Root cause vs. symptom distinction</strong></td>
+            <td>States a correctable root cause (not just a symptom); clearly distinguishes what could have been addressed before the project began from what appeared as a consequence of failure</td>
+            <td class="pts-pill" style="text-align:right;">3</td>
+          </tr>
+          <tr style="background:var(--blue-xlt);">
+            <td colspan="2" style="font-weight:700;color:var(--navy);font-size:13px;">Total</td>
+            <td class="pts-pill" style="text-align:right;font-size:14px;">30</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- FINAL NOTE -->
+  <div class="alert alert-blue">
+    <div class="alert-icon">💡</div>
+    <div class="alert-body">
+      <strong>This is the last discussion of SCM 352.</strong>
+      Part ④ asks you to connect to any earlier module — this is an intentional invitation to reflect on what you've learned this semester. There is no single "right" module to cite. The strongest posts make a connection that is specific, mechanistic, and persuasive — not just a passing reference to another concept.
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

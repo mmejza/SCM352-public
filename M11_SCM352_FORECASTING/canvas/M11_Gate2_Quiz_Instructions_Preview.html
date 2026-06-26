@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gate 2 Quiz Instructions — M11 — SCM 352 (Preview: no Formula Ref / no Question Breakdown)</title>
+<style>
+:root{--navy:#1a3a5c;--blue:#2563a8;--blue-lt:#dbeafe;--blue-xlt:#eff6ff;--blue-bdr:#bfdbfe;--gold:#f59e0b;--gold-lt:#fffbeb;--gold-bdr:#fde68a;--gold-dark:#92400e;--green:#16a34a;--green-lt:#f0fdf4;--green-bdr:#bbf7d0;--red:#dc2626;--red-lt:#fef2f2;--red-bdr:#fecaca;--amber:#d97706;--amber-lt:#fffbeb;--purple:#7c3aed;--purple-lt:#faf5ff;--purple-bdr:#ddd6fe;--gray-50:#f9fafb;--gray-100:#f3f4f6;--gray-200:#e5e7eb;--gray-300:#d1d5db;--gray-400:#9ca3af;--gray-600:#4b5563;--gray-700:#374151;--gray-800:#1f2937;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--gray-50);color:var(--gray-800);font-size:14px;line-height:1.6;}
+.pg-header{background:var(--navy);color:white;padding:20px 28px;display:flex;align-items:flex-start;gap:14px;}
+.header-badge{background:var(--gold);color:var(--navy);font-weight:700;font-size:11px;padding:3px 9px;border-radius:4px;letter-spacing:.05em;text-transform:uppercase;white-space:nowrap;flex-shrink:0;margin-top:3px;}
+.header-text h1{font-size:20px;font-weight:700;margin-bottom:4px;}
+.header-text p{font-size:13px;color:rgba(255,255,255,.65);}
+.header-right{margin-left:auto;text-align:right;font-size:12px;color:rgba(255,255,255,.55);line-height:1.7;flex-shrink:0;}
+.stats-strip{background:white;border-bottom:2px solid var(--gray-200);display:flex;flex-wrap:wrap;gap:0;}
+.stat-cell{padding:12px 20px;border-right:1px solid var(--gray-200);flex-shrink:0;}
+.stat-cell:last-child{border-right:none;}
+.stat-label{font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--gray-400);margin-bottom:3px;}
+.stat-val{font-size:13px;font-weight:700;color:var(--navy);}
+.stat-val.warn{color:var(--red);}
+.pg-body{max-width:860px;margin:0 auto;padding:28px 22px 60px;display:flex;flex-direction:column;gap:24px;}
+.sec-heading{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--gray-400);padding-bottom:10px;border-bottom:1px solid var(--gray-200);margin-bottom:-4px;}
+.alert{border-radius:10px;padding:13px 16px;font-size:13.5px;line-height:1.65;display:flex;gap:11px;align-items:flex-start;}
+.alert-icon{font-size:18px;flex-shrink:0;margin-top:1px;}
+.alert-body{flex:1;}
+.alert-body strong{display:block;margin-bottom:4px;}
+.alert-gold{background:var(--gold-lt);border:1.5px solid var(--gold-bdr);}
+.alert-blue{background:var(--blue-xlt);border:1.5px solid var(--blue-bdr);}
+.alert-red{background:var(--red-lt);border:1.5px solid var(--red-bdr);}
+.instr-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+@media(max-width:640px){.instr-grid{grid-template-columns:1fr;}}
+.instr-card{background:white;border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;}
+.instr-card-hd{padding:13px 16px;border-bottom:1px solid var(--gray-200);}
+.instr-card-hd h3{font-size:13px;font-weight:700;color:var(--navy);}
+.instr-list{list-style:none;padding:14px 16px;display:flex;flex-direction:column;gap:8px;}
+.instr-list li{display:flex;gap:9px;font-size:13px;line-height:1.55;color:var(--gray-700);}
+.instr-list li::before{content:'→';color:var(--gold);font-weight:700;flex-shrink:0;margin-top:1px;}
+.type-section{padding:12px 16px;border-bottom:1px solid var(--gray-100);}
+.type-section:last-child{border-bottom:none;}
+.type-section-lbl{font-size:10px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--gray-400);margin-bottom:5px;}
+.type-section-body{font-size:12.5px;line-height:1.55;color:var(--gray-700);}
+.time-table{width:100%;border-collapse:collapse;font-size:12.5px;background:white;border-radius:10px;overflow:hidden;border:1px solid var(--gray-200);}
+.time-table th{background:var(--navy);color:white;padding:8px 12px;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;text-align:left;}
+.time-table td{padding:8px 12px;border-bottom:1px solid var(--gray-100);}
+.time-table tr:last-child td{border-bottom:none;}
+.time-row-total td{font-weight:700;background:var(--blue-xlt);color:var(--navy);}
+.grading-wrap{background:white;border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;}
+.grading-row{display:flex;gap:14px;padding:11px 16px;border-bottom:1px solid var(--gray-100);font-size:13px;line-height:1.55;color:var(--gray-700);}
+.grading-row:last-child{border-bottom:none;}
+.grading-label{font-size:11px;font-weight:700;padding:3px 9px;border-radius:100px;white-space:nowrap;align-self:flex-start;margin-top:1px;flex-shrink:0;}
+.gl-grading{background:var(--blue-xlt);color:var(--blue);border:1px solid var(--blue-bdr);}
+.gl-contact{background:var(--gray-100);color:var(--gray-600);border:1px solid var(--gray-200);}
+.integrity-footer{background:var(--navy);border-radius:12px;padding:20px 24px;color:white;}
+.integrity-footer h3{font-size:14px;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+.integrity-footer p{font-size:13px;line-height:1.65;color:rgba(255,255,255,.8);}
+.integrity-footer strong{color:white;}
+/* Preview banner */
+.preview-banner{background:#4a1d96;color:white;padding:10px 22px;font-size:12px;font-weight:600;letter-spacing:.04em;text-align:center;}
+</style>
+</head>
+<body>
+
+<div class="preview-banner">PREVIEW — Formula Quick Reference, Question Breakdown, and Before You Begin card removed</div>
+
+<div class="pg-header">
+  <div class="header-badge">SCM 352 · M11</div>
+  <div class="header-text">
+    <h1>Gate 2 Quiz — Forecasting Methods and Forecast Accuracy</h1>
+    <p>Module 11 · Chapter 15 + Lecture + Apps Synthesis · Open-book, open-notes</p>
+  </div>
+  <div class="header-right">100 points<br>1 attempt · 90 min · Auto-graded</div>
+</div>
+
+<div class="stats-strip">
+  <div class="stat-cell"><div class="stat-label">Attempts</div><div class="stat-val warn">1 — no retakes</div></div>
+  <div class="stat-cell"><div class="stat-label">Time limit</div><div class="stat-val warn">90 minutes</div></div>
+  <div class="stat-cell"><div class="stat-label">Items</div><div class="stat-val">17 items (4 FIMB + 13 MC)</div></div>
+  <div class="stat-cell"><div class="stat-label">Points</div><div class="stat-val">100 points · Auto-graded</div></div>
+  <div class="stat-cell"><div class="stat-label">Due</div><div class="stat-val">Day 6 · 11:59 PM</div></div>
+  <div class="stat-cell"><div class="stat-label">Sources allowed</div><div class="stat-val">Chapter 15 · Lectures · Apps · Slides</div></div>
+</div>
+
+<div class="pg-body">
+
+  <!-- VERSION ASSIGNMENT CALLOUT -->
+  <div class="alert alert-gold">
+    <div class="alert-icon">⚠️</div>
+    <div class="alert-body">
+      <strong>Quiz format: Fill-in-Multiple-Blanks (FIMB) + Multiple Choice (MC) · Fully auto-graded.</strong>
+      Q1, Q2, Q3, and Q6 are versioned FIMB items — Canvas randomly assigns your version. Each FIMB item shows your complete demand scenario and parameters; enter computed values into the numbered blanks. All other items (Q3d, Q4a–c, Q5a–b, Q6c, Q7a–c, Q8a–c) are fixed MC — same for all students. 17 items total.
+    </div>
+  </div>
+
+  <!-- KEY RULES -->
+  <div style="display:flex;flex-direction:column;gap:10px;">
+    <div class="alert alert-red">
+      <div class="alert-icon">🔴</div>
+      <div class="alert-body">
+        <strong>Do not refresh the page or navigate away from a question mid-entry.</strong>
+        Canvas does not save a partially entered answer when you leave a question field. Complete your calculation on scratch paper first, then type your final answer. For Q2, write out the entire ES chain before entering any single forecast value.
+      </div>
+    </div>
+    <div class="alert alert-blue">
+      <div class="alert-icon">📖</div>
+      <div class="alert-body">
+        <strong>This quiz is open-book and open-notes.</strong>
+        You may use Chapter 15, your personal notes, the lecture slides, and any materials from this module. <strong>Note: Sections 15.4 and 15.5 (trend-corrected exponential smoothing and seasonal indices) are not assessed in this module</strong> — those sections will not appear in any question. The assessed scope covers Sections 15.1–15.3 and 15.6. AI tools are not permitted — see the Academic Integrity section below.
+      </div>
+    </div>
+  </div>
+
+  <!-- HOW TO ANSWER -->
+  <div>
+    <div class="sec-heading">How to Answer Each Question Type</div>
+    <div style="margin-top:14px;">
+      <div class="instr-card">
+        <div class="instr-card-hd" style="background:var(--gold-lt);border-color:var(--gold-bdr);">
+          <h3 style="color:var(--gold-dark);">Answering Each Question Type</h3>
+        </div>
+        <div class="type-section">
+          <div class="type-section-lbl">FIMB items (Q1, Q2, Q3, Q6) — fill-in-the-blank</div>
+          <div class="type-section-body">Each blank has a specific correct answer (or accepted variants). For <strong>numeric blanks</strong>: enter values rounded to 2 decimal places. For <strong>text blanks</strong> (window_rec, direction, alpha_dir): type exactly as listed — "shorter" / "longer", "under-forecasting" / "over-forecasting", "higher" / "lower". No partial credit within a blank — the blank is right or wrong.</div>
+        </div>
+        <div class="type-section">
+          <div class="type-section-lbl">Critical Q3 trap: MAD vs. Bias</div>
+          <div class="type-section-body">MAD uses <strong>absolute values</strong> in the numerator — all values are positive before you sum. Bias uses <strong>signed errors</strong> — positive and negatives add together. Using absolute values for Bias is the most common error in this section.</div>
+        </div>
+        <div class="type-section">
+          <div class="type-section-lbl">MC items (Q3d, Q4, Q5, Q6c, Q7, Q8)</div>
+          <div class="type-section-body">Select the single best answer. Use Chapter 15 terminology to interpret the options: "forecast combination," "Delphi method," "analogical forecasting," "anchoring bias," "forecast gaming." For Q8, use the MAD and Bias values in the table to eliminate options that don't match the numbers.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TIME ALLOCATION -->
+  <div>
+    <div class="sec-heading">Suggested Time Allocation · 90 minutes total</div>
+    <div style="margin-top:14px;">
+      <table class="time-table">
+        <thead><tr><th>Item(s)</th><th>Topic</th><th>Pts</th><th>Type</th><th style="text-align:right;">Suggested Time</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Q1</strong></td><td>Moving Average Forecast (FIMB)</td><td>12</td><td style="color:var(--amber);font-size:12px;font-weight:700;">VERSIONED</td><td style="text-align:right;">9 min</td></tr>
+          <tr><td><strong>Q2</strong></td><td>Exponential Smoothing Chain (FIMB)</td><td>14</td><td style="color:var(--amber);font-size:12px;font-weight:700;">VERSIONED</td><td style="text-align:right;">13 min</td></tr>
+          <tr><td><strong>Q3 + Q3d</strong></td><td>MAD &amp; Bias (FIMB) + Consequence (MC)</td><td>14</td><td style="color:var(--amber);font-size:12px;font-weight:700;">VERSIONED+Fixed</td><td style="text-align:right;">9 min</td></tr>
+          <tr><td><strong>Q4a–c</strong></td><td>Method Selection — 3 MC items</td><td>12</td><td style="color:var(--gray-400);font-size:12px;">Fixed</td><td style="text-align:right;">6 min</td></tr>
+          <tr><td><strong>Q5a–b</strong></td><td>Demand Components — 2 MC items</td><td>10</td><td style="color:var(--gray-400);font-size:12px;">Fixed</td><td style="text-align:right;">5 min</td></tr>
+          <tr><td><strong>Q6 + Q6c</strong></td><td>MAPE (FIMB) + Cross-product rationale (MC)</td><td>14</td><td style="color:var(--amber);font-size:12px;font-weight:700;">VERSIONED+Fixed</td><td style="text-align:right;">9 min</td></tr>
+          <tr><td><strong>Q7a–c</strong></td><td>Judgmental Methods + Bias — 3 MC items</td><td>12</td><td style="color:var(--gray-400);font-size:12px;">Fixed</td><td style="text-align:right;">7 min</td></tr>
+          <tr><td><strong>Q8a–c</strong></td><td>Bias Interpretation — 3 MC items</td><td>12</td><td style="color:var(--gray-400);font-size:12px;">Fixed</td><td style="text-align:right;">7 min</td></tr>
+          <tr class="time-row-total"><td colspan="4"><strong>Total (+ 25-min review buffer)</strong></td><td style="text-align:right;"><strong>90 min</strong></td></tr>
+        </tbody>
+      </table>
+      <p style="font-size:12px;color:var(--gray-400);margin-top:6px;padding-left:4px;">Recommendation: do all scratch-paper work for Q1, Q2, Q3, and Q6 before opening the quiz — the 90-minute timer only runs while Canvas is open, but your scratch work can be done ahead of time. Q3 provides a pre-filled error table, so the calculation is lighter than Q2.</p>
+    </div>
+  </div>
+
+  <!-- GRADING AND TIMING -->
+  <div>
+    <div class="sec-heading">Grading and Technical Issues</div>
+    <div class="grading-wrap" style="margin-top:14px;">
+      <div class="grading-row">
+        <div class="grading-label gl-grading">Grading</div>
+        <div>This quiz is <strong>fully auto-graded by Canvas</strong> — scores are available immediately after submission. Each FIMB blank and each MC item is scored automatically. No partial credit within a blank — the blank is right or wrong. <strong>Check your grade immediately after submitting</strong> and contact the instructor if you believe a blank was marked incorrect due to a formatting issue (e.g., you typed "underforecasting" instead of "under-forecasting").</div>
+      </div>
+      <div class="grading-row">
+        <div class="grading-label gl-contact">Technical issues</div>
+        <div>If Canvas freezes or you lose your connection during the quiz, <strong>do not refresh.</strong> Contact your instructor immediately with a screenshot showing your elapsed time and current question position. Do not re-enter the quiz without instructor confirmation. Issues reported more than 24 hours after the quiz window closes cannot be accommodated.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ACADEMIC INTEGRITY FOOTER -->
+  <div class="integrity-footer">
+    <h3>🔒 Academic Integrity</h3>
+    <p>This quiz is open-book and open-notes. You may use your personal notes, slides, apps, and Chapter 15 of the textbook. You may <strong>not</strong> communicate with other students, share question content, or use AI tools to generate answers. The versioned FIMB items (Q1, Q2, Q3, Q6) display demand data and parameters unique to your Canvas-assigned version — values entered from another student's scenario or from an AI tool will not match your assigned data and will be detectable. Violations are subject to university academic dishonesty policy.</p>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AON Diagram Sample — Gate 2 Q1 Version A</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+      background: #f1f5f9;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+      min-height: 100vh;
+    }
+    .page-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #94a3b8;
+      margin-bottom: 14px;
+    }
+    .card {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 28px 36px 24px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.07);
+      width: 100%;
+      max-width: 1140px;
+    }
+    .card + .card { margin-top: 28px; }
+    .card-header {
+      margin-bottom: 22px;
+      border-bottom: 1px solid #f1f5f9;
+      padding-bottom: 14px;
+    }
+    .card-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #1e293b;
+      margin-bottom: 4px;
+    }
+    .card-sub { font-size: 12px; color: #64748b; }
+    .diagram-wrap { overflow-x: auto; }
+    .legend {
+      margin-top: 18px;
+      padding-top: 14px;
+      border-top: 1px solid #f8fafc;
+      font-size: 11px;
+      color: #94a3b8;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .legend-node {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 18px;
+      background: #dbeafe;
+      border: 1.5px solid #3b82f6;
+      border-radius: 3px;
+      font-size: 10px;
+      font-weight: 800;
+      color: #1d4ed8;
+      flex-shrink: 0;
+    }
+  </style>
+</head>
+<body>
+
+<p class="page-label">SCM 352 · M13 · Sample AON Diagrams</p>
+
+<!-- ============================================================
+  DIAGRAM 1 — Gate 2 Q1 Version A (8 activities)
+
+  Node centers:
+    START(55,210)  A(170,210)
+    B(305,130)     C(305,290)     D(438,130)
+    E(573,210)     F(708,130)     G(708,290)
+    H(843,210)     END(990,210)
+
+  Endpoint strategy: each arrow endpoint is computed as the exact
+  geometric intersection with the destination node boundary, then
+  pulled back 3 px toward the source so the tip sits just clear
+  of the node edge without overlapping it.
+============================================================ -->
+<div class="card">
+  <div class="card-header">
+    <p class="card-title">Gate 2 — Question 1 &nbsp;|&nbsp; Version A: Office Technology Upgrade &nbsp;(8 activities)</p>
+    <p class="card-sub">Activity-on-Node (AON) network · Each box shows activity letter and duration in weeks · Arrows show predecessor relationships</p>
+  </div>
+  <div class="diagram-wrap">
+  <svg xmlns="http://www.w3.org/2000/svg" width="1050" height="380" viewBox="0 0 1050 380">
+    <defs>
+      <marker id="arr1" markerWidth="10" markerHeight="7" refX="10" refY="3.5"
+              orient="auto" markerUnits="strokeWidth">
+        <polygon points="0 0, 10 3.5, 0 7" fill="#64748b"/>
+      </marker>
+    </defs>
+
+    <!-- ARROWS drawn before nodes so nodes sit on top -->
+    <g stroke="#64748b" stroke-width="1.8" fill="none" marker-end="url(#arr1)">
+
+      <!-- START → A  (horizontal; tip 3 px left of A left=130) -->
+      <line x1="101" y1="210" x2="127" y2="210"/>
+
+      <!-- A → B  direction (0.860,−0.510); exits A right at (210,186);
+           boundary at B left (265,153); tip 3 px back → (262,155) -->
+      <line x1="210" y1="186" x2="262" y2="155"/>
+
+      <!-- A → C  direction (0.860,+0.510); exits A right at (210,234);
+           boundary at C left (265,267); tip 3 px back → (262,266) -->
+      <line x1="210" y1="234" x2="262" y2="266"/>
+
+      <!-- B → D  horizontal; tip 3 px left of D left=398 → (395,130) -->
+      <line x1="345" y1="130" x2="395" y2="130"/>
+
+      <!-- D → E  direction (0.860,+0.510); exits D right at (478,154);
+           boundary at E left (533,187); tip 3 px back → (530,186) -->
+      <line x1="478" y1="154" x2="530" y2="186"/>
+
+      <!-- C → E  direction (0.958,−0.286); exits C right at (345,278);
+           boundary at E left (533,222); tip 3 px back → (530,223) -->
+      <line x1="345" y1="278" x2="530" y2="223"/>
+
+      <!-- E → F  direction (0.860,−0.510); exits E right at (613,186);
+           boundary at F left (668,153); tip 3 px back → (665,155) -->
+      <line x1="613" y1="186" x2="665" y2="155"/>
+
+      <!-- E → G  direction (0.860,+0.510); exits E right at (613,234);
+           boundary at G left (668,267); tip 3 px back → (665,266) -->
+      <line x1="613" y1="234" x2="665" y2="266"/>
+
+      <!-- F → H  direction (0.860,+0.510); exits F right at (748,154);
+           boundary at H left (803,187); tip 3 px back → (800,186) -->
+      <line x1="748" y1="154" x2="800" y2="186"/>
+
+      <!-- G → H  direction (0.860,−0.510); exits G right at (748,266);
+           boundary at H left (803,233); tip 3 px back → (800,235) -->
+      <line x1="748" y1="266" x2="800" y2="235"/>
+
+      <!-- H → END  horizontal; tip 3 px left of END left=944 → (941,210) -->
+      <line x1="883" y1="210" x2="941" y2="210"/>
+
+    </g>
+
+    <!-- NODES -->
+
+    <ellipse cx="55" cy="210" rx="46" ry="25"
+             fill="#f8fafc" stroke="#94a3b8" stroke-width="1.5"/>
+    <text x="55" y="215" text-anchor="middle"
+          font-size="11" font-weight="700" fill="#64748b" font-family="inherit">START</text>
+
+    <rect x="130" y="185" width="80" height="50" rx="5"
+          fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
+    <text x="170" y="207" text-anchor="middle"
+          font-size="21" font-weight="800" fill="#1d4ed8" font-family="inherit">A</text>
+    <text x="170" y="225" text-anchor="middle"
+          font-size="11" fill="#1e40af" font-family="inherit">2 wk</text>
+
+    <rect x="265" y="105" width="80" height="50" rx="5"
+          fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
+    <text x="305" y="127" text-anchor="middle"
+          font-size="21" font-weight="800" fill="#1d4ed8" font-family="inherit">B</text>
+    <text x="305" y="145" text-anchor="middle"
+          font-size="11" fill="#1e40af" font-family="inherit">4 wk</text>
+
+    <rect x="265" y="265" width="80" height="50" rx="5"
+          fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
+    <text x="305" y="287" text-anchor="middle"
+          font-size="21" font-weight="800" fill="#1d4ed8" font-family="inherit">C</text>
+    <text x="305" y="305" text-anchor="middle"
+          font-size="11" fill="#1e40af" font-family="inherit">3 wk</text>
+
+    <rect x="398" y="105" width="80" height="50" rx="5"
+          fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
+    <text x="438" y="127" text-anchor="middle"
+          font-size="21" font-weight="800" fill="#1d4ed8" font-family="inherit">D</text>
+    <text x="438" y="145" text-anchor="middle"
+          font-size="11" fill="#1e40af" font-family="inherit">3 wk</text>
+
+    <rect x="533" y="185" width="80" height="50" rx="5"
+          fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
+    <text x="573" y="207" text-anchor="middle"
+          font-size="21" font-weight="800" fill="#1d4ed8" font-family="inherit">E</text>
+    <text x="573" y="225" text-anchor="middle"
+          font-size="11" fill="#1e40af" font-family="inherit">5 wk</text>
+
+    <rect x="668" y="105" width="80" height="50" rx="5"
+          fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
+    <text x="708" y="127" text-anchor="middle"
+          font-size="21" font-weight="800" fill="#1d4ed8" font-family="inherit">F</text>
+    <text x="708" y="145" text-anchor="middle"
+          font-size="11" fill="#1e40af" font-family="inherit">2 wk</text>
+
+    <rect x="668" y="265" width="80" height="50" rx="5"
+          fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
+    <text x="708" y="287" text-anchor="middle"
+          font-size="21" font-weight="800" fill="#1d4ed8" font-family="inherit">G</text>
+    <text x="708" y="305" text-anchor="middle"
+          font-size="11" fill="#1e40af" font-family="inherit">3 wk</text>
+
+    <rect x="803" y="185" width="80" height="50" rx="5"
+          fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
+    <text x="843" y="207" text-anchor="middle"
+          font-size="21" font-weight="800" fill="#1d4ed8" font-family="inherit">H</text>
+    <text x="843" y="225" text-anchor="middle"
+          font-size="11" fill="#1e40af" font-family="inherit">1 wk</text>
+
+    <ellipse cx="990" cy="210" rx="46" ry="25"
+             fill="#f8fafc" stroke="#94a3b8" stroke-width="1.5"/>
+    <text x="990" y="215" text-anchor="middle"
+          font-size="11" font-weight="700" fill="#64748b" font-family="inherit">END</text>
+
+    <!-- Descriptions -->
+    <text x="170" y="249" text-anchor="middle" font-size="9.5" fill="#94a3b8" font-family="inherit">Assess IT</text>
+    <text x="305" y="168" text-anchor="middle" font-size="9.5" fill="#94a3b8" font-family="inherit">Procure Hardware</text>
+    <text x="305" y="329" text-anchor="middle" font-size="9.5" fill="#94a3b8" font-family="inherit">Migration Plan</text>
+    <text x="438" y="168" text-anchor="middle" font-size="9.5" fill="#94a3b8" font-family="inherit">Install Hardware</text>
+    <text x="573" y="249" text-anchor="middle" font-size="9.5" fill="#94a3b8" font-family="inherit">Migrate Data</text>
+    <text x="708" y="168" text-anchor="middle" font-size="9.5" fill="#94a3b8" font-family="inherit">Train Staff</text>
+    <text x="708" y="329" text-anchor="middle" font-size="9.5" fill="#94a3b8" font-family="inherit">Acceptance Test</text>
+    <text x="843" y="249" text-anchor="middle" font-size="9.5" fill="#94a3b8" font-family="inherit">Go-Live</text>
+  </svg>
+  </div>
+  <div class="legend">
+    <span class="legend-node">A</span>
+    Each box: activity letter · duration in weeks · abbreviated description (gray)
+  </div>
+</div>
+
+
+<!-- ============================================================
+  DIAGRAM 2 — Case Analysis Version A (10 activities, EHR)
+
+  Node centers:
+    START(45,230)   A(155,230)
+    C(290,125)      B(290,230)      D(290,335)
+    E(440,155)      G(440,305)
+    F(580,230)      H(720,230)
+    I(855,230)      J(975,230)      END(1080,230)
+
+  E→H and G→H use quadratic bezier arches to separate the three
+  arrows converging on H's left face. All endpoints pulled 3 px
+  back from the destination boundary.
+============================================================ -->
+<div class="card">
+  <div class="card-header">
+    <p class="card-title">Case Analysis — Version A: Riverside EHR Implementation &nbsp;(10 activities)</p>
+    <p class="card-sub">Activity-on-Node (AON) network · Durations in weeks (Version A) · H has three predecessors: F, G, and E</p>
+  </div>
+  <div class="diagram-wrap">
+  <svg xmlns="http://www.w3.org/2000/svg" width="1135" height="430" viewBox="0 0 1135 430">
+    <defs>
+      <marker id="arr2" markerWidth="10" markerHeight="7" refX="10" refY="3.5"
+              orient="auto" markerUnits="strokeWidth">
+        <polygon points="0 0, 10 3.5, 0 7" fill="#64748b"/>
+      </marker>
+    </defs>
+
+    <!-- ARROWS -->
+    <g stroke="#64748b" stroke-width="1.8" fill="none" marker-end="url(#arr2)">
+
+      <!-- START → A  horizontal; tip 3 px left of A left=115 → (112,230) -->
+      <line x1="87" y1="230" x2="112" y2="230"/>
+
+      <!-- A → C  direction (0.789,−0.614); exits A right at (195,199);
+           boundary at C bottom (260,148); tip 3 px back → (258,150) -->
+      <line x1="195" y1="199" x2="258" y2="150"/>
+
+      <!-- A → B  horizontal; tip 3 px left of B left=250 → (247,230) -->
+      <line x1="195" y1="230" x2="247" y2="230"/>
+
+      <!-- A → D  direction (0.789,+0.614); exits A right at (195,261);
+           boundary at D top (261,312); tip 3 px back → (259,310) -->
+      <line x1="195" y1="261" x2="259" y2="310"/>
+
+      <!-- C → E  direction (0.981,+0.196); exits C right at (330,133);
+           boundary at E left (400,147); tip 3 px back → (397,146) -->
+      <line x1="330" y1="133" x2="397" y2="146"/>
+
+      <!-- D → E  direction (0.640,−0.769); exits D top at (309,312);
+           boundary at E bottom (421,178); tip 3 px back → (419,180) -->
+      <line x1="309" y1="312" x2="419" y2="180"/>
+
+      <!-- B → F  horizontal, passes between E (above) and G (below);
+           tip 3 px left of F left=540 → (537,230) -->
+      <line x1="370" y1="230" x2="537" y2="230"/>
+
+      <!-- B → G  direction (0.894,+0.447); exits B right at (330,250);
+           boundary at G left (400,285); tip 3 px back → (397,284) -->
+      <line x1="330" y1="250" x2="397" y2="284"/>
+
+      <!-- E → F  direction (0.881,+0.472); exits E right at (480,176);
+           boundary at F left (540,208); tip 3 px back → (537,207) -->
+      <line x1="480" y1="176" x2="537" y2="207"/>
+
+      <!-- E → H  ARCHED upward above F.
+           Exits E right at (480,166); boundary at H left (680,220);
+           tip 3 px back along (0.966,+0.259) → (677,219).
+           Control point (578,138) lifts the curve above F. -->
+      <path d="M 480,166 Q 578,138 677,219"/>
+
+      <!-- G → H  ARCHED downward below F→H.
+           Exits G right at (480,294); boundary at H left (680,240);
+           tip 3 px back along (0.966,−0.259) → (677,241).
+           Control point (578,308) dips the curve below F→H. -->
+      <path d="M 480,294 Q 578,308 677,241"/>
+
+      <!-- F → H  horizontal; tip 3 px left of H left=680 → (677,230) -->
+      <line x1="620" y1="230" x2="677" y2="230"/>
+
+      <!-- H → I  horizontal; tip 3 px left of I left=815 → (812,230) -->
+      <line x1="760" y1="230" x2="812" y2="230"/>
+
+      <!-- I → J  horizontal; tip 3 px left of J left=935 → (932,230) -->
+      <line x1="895" y1="230" x2="932" y2="230"/>
+
+      <!-- J → END  horizontal; tip 3 px left of END left=1038 → (1035,230) -->
+      <line x1="1015" y1="230" x2="1035" y2="230"/>
+
+    </g>
+
+    <!-- NODES -->
+
+    <ellipse cx="45" cy="230" rx="42" ry="23"
+             fill="#f8fafc" stroke="#94a3b8" stroke-width="1.5"/>
+    <text x="45" y="234" text-anchor="middle"
+          font-size="11" font-weight="700" fill="#64748b" font-family="inherit">START</text>
+
+    <rect x="115" y="207" width="80" height="46" rx="5"
+          fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
+    <text x="155" y="228" text-anchor="middle"
+          font-size="19" font-weight="800" fill="#1d4ed8" font-family="inherit">A</text>
+    <text x="155" y="244" text-anchor="middle"
+          font-size="11" fill="#1e40af" font-family="inherit">2 wk</text>
+
+    <!-- C upper -->
+    <rect x="250" y="102" width="80" height="46" rx="5"
+          fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
+    <text x="290" y="123" text-anchor="middle"
+          font-size="19" font-weight="800" fill="#1d4ed8" font-family="inherit">C</text>
+    <text x="290" y="139" text-anchor="middle"
+          font-size="11" fill="#1e40af" font-family="inherit">6 wk</text>
+
+    <!-- B middle -->
+    <rect x="250" y="207" width="80" height="46" rx="5"
+          fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
+    <text x="290" y="228" text-anchor="middle"
+          font-size="19" font-weight="800" fill="#1d4ed8" font-family="inherit">B</text>
+    <text x="290" y="244" text-anchor="middle"
+          font-size="11" fill="#1e40af" font-family="inherit">8 wk</text>
+
+    <!-- D lower -->
+    <rect x="250" y="312" width="80" height="46" rx="5"
+          fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
+    <text x="290" y="333" text-anchor="middle"
+          font-size="19" font-weight="800" fill="#1d4ed8" font-family="inherit">D</text>
+    <text x="290" y="349" text-anchor="middle"
+          font-size="11" fill="#1e40af" font-family="inherit">3 wk</text>
+
+    <!-- E merge of C+D -->
+    <rect x="400" y="132" width="80" height="46" rx="5"
+          fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
+    <text x="440" y="153" text-anchor="middle"
+          font-size="19" font-weight="800" fill="#1d4ed8" font-family="inherit">E</text>
+    <text x="440" y="169" text-anchor="middle"
+          font-size="11" fill="#1e40af" font-family="inherit">3 wk</text>
+
+    <!-- G after B -->
+    <rect x="400" y="282" width="80" height="46" rx="5"
+          fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
+    <text x="440" y="303" text-anchor="middle"
+          font-size="19" font-weight="800" fill="#1d4ed8" font-family="inherit">G</text>
+    <text x="440" y="319" text-anchor="middle"
+          font-size="11" fill="#1e40af" font-family="inherit">3 wk</text>
+
+    <!-- F merge of B+E -->
+    <rect x="540" y="207" width="80" height="46" rx="5"
+          fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
+    <text x="580" y="228" text-anchor="middle"
+          font-size="19" font-weight="800" fill="#1d4ed8" font-family="inherit">F</text>
+    <text x="580" y="244" text-anchor="middle"
+          font-size="11" fill="#1e40af" font-family="inherit">4 wk</text>
+
+    <!-- H merge of F+G+E -->
+    <rect x="680" y="207" width="80" height="46" rx="5"
+          fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
+    <text x="720" y="228" text-anchor="middle"
+          font-size="19" font-weight="800" fill="#1d4ed8" font-family="inherit">H</text>
+    <text x="720" y="244" text-anchor="middle"
+          font-size="11" fill="#1e40af" font-family="inherit">5 wk</text>
+
+    <rect x="815" y="207" width="80" height="46" rx="5"
+          fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
+    <text x="855" y="228" text-anchor="middle"
+          font-size="19" font-weight="800" fill="#1d4ed8" font-family="inherit">I</text>
+    <text x="855" y="244" text-anchor="middle"
+          font-size="11" fill="#1e40af" font-family="inherit">3 wk</text>
+
+    <rect x="935" y="207" width="80" height="46" rx="5"
+          fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
+    <text x="975" y="228" text-anchor="middle"
+          font-size="19" font-weight="800" fill="#1d4ed8" font-family="inherit">J</text>
+    <text x="975" y="244" text-anchor="middle"
+          font-size="11" fill="#1e40af" font-family="inherit">2 wk</text>
+
+    <ellipse cx="1080" cy="230" rx="42" ry="23"
+             fill="#f8fafc" stroke="#94a3b8" stroke-width="1.5"/>
+    <text x="1080" y="234" text-anchor="middle"
+          font-size="11" font-weight="700" fill="#64748b" font-family="inherit">END</text>
+
+    <!-- Descriptions -->
+    <text x="155" y="267" text-anchor="middle" font-size="9.5" fill="#94a3b8" font-family="inherit">Workflow Assessment</text>
+    <text x="290" y="163" text-anchor="middle" font-size="9.5" fill="#94a3b8" font-family="inherit">Network Infra</text>
+    <text x="290" y="267" text-anchor="middle" font-size="9.5" fill="#94a3b8" font-family="inherit">EHR Config</text>
+    <text x="290" y="372" text-anchor="middle" font-size="9.5" fill="#94a3b8" font-family="inherit">HW Procurement</text>
+    <text x="440" y="192" text-anchor="middle" font-size="9.5" fill="#94a3b8" font-family="inherit">HW Install</text>
+    <text x="440" y="342" text-anchor="middle" font-size="9.5" fill="#94a3b8" font-family="inherit">Data Migration</text>
+    <text x="580" y="267" text-anchor="middle" font-size="9.5" fill="#94a3b8" font-family="inherit">Staff Training</text>
+    <text x="720" y="267" text-anchor="middle" font-size="9.5" fill="#94a3b8" font-family="inherit">Integration Test</text>
+    <text x="855" y="267" text-anchor="middle" font-size="9.5" fill="#94a3b8" font-family="inherit">Go-Live</text>
+    <text x="975" y="267" text-anchor="middle" font-size="9.5" fill="#94a3b8" font-family="inherit">Post-Launch</text>
+  </svg>
+  </div>
+  <div class="legend">
+    <span class="legend-node">H</span>
+    H (Integration Testing) has three predecessors: F, G, and E — arched arrows from E and G keep all three entries distinct at H's left face
+  </div>
+</div>
+
+</body>
+</html>

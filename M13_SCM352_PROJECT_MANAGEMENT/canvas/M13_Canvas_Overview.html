@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 13 Overview — SCM 352</title>
+<style>
+:root {
+  --navy:#1a3a5c;--blue:#2563a8;--blue-lt:#dbeafe;--blue-xlt:#eff6ff;
+  --gold:#f59e0b;--gold-lt:#fffbeb;--gold-bdr:#fde68a;
+  --green:#16a34a;--green-lt:#f0fdf4;--green-bdr:#bbf7d0;
+  --gray-50:#f9fafb;--gray-100:#f3f4f6;--gray-200:#e5e7eb;
+  --gray-400:#9ca3af;--gray-600:#4b5563;--gray-700:#374151;--gray-800:#1f2937;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:white;color:var(--gray-800);line-height:1.7;font-size:14.5px;}
+.hero{background:linear-gradient(135deg,var(--navy) 0%,#2a5280 100%);color:white;padding:36px 32px 32px;}
+.hero-eyebrow{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;}
+.hero h1{font-size:26px;font-weight:700;letter-spacing:-.02em;line-height:1.2;margin-bottom:10px;}
+.hero-sub{font-size:14px;color:rgba(255,255,255,.72);line-height:1.55;max-width:640px;}
+.meta-strip{display:flex;gap:0;border-bottom:2px solid var(--gray-200);overflow-x:auto;background:white;}
+.meta-item{padding:12px 20px;border-right:1px solid var(--gray-200);min-width:0;flex-shrink:0;}
+.meta-item:last-child{border-right:none;}
+.meta-label{font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--gray-400);margin-bottom:3px;}
+.meta-value{font-size:13px;font-weight:700;color:var(--navy);}
+.pg-body{max-width:780px;margin:0 auto;padding:36px 28px 60px;display:flex;flex-direction:column;gap:32px;}
+.section-h{font-size:18px;font-weight:700;color:var(--navy);letter-spacing:-.01em;margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid var(--blue-lt);}
+.gate-callout{background:var(--blue-xlt);border:1.5px solid var(--blue-lt);border-left:4px solid var(--blue);border-radius:0 10px 10px 0;padding:14px 18px;font-size:13.5px;color:var(--gray-700);line-height:1.6;}
+.gate-callout strong{color:var(--navy);}
+.final-callout{background:var(--gold-lt);border:1.5px solid var(--gold-bdr);border-left:4px solid var(--gold);border-radius:0 10px 10px 0;padding:14px 18px;font-size:13.5px;color:var(--gray-700);line-height:1.6;}
+.final-callout strong{color:#92400e;}
+.agenda{display:flex;flex-direction:column;gap:0;border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;}
+.agenda-item{display:flex;align-items:flex-start;gap:14px;padding:13px 18px;border-bottom:1px solid var(--gray-100);font-size:13.5px;color:var(--gray-700);line-height:1.5;}
+.agenda-item:last-child{border-bottom:none;}
+.agenda-item:hover{background:var(--gray-50);}
+.agenda-icon{font-size:16px;flex-shrink:0;margin-top:1px;}
+.agenda-time{font-size:11px;font-weight:600;color:var(--gray-400);white-space:nowrap;align-self:center;}
+.lo-table{width:100%;border-collapse:collapse;font-size:13px;}
+.lo-table th{background:var(--navy);color:white;padding:9px 13px;text-align:left;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;}
+.lo-table td{padding:9px 13px;border-bottom:1px solid var(--gray-100);vertical-align:top;line-height:1.5;color:var(--gray-700);}
+.lo-table tr:last-child td{border-bottom:none;}
+.lo-table tr:hover td{background:var(--blue-xlt);}
+.lo-num{font-weight:800;color:var(--navy);white-space:nowrap;}
+.bloom-pill{font-size:10px;font-weight:700;padding:2px 7px;border-radius:100px;white-space:nowrap;display:inline-block;}
+.bl-apply{background:var(--blue-lt);color:var(--navy);}
+.bl-analyze{background:var(--gold-lt);color:#92400e;}
+.bl-understand{background:var(--gray-100);color:var(--gray-600);}
+.workload-box{background:var(--gold-lt);border:1.5px solid var(--gold-bdr);border-radius:12px;padding:18px 22px;display:flex;align-items:center;gap:16px;}
+.workload-icon{font-size:28px;flex-shrink:0;}
+.workload-text h3{font-size:15px;font-weight:700;color:var(--navy);margin-bottom:4px;}
+.workload-text p{font-size:13px;color:var(--gray-700);line-height:1.5;}
+.grade-table{width:100%;border-collapse:collapse;font-size:13px;}
+.grade-table th{background:var(--navy);color:white;padding:9px 13px;text-align:left;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;}
+.grade-table td{padding:9px 13px;border-bottom:1px solid var(--gray-100);}
+.grade-table tr.total-row td{font-weight:700;background:var(--blue-xlt);color:var(--navy);font-size:14px;}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-eyebrow">SCM 352 · Module 13 · Summer 2026 · Final Module</div>
+  <h1>Project Management — The Longest Path to Failure</h1>
+  <p class="hero-sub">Every complex project failure has the same early symptom: someone started an activity before its predecessor was done. The tools in this module exist to prevent that from happening — by making hidden dependencies explicit and computing which activities have no room to slip.</p>
+</div>
+
+<div class="meta-strip">
+  <div class="meta-item"><div class="meta-label">Workload</div><div class="meta-value">5–7 hours</div></div>
+  <div class="meta-item"><div class="meta-label">Gate 1 due</div><div class="meta-value">Day 2</div></div>
+  <div class="meta-item"><div class="meta-label">Gate 2 due</div><div class="meta-value">Day 6 · 11:59 PM</div></div>
+  <div class="meta-item"><div class="meta-label">Case due</div><div class="meta-value">Day 6 · 11:59 PM</div></div>
+  <div class="meta-item"><div class="meta-label">Module points</div><div class="meta-value">230 pts</div></div>
+</div>
+
+<div class="pg-body">
+
+  <div style="font-size:14px;line-height:1.75;color:var(--gray-700);">
+    <p style="margin-bottom:14px;">In 1994, Denver International Airport opened its new automated baggage system — a marvel of engineering that was supposed to move luggage across 21 miles of tunnels at 19 miles per hour. Instead, the system mangled bags and sent suitcases to entirely wrong gates. It took an additional 16 months and $560 million beyond the original budget to get it partially working. The airport itself opened two years late.</p>
+    <p style="margin-bottom:14px;">What went wrong was not a technology failure. It was a project management failure. Developers began building the software before the terminal's mechanical design was finalized — so the system specifications kept changing as the physical building changed around it. Activities that were assumed to be independent turned out to depend on each other. Critical path activities were delayed, and because the entire project hung on those paths, every delay cascaded into another.</p>
+    <p style="margin-bottom:14px;">This module gives you the tools to prevent that. You will build dependency matrices that make hidden relationships explicit, apply the Critical Path Method to compute the minimum possible project duration, use Gantt charts for project control, and evaluate crashing strategies to recover lost time at minimum cost.</p>
+  </div>
+
+  <div class="final-callout">
+    <strong>This is the final module of SCM 352.</strong> Everything you have learned this semester — from process flow to inventory to quality control — appears inside complex projects. A hospital EHR rollout requires capacity planning (M02–M04), inventory of hardware (M08–M10), quality monitoring (M07), and supplier coordination (M11–M12). Project management is the framework that coordinates all of it. The Case Analysis in this module is your final Riverside Health System deliverable.
+  </div>
+
+  <div class="gate-callout">
+    <strong>Important — module is gated.</strong> All lecture videos, apps, the discussion, Gate 2, and the Case are locked until you pass Gate 1 with an 80% or higher score. Gate 1 draws exclusively on Chapter 19 content absent from slides and narration (Sections 19.6.2, 19.6.3, 19.7, and 19.9). Gate 1 is due Day 2. You may retake Gate 1 once after a 24-hour cooldown if you do not pass on the first attempt.
+  </div>
+
+  <div>
+    <div class="section-h">What You Will Do This Module</div>
+    <div class="agenda">
+      <div class="agenda-item"><div class="agenda-icon">📖</div><div style="flex:1"><strong>Read Chapter 19</strong> — Project Management. All learning objectives trace back to this chapter. Sections 19.6.2 (Iteration and Rework), 19.6.3 (Unknown Unknowns), 19.7 (Project Management Triangle), and 19.9 (Organizing a Project) are chapter-exclusive and provide all five Gate 1 questions.</div><div class="agenda-time">90–120 min</div></div>
+      <div class="agenda-item"><div class="agenda-icon">🔓</div><div style="flex:1"><strong>Complete Gate 1</strong> — reading check. Score 80% or above to unlock all remaining content. 5 questions drawn exclusively from chapter sections not covered in slides or narration.</div><div class="agenda-time">10–15 min</div></div>
+      <div class="agenda-item"><div class="agenda-icon">🎬</div><div style="flex:1"><strong>Watch two lecture video segments</strong> — Segment 1: "Building the Map Before You Build the Project" (dependency matrices, true vs. scheduling-preference dependencies, concurrent engineering). Segment 2: "Crashing, Uncertainty, and the Course Synthesis."</div><div class="agenda-time">~36 min</div></div>
+      <div class="agenda-item"><div class="agenda-icon">📊</div><div style="flex:1"><strong>Work through the slide deck.</strong> Covers CPM mechanics in full: dependency matrix, AON network construction, forward pass (ES/EF), backward pass (LS/LF), slack, Gantt chart interpretation, and a four-scenario probability table for project uncertainty.</div><div class="agenda-time">40–50 min</div></div>
+      <div class="agenda-item"><div class="agenda-icon">⚡</div><div style="flex:1"><strong>Complete two interactive apps</strong> — Critical Path Calculator (enter any activity table, compute ES/EF/LS/LF and slack, verify critical path) and Project Crashing Optimizer (enter crash options, simulate step-by-step cost-minimizing crash plan, detect new critical path emergence).</div><div class="agenda-time">~30 min</div></div>
+      <div class="agenda-item"><div class="agenda-icon">💬</div><div style="flex:1"><strong>Participate in the Discussion — "Projects That Went Wrong."</strong> Identify a real project failure from outside the textbook. Analyze it using dependency matrix logic, the project management triangle, and one OM tool from an earlier SCM 352 module. Initial post only (no replies required). Due Day 4.</div><div class="agenda-time">30–40 min</div></div>
+      <div class="agenda-item"><div class="agenda-icon">📝</div><div style="flex:1"><strong>Complete Gate 2</strong> — 8 questions, 100 points, 90-minute timer, single attempt. Tests CPM forward and backward pass calculations, Gantt chart interpretation, project crashing, uncertainty, and project management judgment. Due Day 6 at 11:59 PM.</div><div class="agenda-time">60–90 min</div></div>
+      <div class="agenda-item"><div class="agenda-icon">📋</div><div style="flex:1"><strong>Complete the Case Analysis — Final Riverside EHR Implementation.</strong> 4-part Canvas quiz applying CPM (forward pass, backward pass, delay analysis, crashing) to Riverside Health System's EHR rollout. Canvas assigns your version automatically. 90-minute timer, single attempt. Due Day 6 at 11:59 PM.</div><div class="agenda-time">60–90 min</div></div>
+    </div>
+  </div>
+
+  <div class="workload-box">
+    <div class="workload-icon">⏱️</div>
+    <div class="workload-text">
+      <h3>Estimated total workload: 5–7 hours</h3>
+      <p>Both Gate 2 and the Case Analysis are 90-minute Canvas quizzes requiring complete CPM tables built on scratch paper before entering values. Plan at least 30–45 minutes of preparation for each assessment before opening Canvas.</p>
+    </div>
+  </div>
+
+  <div>
+    <div class="section-h">Learning Objectives</div>
+    <div style="border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;">
+      <table class="lo-table">
+        <thead><tr><th style="width:7%">LO</th><th style="width:58%">You will be able to…</th><th style="width:13%">Bloom's Level</th><th style="width:22%">Assessed in</th></tr></thead>
+        <tbody>
+          <tr><td class="lo-num">LO13-1</td><td>Build a dependency matrix from a project description: identify activities, classify predecessor relationships, and distinguish true dependencies from scheduling preferences</td><td><span class="bloom-pill bl-analyze">Analyze</span></td><td>Gate 1 Q3, Gate 2 Q1, Case Part 1</td></tr>
+          <tr><td class="lo-num">LO13-2</td><td>Construct an Activity-on-Node (AON) network from a dependency matrix, applying the rules for start and end nodes and for activities with multiple predecessors</td><td><span class="bloom-pill bl-apply">Apply</span></td><td>Gate 2 Q1, Case Part 1</td></tr>
+          <tr><td class="lo-num">LO13-3</td><td>Perform a forward pass to compute Early Start (ES) and Early Finish (EF) for every activity in a project network</td><td><span class="bloom-pill bl-apply">Apply</span></td><td>Gate 2 Q2, Case Part 2</td></tr>
+          <tr><td class="lo-num">LO13-4</td><td>Perform a backward pass to compute Late Start (LS) and Late Finish (LF) for every activity; compute slack for each activity; identify all critical activities and the critical path</td><td><span class="bloom-pill bl-apply">Apply</span></td><td>Gate 2 Q3, Case Parts 2–3</td></tr>
+          <tr><td class="lo-num">LO13-5</td><td>Interpret a Gantt chart: read activity start/finish times, identify slack bars, and determine the effect of a delay in a specific activity on project duration</td><td><span class="bloom-pill bl-analyze">Analyze</span></td><td>Gate 2 Q4, Case Part 3</td></tr>
+          <tr><td class="lo-num">LO13-6</td><td>Evaluate crashing decisions: identify candidate activities to crash, compare crash cost per unit of time, and determine the minimum-cost strategy to reduce project duration by a target amount</td><td><span class="bloom-pill bl-analyze">Analyze</span></td><td>Gate 2 Q5, Case Part 4</td></tr>
+          <tr><td class="lo-num">LO13-7</td><td>Explain how uncertainty in activity times affects critical path identification; describe how a deterministic CPM solution can underestimate true project duration when activity times are random</td><td><span class="bloom-pill bl-understand">Understand</span></td><td>Gate 1 Q1, Gate 2 Q7</td></tr>
+          <tr><td class="lo-num">LO13-8</td><td>Describe iteration and rework, unknown unknowns, the project management triangle, and the organizational structures used to manage complex projects — content exclusive to Chapter 19 Sections 19.6.2, 19.6.3, 19.7, and 19.9</td><td><span class="bloom-pill bl-understand">Understand</span></td><td>Gate 1 Q2, Q4, Q5, Gate 2 Q8</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div>
+    <div class="section-h">Module 13 Grading</div>
+    <div style="border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;">
+      <table class="grade-table">
+        <thead><tr><th>Component</th><th style="text-align:right;">Points</th><th style="text-align:right;">% of Module</th><th>Due</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Gate 1 Quiz</strong> — reading verification (access control only; does not affect grade)</td><td style="text-align:right;">0</td><td style="text-align:right;color:var(--gray-400);">—</td><td>Day 2</td></tr>
+          <tr><td><strong>Gate 2 Quiz</strong> — 8 questions, chapter + lecture synthesis, 90-min timer, single attempt</td><td style="text-align:right;font-weight:700;">100</td><td style="text-align:right;">43.5%</td><td>Day 6</td></tr>
+          <tr><td><strong>Discussion</strong> — "Projects That Went Wrong" — initial post only (no replies required)</td><td style="text-align:right;font-weight:700;">30</td><td style="text-align:right;">13.0%</td><td>Day 4 (initial post)</td></tr>
+          <tr><td><strong>Case Analysis M13</strong> — Riverside EHR Implementation, Canvas auto-graded quiz, 90-min timer</td><td style="text-align:right;font-weight:700;">100</td><td style="text-align:right;">43.5%</td><td>Day 6</td></tr>
+          <tr class="total-row"><td><strong>Module Total</strong></td><td style="text-align:right;font-weight:800;font-size:15px;">230</td><td style="text-align:right;font-weight:700;">100%</td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

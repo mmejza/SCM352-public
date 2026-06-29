@@ -59,7 +59,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
 <div class="pg-header">
   <div class="header-eyebrow">SCM 352 · M13 · Case Analysis · Final Module</div>
   <h1>Riverside Health System — EHR Implementation: Critical Path Analysis</h1>
-  <p>Riverside Health System has a 10-activity EHR implementation project with a hard go-live deadline. Apply CPM to build the schedule, evaluate delay risks, and determine the minimum-cost crash plan to bring the project in on time.</p>
+  <p>Riverside Health System has a 10-activity EHR implementation project with a hard go-live deadline. Apply CPM to build the schedule, identify the critical path, and evaluate delay risks.</p>
 </div>
 
 <div class="stats-strip">
@@ -82,7 +82,15 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
     <div class="alert-icon">⚠️</div>
     <div class="alert-body">
       <strong>Your version is assigned automatically by Canvas when you open the quiz.</strong>
-      Four versions (A, B, C, D) present the same 10-activity Riverside EHR project with different duration values. The dependency structure (which activities depend on which) is <em>identical across all versions</em> — only the durations differ. Canvas will display your version's activity table at the top of the quiz. Build your entire CPM solution using that table.
+      Four versions (A, B, C, D) present the same Riverside EHR project with different duration values. Canvas will display your version's activity table at the top of the quiz. 
+    </div>
+  </div>
+
+  <!-- FORMAT ALERT -->
+  <div class="alert alert-blue">
+    <div class="alert-icon">📋</div>
+    <div class="alert-body">
+      <strong>Quiz format: all fill-in-the-blank (FIMB).</strong> All 49 blanks across Parts 1–3 are fill-in-the-blank. Enter only the final value — no units, no formulas. For activity sequences, list letters in order separated by dashes (e.g., A-B-E-H-I-J). For predecessor lists, separate with "and" (e.g., "C and D"). Canvas draws one of four versions (A–D) when you open the quiz — work from the activity table shown in Canvas throughout all three parts.
     </div>
   </div>
 
@@ -91,15 +99,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
     <div class="alert alert-red">
       <div class="alert-icon">🔴</div>
       <div class="alert-body">
-        <strong>The 90-minute timer starts when you click Begin. It does not pause.</strong>
-        This quiz requires four complete CPM tables and a crashing analysis built on scratch paper before you enter any value in Canvas. You will need 30–45 minutes of preparation. Have all materials ready before clicking Begin. Do not enter partial tables — build each section to completion on paper first.
-      </div>
-    </div>
-    <div class="alert alert-blue">
-      <div class="alert-icon">📋</div>
-      <div class="alert-body">
-        <strong>Build one CPM table, use it for all four parts.</strong>
-        Part 1 establishes the paths and critical path. Part 2 uses those same EF and LS values. Parts 3 and 4 build directly on Part 2 results. A computational error in Part 1 will propagate. Verify your forward pass before moving to the backward pass. Verify both before attempting Parts 3 and 4.
+        <strong>The 90-minute timer does not pause.</strong>
       </div>
     </div>
   </div>
@@ -116,12 +116,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
     <strong>Recommended scratch-paper sequence:</strong>
     <ol>
       <li>List activities A–J, record your version's durations from the Canvas table.</li>
-      <li>Draw the AON network (Start → A → {B, C} → ...); confirm merge points at E, F, H, and J.</li>
-      <li>Forward pass: compute ES and EF for every activity (ES of A = 0; max rule at merge points).</li>
-      <li>Record project duration = EF of J.</li>
-      <li>Backward pass: compute LS and LF (LF of J = project duration; min rule at split points).</li>
-      <li>Compute slack for every activity (Slack = LS − ES). Activities with slack = 0 are critical.</li>
-      <li>List all paths and verify the critical path(s).</li>
+      <li>Draw the AON network; confirm merge points.</li>
+      <li>Forward pass: compute EST and ECT for every activity .</li>
+      <li>Record project duration.</li>
+      <li>Backward pass: compute LCT and LST.</li>
+      <li>Compute ST for every activity.</li>
+      <li>List all 6 paths A→J and verify the critical path.</li>
     </ol>
   </div>
 
@@ -130,18 +130,22 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
     <div class="part-header">
       <div class="part-num">Part 1</div>
       <div class="part-title-wrap">
-        <div class="part-title">Dependency Matrix and Network Paths</div>
-        <div class="part-pts">15 points total</div>
+        <div class="part-title">Network Construction and Critical Path Identification</div>
+        <div class="part-pts">25 points total</div>
       </div>
     </div>
     <div class="part-body">
       <div class="sub-item">
-        <span class="pts-tag">7 pts <span class="blank-count">3 blanks</span></span>
-        <strong>Part 1a — Predecessor Identification:</strong> From the project description, three activities have two or more predecessors. For each one, list all of its immediate predecessors separated by "and" (e.g., "C and D"): Activity E (requires C and D) · Activity F (requires B and E) · Activity H (requires E, F, and G). Enter predecessors in alphabetical order within each answer.
+        <span class="pts-tag">10 pts <span class="blank-count">3 blanks</span></span>
+        <strong>Part 1a — Predecessor Identification:</strong> Three activities have two or more predecessors. For each one, list all immediate predecessors separated by "and" (e.g., "C and D"): Activity E · Activity F · Activity H. Enter predecessors in alphabetical order within each answer.
       </div>
       <div class="sub-item">
-        <span class="pts-tag">8 pts <span class="blank-count">7 blanks</span></span>
-        <strong>Part 1b — Path Durations and Critical Path:</strong> List all distinct paths through the Riverside EHR network and compute each path's total duration using your version's activity durations. Then identify the critical path (the longest path) and state its duration in weeks. There are 6 distinct paths from Start to J.
+        <span class="pts-tag">9 pts <span class="blank-count">6 blanks</span></span>
+        <strong>Part 1b — Path Durations:</strong> List all 6 distinct paths from A to J and compute each path's total duration using your version's activity durations. Enter one path duration per blank, in the order the paths appear in the quiz (longest to shortest is not required — enter in the order Canvas shows them).
+      </div>
+      <div class="sub-item">
+        <span class="pts-tag">6 pts <span class="blank-count">2 blanks</span></span>
+        <strong>Part 1c — Critical Path:</strong> State the minimum project duration in weeks. Then write the critical path as a sequence of activity letters separated by dashes (e.g., A-B-C-F-I-J). 
       </div>
     </div>
   </div>
@@ -152,25 +156,25 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
       <div class="part-num">Part 2</div>
       <div class="part-title-wrap">
         <div class="part-title">Full CPM Forward and Backward Pass</div>
-        <div class="part-pts">35 points total</div>
+        <div class="part-pts">50 points total</div>
       </div>
     </div>
     <div class="part-body">
       <div class="sub-item">
-        <span class="pts-tag">10 pts <span class="blank-count">10 blanks</span></span>
-        <strong>Part 2a — Early Finish (EF) Values:</strong> Perform a complete forward pass. For each of the 10 activities A–J, enter the Early Finish (EF) value. Remember: EF = ES + Duration; for activities with multiple predecessors, ES = max(EF of all predecessors). EF values are integers.
+        <span class="pts-tag">15 pts <span class="blank-count">10 blanks</span></span>
+        <strong>Part 2a — Earliest Completion Time (ECT):</strong> Perform a complete forward pass. For each of the 10 activities A–J, enter the ECT value. ECT values are integers.
       </div>
       <div class="sub-item">
-        <span class="pts-tag">10 pts <span class="blank-count">10 blanks</span></span>
-        <strong>Part 2b — Late Start (LS) Values:</strong> Perform a complete backward pass. For each of the 10 activities A–J, enter the Late Start (LS) value. Remember: LS = LF − Duration; set LF of J equal to EF of J (project duration); for activities with multiple successors, LF = min(LS of all successors). LS values are integers.
+        <span class="pts-tag">15 pts <span class="blank-count">10 blanks</span></span>
+        <strong>Part 2b — Latest Completion Time (LCT):</strong> Perform a complete backward pass. For each of the 10 activities A–J, enter the LCT value. LCT values are integers.
       </div>
       <div class="sub-item">
-        <span class="pts-tag">10 pts <span class="blank-count">10 blanks</span></span>
-        <strong>Part 2c — Slack Values:</strong> For each of the 10 activities A–J, compute and enter the slack (Slack = LS − ES). Enter each slack as a non-negative integer. Activities with Slack = 0 are critical; verify these match your critical path from Part 1b.
+        <span class="pts-tag">15 pts <span class="blank-count">10 blanks</span></span>
+        <strong>Part 2c — Slack Time (ST):</strong> For eall activities A–J, compute and enter the slack time (ST = LCT − ECT). Enter each ST as a non-negative integer.
       </div>
       <div class="sub-item">
         <span class="pts-tag">5 pts <span class="blank-count">1 blank</span></span>
-        <strong>Part 2d — Critical Path Sequence:</strong> Write the critical path as a sequence of activity letters separated by dashes (e.g., A-B-E-H-I-J). There is exactly one critical path for your version. All critical path activities must have Slack = 0.
+        <strong>Part 2d — Critical Path Sequence:</strong> Write the critical path as a sequence of activity letters separated by dashes (e.g., A-B-E-H-I-J). 
       </div>
     </div>
   </div>
@@ -187,43 +191,15 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
     <div class="part-body">
       <div class="sub-item">
         <span class="pts-tag">5 pts <span class="blank-count">3 blanks</span></span>
-        <strong>Part 3a — Slack Bar Identification:</strong> On a project Gantt chart, activities with positive slack have a slack bar (a grey extension beyond the activity bar showing how far right the activity can shift without delaying the project). Identify the three activities in the Riverside EHR project that have slack bars and state the length of each slack bar in weeks. Enter activities in alphabetical order.
+        <strong>Part 3a — Slack Bar Identification:</strong>The Gantt quiz question will ask for the ST values of three specific non-critical activities. For each, enter the ST value in weeks as a whole number.
       </div>
       <div class="sub-item">
         <span class="pts-tag">10 pts <span class="blank-count">2 blanks</span></span>
-        <strong>Part 3b — Activity B Delay:</strong> Activity B (infrastructure build-out) is delayed beyond its planned Early Start by exactly 1 week. Using your version's slack values, determine whether this delay affects the project completion date. If the delay extends the project, state the new project duration. If the project is unaffected, explain using B's slack value. Enter: (1) "yes" or "no" to whether the project is extended, and (2) the project's resulting duration in weeks.
+        <strong>Part 3b — Activity B Delay:</strong> Activity B is delayed beyond its planned EST. Using your version's ST values from Part 2c, determine whether this delay affects the project completion date.
       </div>
       <div class="sub-item">
         <span class="pts-tag">10 pts <span class="blank-count">2 blanks</span></span>
-        <strong>Part 3c — Activity F Delay:</strong> Activity F (staff training) now starts 2 weeks after its originally planned Early Start (i.e., F's actual start = ES<sub>F</sub> + 2). Determine the new Early Finish of F and trace its effect through H, I, and J to determine the new project completion date. Enter: (1) the week in which F now completes (EF<sub>F_delayed</sub>) and (2) the resulting project duration.
-      </div>
-    </div>
-  </div>
-
-  <!-- PART 4 -->
-  <div class="part-card">
-    <div class="part-header">
-      <div class="part-num">Part 4</div>
-      <div class="part-title-wrap">
-        <div class="part-title">Project Crashing — Minimum-Cost Duration Reduction</div>
-        <div class="part-pts">25 points total</div>
-      </div>
-    </div>
-    <div class="part-body">
-      <div style="padding:10px 14px;background:var(--gold-lt);border-radius:8px;font-size:13px;line-height:1.6;color:var(--gray-700);border:1px solid var(--gold-bdr);">
-        <strong style="color:var(--gold-dark);">Crashing context:</strong> Riverside's hospital board has set a hard contractual deadline 2 weeks earlier than the current CPM project duration. You must reduce project duration by exactly 2 weeks at minimum cost. A crash table will be provided in the quiz showing available crash time and crash cost per week for each crashable activity. Only critical path activities can reduce project duration. Apply the greedy minimum-cost approach: crash the cheapest critical activity first, then re-evaluate the critical path before proceeding.
-      </div>
-      <div class="sub-item">
-        <span class="pts-tag">5 pts <span class="blank-count">2 blanks</span></span>
-        <strong>Part 4a — Crash Candidates Ranking:</strong> From the crash table (provided in Canvas), list the two cheapest critical path activities to crash. Rank them in order of ascending crash cost per week. Enter: (1) the cheapest critical activity (cost/week) and (2) the second cheapest critical activity (cost/week).
-      </div>
-      <div class="sub-item">
-        <span class="pts-tag">12 pts <span class="blank-count">4–6 blanks depending on version</span></span>
-        <strong>Part 4b — Minimum-Cost Crash Sequence:</strong> Apply the greedy minimum-cost crash algorithm step-by-step to reduce project duration by 2 weeks. For each crash step: identify which activity you crash, the crash cost for that step, and the resulting project duration after that step. The crash table will show maximum crash units available per activity. After each step, check whether a new path becomes critical — if two paths become co-critical, the next crash must reduce both. Enter each crash step's activity and cost, and the final total crash cost.
-      </div>
-      <div class="sub-item">
-        <span class="pts-tag">8 pts <span class="blank-count">2 blanks</span></span>
-        <strong>Part 4c — New Critical Path Check:</strong> After completing all crash steps, state: (1) the final project duration (target = original duration − 2 weeks) and (2) whether a new critical path emerged during the crash sequence ("yes" or "no"). If yes, state the new critical path sequence.
+        <strong>Part 3c — Activity F Delay:</strong> Activity F now starts after its originally planned EST. Determine how this affects the project completion date. 
       </div>
     </div>
   </div>
@@ -235,10 +211,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
       <table class="grading-table">
         <thead><tr><th>Part</th><th>Topic</th><th style="text-align:right;">Points</th></tr></thead>
         <tbody>
-          <tr><td><strong>Part 1</strong></td><td>Dependency Matrix and Network Paths (predecessors + path durations + CP)</td><td style="text-align:right;">15</td></tr>
-          <tr><td><strong>Part 2</strong></td><td>Full CPM Forward and Backward Pass (EF + LS + Slack + CP sequence)</td><td style="text-align:right;">35</td></tr>
-          <tr><td><strong>Part 3</strong></td><td>Gantt Slack Bars and Delay Analysis (B delay + F delay)</td><td style="text-align:right;">25</td></tr>
-          <tr><td><strong>Part 4</strong></td><td>Project Crashing — minimum-cost 2-week reduction</td><td style="text-align:right;">25</td></tr>
+          <tr><td><strong>Part 1</strong></td><td>Network Construction — predecessor identification (10) + path durations (9) + critical path (6)</td><td style="text-align:right;">25</td></tr>
+          <tr><td><strong>Part 2</strong></td><td>Full CPM — ECT forward pass (15) + LCT backward pass (15) + ST slack (15) + CP sequence (5)</td><td style="text-align:right;">50</td></tr>
+          <tr><td><strong>Part 3</strong></td><td>Gantt and Delay Analysis — slack bars (5) + Activity B delay (10) + Activity F delay (10)</td><td style="text-align:right;">25</td></tr>
           <tr class="total-row"><td colspan="2"><strong>Total</strong></td><td style="text-align:right;">100</td></tr>
         </tbody>
       </table>
@@ -248,7 +223,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
   <!-- INTEGRITY FOOTER -->
   <div class="integrity-footer">
     <h3>🔒 Academic Integrity and Technical Issues</h3>
-    <p>This quiz is open-book and open-notes. You may use Chapter 19, personal notes, lecture slides, and both interactive apps (Critical Path Calculator, Project Crashing Optimizer). AI tools are not permitted. Your version's data is unique — answers derived from another student's version or from an AI tool will not match your data and constitute academic dishonesty.</p>
+    <p>This quiz is open-book and open-notes. You may use Chapter 19, personal notes, lecture slides, and the Critical Path Calculator app. AI tools are not permitted. Your version's data is unique — answers derived from another student's version or from an AI tool will not match your data and constitute academic dishonesty.</p>
     <p style="margin-top:10px;"><strong>Technical issues:</strong> Do not refresh if Canvas freezes. Contact your instructor immediately with a screenshot showing elapsed time and current question position. Issues reported more than 24 hours after the quiz window closes cannot be accommodated.</p>
   </div>
 

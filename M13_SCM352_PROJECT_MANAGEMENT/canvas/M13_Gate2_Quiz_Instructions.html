@@ -77,7 +77,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
 <div class="pg-header">
   <div class="header-badge">SCM 352 · M13</div>
   <div class="header-text">
-    <h1>Gate 2 Quiz — Project Management: CPM, Crashing, and Uncertainty</h1>
+    <h1>Gate 2 Quiz — Project Management: CPM and Critical Path Analysis</h1>
     <p>Module 13 · Chapter 19 + Lecture + Apps Synthesis · Open-book, open-notes · Fully auto-graded</p>
   </div>
   <div class="header-right">100 points<br>1 attempt · 90 min</div>
@@ -86,7 +86,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
 <div class="stats-strip">
   <div class="stat-cell"><div class="stat-label">Attempts</div><div class="stat-val warn">1 — no retakes</div></div>
   <div class="stat-cell"><div class="stat-label">Time limit</div><div class="stat-val warn">90 minutes</div></div>
-  <div class="stat-cell"><div class="stat-label">Questions</div><div class="stat-val">8 questions</div></div>
+  <div class="stat-cell"><div class="stat-label">Questions</div><div class="stat-val">5 questions</div></div>
   <div class="stat-cell"><div class="stat-label">Points</div><div class="stat-val">100 points</div></div>
   <div class="stat-cell"><div class="stat-label">Due</div><div class="stat-val">Day 6 · 11:59 PM</div></div>
   <div class="stat-cell"><div class="stat-label">Sources allowed</div><div class="stat-val">Chapter 19 · Lectures · Apps · Slides</div></div>
@@ -98,8 +98,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
   <div class="alert alert-gold">
     <div class="alert-icon">⚠️</div>
     <div class="alert-body">
-      <strong>Questions 1–3 and 5 are parameterized (versioned).</strong>
-      Canvas assigns your version automatically when the quiz loads. Each versioned question presents a different project scenario — one of four project contexts (Office Technology Upgrade, New Product Launch, Hospital Relocation, Logistics Network Expansion). You will not see a version label. Questions 4, 6, 7, and 8 present the same content to all students.
+      <strong>Questions 1–3 are parameterized (versioned).</strong>
+      Canvas assigns your version automatically when the quiz loads. Each versioned question presents a different project scenario — one of four project contexts . You will not see a version label. Questions 4 and 5 present the same content to all students.
     </div>
   </div>
 
@@ -108,8 +108,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
     <div class="alert alert-red">
       <div class="alert-icon">🔴</div>
       <div class="alert-body">
-        <strong>The 90-minute timer starts the moment you click Begin. It does not pause.</strong>
-        Have scratch paper and your notes ready before you click Begin. Questions 1, 2, 3, and 5 require complete CPM tables. Build every table on scratch paper before entering any value in Canvas — do not enter partial answers.
+        <strong>The 90-minute timer does not pause.</strong>
       </div>
     </div>
     <div class="alert alert-red">
@@ -123,51 +122,15 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
       <div class="alert-icon">📖</div>
       <div class="alert-body">
         <strong>This quiz is open-book and open-notes.</strong>
-        You may use Chapter 19, your personal notes, the lecture slides, and any module materials. Both interactive apps (Critical Path Calculator and Project Crashing Optimizer) may be used to check your hand calculations. AI tools are not permitted.
+        You may use Chapter 19, your personal notes, the lecture slides, and any module materials. The Critical Path Calculator app may be used to check your hand calculations. AI tools are not permitted.
       </div>
     </div>
   </div>
 
-  <!-- FORMULA REFERENCE -->
-  <div class="formula-ref">
-    <h3>CPM Formula Quick Reference</h3>
-    <div class="formula-grid">
-      <div class="formula-item">
-        <div class="formula-lbl">Forward Pass</div>
-        <div class="formula-eq">EF = ES + Duration</div>
-        <div class="formula-note">ES of first activity = 0. For merge activities: ES = max(EF of all predecessors).</div>
-      </div>
-      <div class="formula-item">
-        <div class="formula-lbl">Backward Pass</div>
-        <div class="formula-eq">LS = LF − Duration</div>
-        <div class="formula-note">LF of last activity = project duration. For split activities: LF = min(LS of all successors).</div>
-      </div>
-      <div class="formula-item">
-        <div class="formula-lbl">Slack</div>
-        <div class="formula-eq">Slack = LS − ES</div>
-        <div class="formula-note">Activities with Slack = 0 are on the critical path. Slack can never be negative if calculations are correct.</div>
-      </div>
-      <div class="formula-item">
-        <div class="formula-lbl">Critical Path</div>
-        <div class="formula-eq">Longest path from Start to End</div>
-        <div class="formula-note">Every activity on the critical path has Slack = 0. Two paths can tie — both are then critical.</div>
-      </div>
-      <div class="formula-item">
-        <div class="formula-lbl">Crashing</div>
-        <div class="formula-eq">Crash cheapest critical activity first</div>
-        <div class="formula-note">After each crash step: re-check all path lengths. A new critical path may emerge — crash only shared activities from that point forward.</div>
-      </div>
-      <div class="formula-item" style="background:var(--gold-lt);border:1px solid var(--gold-bdr);">
-        <div class="formula-lbl" style="color:#92400e;">Delay Analysis</div>
-        <div class="formula-eq" style="color:#92400e;font-size:12.5px;">Extension = max(0, delay − slack)</div>
-        <div class="formula-note">If delay ≤ slack: project unaffected. If delay &gt; slack: project extends by (delay − slack) weeks.</div>
-      </div>
-    </div>
-  </div>
 
   <!-- QUESTION BREAKDOWN TABLE -->
   <div>
-    <div class="sec-heading">Question Breakdown — 8 Questions · 100 Points</div>
+    <div class="sec-heading">Question Breakdown — 5 Questions · 100 Points</div>
     <div style="border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;margin-top:14px;background:white;">
       <table class="q-table">
         <thead>
@@ -183,85 +146,59 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
         <tbody>
           <tr>
             <td class="q-num">1</td>
-            <td>Critical Path Identification <span class="ver-badge">VERSIONED</span><br>
-            <span style="font-size:12px;color:var(--gray-600);">Given an activity table, list all paths through the network and compute each path's duration · Identify the critical path and state the minimum project duration</span></td>
+            <td>Network Paths and Critical Path Identification <span class="ver-badge">VERSIONED</span><br>
+            <span style="font-size:12px;color:var(--gray-600);"> </span></td>
             <td><span class="type-badge t-calc">Calculation</span></td>
             <td><span class="ver-badge">V1–V4</span></td>
             <td class="items-note">1 FIMB</td>
-            <td class="pts-cell">14</td>
+            <td class="pts-cell">20</td>
           </tr>
           <tr>
             <td class="q-num">2</td>
-            <td>Forward Pass — Early Finish Values <span class="ver-badge">VERSIONED</span><br>
-            <span style="font-size:12px;color:var(--gray-600);">Using the same activity network as Q1 (your version's data is repeated) · Perform a complete forward pass · Fill in EF for every activity · Apply the max rule at merge points</span></td>
+            <td>Forward Pass <span class="ver-badge">VERSIONED</span><br>
+            <span style="font-size:12px;color:var(--gray-600);" </span></td>
             <td><span class="type-badge t-calc">Calculation</span></td>
             <td><span class="ver-badge">V1–V4</span></td>
             <td class="items-note">1 FIMB</td>
-            <td class="pts-cell">12</td>
+            <td class="pts-cell">20</td>
           </tr>
           <tr>
             <td class="q-num">3</td>
-            <td>Backward Pass — Late Start Values <span class="ver-badge">VERSIONED</span><br>
-            <span style="font-size:12px;color:var(--gray-600);">EF values from the forward pass are provided in the question · Perform a complete backward pass · Fill in LS for every activity · Apply the min rule at split points</span></td>
+            <td>Backward Pass  <span class="ver-badge">VERSIONED</span><br>
+            <span style="font-size:12px;color:var(--gray-600);"> 
+               </span></td>
             <td><span class="type-badge t-calc">Calculation</span></td>
             <td><span class="ver-badge">V1–V4</span></td>
             <td class="items-note">1 FIMB</td>
-            <td class="pts-cell">16</td>
+            <td class="pts-cell">25</td>
           </tr>
           <tr>
             <td class="q-num">4</td>
-            <td>Gantt Chart Interpretation — Office Renovation<br>
-            <span style="font-size:12px;color:var(--gray-600);">Fixed scenario: 8-activity office renovation · Deadline = Week 16 · Identify critical activities from the Gantt table · Analyze what happens when Activity D is delayed 4 weeks (3 wks slack) · Analyze what happens when Activity H is delayed 3 weeks (4 wks slack)</span></td>
+            <td>Gantt Chart Interpretation <br>
+            <span style="font-size:12px;color:var(--gray-600);" (a) Identify all critical activities · (b) State slack bar lengths — FIMB · (c) Does the project extend? — MC · (d) Does the project extend? — MC</span></td>
             <td><span class="type-badge t-data">Data Analysis</span></td>
             <td style="color:var(--gray-400);font-size:12px;">Fixed — same for all</td>
-            <td class="items-note">3 items<br><span style="font-size:10px;">(1 MA + 2 MC)</span></td>
-            <td class="pts-cell">12</td>
+            <td class="items-note">4 items<br><span style="font-size:10px;">(1 MA + 1 FIMB + 2 MC)</span></td>
+            <td class="pts-cell">20</td>
           </tr>
           <tr>
             <td class="q-num">5</td>
-            <td>Project Crashing <span class="ver-badge">VERSIONED</span><br>
-            <span style="font-size:12px;color:var(--gray-600);">Crash table for critical path activities provided · Identify cheapest activity to crash first · Compute total crash cost for the target reduction · State new project duration · Determine whether a new critical path emerges</span></td>
-            <td><span class="type-badge t-calc">Calculation</span></td>
-            <td><span class="ver-badge">V1–V4</span></td>
-            <td class="items-note">1 FIMB</td>
-            <td class="pts-cell">14</td>
-          </tr>
-          <tr>
-            <td class="q-num">6</td>
-            <td>Cold-Chain Dependency Matrix<br>
-            <span style="font-size:12px;color:var(--gray-600);">Fixed scenario: regional food distributor · Build predecessor relationships from a project narrative · Distinguish a scheduling preference from a technical dependency</span></td>
+            <td>Dependency Matrix Construction<br>
+            <span style="font-size:12px;color:var(--gray-600);"  — MC</span></td>
             <td><span class="type-badge t-data">Data Analysis</span></td>
             <td style="color:var(--gray-400);font-size:12px;">Fixed — same for all</td>
             <td class="items-note">2 items<br><span style="font-size:10px;">(1 FIMB + 1 MC)</span></td>
-            <td class="pts-cell">10</td>
-          </tr>
-          <tr>
-            <td class="q-num">7</td>
-            <td>Uncertainty and Probability<br>
-            <span style="font-size:12px;color:var(--gray-600);">3 critical activities with 2 equally likely durations each · Compute expected durations · Complete the 8-scenario table · Identify the probability that actual project duration exceeds the expected value</span></td>
-            <td><span class="type-badge t-calc">Calculation</span></td>
-            <td style="color:var(--gray-400);font-size:12px;">Fixed — same for all</td>
-            <td class="items-note">3 items<br><span style="font-size:10px;">(2 FIMB + 1 MC)</span></td>
-            <td class="pts-cell">10</td>
-          </tr>
-          <tr>
-            <td class="q-num">8</td>
-            <td>Project Management Judgment — Brooks's Law and Triple Constraint<br>
-            <span style="font-size:12px;color:var(--gray-600);">Fixed scenario: mobile app project 3 weeks behind in Week 12 of 20 · Identify the three constraints of the project management triangle · Apply Brooks's Law to explain why adding developers can slow a late project · Identify the correct schedule compression strategy from Chapter 19 Section 19.8</span></td>
-            <td><span class="type-badge t-data">Data Analysis</span></td>
-            <td style="color:var(--gray-400);font-size:12px;">Fixed — same for all</td>
-            <td class="items-note">3 MC</td>
-            <td class="pts-cell">12</td>
+            <td class="pts-cell">15</td>
           </tr>
           <tr style="background:var(--blue-xlt);">
-            <td colspan="5" style="font-weight:700;font-size:13px;color:var(--navy);padding:10px 13px;">Total · 8 questions</td>
+            <td colspan="5" style="font-weight:700;font-size:13px;color:var(--navy);padding:10px 13px;">Total · 5 questions</td>
             <td class="pts-cell" style="font-size:15px;">100</td>
           </tr>
         </tbody>
       </table>
     </div>
     <p style="font-size:11.5px;color:var(--gray-400);margin-top:6px;padding-left:4px;">
-      <strong>Versioned questions (Q1–Q3, Q5):</strong> Canvas draws independently for each question group — your version for Q1 may differ from your version for Q2. Always work from the activity table shown in the current question.
+      <strong>Versioned questions (Q1–Q3):</strong> Canvas draws independently for each question group — your version for Q1 may differ from your version for Q2. Always work from the activity table shown in the current question. Q4 and Q5 present the same scenario to all students.
     </p>
   </div>
 
@@ -275,57 +212,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
         It is your responsibility to enter every blank in the accepted format before submitting. This applies to all fill-in-blank fields, including FIMB items. There are no regrade requests for format mismatches.
         <div style="margin-top:8px;display:flex;flex-direction:column;gap:5px;font-size:13px;line-height:1.55;">
           <div>→ <strong>No units or labels:</strong> enter <em>14</em>, not "14 days" or "14 weeks"</div>
-          <div>→ <strong>Decimal places:</strong> round to 2 decimal places unless the question specifies otherwise — CPM table values (ES, EF, LS, LF, Slack) are whole numbers in this module</div>
+          <div>→ <strong>Decimal places:</strong> round to 2 decimal places unless the question specifies otherwise — CPM table values (EST, ECT, LST, LCT, ST) are whole numbers in this module</div>
           <div>→ <strong>Path sequences:</strong> list activity letters in order — "A-B-D-E-G-H" or "A,B,D,E,G,H" — no other text</div>
-          <div>→ <strong>Slack time:</strong> enter 0, not "zero" or "0 days" — slack of 0 means the activity is on the critical path</div>
+          <div>→ <strong>Slack time (ST):</strong> enter 0, not "zero" or "0 days" — ST = 0 means the activity is on the critical path</div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- INSTRUCTIONS GRID -->
-  <div>
-    <div class="sec-heading">Before You Begin · How to Answer Each Item Type</div>
-    <div class="instr-grid" style="margin-top:14px;">
-
-      <div class="instr-card">
-        <div class="instr-card-hd" style="background:var(--blue-xlt);">
-          <h3>Before You Begin</h3>
-        </div>
-        <ul class="instr-list">
-          <li>Have <strong>Chapter 19</strong> open and your notes nearby. Both interactive apps may be used to verify hand calculations.</li>
-          <li>Have <strong>scratch paper ready</strong> before clicking Begin. Q1, Q2, Q3, and Q5 all require complete CPM tables. Build every table on paper before entering any value in Canvas.</li>
-          <li>The timer <strong>starts immediately</strong> when you click Begin. There is no way to pause it.</li>
-          <li><strong>Do not refresh</strong> or navigate away — Canvas will not save a partially entered answer in a fill-in-the-blank field.</li>
-          <li>For Q1–Q3: each question draws independently. Do not assume your version is the same across all three. Read the activity table shown in each question before computing.</li>
-          <li><strong>Critical trap — merge points:</strong> For any activity with multiple predecessors, ES = max(EF of ALL predecessors). Drawing the full network on scratch paper before computing is the most reliable way to avoid missing a merge point.</li>
-        </ul>
-      </div>
-
-      <div class="instr-card">
-        <div class="instr-card-hd" style="background:var(--gold-lt);border-color:var(--gold-bdr);">
-          <h3 style="color:var(--gold-dark);">Answering Each Item Type</h3>
-        </div>
-        <div class="type-section">
-          <div class="type-section-lbl">Fill-in-the-Blank items (Q1–Q3, Q5–Q7)</div>
-          <div class="type-section-body">Type your answer directly into each blank field. Canvas accepts common formatting variants for activity sequences (e.g., A-B-D-E-G-H or A,B,D,E,G,H). Work out your complete CPM table on scratch paper first — enter values only when you have the full table in front of you. For path names: list activity letters in order, separated by dashes or spaces.</div>
-        </div>
-        <div class="type-section">
-          <div class="type-section-lbl">Crashing trap — new critical path (Q5)</div>
-          <div class="type-section-body">After crashing each activity, re-check all path lengths. A path that was previously non-critical may become tied with the new project duration. If two paths tie, both are critical — you must report the new critical path in Q5(c). Crashing only the original critical path's activities without checking other paths is the most common error in Q5.</div>
-        </div>
-        <div class="type-section">
-          <div class="type-section-lbl">Multiple Choice items (Q4, Q6–Q8)</div>
-          <div class="type-section-body">Select the single best answer. Q4 tests Gantt chart slack-buffer reasoning. Q6 tests dependency identification and the scheduling-preference distinction from Segment 1. Q7 tests probability computation from the scenario table. Q8 tests Chapter 19 Section 19.7 (project triangle) and Section 19.8 (crashing / Brooks's Law).</div>
-        </div>
-        <div class="type-section">
-          <div class="type-section-lbl">Multiple Answers item (Q4a only — select ALL that apply)</div>
-          <div class="type-section-body">Q4a asks which activities are on the critical path. Select every activity with zero slack — this item is all-or-nothing. Selecting all correct options earns full credit; a partial or over-inclusive selection earns zero.</div>
-        </div>
-      </div>
-
-    </div>
-  </div>
 
   <!-- GRADING AND TIMING -->
   <div>
@@ -333,7 +227,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
     <div class="grading-wrap" style="margin-top:14px;">
       <div class="grading-row">
         <div class="grading-label gl-grading">Grading</div>
-        <div>All items are auto-graded by Canvas. Your score will appear when the quiz closes. Fill-in-the-blank items accept multiple answer formats (e.g., hyphens or spaces in path sequences, dollar signs optional in cost answers) — if your answer is substantively correct but Canvas marks it wrong, contact your instructor immediately with a screenshot.</div>
+        <div>All items are auto-graded by Canvas. Your score will appear when the quiz closes. </div>
       </div>
       <div class="grading-row">
         <div class="grading-label gl-contact">Technical issues</div>
@@ -345,7 +239,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
   <!-- ACADEMIC INTEGRITY FOOTER -->
   <div class="integrity-footer">
     <h3>🔒 Academic Integrity</h3>
-    <p>This quiz is open-book and open-notes. You may use your personal notes, slides, apps, and Chapter 19 of the textbook. You may <strong>not</strong> communicate with other students, share question content, or use AI tools to generate answers. The versioned questions (Q1–Q3, Q5) display project data specific to your version — answers derived from another student's data table or from an AI tool will not match your assigned scenario and constitute academic dishonesty. Violations are subject to university academic dishonesty policy.</p>
+    <p>This quiz is open-book and open-notes. You may use your personal notes, slides, the Critical Path Calculator app, and Chapter 19 of the textbook. You may <strong>not</strong> communicate with other students, share question content, or use AI tools to generate answers. The versioned questions (Q1–Q3) display project data specific to your version — answers derived from another student's data table or from an AI tool will not match your assigned scenario and constitute academic dishonesty. Violations are subject to university academic dishonesty policy.</p>
   </div>
 
 </div>

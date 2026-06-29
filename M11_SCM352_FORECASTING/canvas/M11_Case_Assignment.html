@@ -201,7 +201,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
         </div>
         <div class="q-block">
           <div class="q-num">Question 1b</div>
-          <div class="q-text">Compute the absolute forecast error for each moving average: Error = |Actual − Forecast|. <span style="color:var(--gray-500);font-size:12px;">→ Quiz: enter shorter-window error and longer-window error as fill-in blanks (4 pts each).</span></div>
+          <div class="q-text">Compute the absolute forecast error for each moving average: Error = |Actual − Forecast|. <span style="color:var(--gray-500);font-size:12px;">→ Quiz: enter shorter-window error and longer-window error as fill-in blanks (5 pts each).</span></div>
           <span class="q-pts">8 pts</span>
         </div>
         <div class="q-block">
@@ -276,17 +276,17 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
 
         <div class="q-block">
           <div class="q-num">Questions 2a–2b</div>
-          <div class="q-text">Using <strong>F(t+1) = α · D(t) + (1−α) · F(t)</strong>, compute the full ES chain from Period 2 through the forecast period. Compute signed errors (Actual − Forecast) for every period — you'll need them for MAD and bias. <span style="color:var(--gray-500);font-size:12px;">→ Quiz: enter F₃ and the final forecast F(T+1) as fill-in blanks (3 pts each).</span></div>
+          <div class="q-text">Using <strong>F(t+1) = α · D(t) + (1−α) · F(t)</strong>, compute the full ES chain from Period 2 through the forecast period. Compute signed errors (Actual − Forecast) for every period — you'll need them for MAD and bias. <span style="color:var(--gray-500);font-size:12px;">→ Quiz: enter F₃ and the final forecast F(T+1) as fill-in blanks (5 pts each).</span></div>
           <span class="q-pts">6 pts</span>
         </div>
         <div class="q-block">
           <div class="q-num">Question 2c</div>
-          <div class="q-text">Compute <strong>MAD</strong> = Σ|Error_t| / N across all periods. Round to two decimal places. <span style="color:var(--gray-500);font-size:12px;">→ Quiz: fill-in blank (8 pts).</span></div>
+          <div class="q-text">Compute <strong>MAD</strong> = Σ|Error_t| / N across all periods. Round to two decimal places. <span style="color:var(--gray-500);font-size:12px;">→ Quiz: fill-in blank (5 pts).</span></div>
           <span class="q-pts">8 pts</span>
         </div>
         <div class="q-block">
           <div class="q-num">Question 2d</div>
-          <div class="q-text">Compute <strong>forecast bias</strong> = Σ(Signed Error_t) / N. Note whether the bias is positive (under-forecasting) or negative (over-forecasting). <span style="color:var(--gray-500);font-size:12px;">→ Quiz: bias value as fill-in blank (8 pts); operational consequence as multiple choice (6 pts).</span></div>
+          <div class="q-text">Compute <strong>forecast bias</strong> = Σ(Signed Error_t) / N. Note whether the bias is positive (under-forecasting) or negative (over-forecasting). <span style="color:var(--gray-500);font-size:12px;">→ Quiz: bias value as fill-in blank (5 pts); operational consequence as multiple choice (6 pts).</span></div>
           <span class="q-pts">14 pts</span>
         </div>
       </div>
@@ -305,7 +305,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
       <div class="section-bd">
         <div class="q-block">
           <div class="q-num">Question 3a</div>
-          <div class="q-text">Compute <strong>MAPE</strong> using your Part 2 ES errors: APE_t = |Error_t| / D_t × 100%, then average across all N periods. Note: Week 1 APE = 0% (F₁ = D₁ by definition). <span style="color:var(--gray-500);font-size:12px;">→ Quiz: enter Week 2 APE (4 pts) and average MAPE (6 pts) as fill-in blanks.</span></div>
+          <div class="q-text">Compute <strong>MAPE</strong> using your Part 2 ES errors: APE_t = |Error_t| / D_t × 100%, then average across all N periods. Note: Week 1 APE = 0% (F₁ = D₁ by definition). <span style="color:var(--gray-500);font-size:12px;">→ Quiz: enter Week 2 APE (5 pts) and average MAPE (5 pts) as fill-in blanks.</span></div>
           <span class="q-pts">10 pts</span>
         </div>
         <div class="q-block">
@@ -418,26 +418,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
     </div>
   </div>
 
-  <!-- SUBMISSION CHECKLIST -->
-  <div>
-    <div class="sec-div">Before You Start the Quiz</div>
-    <div class="section-card" style="margin-top:14px;">
-      <div class="section-hd" style="background:var(--gray-50);padding:13px 20px;border-bottom:1px solid var(--gray-200);">
-        <h2 style="font-size:14px;font-weight:700;color:var(--navy);">Complete your scratch work before opening the quiz</h2>
-      </div>
-      <div class="section-bd">
-        <div class="submit-list">
-          <div class="submit-item">Work out <strong>all calculations on scratch paper first</strong> — the quiz is timed at 90 minutes and does not save incomplete answers.</div>
-          <div class="submit-item">Part 1: Compute <strong>shorter-window MA, longer-window MA, and both absolute errors</strong> using the demand data for your version shown on this page.</div>
-          <div class="submit-item">Part 2: Run the <strong>full ES chain step by step</strong> — F(t+1) = α·D(t) + (1−α)·F(t) — starting from F₁ = Week 1 actual demand. You will enter F₃ and the final forecast value.</div>
-          <div class="submit-item">Part 2: Compute <strong>MAD</strong> (sum of |errors| ÷ N) and <strong>bias</strong> (sum of signed errors ÷ N). Bias will be positive for most versions (under-forecasting).</div>
-          <div class="submit-item">Part 3: Compute <strong>Week 2 APE</strong> = |Error₂ / D₂| × 100, then compute the <strong>average MAPE</strong> across all periods (Week 1 APE = 0 since F₁ = D₁).</div>
-          <div class="submit-item">Part 4c: Compute the <strong>combined forecast</strong> = (M1 + M2 + M3) ÷ 3. Compare its error to your Part 2 ES F(T+1) error. You will type "ES" or "managers" for which was more accurate.</div>
-          <div class="submit-item">For text blanks, use exact phrasing: <strong>"under-forecasting"</strong> or <strong>"over-forecasting"</strong>; <strong>"ES"</strong> or <strong>"managers"</strong>. For numeric blanks: round to <strong>2 decimal places</strong>.</div>
-        </div>
-      </div>
-    </div>
-  </div>
 
   <!-- GRADING SUMMARY -->
   <div class="section-card">

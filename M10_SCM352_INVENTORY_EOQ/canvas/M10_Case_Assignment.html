@@ -126,6 +126,18 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
       <div class="alert-icon">ℹ️</div>
       <div class="alert-body"><strong>Quiz format: fill-in-the-blank (FIMB) and multiple choice (MC).</strong> Most of Parts 1–4 are FIMB — enter only the final computed value, no formula or units. Two questions are MC: Q2a (TC formula interpretation) and Q4d (role of cR term). Parts 5a and 5b are also MC. All questions appear in a single quiz session. </div>
     </div>
+    <div class="alert alert-gold">
+      <div class="alert-icon">⚠️</div>
+      <div class="alert-body">
+        <strong>Canvas matches fill-in-blank answers exactly — format errors score as wrong.</strong>
+        It is your responsibility to enter every blank in the accepted format before submitting. There are no regrade requests for format mismatches.
+        <div style="margin-top:8px;display:flex;flex-direction:column;gap:5px;font-size:13px;line-height:1.55;">
+          <div>→ <strong>Precision:</strong> Perform all calculations at full precision; unless a question says otherwise, round your final answer to two decimal places before entering — e.g., enter <em>1004.00</em> not <em>1004</em></div>
+          <div>→ <strong>Numbers only:</strong> no commas, dollar signs, or percent signs — for 2 × $502 enter <em>1004.00</em></div>
+          <div>→ <strong>Percentages:</strong> where a % sign appears beside the blank, enter the number only — enter <em>13</em> not <em>0.13</em> and not <em>13%</em> (the % is already shown)</div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- BACKGROUND -->
@@ -133,7 +145,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
     <div class="sec-div">Background — All Versions</div>
     <div class="section-card" style="margin-top:14px;">
       <div class="section-bd" style="font-size:13.5px;line-height:1.75;color:var(--gray-700);display:flex;flex-direction:column;gap:12px;">
-        <p>Riverside Health System operates a network of 18 clinical facilities across the Mountain West. Its central pharmacy fills prescriptions and fulfills supply requisitions for all facilities, including a critical injectable medication used across Riverside's oncology, transplant, and intensive care units. The pharmacy director refers to this medication as <strong>Medication R</strong> throughout all internal analyses — do the same in your submission.</p>
+        <p>Riverside Health System operates a network of 18 clinical facilities across the Mountain West. Its central pharmacy fills prescriptions and fulfills supply requisitions for all facilities, including a critical injectable medication used across Riverside's oncology, transplant, and intensive care units. The pharmacy director refers to this medication as <strong>Medication R</strong> throughout all internal analyses — do the same throughout this quiz.</p>
         <p>Riverside's pharmacy orders Medication R from a contracted pharmaceutical distributor. Each time an order is placed, the pharmacy incurs a <strong>fixed ordering cost</strong> that covers purchasing department labor, distributor order-processing fees, and receiving dock time. Because Medication R requires refrigerated storage, the <strong>holding cost</strong> includes capital cost tied up in inventory, refrigeration energy, and the risk of expiration before use. The pharmacy tracks annual demand in <strong>vials</strong>.</p>
         <p>You are an operations analyst assisting the pharmacy director. Your version's specific parameters are shown in the version tab tables in Parts 1 and 2 below. Use only your assigned version's numbers throughout — all five parts of the case.</p>
       </div>
@@ -218,17 +230,17 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
 
         <div class="q-block">
           <div class="q-num">Question 1a</div>
-          <div class="q-text">Write the EOQ formula Q* = √(2KR/h). Identify what each variable represents in the context of Riverside's pharmacy. Substitute your version's values for K, R, and h, and compute Q*. Show all steps, including the intermediate value 2KR/h before taking the square root. Round Q* to the nearest whole vial.</div>
+          <div class="q-text">Compute the optimal order quantity for your version. Enter Q*, rounded to the nearest whole vial.</div>
           <span class="q-pts">8 pts</span>
         </div>
         <div class="q-block">
           <div class="q-num">Question 1b</div>
-          <div class="q-text">At your computed Q*, how many orders will the pharmacy place per year? What is the average time between orders, expressed in weeks (assume 52 weeks per year)? Show your calculations for both.</div>
+          <div class="q-text">Using your rounded Q* from Q1a, compute (1) the number of orders placed per year and (2) the average time between orders in weeks (assume 52 weeks per year). Round each to one decimal place and enter both values.</div>
           <span class="q-pts">5 pts</span>
         </div>
         <div class="q-block">
           <div class="q-num">Question 1c</div>
-          <div class="q-text">The pharmacy currently orders in batches of the size shown in your version table. Compare this current batch size to your computed Q*. Is the pharmacy currently ordering too frequently, not frequently enough, or approximately at the optimal level? What is the cost implication of the current practice relative to Q*? (One to two sentences — no calculation required.)</div>
+          <div class="q-text">Compare your version's current batch size (shown in the Part 1 data table) to your computed Q*. Enter whether the current batch size is <strong>too large</strong>, <strong>too small</strong>, or <strong>approximately optimal</strong>.</div>
           <span class="q-pts">5 pts</span>
         </div>
       </div>
@@ -255,12 +267,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
         </div>
         <div class="q-block">
           <div class="q-num">Question 2b</div>
-          <div class="q-text">Compute the total annual cost TC at your version's Q* (computed in Part 1). Show each of the three terms — ordering cost, holding cost, and purchasing cost — separately before summing. After computing TC, confirm that your ordering cost and holding cost are approximately equal at Q*. In one sentence, explain why this equality always holds at the EOQ.</div>
+          <div class="q-text">Using your version's Q* from Part 1, compute total annual cost. Enter four values in the blanks: (1) annual ordering cost, (2) annual holding cost, (3) annual purchasing cost, and (4) total TC. Round each to two decimal places.</div>
           <span class="q-pts">10 pts</span>
         </div>
         <div class="q-block">
           <div class="q-num">Question 2c</div>
-          <div class="q-text">The pharmacy director wants to evaluate ordering in batches of the "Alternative quantity" shown in your version's Part 1 table. Compute TC at this alternative quantity. By how much does ordering at this alternative quantity increase total annual cost compared to TC at Q*? Express the increase in dollars and as a percentage of TC at Q*. What does this tell you about the sensitivity of total cost to deviations from Q*?</div>
+          <div class="q-text">Using the Alternative quantity from your version's Part 1 table, compute total annual cost at that quantity. Enter three values: (1) TC at the alternative quantity, (2) the dollar increase over TC at Q*, and (3) the percentage increase over TC at Q*, rounded to two decimal places.</div>
           <span class="q-pts">6 pts</span>
         </div>
       </div>
@@ -291,17 +303,17 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
 
         <div class="q-block">
           <div class="q-num">Question 3a</div>
-          <div class="q-text">Using your version's K and h, compute Q* and total annual EOQ cost (ordering cost + holding cost, excluding cR) for Valley Medical Center. Show all steps. Valley's K and h are the same as Riverside's for your version.</div>
+          <div class="q-text">Valley Medical Center's annual demand for your version is shown in the table above. Using the same K and h as your version, compute Valley's optimal order quantity Q* and its total annual EOQ cost (ordering cost + holding cost only, excluding cR). Enter both values in the blanks.</div>
           <span class="q-pts">6 pts</span>
         </div>
         <div class="q-block">
           <div class="q-num">Question 3b</div>
-          <div class="q-text">Valley's demand is exactly 4 times Riverside's demand. By what factor does Valley's total annual EOQ cost exceed Riverside's? Does this match the Chapter 12 √2 scaling rule? Explain using the formula: since EOQ cost = √(2KRh), doubling demand increases cost by √2, so quadrupling demand increases cost by √4 = 2. Does your computed ratio confirm this?</div>
+          <div class="q-text">Compute the ratio of Valley's total annual EOQ cost to Riverside's total annual EOQ cost (ordering + holding only). Enter two values: (1) the ratio, rounded to one decimal place, and (2) whether this ratio confirms the square-root scaling rule when demand quadruples — enter <strong>Yes</strong> or <strong>No</strong>.</div>
           <span class="q-pts">7 pts</span>
         </div>
         <div class="q-block">
           <div class="q-num">Question 3c</div>
-          <div class="q-text">The two hospitals are considering forming a joint purchasing consortium with combined annual demand shown in your version's row above. Using your version's K and h, compute Q* and total annual EOQ cost for the combined consortium. Compare the consortium's combined EOQ cost to the sum of Riverside's and Valley's individual costs. How much does pooling save per year in dollars? What is the percentage savings? What does this result imply for the director's recommendation?</div>
+          <div class="q-text">Using the combined consortium demand for your version (from the table above) and your version's K and h, compute Q* and total annual EOQ cost for the consortium (ordering + holding only, excluding cR). Compare this to the sum of Riverside's and Valley's individual EOQ costs. Enter four values in the blanks: (1) consortium Q*, (2) consortium EOQ cost, (3) annual dollar savings from pooling, and (4) percentage savings, rounded to one decimal place.</div>
           <span class="q-pts">7 pts</span>
         </div>
       </div>
@@ -331,17 +343,17 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
 
         <div class="q-block">
           <div class="q-num">Question 4a</div>
-          <div class="q-text">Compute the discounted unit cost c_discount (regular price × 0.96). Then compute total annual cost TC at the discount minimum quantity Q_disc_min using c_discount and your version's h (fixed — do not recalculate h). Show all three TC components separately: K(R/Q_disc_min), h(Q_disc_min/2), and c_discount × R.</div>
+          <div class="q-text">Using the 4% discounted unit price and the minimum discount quantity Q_disc_min from the table above, compute total annual cost. Your version's h is fixed — do not recalculate it as a percentage of the discounted price. Enter five values: (1) the discounted unit price, (2) ordering cost, (3) holding cost, (4) purchasing cost, and (5) total TC at Q_disc_min.</div>
           <span class="q-pts">8 pts</span>
         </div>
         <div class="q-block">
           <div class="q-num">Question 4b</div>
-          <div class="q-text">State TC at your version's Q* using the regular unit cost c. (You computed this in Part 2b — you may reference that answer directly without recomputing.)</div>
+          <div class="q-text">Enter your total annual cost TC at Q* using the regular unit cost c — the same value you computed in Q2b. Do not recompute.</div>
           <span class="q-pts">4 pts</span>
         </div>
         <div class="q-block">
           <div class="q-num">Question 4c</div>
-          <div class="q-text">Compare TC at Q* (regular price) to TC at Q_disc_min (discount price). Which is lower? Should Riverside accept the quantity discount? State the annual dollar savings (or cost) from accepting the discount. Give a one-sentence recommendation.</div>
+          <div class="q-text">Compare your TC values from Q4a and Q4b. Enter three values in the blanks: (1) which scenario has the lower total cost — enter <strong>Regular</strong> or <strong>Discount</strong>, (2) the annual dollar savings from accepting the discount, and (3) your decision — enter <strong>ACCEPT</strong> or <strong>REJECT</strong>.</div>
           <span class="q-pts">4 pts</span>
         </div>
         <div class="q-block">
@@ -375,7 +387,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
           <div class="q-num">Question 5b — Expiration Risk and the EOQ Model (Multiple Choice)</div>
           <div class="q-text">
             <p>Medication R has a 12-month shelf life and approximately 5% of vials are occasionally wasted due to expiration before use. <strong>Select the response that correctly identifies how this perishability risk affects the EOQ model and the direction of the true optimal Q* relative to your Part 1 calculation.</strong></p>
-            <p style="margin-top:6px;font-size:12px;color:var(--gray-400);">Consider how expiration risk affects the holding cost parameter h and what that implies for Q* = √(2KR/h).</p>
           </div>
           <span class="q-pts">8 pts</span>
         </div>

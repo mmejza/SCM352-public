@@ -1,0 +1,55 @@
+<section class="slide-page" data-title="Gantt Chart — Delay Analysis" data-lo="LO13-5" data-notes="Using the Gantt chart to answer delay questions. Two scenarios from Gate 2 Q4 mechanics: (1) activity with slack bar slips within the dashed window — no impact; (2) activity slips past the end of the slack bar — project extends. The Gantt makes this visual: the slack bar shows exactly how much slip is absorbed before the project is affected.">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">M13</span>
+      <span class="le-course">SCM 352 · Module 13</span>
+    </div>
+    <span class="le-pagenum">27 / 28</span>
+  </div>
+
+  <div class="le-titleblock">
+    <div class="le-title">Gantt Chart — <span>Delay Analysis</span></div>
+    <div class="le-sub">Reading the Gantt to determine whether a reported delay extends the project</div>
+  </div>
+
+  <div class="le-body">
+    <div class="two-col" style="gap:8px;margin-bottom:6px;">
+      <div class="callout teal">
+        <div class="callout-label">Scenario 1 — Delay Within the Slack Bar</div>
+        <p>Activity C (Hire and train staff) has a dashed slack bar from week 7 to week 11 (4 weeks of slack).</p>
+        <p style="margin-top:5px;">C is reported to finish at week 10 instead of week 7 — a 3-week delay.</p>
+        <p style="margin-top:5px;"><strong>Reading the Gantt:</strong> The new finish of week 10 is still within the slack bar (which extends to week 11). C's bar shifts right but stays inside the dashed window.</p>
+        <p style="margin-top:5px;"><strong>Result:</strong> No project impact. C absorbs the delay within its slack. 1 week of slack remains.</p>
+      </div>
+      <div class="callout amber">
+        <div class="callout-label">Scenario 2 — Delay Exceeds the Slack Bar</div>
+        <p>Activity C is reported to finish at week 14 instead of week 7 — a 7-week delay.</p>
+        <p style="margin-top:5px;"><strong>Reading the Gantt:</strong> Week 14 is 3 weeks past the end of the slack bar (week 11). C's bar shifts past the dashed window.</p>
+        <p style="margin-top:5px;"><strong>Result:</strong> The excess (14 − 11 = 3 weeks) extends the project. New project completion: week 12 + 3 = week 15.</p>
+        <p style="margin-top:5px;"><em>The excess over LCT is the project extension.</em></p>
+      </div>
+    </div>
+    <div class="callout navy">
+      <div class="callout-label" style="color:var(--teal);">The General Rule for Gantt-Based Delay Analysis</div>
+      <table class="clean-table" style="margin-top:6px;">
+        <thead><tr><th>Situation</th><th>New finish location</th><th>Project impact</th></tr></thead>
+        <tbody>
+          <tr><td>Critical activity delayed N weeks</td><td>Bar shifts N weeks to right; no slack bar</td><td>Project extends N weeks</td></tr>
+          <tr><td>Non-critical activity, delay ≤ ST</td><td>Bar shifts within the dashed window</td><td>No project impact</td></tr>
+          <tr><td>Non-critical activity, delay &gt; ST</td><td>Bar shifts past the end of the dashed window</td><td>Project extends by (delay − ST) weeks</td></tr>
+        </tbody>
+      </table>
+      <p style="margin-top:6px;color:rgba(255,255,255,.75);">The Gantt chart makes the slack buffer visible. The dashed bar is a direct visual indicator of how much slip can be absorbed before the project date moves.</p>
+    </div>
+  </div>
+
+  <div class="le-footer">
+    <div class="le-lo-pills">
+      <span class="le-lo-pill">LO13-5</span>
+    </div>
+    <div><span class="le-ch-note">Ch. 19.5</span></div>
+  </div>
+</section>

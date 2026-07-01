@@ -1,0 +1,53 @@
+<section class="slide-page" data-title="AON Network — Construction Rules" data-lo="LO13-2" data-notes="Five rules for AON construction. The merge point rule (all arrows must be drawn) is the most commonly violated. The START and END nodes are required bookends — every activity with no predecessor connects from START; every activity with no successor connects to END.">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">M13</span>
+      <span class="le-course">SCM 352 · Module 13</span>
+    </div>
+    <span class="le-pagenum">8 / 28</span>
+  </div>
+
+  <div class="le-titleblock">
+    <div class="le-title">AON Network — <span>Construction Rules</span></div>
+    <div class="le-sub">Activity-on-Node: each box is an activity; each arrow is a dependency</div>
+  </div>
+
+  <div class="le-body">
+    <div class="three-col" style="gap:6px;margin-bottom:6px;">
+      <div class="callout teal">
+        <div class="callout-label">Rule 1 — One Box Per Activity</div>
+        <p>Each activity gets exactly one box showing its letter, description, and duration. Boxes do not represent start/end of an activity — the activity <em>is</em> the box.</p>
+      </div>
+      <div class="callout teal">
+        <div class="callout-label">Rule 2 — Arrows = Dependencies</div>
+        <p>An arrow from A to B means "B cannot start until A is complete." The arrow direction is always left to right. Arrow length has no meaning.</p>
+      </div>
+      <div class="callout teal">
+        <div class="callout-label">Rule 3 — START and END Nodes</div>
+        <p>Add a START node (oval) on the left. Every activity with no predecessor connects from START. Add an END node on the right. Every activity with no successor connects to END.</p>
+      </div>
+    </div>
+    <div class="two-col" style="gap:6px;">
+      <div class="callout amber">
+        <div class="callout-label">Rule 4 — Merge Points (Multiple Predecessors)</div>
+        <p>When activity E requires both C and D, draw <em>both</em> arrows: C→E <strong>and</strong> D→E. Drawing only one arrow is the most common AON construction error.</p>
+        <p style="margin-top:4px;"><strong>Why it matters:</strong> Missing the D→E arrow makes the forward pass compute EST(E) = ECT(C) instead of max(ECT(C), ECT(D)). This gives an incorrect — and too early — start time.</p>
+      </div>
+      <div class="callout navy">
+        <div class="callout-label" style="color:var(--teal);">Rule 5 — Split Points (Multiple Successors)</div>
+        <p>When activity A feeds both B and C, draw two arrows: A→B <strong>and</strong> A→C. Both activities can start as soon as A finishes — they do not depend on each other.</p>
+        <p style="margin-top:4px;color:rgba(255,255,255,.75);">A split point says: "A's completion unlocks multiple downstream activities simultaneously." A merge point says: "Multiple completions are all required before this activity can begin."</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="le-footer">
+    <div class="le-lo-pills">
+      <span class="le-lo-pill">LO13-2</span>
+    </div>
+    <div><span class="le-ch-note">Ch. 19.2</span></div>
+  </div>
+</section>

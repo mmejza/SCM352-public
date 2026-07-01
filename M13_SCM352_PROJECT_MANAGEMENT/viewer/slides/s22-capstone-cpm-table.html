@@ -1,0 +1,60 @@
+<section class="slide-page" data-title="Software Development — Complete CPM Table" data-lo="LO13-3 LO13-4" data-notes="Complete 7-column CPM table for the software development project. Critical path: A-B-D-F-G=16 weeks. C and E have 3 weeks slack each. The entire frontend workstream (C→E) is non-critical.">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">M13</span>
+      <span class="le-course">SCM 352 · Module 13</span>
+    </div>
+    <span class="le-pagenum">22 / 28</span>
+  </div>
+
+  <div class="le-titleblock">
+    <div class="le-title">Software Development — <span>Complete CPM Table</span></div>
+    <div class="le-sub">All 7 columns · Critical path: A → B → D → F → G = 16 weeks</div>
+  </div>
+
+  <div class="le-body">
+    <div class="callout teal" style="margin-bottom:8px;">
+      <div class="callout-label">Complete CPM Results — Software Development Project</div>
+      <table class="clean-table" style="margin-top:6px;">
+        <thead>
+          <tr>
+            <th>Act.</th><th>Description</th><th>Dur.</th>
+            <th>EST</th><th>ECT</th><th>LCT</th><th>LST</th><th>ST</th><th>Critical?</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>A</strong></td><td>Requirements analysis</td><td>2</td><td>0</td><td>2</td><td>2</td><td>0</td><td class="pos"><strong>0</strong></td><td>Yes ★</td></tr>
+          <tr><td><strong>B</strong></td><td>Database design</td><td>4</td><td>2</td><td>6</td><td>6</td><td>2</td><td class="pos"><strong>0</strong></td><td>Yes ★</td></tr>
+          <tr><td><strong>C</strong></td><td>UI/UX design</td><td>3</td><td>2</td><td>5</td><td>8</td><td>5</td><td class="neg"><strong>3</strong></td><td>No</td></tr>
+          <tr><td><strong>D</strong></td><td>Backend development</td><td>6</td><td>6</td><td>12</td><td>12</td><td>6</td><td class="pos"><strong>0</strong></td><td>Yes ★</td></tr>
+          <tr><td><strong>E</strong></td><td>Frontend development</td><td>4</td><td>5</td><td>9</td><td>12</td><td>8</td><td class="neg"><strong>3</strong></td><td>No</td></tr>
+          <tr><td><strong>F</strong></td><td>Integration testing</td><td>3</td><td>12</td><td>15</td><td>15</td><td>12</td><td class="pos"><strong>0</strong></td><td>Yes ★</td></tr>
+          <tr><td><strong>G</strong></td><td>System deployment</td><td>1</td><td>15</td><td>16</td><td>16</td><td>15</td><td class="pos"><strong>0</strong></td><td>Yes ★</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="two-col" style="gap:8px;">
+      <div class="callout amber">
+        <div class="callout-label">Operational Interpretation</div>
+        <p><strong>Backend development (D) is the bottleneck.</strong> It is the longest single activity (6 weeks) and is on the critical path. Any delay to D — a developer leaving, a technical blocker, a scope addition — delays the entire project by the same amount.</p>
+        <p style="margin-top:5px;"><strong>The frontend workstream has margin.</strong> C (UI/UX) and E (Frontend) can each slip 3 weeks without affecting deployment. This is where resource reallocation is possible without risk.</p>
+      </div>
+      <div class="callout navy">
+        <div class="callout-label" style="color:var(--teal);">What This Tells the Project Manager</div>
+        <p style="color:rgba(255,255,255,.75);">Watch activities A, B, D, F, G daily. Any slip there propagates immediately to the deployment date.</p>
+        <p style="margin-top:6px;color:rgba(255,255,255,.75);">C and E have 3 weeks of buffer each. If the frontend team is running slow, the project manager has 3 weeks before it becomes a problem — and can alert them without immediate alarm.</p>
+        <p style="margin-top:6px;color:rgba(255,255,255,.75);">On the Gantt chart, C and E will appear with dashed slack bars from ECT to LCT.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="le-footer">
+    <div class="le-lo-pills">
+      <span class="le-lo-pill">LO13-3</span><span class="le-lo-pill">LO13-4</span>
+    </div>
+    <div><span class="le-ch-note">Ch. 19.3–19.4</span></div>
+  </div>
+</section>

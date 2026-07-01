@@ -1,0 +1,55 @@
+<section class="slide-page" data-title="True Dependency vs. Scheduling Preference" data-lo="LO13-1" data-notes="The dependency classification question is the most judgment-intensive part of CPM. Give three clear contrasting examples. The key test: could these activities run in parallel if resources were unlimited? If yes, it is a scheduling preference.">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">M13</span>
+      <span class="le-course">SCM 352 · Module 13</span>
+    </div>
+    <span class="le-pagenum">7 / 28</span>
+  </div>
+
+  <div class="le-titleblock">
+    <div class="le-title">True Dependency vs. <span>Scheduling Preference</span></div>
+    <div class="le-sub">The predecessor classification question — the most consequential judgment in building a dependency matrix</div>
+  </div>
+
+  <div class="le-body">
+    <div class="two-col" style="gap:8px;margin-bottom:6px;">
+      <div class="callout teal">
+        <div class="callout-label">True Technical Dependency</div>
+        <p><strong>Test:</strong> Could this activity start before its predecessor is complete, even with unlimited resources and staff? If NO — it is a true dependency.</p>
+        <p style="margin-top:6px;"><strong>Examples:</strong></p>
+        <ul style="padding-left:14px;margin-top:3px;">
+          <li>Software cannot be tested before it is written.</li>
+          <li>Equipment cannot be installed in a building that does not yet exist.</li>
+          <li>Staff cannot be credentialed with an insurer before they are hired.</li>
+        </ul>
+        <p style="margin-top:6px;">These belong in the predecessor column. They cannot be relaxed without rework risk.</p>
+      </div>
+      <div class="callout amber">
+        <div class="callout-label">Scheduling Preference (Not a True Dependency)</div>
+        <p><strong>Test:</strong> Could this activity run in parallel if we had a second team or unlimited capacity? If YES — this is a resource constraint or habit, not a dependency.</p>
+        <p style="margin-top:6px;"><strong>Examples:</strong></p>
+        <ul style="padding-left:14px;margin-top:3px;">
+          <li>Documentation written after development — only because the same person does both.</li>
+          <li>Regulatory review held until after design — but preliminary specs would satisfy the review.</li>
+          <li>"We always do A before B" — true historically, but not technically required.</li>
+        </ul>
+        <p style="margin-top:6px;">These do NOT belong in the predecessor column. Adding them extends the critical path unnecessarily.</p>
+      </div>
+    </div>
+    <div class="callout red">
+      <div class="callout-label">Why This Matters for the Critical Path</div>
+      <p>Every false dependency in the matrix adds duration to some path. If the false dependency happens to be on the critical path, it extends the project deadline — not because the work requires it, but because the plan assumes it. Projects add weeks to their schedule before the first task begins when predecessor classification is done carelessly.</p>
+    </div>
+  </div>
+
+  <div class="le-footer">
+    <div class="le-lo-pills">
+      <span class="le-lo-pill">LO13-1</span>
+    </div>
+    <div><span class="le-ch-note">Ch. 19.1</span></div>
+  </div>
+</section>

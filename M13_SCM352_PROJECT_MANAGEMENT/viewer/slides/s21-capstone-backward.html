@@ -1,0 +1,65 @@
+<section class="slide-page" data-title="Software Development — Backward Pass" data-lo="LO13-4" data-notes="Backward pass for 7 activities. Start from G (LCT=16). Key split point: A feeds B (LST=2) and C (LST=5). LCT(A)=min(2,5)=2. Results: A,B,D,F,G are critical (ST=0); C has ST=3; E has ST=3.">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">M13</span>
+      <span class="le-course">SCM 352 · Module 13</span>
+    </div>
+    <span class="le-pagenum">21 / 28</span>
+  </div>
+
+  <div class="le-titleblock">
+    <div class="le-title">Software Development — <span>Backward Pass</span></div>
+    <div class="le-sub">Computing LCT and LST · Working right to left · Project deadline = 16 weeks</div>
+  </div>
+
+  <div class="le-body">
+    <div class="two-col" style="gap:8px;">
+      <div>
+        <div class="callout teal" style="margin-bottom:6px;">
+          <div class="callout-label">Backward Pass Results</div>
+          <table class="clean-table" style="margin-top:4px;">
+            <thead><tr><th>Act.</th><th>ECT</th><th>LCT</th><th>LST</th><th>ST</th></tr></thead>
+            <tbody>
+              <tr><td><strong>G</strong></td><td>16</td><td class="pos">16</td><td>15</td><td class="pos">0</td></tr>
+              <tr><td><strong>F</strong></td><td>15</td><td>15</td><td>12</td><td class="pos">0</td></tr>
+              <tr><td><strong>D</strong></td><td>12</td><td>12</td><td>6</td><td class="pos">0</td></tr>
+              <tr><td><strong>E</strong></td><td>9</td><td>12</td><td>8</td><td class="neg">3</td></tr>
+              <tr><td><strong>B</strong></td><td>6</td><td>6</td><td>2</td><td class="pos">0</td></tr>
+              <tr><td><strong>C</strong></td><td>5</td><td>8</td><td>5</td><td class="neg">3</td></tr>
+              <tr><td><strong>A</strong></td><td>2</td><td class="neg">2</td><td>0</td><td class="pos">0</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout amber">
+          <div class="callout-label">Critical Path</div>
+          <p>ST=0: <strong>A, B, D, F, G.</strong></p>
+          <p style="margin-top:4px;"><strong>Critical path: A → B → D → F → G = 16 weeks</strong></p>
+          <p style="margin-top:4px;">C and E each have 3 weeks of slack. The entire frontend workstream (C→E) is non-critical.</p>
+        </div>
+      </div>
+      <div>
+        <div class="callout navy">
+          <div class="callout-label" style="color:var(--teal);">Key Backward-Pass Calculations</div>
+          <p style="color:rgba(255,255,255,.75);"><strong style="color:#fff;">G (last):</strong> LCT=16; LST=15.</p>
+          <p style="margin-top:5px;color:rgba(255,255,255,.75);"><strong style="color:#fff;">F:</strong> LCT=LST(G)=15; LST=12.</p>
+          <p style="margin-top:5px;color:rgba(255,255,255,.75);"><strong style="color:#fff;">D:</strong> LCT=LST(F)=12; LST=6.</p>
+          <p style="margin-top:5px;color:rgba(255,255,255,.75);"><strong style="color:#fff;">E:</strong> LCT=LST(F)=12; LST=8. ST=LCT−ECT=12−9=<strong style="color:#fff;">3</strong>.</p>
+          <p style="margin-top:5px;color:rgba(255,255,255,.75);"><strong style="color:#fff;">B:</strong> LCT=LST(D)=6; LST=2.</p>
+          <p style="margin-top:5px;color:rgba(255,255,255,.75);"><strong style="color:#fff;">C:</strong> LCT=LST(E)=8; LST=5. ST=LCT−ECT=8−5=<strong style="color:#fff;">3</strong>.</p>
+          <p style="margin-top:5px;color:rgba(255,255,255,.75);"><strong style="color:#fff;">A (split point):</strong> LCT=min(LST(B),LST(C))=min(2,5)=<strong style="color:#fff;">2</strong>. LST=0. ST=0.</p>
+          <p style="margin-top:8px;color:rgba(255,255,255,.5);font-style:italic;">B's start deadline (week 2) is tighter than C's (week 5), so A must finish by week 2. A is critical even though C could wait until week 5.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="le-footer">
+    <div class="le-lo-pills">
+      <span class="le-lo-pill">LO13-4</span>
+    </div>
+    <div><span class="le-ch-note">Ch. 19.4</span></div>
+  </div>
+</section>

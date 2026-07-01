@@ -1,0 +1,58 @@
+<section class="slide-page" data-title="Backward Pass — The Split Calculation" data-lo="LO13-4" data-notes="The split rule (MIN) is the backward-pass analog of the merge rule (MAX). When A feeds both B and C, A's LCT is constrained by whichever successor needs to start sooner. If both B and C need to start at the same time, the MIN is trivially both of them.">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">M13</span>
+      <span class="le-course">SCM 352 · Module 13</span>
+    </div>
+    <span class="le-pagenum">14 / 28</span>
+  </div>
+
+  <div class="le-titleblock">
+    <div class="le-title">Backward Pass — <span>The Split Calculation</span></div>
+    <div class="le-sub">At every split point, LCT = min of all successor LSTs</div>
+  </div>
+
+  <div class="le-body">
+    <div class="two-col" style="gap:8px;">
+      <div>
+        <div class="callout teal" style="margin-bottom:6px;">
+          <div class="callout-label">Why MIN — The Intuition</div>
+          <p>An activity at a split point must finish in time to let <em>every</em> downstream activity begin when it needs to. If successor B must start by week 3 and successor C must start by week 6, the split activity must be done by week 3 — the earlier of the two constraints.</p>
+          <p style="margin-top:6px;">The minimum LST of all successors is the deadline imposed on the split activity. Finishing later than this would prevent the most time-sensitive successor from starting on schedule.</p>
+        </div>
+        <div class="callout amber">
+          <div class="callout-label">The Most Common Error</div>
+          <p>Using MAX instead of MIN for a split point in the backward pass. Students who remember "MAX for merge" and apply it everywhere get the wrong LCT at split points.</p>
+          <p style="margin-top:6px;"><strong>Merge (forward pass):</strong> MAX — wait for the last predecessor.</p>
+          <p><strong>Split (backward pass):</strong> MIN — must finish before the earliest deadline.</p>
+        </div>
+      </div>
+      <div>
+        <div class="callout navy">
+          <div class="callout-label" style="color:var(--teal);">Restaurant Expansion — Activity A</div>
+          <p style="color:rgba(255,255,255,.75);">A (Secure lease) feeds both B and C.</p>
+          <table class="clean-table" style="margin-top:8px;">
+            <thead><tr><th>Successor</th><th>LST</th><th>Constrains A?</th></tr></thead>
+            <tbody>
+              <tr><td>B — Kitchen buildout</td><td>3</td><td>Yes</td></tr>
+              <tr><td>C — Train staff</td><td>7</td><td>Yes</td></tr>
+            </tbody>
+          </table>
+          <p style="margin-top:8px;color:rgba(255,255,255,.75);">LCT(A) = min(LST(B), LST(C)) = min(3, 7) = <strong style="color:#fff;">3</strong></p>
+          <p style="margin-top:4px;color:rgba(255,255,255,.75);">LST(A) = LCT(A) − Duration(A) = 3 − 3 = <strong style="color:#fff;">0</strong></p>
+          <p style="margin-top:8px;color:rgba(255,255,255,.5);font-style:italic;">B's start constraint (week 3) is tighter than C's (week 7). A must finish by week 3 to keep B on schedule. If A slips past week 3, the kitchen buildout cannot start on time — extending the project.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="le-footer">
+    <div class="le-lo-pills">
+      <span class="le-lo-pill">LO13-4</span>
+    </div>
+    <div><span class="le-ch-note">Ch. 19.4</span></div>
+  </div>
+</section>

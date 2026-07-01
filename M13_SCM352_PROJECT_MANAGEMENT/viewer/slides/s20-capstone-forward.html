@@ -1,0 +1,66 @@
+<section class="slide-page" data-title="Software Development — Forward Pass" data-lo="LO13-3" data-notes="Forward pass for 7 activities. Key merge point: EST(F)=max(ECT(D),ECT(E))=max(12,9)=12. Project duration=ECT(G)=16. C and E finish early but F must wait for D. E finishes at week 9 but cannot feed F until week 12 (when D finishes).">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">M13</span>
+      <span class="le-course">SCM 352 · Module 13</span>
+    </div>
+    <span class="le-pagenum">20 / 28</span>
+  </div>
+
+  <div class="le-titleblock">
+    <div class="le-title">Software Development — <span>Forward Pass</span></div>
+    <div class="le-sub">Computing EST and ECT for all 7 activities · Minimum project duration = 16 weeks</div>
+  </div>
+
+  <div class="le-body">
+    <div class="two-col" style="gap:8px;">
+      <div>
+        <div class="callout teal" style="margin-bottom:6px;">
+          <div class="callout-label">Forward Pass Results</div>
+          <table class="clean-table" style="margin-top:4px;">
+            <thead><tr><th>Act.</th><th>Dur.</th><th>Predecessors</th><th>EST</th><th>ECT</th></tr></thead>
+            <tbody>
+              <tr><td><strong>A</strong></td><td>2</td><td>—</td><td>0</td><td>2</td></tr>
+              <tr><td><strong>B</strong></td><td>4</td><td>A</td><td>2</td><td>6</td></tr>
+              <tr><td><strong>C</strong></td><td>3</td><td>A</td><td>2</td><td>5</td></tr>
+              <tr><td><strong>D</strong></td><td>6</td><td>B</td><td>6</td><td>12</td></tr>
+              <tr><td><strong>E</strong></td><td>4</td><td>C</td><td>5</td><td>9</td></tr>
+              <tr><td><strong>F</strong></td><td>3</td><td>D, E</td><td class="neg"><strong>12</strong></td><td class="neg"><strong>15</strong></td></tr>
+              <tr><td><strong>G</strong></td><td>1</td><td>F</td><td>15</td><td class="pos"><strong>16</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout amber">
+          <div class="callout-label">Project Duration</div>
+          <p>ECT(G) = <strong>16 weeks</strong> — the minimum possible project duration. Path 1 (A-B-D-F-G = 16 weeks) determines the project completion date.</p>
+        </div>
+      </div>
+      <div>
+        <div class="callout navy">
+          <div class="callout-label" style="color:var(--teal);">The Merge at F — Step by Step</div>
+          <p style="color:rgba(255,255,255,.75);">F (Integration testing) requires both D and E to be complete.</p>
+          <table class="clean-table" style="margin-top:8px;">
+            <thead><tr><th>Predecessor</th><th>ECT</th></tr></thead>
+            <tbody>
+              <tr><td>D — Backend development</td><td>12</td></tr>
+              <tr><td>E — Frontend development</td><td>9</td></tr>
+            </tbody>
+          </table>
+          <p style="margin-top:8px;font-family:'Barlow Condensed',sans-serif;font-size:calc(14px * var(--slide-scale));color:#fff;">EST(F) = max(ECT(D), ECT(E)) = max(12, 9) = <strong>12</strong></p>
+          <p style="margin-top:8px;color:rgba(255,255,255,.75);">E (frontend) finishes at week 9 — 3 weeks before F can start. The frontend team is done and waiting while the backend team finishes. That 3-week wait becomes E's slack in the backward pass.</p>
+          <p style="margin-top:6px;color:rgba(255,255,255,.75);">ECT(F) = 12 + 3 = 15. ECT(G) = 15 + 1 = <strong style="color:#fff;">16.</strong></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="le-footer">
+    <div class="le-lo-pills">
+      <span class="le-lo-pill">LO13-3</span>
+    </div>
+    <div><span class="le-ch-note">Ch. 19.3</span></div>
+  </div>
+</section>

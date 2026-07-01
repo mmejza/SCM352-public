@@ -1,0 +1,60 @@
+<section class="slide-page" data-title="Restaurant Expansion — Forward Pass Complete" data-lo="LO13-3" data-notes="Forward pass for all 5 activities. The key calculation is EST(E)=max(ECT(C),ECT(D))=max(7,11)=11. ECT(E)=12 = minimum project duration. Note that C finishes early (week 7) but E cannot start until week 11 — C will wait.">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">M13</span>
+      <span class="le-course">SCM 352 · Module 13</span>
+    </div>
+    <span class="le-pagenum">12 / 28</span>
+  </div>
+
+  <div class="le-titleblock">
+    <div class="le-title">Restaurant Expansion — <span>Forward Pass Complete</span></div>
+    <div class="le-sub">Computing EST and ECT for all 5 activities · Project minimum duration = ECT of last activity</div>
+  </div>
+
+  <div class="le-body">
+    <div class="two-col" style="gap:8px;">
+      <div>
+        <div class="callout teal" style="margin-bottom:6px;">
+          <div class="callout-label">Forward Pass — Step by Step</div>
+          <table class="clean-table" style="margin-top:4px;">
+            <thead><tr><th>Act.</th><th>Dur.</th><th>Pred.</th><th>EST</th><th>ECT</th></tr></thead>
+            <tbody>
+              <tr><td><strong>A</strong></td><td>3</td><td>—</td><td class="pos">0</td><td class="pos">3</td></tr>
+              <tr><td><strong>B</strong></td><td>6</td><td>A</td><td>3</td><td>9</td></tr>
+              <tr><td><strong>C</strong></td><td>4</td><td>A</td><td>3</td><td>7</td></tr>
+              <tr><td><strong>D</strong></td><td>2</td><td>B</td><td>9</td><td>11</td></tr>
+              <tr><td><strong>E</strong></td><td>1</td><td>C, D</td><td class="neg">11</td><td class="neg">12</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout amber">
+          <div class="callout-label">Minimum Project Duration</div>
+          <p>ECT(E) = <strong>12 weeks</strong> — the project cannot be completed faster than 12 weeks, assuming everything goes as planned.</p>
+          <p style="margin-top:4px;">This is the minimum. We still need the backward pass to know which activities have flexibility and which have none.</p>
+        </div>
+      </div>
+      <div>
+        <div class="callout navy">
+          <div class="callout-label" style="color:var(--teal);">Key Calculations</div>
+          <p style="color:rgba(255,255,255,.75);">A is the first activity — EST(A) = 0.</p>
+          <p style="margin-top:6px;color:rgba(255,255,255,.75);">B and C both follow A — they can both start at week 3. <strong style="color:#fff;">EST(B) = EST(C) = ECT(A) = 3.</strong></p>
+          <p style="margin-top:6px;color:rgba(255,255,255,.75);">D follows B — <strong style="color:#fff;">EST(D) = ECT(B) = 9.</strong> ECT(D) = 9 + 2 = <strong style="color:#fff;">11.</strong></p>
+          <p style="margin-top:6px;color:rgba(255,255,255,.75);">E follows both C and D — this is the merge point:</p>
+          <p style="margin-top:4px;color:#fff;font-family:'Barlow Condensed',sans-serif;font-size:calc(14px * var(--slide-scale));">EST(E) = max(ECT(C), ECT(D)) = max(7, 11) = <strong>11</strong></p>
+          <p style="margin-top:6px;color:rgba(255,255,255,.5);font-style:italic;">C finishes at week 7 — 4 weeks before E can start. C "waits" for D to finish. This waiting period becomes C's slack, computed in the backward pass.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="le-footer">
+    <div class="le-lo-pills">
+      <span class="le-lo-pill">LO13-3</span>
+    </div>
+    <div><span class="le-ch-note">Ch. 19.3</span></div>
+  </div>
+</section>

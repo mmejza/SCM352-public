@@ -127,6 +127,18 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
       <div class="alert-icon">🔴</div>
       <div class="alert-body"><strong>This quiz has a single attempt. Have scratch paper ready before clicking Begin.</strong> Parts 1 and 3 require building complete sequencing tables on paper before entering any values in Canvas. The 90-minute timer starts immediately when you open the quiz — it does not pause.</div>
     </div>
+    <div class="alert alert-gold">
+      <div class="alert-icon">⚠️</div>
+      <div class="alert-body">
+        <strong>Canvas matches fill-in-blank answers exactly — format errors score as wrong.</strong>
+        It is your responsibility to enter every blank in the accepted format before submitting. There are no regrade requests for format mismatches.
+        <div style="margin-top:8px;display:flex;flex-direction:column;gap:5px;font-size:13px;line-height:1.55;">
+          <div>→ <strong>Precision:</strong> perform all calculations at full precision; round your final answer to two decimal places before entering — e.g., enter <em>240.00</em> not <em>240</em></div>
+          <div>→ <strong>Numbers only:</strong> no commas or units — enter <em>300</em> not <em>300 min</em></div>
+          <div>→ <strong>Negative values:</strong> lateness can be negative — enter <em>-30</em> not <em>30</em></div>
+        </div>
+      </div>
+    </div>
     <div class="alert alert-blue">
       <div class="alert-icon">ℹ️</div>
       <div class="alert-body"><strong>Quiz format: fill-in-the-blank (FIMB) and multiple choice (MC).</strong> Parts 1 and 3 are version-specific FIMB — enter only the final computed value, no units or formula. Parts 4 and 5 are MC and are identical for all versions. </div>
@@ -211,7 +223,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
           </table>
         </div>
       </div>
-      <p class="ref-note">Convert deadlines from hours to minutes before computing lateness and tardiness: hrs × 60 = min. (e.g., 3.0 hrs = 180 min)</p>
+      <p class="ref-note">Deadline data in the table above is in hours. The quiz expects deadline values in minutes.</p>
     </div>
   </div>
 
@@ -231,12 +243,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
         <p style="font-size:13.5px;line-height:1.65;color:var(--gray-700);margin-bottom:16px;">Using the SPT rule (Shortest Processing Time), sequence your assigned procedures from shortest to longest processing time. Then complete the performance table in Canvas.</p>
         <div class="q-block">
           <div class="q-num">Question 1a — SPT Sequence and Performance Table</div>
-          <div class="q-text">In Canvas, fill in: (1) the SPT sequence — procedure letters in order; (2) the flow time for each procedure (cumulative completion time from 7 AM); (3) lateness for each procedure (Flow Time − Deadline in minutes); (4) tardiness for each procedure (max(0, Lateness)).<br><br><em>Build the full table on scratch paper first. Flow time = cumulative sum of processing times, not each procedure's own time. Lateness can be negative. Tardiness is never negative — if lateness is negative, tardiness is 0.</em></div>
+          <div class="q-text">In Canvas, fill in: (1) the SPT sequence — procedure letters in order; (2) the flow time for each procedure; (3) lateness for each procedure, in minutes; (4) tardiness for each procedure. Build your complete table on scratch paper before entering any values.</div>
           <span class="q-type">FIMB — auto-graded</span>
         </div>
         <div class="q-block">
           <div class="q-num">Question 1b — Summary Metrics</div>
-          <div class="q-text">Fill in: average flow time (sum of all flow times ÷ 5) and average tardiness (sum of all tardiness values ÷ 5). Identify which procedure, if any, is tardy under SPT and by how many minutes.</div>
+          <div class="q-text">Fill in: average flow time and average tardiness across all five procedures. Identify which procedure, if any, is tardy under SPT and by how many minutes.</div>
           <span class="q-type">FIMB — auto-graded</span>
         </div>
       </div>
@@ -259,7 +271,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
         <p style="font-size:13.5px;line-height:1.65;color:var(--gray-700);margin-bottom:16px;">Using the EDD rule (Earliest Due Date), sequence your assigned procedures in ascending order by deadline (convert hours to minutes first). Then complete the performance table in Canvas.</p>
         <div class="q-block">
           <div class="q-num">Question 3a — EDD Sequence and Performance Table</div>
-          <div class="q-text">Convert all deadlines from hours to minutes (hrs × 60). In Canvas, fill in: the EDD sequence and the complete performance table — flow time, deadline (minutes), lateness, and tardiness for each procedure.</div>
+          <div class="q-text">In Canvas, fill in: the EDD sequence and the complete performance table — flow time, deadline in minutes, lateness, and tardiness for each procedure.</div>
           <span class="q-type">FIMB — auto-graded</span>
         </div>
         <div class="q-block">

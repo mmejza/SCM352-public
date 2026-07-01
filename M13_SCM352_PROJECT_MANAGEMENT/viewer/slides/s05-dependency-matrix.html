@@ -1,0 +1,57 @@
+<section class="slide-page" data-title="The Dependency Matrix" data-lo="LO13-1" data-notes="The dependency matrix is the foundation of CPM. Three columns: letter, description, predecessors. Two rules: list every activity separately; for each activity ask what must be fully complete before it can start. The question of true vs. scheduling-preference dependencies comes next.">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">M13</span>
+      <span class="le-course">SCM 352 · Module 13</span>
+    </div>
+    <span class="le-pagenum">5 / 28</span>
+  </div>
+
+  <div class="le-titleblock">
+    <div class="le-title">The <span>Dependency Matrix</span></div>
+    <div class="le-sub">First tool — makes implicit activity relationships explicit</div>
+  </div>
+
+  <div class="le-body">
+    <div class="two-col" style="gap:8px;">
+      <div>
+        <div class="callout teal" style="margin-bottom:6px;">
+          <div class="callout-label">Structure — Three Columns</div>
+          <table class="clean-table" style="margin-top:4px;">
+            <thead><tr><th>Column</th><th>Contains</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Activity Letter</strong></td><td>Single capital letter (A, B, C …) assigned in rough execution order</td></tr>
+              <tr><td><strong>Description</strong></td><td>Brief label for the work package (e.g., "Procure equipment")</td></tr>
+              <tr><td><strong>Predecessor(s)</strong></td><td>Letters of activities that must be <em>fully complete</em> before this activity can begin. Dash (—) if none.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout amber">
+          <div class="callout-label">Two Rules for Building the Matrix</div>
+          <p><strong>Rule 1:</strong> Every distinct work package gets its own row — even if two activities happen simultaneously.</p>
+          <p style="margin-top:4px;"><strong>Rule 2:</strong> For each activity, ask: <em>"What must be 100% finished before this can start?"</em> List only true technical requirements — not scheduling habits or resource conflicts.</p>
+        </div>
+      </div>
+      <div>
+        <div class="callout navy">
+          <div class="callout-label" style="color:var(--teal);">Why the Predecessor Column Is the Hard Part</div>
+          <p>Activity lists are easy. Predecessor classification is where projects go wrong.</p>
+          <p style="margin-top:6px;">Three categories to distinguish:</p>
+          <p style="margin-top:4px;"><strong style="color:#fff;">True dependency:</strong> Logic or physics — software cannot be tested before it is written.</p>
+          <p style="margin-top:4px;"><strong style="color:#fff;">Resource constraint:</strong> The same team does both activities, so they are sequenced. With a second team, they could run in parallel. This is NOT a true dependency.</p>
+          <p style="margin-top:4px;"><strong style="color:#fff;">Organizational habit:</strong> "We always do review before design." But if preliminary specs would satisfy the review, the dependency is a preference, not a requirement.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="le-footer">
+    <div class="le-lo-pills">
+      <span class="le-lo-pill">LO13-1</span>
+    </div>
+    <div><span class="le-ch-note">Ch. 19.1–19.2</span></div>
+  </div>
+</section>

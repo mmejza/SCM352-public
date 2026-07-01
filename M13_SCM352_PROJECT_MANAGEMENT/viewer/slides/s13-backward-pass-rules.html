@@ -1,0 +1,57 @@
+<section class="slide-page" data-title="CPM Backward Pass — Rules" data-lo="LO13-4" data-notes="Backward pass works right to left. Three rules mirror the forward pass: LCT(last)=ECT(last), LST=LCT-Duration, split=MIN. LCT and LST answer: when must this activity happen at the latest to avoid extending the project?">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">M13</span>
+      <span class="le-course">SCM 352 · Module 13</span>
+    </div>
+    <span class="le-pagenum">13 / 28</span>
+  </div>
+
+  <div class="le-titleblock">
+    <div class="le-title">CPM Backward Pass — <span>Rules</span></div>
+    <div class="le-sub">Computes LCT and LST for every activity · Work right to left through the network</div>
+  </div>
+
+  <div class="le-body">
+    <div class="three-col" style="gap:6px;margin-bottom:6px;">
+      <div class="callout teal">
+        <div class="callout-label">LCT — Latest Completion Time</div>
+        <p>The latest an activity CAN finish without extending the project deadline.</p>
+        <p style="margin-top:6px;"><strong>Last activity:</strong> LCT = ECT (project deadline)</p>
+        <p style="margin-top:4px;"><strong>All others:</strong> LCT = LST of successor (or MIN of successors at a split point)</p>
+      </div>
+      <div class="callout teal">
+        <div class="callout-label">LST — Latest Start Time</div>
+        <p>The latest an activity can BEGIN without pushing its LCT past the deadline.</p>
+        <div class="formula-box" style="margin-top:6px;font-size:calc(15px * var(--slide-scale));">LST = LCT − Duration</div>
+        <p style="margin-top:6px;">The backward pass starts from the right and works toward START.</p>
+      </div>
+      <div class="callout amber">
+        <div class="callout-label">The Split Rule — MIN</div>
+        <p>When an activity feeds two or more successors, its LCT is determined by whichever successor's start constraint is tightest.</p>
+        <div class="formula-box" style="margin-top:6px;font-size:calc(13px * var(--slide-scale));">LCT = min(LST₁, LST₂, …)</div>
+        <p style="margin-top:6px;">Take the <strong>minimum</strong> LST across all successors — the binding constraint is the most urgent downstream need.</p>
+      </div>
+    </div>
+    <div class="callout navy">
+      <div class="callout-label" style="color:var(--teal);">Backward Pass vs. Forward Pass — The Mirror Structure</div>
+      <table class="clean-table" style="margin-top:4px;">
+        <thead><tr><th>Direction</th><th>Computes</th><th>Starting anchor</th><th>Propagation rule</th><th>Multi-activity rule</th></tr></thead>
+        <tbody>
+          <tr><td>→ Forward pass</td><td>EST, ECT</td><td>EST(first) = 0</td><td>EST = ECT of predecessor</td><td>Merge: MAX of predecessor ECTs</td></tr>
+          <tr><td>← Backward pass</td><td>LCT, LST</td><td>LCT(last) = ECT(last)</td><td>LCT = LST of successor</td><td>Split: MIN of successor LSTs</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="le-footer">
+    <div class="le-lo-pills">
+      <span class="le-lo-pill">LO13-4</span>
+    </div>
+    <div><span class="le-ch-note">Ch. 19.4</span></div>
+  </div>
+</section>

@@ -1,0 +1,65 @@
+<section class="slide-page" data-title="Dependency Matrix — Restaurant Expansion" data-lo="LO13-1" data-notes="Worked example: restaurant group opening a new location. 5 activities. Key predecessor decisions: POS installation requires kitchen first (true); staff training requires only the lease (not kitchen). The grand opening requires BOTH training AND POS to be done. This is the running example used through the forward pass, backward pass, and Gantt sections.">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">M13</span>
+      <span class="le-course">SCM 352 · Module 13</span>
+    </div>
+    <span class="le-pagenum">6 / 28</span>
+  </div>
+
+  <div class="le-titleblock">
+    <div class="le-title">Worked Example — <span>Restaurant Expansion</span></div>
+    <div class="le-sub">5 activities · Build the dependency matrix from the project narrative</div>
+  </div>
+
+  <div class="le-body">
+    <div class="two-col" style="gap:8px;">
+      <div>
+        <div class="callout amber" style="margin-bottom:6px;">
+          <div class="callout-label">Project Narrative</div>
+          <p>A restaurant group is opening a new location. Five activities are required:</p>
+          <ul style="padding-left:14px;margin-top:4px;">
+            <li>Secure the lease for the new space.</li>
+            <li>Complete the kitchen buildout — requires the lease first.</li>
+            <li>Hire and train staff — requires only the signed lease; kitchen does not need to be done.</li>
+            <li>Install POS and technology systems — requires the kitchen to be built first.</li>
+            <li>Hold the grand opening — requires both staff training and POS installation to be complete.</li>
+          </ul>
+        </div>
+        <div class="callout blue">
+          <div class="callout-label">Key Predecessor Decisions</div>
+          <p><strong>Staff training (C) predecessor:</strong> Only A (lease) — not B (kitchen). Training can start as soon as the lease is signed. Adding B would extend the critical path unnecessarily.</p>
+          <p style="margin-top:4px;"><strong>Grand opening (E) predecessors:</strong> Both C (training) and D (POS). The opening cannot happen until staff are ready AND the system is running.</p>
+        </div>
+      </div>
+      <div>
+        <div class="callout teal">
+          <div class="callout-label">Completed Dependency Matrix</div>
+          <table class="clean-table" style="margin-top:4px;">
+            <thead>
+              <tr><th>Act.</th><th>Description</th><th>Dur.</th><th>Pred.</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>A</strong></td><td>Secure lease</td><td>3 wks</td><td>—</td></tr>
+              <tr><td><strong>B</strong></td><td>Kitchen buildout</td><td>6 wks</td><td>A</td></tr>
+              <tr><td><strong>C</strong></td><td>Hire and train staff</td><td>4 wks</td><td>A</td></tr>
+              <tr><td><strong>D</strong></td><td>Install POS systems</td><td>2 wks</td><td>B</td></tr>
+              <tr><td><strong>E</strong></td><td>Grand opening</td><td>1 wk</td><td>C, D</td></tr>
+            </tbody>
+          </table>
+          <p style="margin-top:6px;padding-left:5px;">Network shape: A splits into B and C. B feeds D. C and D merge at E.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="le-footer">
+    <div class="le-lo-pills">
+      <span class="le-lo-pill">LO13-1</span>
+    </div>
+    <div><span class="le-ch-note">Ch. 19.2</span></div>
+  </div>
+</section>

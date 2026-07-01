@@ -1,0 +1,113 @@
+<section class="slide-page" data-title="Gantt Chart — Reading the Chart" data-lo="LO13-5" data-notes="Gantt chart mechanics: solid bar = EST to ECT (activity duration); dashed bar = ECT to LCT (slack window). Critical activities (ST=0) have only solid bars. Non-critical activities have both a solid bar and a dashed slack extension. The chart shows the restaurant expansion Gantt as the visual reference.">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">M13</span>
+      <span class="le-course">SCM 352 · Module 13</span>
+    </div>
+    <span class="le-pagenum">26 / 28</span>
+  </div>
+
+  <div class="le-titleblock">
+    <div class="le-title">Gantt Chart — <span>Reading the Chart</span></div>
+    <div class="le-sub">Solid bar = activity duration (EST to ECT) · Dashed bar = slack window (ECT to LCT)</div>
+  </div>
+
+  <div class="le-body">
+    <div class="two-col" style="gap:8px;">
+      <div>
+        <div class="callout teal" style="margin-bottom:6px;">
+          <div class="callout-label">Two Types of Bars</div>
+          <p><strong>Solid bar:</strong> Spans from EST to ECT. Represents the actual duration of the activity. All activities have one.</p>
+          <p style="margin-top:5px;"><strong>Dashed bar (slack window):</strong> Spans from ECT to LCT. Represents how far right the activity can shift without extending the project. Only non-critical activities (ST &gt; 0) have one.</p>
+          <p style="margin-top:5px;"><strong>Critical activities:</strong> Solid bar only — ECT = LCT, so there is no slack window to show.</p>
+        </div>
+        <div class="callout amber">
+          <div class="callout-label">Restaurant Expansion Gantt — Legend</div>
+          <div style="display:flex;gap:6px;align-items:center;margin-top:6px;flex-wrap:wrap;">
+            <div style="display:flex;align-items:center;gap:4px;">
+              <div style="width:30px;height:12px;background:#0F2027;border-radius:2px;"></div>
+              <span>Activity bar (EST→ECT)</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:4px;">
+              <div style="width:30px;height:12px;background:#E5F5F3;border:1.5px dashed #0D9B87;border-radius:2px;"></div>
+              <span>Slack window (ECT→LCT)</span>
+            </div>
+          </div>
+          <p style="margin-top:6px;">Activity C is the only non-critical activity — it will show a 4-week slack bar from week 7 to week 11.</p>
+        </div>
+      </div>
+      <div>
+        <div class="callout navy">
+          <div class="callout-label" style="color:var(--teal);">Restaurant Expansion — Gantt Chart</div>
+          <p style="color:rgba(255,255,255,.5);font-size:calc(8.5px * var(--slide-scale));">Week timeline: 0 to 12</p>
+          <div style="margin-top:8px;position:relative;">
+            <!-- Simple CSS Gantt chart -->
+            <div style="display:flex;flex-direction:column;gap:5px;font-size:calc(8.5px * var(--slide-scale));">
+              <!-- Header row -->
+              <div style="display:flex;align-items:center;gap:4px;color:rgba(255,255,255,.4);border-bottom:.5px solid rgba(255,255,255,.1);padding-bottom:3px;">
+                <div style="width:18px;flex-shrink:0;"></div>
+                <div style="flex:1;display:flex;justify-content:space-between;">
+                  <span>0</span><span>3</span><span>6</span><span>9</span><span>12</span>
+                </div>
+              </div>
+              <!-- Activity A: 0-3, no slack -->
+              <div style="display:flex;align-items:center;gap:4px;">
+                <div style="width:18px;flex-shrink:0;color:rgba(255,255,255,.7);font-weight:700;">A</div>
+                <div style="flex:1;position:relative;height:16px;">
+                  <div style="position:absolute;left:0%;width:25%;height:100%;background:#0D9B87;border-radius:2px;"></div>
+                </div>
+              </div>
+              <!-- Activity B: 3-9, no slack -->
+              <div style="display:flex;align-items:center;gap:4px;">
+                <div style="width:18px;flex-shrink:0;color:rgba(255,255,255,.7);font-weight:700;">B</div>
+                <div style="flex:1;position:relative;height:16px;">
+                  <div style="position:absolute;left:25%;width:50%;height:100%;background:#0D9B87;border-radius:2px;"></div>
+                </div>
+              </div>
+              <!-- Activity C: 3-7 solid, 7-11 dashed (4 wks slack) -->
+              <div style="display:flex;align-items:center;gap:4px;">
+                <div style="width:18px;flex-shrink:0;color:rgba(255,255,255,.7);font-weight:700;">C</div>
+                <div style="flex:1;position:relative;height:16px;">
+                  <div style="position:absolute;left:25%;width:33.3%;height:100%;background:#0D9B87;border-radius:2px 0 0 2px;"></div>
+                  <div style="position:absolute;left:58.3%;width:33.3%;height:100%;border:1.5px dashed #0D9B87;border-radius:0 2px 2px 0;background:rgba(13,155,135,.12);"></div>
+                </div>
+              </div>
+              <!-- Activity D: 9-11, no slack -->
+              <div style="display:flex;align-items:center;gap:4px;">
+                <div style="width:18px;flex-shrink:0;color:rgba(255,255,255,.7);font-weight:700;">D</div>
+                <div style="flex:1;position:relative;height:16px;">
+                  <div style="position:absolute;left:75%;width:16.7%;height:100%;background:#0D9B87;border-radius:2px;"></div>
+                </div>
+              </div>
+              <!-- Activity E: 11-12, no slack -->
+              <div style="display:flex;align-items:center;gap:4px;">
+                <div style="width:18px;flex-shrink:0;color:rgba(255,255,255,.7);font-weight:700;">E</div>
+                <div style="flex:1;position:relative;height:16px;">
+                  <div style="position:absolute;left:91.7%;width:8.3%;height:100%;background:#0D9B87;border-radius:2px;"></div>
+                </div>
+              </div>
+              <!-- Week markers -->
+              <div style="display:flex;align-items:center;gap:4px;color:rgba(255,255,255,.3);border-top:.5px solid rgba(255,255,255,.1);padding-top:3px;margin-top:2px;">
+                <div style="width:18px;flex-shrink:0;"></div>
+                <div style="flex:1;position:relative;">
+                  <div style="display:flex;justify-content:space-between;"><span>Wk 0</span><span>3</span><span>6</span><span>9</span><span>12</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <p style="margin-top:8px;color:rgba(255,255,255,.5);font-style:italic;">C has a dashed slack bar weeks 7–11. A, B, D, E have solid bars only — they are critical.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="le-footer">
+    <div class="le-lo-pills">
+      <span class="le-lo-pill">LO13-5</span>
+    </div>
+    <div><span class="le-ch-note">Ch. 19.5</span></div>
+  </div>
+</section>

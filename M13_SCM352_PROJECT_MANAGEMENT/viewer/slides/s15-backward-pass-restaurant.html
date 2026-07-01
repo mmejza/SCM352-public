@@ -1,0 +1,64 @@
+<section class="slide-page" data-title="Restaurant Expansion — Backward Pass Complete" data-lo="LO13-4" data-notes="Backward pass for all 5 activities. Start from E (LCT=12=ECT) and work right to left. Key split point: A feeds both B (LST=3) and C (LST=7). LCT(A)=min(3,7)=3. Result: A, B, D, E have ST=0 (critical); C has ST=4.">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">M13</span>
+      <span class="le-course">SCM 352 · Module 13</span>
+    </div>
+    <span class="le-pagenum">15 / 28</span>
+  </div>
+
+  <div class="le-titleblock">
+    <div class="le-title">Restaurant Expansion — <span>Backward Pass Complete</span></div>
+    <div class="le-sub">Computing LCT and LST for all 5 activities · Working right to left</div>
+  </div>
+
+  <div class="le-body">
+    <div class="two-col" style="gap:8px;">
+      <div>
+        <div class="callout teal" style="margin-bottom:6px;">
+          <div class="callout-label">Backward Pass — Step by Step</div>
+          <table class="clean-table" style="margin-top:4px;">
+            <thead><tr><th>Act.</th><th>Pred.</th><th>ECT</th><th>LCT</th><th>LST</th></tr></thead>
+            <tbody>
+              <tr><td><strong>E</strong></td><td>C, D</td><td>12</td><td class="pos">12</td><td>11</td></tr>
+              <tr><td><strong>D</strong></td><td>B</td><td>11</td><td>11</td><td>9</td></tr>
+              <tr><td><strong>C</strong></td><td>A</td><td>7</td><td>11</td><td>7</td></tr>
+              <tr><td><strong>B</strong></td><td>A</td><td>9</td><td>9</td><td>3</td></tr>
+              <tr><td><strong>A</strong></td><td>—</td><td>3</td><td class="neg">3</td><td>0</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout amber">
+          <div class="callout-label">Key Backward-Pass Calculations</div>
+          <p><strong>E (last activity):</strong> LCT(E) = ECT(E) = 12. LST(E) = 12 − 1 = 11.</p>
+          <p style="margin-top:4px;"><strong>D:</strong> LCT(D) = LST(E) = 11. LST(D) = 11 − 2 = 9.</p>
+          <p style="margin-top:4px;"><strong>C:</strong> LCT(C) = LST(E) = 11. LST(C) = 11 − 4 = 7.</p>
+          <p style="margin-top:4px;"><strong>B:</strong> LCT(B) = LST(D) = 9. LST(B) = 9 − 6 = 3.</p>
+          <p style="margin-top:4px;"><strong>A (split point):</strong> LCT(A) = min(LST(B), LST(C)) = min(3, 7) = <strong>3</strong>. LST(A) = 3 − 3 = 0.</p>
+        </div>
+      </div>
+      <div>
+        <div class="callout navy">
+          <div class="callout-label" style="color:var(--teal);">Reading the Split at A</div>
+          <p style="color:rgba(255,255,255,.75);">A feeds both B and C. Two downstream constraints:</p>
+          <ul style="padding-left:14px;margin-top:6px;color:rgba(255,255,255,.75);">
+            <li>B must start by week 3 (LST(B)=3) — to allow kitchen buildout to finish on time.</li>
+            <li>C can start as late as week 7 (LST(C)=7) — staff training has buffer.</li>
+          </ul>
+          <p style="margin-top:8px;color:rgba(255,255,255,.75);">LCT(A) = <strong style="color:#fff;">min(3, 7) = 3</strong>. The lease must be secured by week 3 to keep B on track. C's later deadline does not help A — the tighter constraint (B) determines A's latest finish time.</p>
+          <p style="margin-top:8px;color:rgba(255,255,255,.5);font-style:italic;">Note: LST(A) = 0 confirms that A must start immediately — day zero. Any delay to A extends the project.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="le-footer">
+    <div class="le-lo-pills">
+      <span class="le-lo-pill">LO13-4</span>
+    </div>
+    <div><span class="le-ch-note">Ch. 19.4</span></div>
+  </div>
+</section>

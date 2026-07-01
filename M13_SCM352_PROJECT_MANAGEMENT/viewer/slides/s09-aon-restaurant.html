@@ -1,0 +1,104 @@
+<section class="slide-page" data-title="Restaurant Expansion — AON Network" data-lo="LO13-2" data-notes="AON diagram for the 5-activity restaurant expansion. A splits into B and C. B feeds D. C and D merge at E. The merge at E is the critical construction point — both arrows (C→E and D→E) must appear.">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">M13</span>
+      <span class="le-course">SCM 352 · Module 13</span>
+    </div>
+    <span class="le-pagenum">9 / 28</span>
+  </div>
+
+  <div class="le-titleblock">
+    <div class="le-title">Restaurant Expansion — <span>AON Network</span></div>
+    <div class="le-sub">5 activities · 1 split point (A) · 1 merge point (E)</div>
+  </div>
+
+  <div class="le-body" style="align-items:center;">
+    <div style="width:100%;overflow-x:auto;">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 750 260" style="width:100%;max-width:750px;display:block;margin:0 auto;">
+        <defs>
+          <marker id="arr-r" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto" markerUnits="strokeWidth">
+            <polygon points="0 0,10 3.5,0 7" fill="#64748b"/>
+          </marker>
+        </defs>
+
+        <!-- Arrows -->
+        <g stroke="#64748b" stroke-width="1.8" fill="none" marker-end="url(#arr-r)">
+          <!-- START → A -->
+          <line x1="101" y1="130" x2="128" y2="130"/>
+          <!-- A → B (up-right) -->
+          <line x1="208" y1="117" x2="258" y2="83"/>
+          <!-- A → C (down-right) -->
+          <line x1="208" y1="143" x2="258" y2="183"/>
+          <!-- B → D (horizontal) -->
+          <line x1="338" y1="70" x2="388" y2="70"/>
+          <!-- D → E (down-right) -->
+          <line x1="468" y1="82" x2="518" y2="121"/>
+          <!-- C → E (up-right) -->
+          <line x1="338" y1="182" x2="518" y2="139"/>
+          <!-- E → END -->
+          <line x1="598" y1="130" x2="642" y2="130"/>
+        </g>
+
+        <!-- START node -->
+        <ellipse cx="55" cy="130" rx="46" ry="24" fill="#f8fafc" stroke="#94a3b8" stroke-width="1.5"/>
+        <text x="55" y="135" text-anchor="middle" font-size="11" font-weight="700" fill="#64748b" font-family="sans-serif">START</text>
+
+        <!-- A: Secure lease (3 wks) -->
+        <rect x="128" y="105" width="80" height="50" rx="5" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
+        <text x="168" y="127" text-anchor="middle" font-size="20" font-weight="800" fill="#1d4ed8" font-family="sans-serif">A</text>
+        <text x="168" y="145" text-anchor="middle" font-size="10" fill="#1e40af" font-family="sans-serif">3 wks</text>
+
+        <!-- B: Kitchen buildout (6 wks) -->
+        <rect x="258" y="45" width="80" height="50" rx="5" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
+        <text x="298" y="67" text-anchor="middle" font-size="20" font-weight="800" fill="#1d4ed8" font-family="sans-serif">B</text>
+        <text x="298" y="85" text-anchor="middle" font-size="10" fill="#1e40af" font-family="sans-serif">6 wks</text>
+
+        <!-- C: Hire &amp; train staff (4 wks) -->
+        <rect x="258" y="160" width="80" height="50" rx="5" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
+        <text x="298" y="182" text-anchor="middle" font-size="20" font-weight="800" fill="#1d4ed8" font-family="sans-serif">C</text>
+        <text x="298" y="200" text-anchor="middle" font-size="10" fill="#1e40af" font-family="sans-serif">4 wks</text>
+
+        <!-- D: Install POS (2 wks) -->
+        <rect x="388" y="45" width="80" height="50" rx="5" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
+        <text x="428" y="67" text-anchor="middle" font-size="20" font-weight="800" fill="#1d4ed8" font-family="sans-serif">D</text>
+        <text x="428" y="85" text-anchor="middle" font-size="10" fill="#1e40af" font-family="sans-serif">2 wks</text>
+
+        <!-- E: Grand opening (1 wk) -->
+        <rect x="518" y="105" width="80" height="50" rx="5" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
+        <text x="558" y="127" text-anchor="middle" font-size="20" font-weight="800" fill="#1d4ed8" font-family="sans-serif">E</text>
+        <text x="558" y="145" text-anchor="middle" font-size="10" fill="#1e40af" font-family="sans-serif">1 wk</text>
+
+        <!-- END node -->
+        <ellipse cx="688" cy="130" rx="46" ry="24" fill="#f8fafc" stroke="#94a3b8" stroke-width="1.5"/>
+        <text x="688" y="135" text-anchor="middle" font-size="11" font-weight="700" fill="#64748b" font-family="sans-serif">END</text>
+
+        <!-- Labels below nodes -->
+        <text x="168" y="167" text-anchor="middle" font-size="9" fill="#64748b" font-family="sans-serif">Secure lease</text>
+        <text x="298" y="105" text-anchor="middle" font-size="9" fill="#64748b" font-family="sans-serif">Kitchen buildout</text>
+        <text x="298" y="220" text-anchor="middle" font-size="9" fill="#64748b" font-family="sans-serif">Hire &amp; train staff</text>
+        <text x="428" y="105" text-anchor="middle" font-size="9" fill="#64748b" font-family="sans-serif">Install POS</text>
+        <text x="558" y="165" text-anchor="middle" font-size="9" fill="#64748b" font-family="sans-serif">Grand opening</text>
+
+        <!-- Merge label -->
+        <text x="518" y="242" text-anchor="middle" font-size="9" fill="#c0392b" font-weight="700" font-family="sans-serif">Merge point</text>
+        <text x="518" y="252" text-anchor="middle" font-size="9" fill="#c0392b" font-family="sans-serif">(both C and D must finish)</text>
+      </svg>
+    </div>
+    <div class="callout teal" style="margin-top:4px;">
+      <div class="callout-label">Two Paths from START to END</div>
+      <p><strong>Path 1:</strong> A → B → D → E &nbsp;|&nbsp; 3 + 6 + 2 + 1 = <strong>12 weeks</strong></p>
+      <p><strong>Path 2:</strong> A → C → E &nbsp;|&nbsp; 3 + 4 + 1 = <strong>8 weeks</strong></p>
+      <p style="margin-top:4px;">The longer path determines the minimum project duration. But which one is critical requires the CPM forward and backward pass — coming next.</p>
+    </div>
+  </div>
+
+  <div class="le-footer">
+    <div class="le-lo-pills">
+      <span class="le-lo-pill">LO13-2</span>
+    </div>
+    <div><span class="le-ch-note">Ch. 19.2–19.3</span></div>
+  </div>
+</section>

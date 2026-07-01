@@ -124,6 +124,18 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
       <div class="alert-icon">📋</div>
       <div class="alert-body"><strong>Quiz format: Fill-in-the-blank (FIMB) and Multiple Choice (MC).</strong> For numeric blanks: enter the value rounded to 2 decimal places (e.g., 134.33). For directional text blanks: type exactly "under-forecasting" or "over-forecasting", "ES" or "managers". For MC: select the single best answer.</div>
     </div>
+    <div class="alert alert-gold">
+      <div class="alert-icon">⚠️</div>
+      <div class="alert-body">
+        <strong>Canvas matches fill-in-blank answers exactly — format errors score as wrong.</strong>
+        It is your responsibility to enter every blank in the accepted format before submitting. There are no regrade requests for format mismatches.
+        <div style="margin-top:8px;display:flex;flex-direction:column;gap:5px;font-size:13px;line-height:1.55;">
+          <div>→ <strong>Precision:</strong> perform all calculations at full precision; round your final answer to two decimal places before entering — e.g., enter <em>134.33</em> not <em>134</em></div>
+          <div>→ <strong>Numbers only:</strong> no commas, dollar signs, or percent signs — for 2 × $502 enter <em>1004.00</em></div>
+          <div>→ <strong>Percentages:</strong> where a % sign appears beside the blank, enter the number only — enter <em>13</em> not <em>0.13</em> and not <em>13%</em> (the % is already shown)</div>
+        </div>
+      </div>
+    </div>
     <div class="alert alert-blue">
       <div class="alert-icon">ℹ️</div>
       <div class="alert-body">The quiz FIMB item includes all version-specific data — you will see your demand table, ES parameters, and Part 4 manager estimates directly in the question. Use this page to prepare; the quiz question is the authoritative source for your version's data.</div>
@@ -276,17 +288,17 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
 
         <div class="q-block">
           <div class="q-num">Questions 2a–2b</div>
-          <div class="q-text">Using <strong>F(t+1) = α · D(t) + (1−α) · F(t)</strong>, compute the full ES chain from Period 2 through the forecast period. Compute signed errors (Actual − Forecast) for every period — you'll need them for MAD and bias. <span style="color:var(--gray-500);font-size:12px;">→ Quiz: enter F₃ and the final forecast F(T+1) as fill-in blanks (5 pts each).</span></div>
+          <div class="q-text">Run the complete exponential smoothing chain for your version from Period 2 through the final forecast period. <span style="color:var(--gray-500);font-size:12px;">→ Quiz: enter F₃ and the final forecast F(T+1) as fill-in blanks (5 pts each).</span></div>
           <span class="q-pts">6 pts</span>
         </div>
         <div class="q-block">
           <div class="q-num">Question 2c</div>
-          <div class="q-text">Compute <strong>MAD</strong> = Σ|Error_t| / N across all periods. Round to two decimal places. <span style="color:var(--gray-500);font-size:12px;">→ Quiz: fill-in blank (5 pts).</span></div>
+          <div class="q-text">Compute the <strong>MAD</strong> for your version's ES errors. <span style="color:var(--gray-500);font-size:12px;">→ Quiz: fill-in blank (5 pts).</span></div>
           <span class="q-pts">8 pts</span>
         </div>
         <div class="q-block">
           <div class="q-num">Question 2d</div>
-          <div class="q-text">Compute <strong>forecast bias</strong> = Σ(Signed Error_t) / N. Note whether the bias is positive (under-forecasting) or negative (over-forecasting). <span style="color:var(--gray-500);font-size:12px;">→ Quiz: bias value as fill-in blank (5 pts); operational consequence as multiple choice (6 pts).</span></div>
+          <div class="q-text">Compute the <strong>forecast bias</strong> for your version's ES errors. <span style="color:var(--gray-500);font-size:12px;">→ Quiz: bias value as fill-in blank (5 pts); operational consequence as multiple choice (6 pts).</span></div>
           <span class="q-pts">14 pts</span>
         </div>
       </div>
@@ -305,7 +317,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
       <div class="section-bd">
         <div class="q-block">
           <div class="q-num">Question 3a</div>
-          <div class="q-text">Compute <strong>MAPE</strong> using your Part 2 ES errors: APE_t = |Error_t| / D_t × 100%, then average across all N periods. Note: Week 1 APE = 0% (F₁ = D₁ by definition). <span style="color:var(--gray-500);font-size:12px;">→ Quiz: enter Week 2 APE (5 pts) and average MAPE (5 pts) as fill-in blanks.</span></div>
+          <div class="q-text">Compute <strong>MAPE</strong> for your version's ES errors. <span style="color:var(--gray-500);font-size:12px;">→ Quiz: enter Week 2 APE (5 pts) and average MAPE (5 pts) as fill-in blanks.</span></div>
           <span class="q-pts">10 pts</span>
         </div>
         <div class="q-block">
@@ -315,7 +327,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
         </div>
         <div class="q-block">
           <div class="q-num">Question 3c</div>
-          <div class="q-text">Which single forecasting method would you recommend for this supply category? Your answer must address: (1) method chosen, (2) accuracy evidence, (3) bias impact, (4) one limitation. <span style="color:var(--gray-500);font-size:12px;">→ Quiz: multiple choice selecting the complete 4-element recommendation (6 pts).</span></div>
+          <div class="q-text">Which single forecasting method would you recommend for this supply category? <span style="color:var(--gray-500);font-size:12px;">→ Quiz: multiple choice selecting the complete 4-element recommendation (6 pts).</span></div>
           <span class="q-pts">6 pts</span>
         </div>
       </div>
@@ -401,17 +413,17 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
         </div>
         <div class="q-block">
           <div class="q-num">Question 4b</div>
-          <div class="q-text">Manager 3's estimate is substantially lower than the other two managers' estimates, and Manager 3 controls the specialty drug purchase budget. Name the forecasting bias most likely responsible, and explain why the budget-control role makes this bias predictable. <span style="color:var(--gray-500);font-size:12px;">→ Quiz: multiple choice (7 pts).</span></div>
+          <div class="q-text">Manager 3's estimate is substantially lower than the other two managers' estimates, and Manager 3 controls the specialty drug purchase budget. Identify which forecasting bias most likely explains this pattern. <span style="color:var(--gray-500);font-size:12px;">→ Quiz: multiple choice (7 pts).</span></div>
           <span class="q-pts">7 pts</span>
         </div>
         <div class="q-block">
           <div class="q-num">Question 4c</div>
-          <div class="q-text">Compute the combined forecast = simple average of all three managers' estimates. Compare the combined error (|Actual − Combined|) to the ES model's error (|Actual − F(T+1) from Part 2|). Which method was more accurate? <span style="color:var(--gray-500);font-size:12px;">→ Quiz: enter combined forecast value and "ES" or "managers" as fill-in blanks (5 pts each).</span></div>
+          <div class="q-text">Compute the combined forecast from your version's three manager estimates and compare its accuracy against the ES model's final forecast from Part 2. <span style="color:var(--gray-500);font-size:12px;">→ Quiz: enter combined forecast value and "ES" or "managers" as fill-in blanks (5 pts each).</span></div>
           <span class="q-pts">10 pts</span>
         </div>
         <div class="q-block">
           <div class="q-num">Question 4d</div>
-          <div class="q-text">Should Riverside rely on the ES model, the combined expert forecast, or a hybrid approach for this supply category? Your reasoning should address the MAPE from Part 3a, the bias from Part 2d, and when judgment should override the statistical model. <span style="color:var(--gray-500);font-size:12px;">→ Quiz: multiple choice selecting the best-supported recommendation (4 pts).</span></div>
+          <div class="q-text">Should Riverside rely on the ES model, the combined expert forecast, or a hybrid approach for this supply category? <span style="color:var(--gray-500);font-size:12px;">→ Quiz: multiple choice selecting the best-supported recommendation (4 pts).</span></div>
           <span class="q-pts">4 pts</span>
         </div>
       </div>

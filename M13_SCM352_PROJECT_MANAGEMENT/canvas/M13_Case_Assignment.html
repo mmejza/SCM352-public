@@ -47,9 +47,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
 .integrity-footer h3{font-size:14px;font-weight:700;margin-bottom:10px;}
 .integrity-footer p{font-size:13px;line-height:1.65;color:rgba(255,255,255,.8);}
 .integrity-footer strong{color:white;}
-.tip-box{background:var(--blue-xlt);border:1.5px solid var(--blue-bdr);border-radius:10px;padding:14px 18px;font-size:13px;line-height:1.65;color:var(--gray-700);}
-.tip-box strong{color:var(--navy);}
-.tip-box ol{margin-top:8px;margin-left:16px;display:flex;flex-direction:column;gap:5px;}
 .final-module-note{background:var(--gold-lt);border:1.5px solid var(--gold-bdr);border-left:4px solid var(--gold);border-radius:0 10px 10px 0;padding:14px 18px;font-size:13.5px;color:var(--gray-700);}
 .final-module-note strong{color:var(--gold-dark);}
 </style>
@@ -102,6 +99,18 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
         <strong>The 90-minute timer does not pause.</strong>
       </div>
     </div>
+    <div class="alert alert-gold">
+      <div class="alert-icon">⚠️</div>
+      <div class="alert-body">
+        <strong>Canvas matches fill-in-blank answers exactly — format errors score as wrong.</strong>
+        It is your responsibility to enter every blank in the accepted format before submitting. There are no regrade requests for format mismatches.
+        <div style="margin-top:8px;display:flex;flex-direction:column;gap:5px;font-size:13px;line-height:1.55;">
+          <div>→ <strong>Numbers only:</strong> ECT, LCT, ST, path durations, and project duration are whole numbers — no commas, units, or labels</div>
+          <div>→ <strong>Sequences:</strong> list activity letters separated by dashes — e.g., <em>A-C-E-F-H-I-J</em></div>
+          <div>→ <strong>Predecessors:</strong> list letters separated by "and" in alphabetical order — e.g., <em>C and D</em></div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- PROJECT DESCRIPTION -->
@@ -109,20 +118,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
     <div class="sec-heading">Project Background — 10 Activities</div>
     <p style="font-size:13.5px;line-height:1.75;color:var(--gray-700);margin-top:12px;">Riverside Health System is replacing its legacy patient records system with a new Electronic Health Records (EHR) platform across all three campuses. The project involves 10 activities: <strong>A</strong> (project planning and vendor finalization), <strong>B</strong> (infrastructure build-out and server installation), <strong>C</strong> (vendor-led EHR software configuration), <strong>D</strong> (data migration and historical record conversion), <strong>E</strong> (integration testing — requires C and D complete), <strong>F</strong> (staff training — requires B and E complete), <strong>G</strong> (go-live readiness audit — requires D complete), <strong>H</strong> (pilot campus rollout — requires E, F, and G complete), <strong>I</strong> (issue remediation post-pilot — requires H complete), and <strong>J</strong> (full system cutover and sign-off — requires I complete).</p>
     <p style="font-size:13.5px;line-height:1.75;color:var(--gray-700);margin-top:10px;">The dependency structure above is the same for all four versions. Your version's duration values are shown in the activity table at the top of the Canvas quiz. Use those durations throughout all four parts.</p>
-  </div>
-
-  <!-- THE TIP BOX -->
-  <div class="tip-box">
-    <strong>Recommended scratch-paper sequence:</strong>
-    <ol>
-      <li>List activities A–J, record your version's durations from the Canvas table.</li>
-      <li>Draw the AON network; confirm merge points.</li>
-      <li>Forward pass: compute EST and ECT for every activity .</li>
-      <li>Record project duration.</li>
-      <li>Backward pass: compute LCT and LST.</li>
-      <li>Compute ST for every activity.</li>
-      <li>List all 6 paths A→J and verify the critical path.</li>
-    </ol>
   </div>
 
   <!-- PART 1 -->
@@ -162,15 +157,15 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
     <div class="part-body">
       <div class="sub-item">
         <span class="pts-tag">15 pts <span class="blank-count">10 blanks</span></span>
-        <strong>Part 2a — Earliest Completion Time (ECT):</strong> Perform a complete forward pass. For each of the 10 activities A–J, enter the ECT value. ECT values are integers.
+        <strong>Part 2a — Earliest Completion Time (ECT):</strong> For each of the 10 activities A–J, enter the ECT value. ECT values are whole numbers.
       </div>
       <div class="sub-item">
         <span class="pts-tag">15 pts <span class="blank-count">10 blanks</span></span>
-        <strong>Part 2b — Latest Completion Time (LCT):</strong> Perform a complete backward pass. For each of the 10 activities A–J, enter the LCT value. LCT values are integers.
+        <strong>Part 2b — Latest Completion Time (LCT):</strong> For each of the 10 activities A–J, enter the LCT value. LCT values are whole numbers.
       </div>
       <div class="sub-item">
         <span class="pts-tag">15 pts <span class="blank-count">10 blanks</span></span>
-        <strong>Part 2c — Slack Time (ST):</strong> For eall activities A–J, compute and enter the slack time (ST = LCT − ECT). Enter each ST as a non-negative integer.
+        <strong>Part 2c — Slack Time (ST):</strong> For all activities A–J, enter the slack time. ST values are whole numbers.
       </div>
       <div class="sub-item">
         <span class="pts-tag">5 pts <span class="blank-count">1 blank</span></span>
@@ -195,7 +190,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
       </div>
       <div class="sub-item">
         <span class="pts-tag">10 pts <span class="blank-count">2 blanks</span></span>
-        <strong>Part 3b — Activity B Delay:</strong> Activity B is delayed beyond its planned EST. Using your version's ST values from Part 2c, determine whether this delay affects the project completion date.
+        <strong>Part 3b — Activity B Delay:</strong> Activity B is delayed beyond its planned EST. Determine whether this delay affects the project completion date.
       </div>
       <div class="sub-item">
         <span class="pts-tag">10 pts <span class="blank-count">2 blanks</span></span>

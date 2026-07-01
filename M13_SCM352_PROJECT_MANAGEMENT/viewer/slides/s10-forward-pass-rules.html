@@ -1,0 +1,60 @@
+<section class="slide-page" data-title="CPM Forward Pass — Rules" data-lo="LO13-3" data-notes="Three rules: EST(first)=0, ECT=EST+Duration, merge=MAX. Work left to right. EST and ECT answer the question: when can this activity happen? The forward pass also reveals the project's minimum duration (ECT of the last activity).">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">M13</span>
+      <span class="le-course">SCM 352 · Module 13</span>
+    </div>
+    <span class="le-pagenum">10 / 28</span>
+  </div>
+
+  <div class="le-titleblock">
+    <div class="le-title">CPM Forward Pass — <span>Rules</span></div>
+    <div class="le-sub">Computes EST and ECT for every activity · Work left to right through the network</div>
+  </div>
+
+  <div class="le-body">
+    <div class="three-col" style="gap:6px;margin-bottom:6px;">
+      <div class="callout teal">
+        <div class="callout-label">EST — Earliest Start Time</div>
+        <p>The earliest a job CAN begin, given all its predecessors are complete as fast as possible.</p>
+        <p style="margin-top:6px;"><strong>First activity:</strong> EST = 0</p>
+        <p style="margin-top:4px;"><strong>All others:</strong> EST = ECT of predecessor (or MAX of predecessors at a merge point)</p>
+      </div>
+      <div class="callout teal">
+        <div class="callout-label">ECT — Earliest Completion Time</div>
+        <p>The earliest this activity can finish, assuming it starts at EST.</p>
+        <div class="formula-box" style="margin-top:6px;font-size:calc(15px * var(--slide-scale));">ECT = EST + Duration</div>
+        <p style="margin-top:6px;">ECT of the last activity = <strong>minimum project duration</strong>.</p>
+      </div>
+      <div class="callout amber">
+        <div class="callout-label">The Merge Rule — MAX</div>
+        <p>When an activity has two or more predecessors, it cannot start until ALL predecessors are complete.</p>
+        <div class="formula-box" style="margin-top:6px;font-size:calc(13px * var(--slide-scale));">EST = max(ECT₁, ECT₂, …)</div>
+        <p style="margin-top:6px;">Take the <strong>maximum</strong> ECT across all predecessors — the binding constraint is the last one to finish.</p>
+      </div>
+    </div>
+    <div class="callout navy">
+      <div class="callout-label" style="color:var(--teal);">Notation Reference</div>
+      <table class="clean-table" style="margin-top:4px;">
+        <thead><tr><th>Symbol</th><th>Meaning</th><th>Computed How</th></tr></thead>
+        <tbody>
+          <tr><td>EST</td><td>Earliest Start Time</td><td>0 for first activity; MAX(predecessor ECTs) otherwise</td></tr>
+          <tr><td>ECT</td><td>Earliest Completion Time</td><td>EST + Duration</td></tr>
+          <tr><td>LST</td><td>Latest Start Time</td><td>Backward pass: LCT − Duration</td></tr>
+          <tr><td>LCT</td><td>Latest Completion Time</td><td>Backward pass: MIN(successor LSTs)</td></tr>
+          <tr><td>ST</td><td>Slack Time</td><td>LCT − ECT (or equivalently LST − EST)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="le-footer">
+    <div class="le-lo-pills">
+      <span class="le-lo-pill">LO13-3</span>
+    </div>
+    <div><span class="le-ch-note">Ch. 19.3</span></div>
+  </div>
+</section>

@@ -1,0 +1,55 @@
+<section class="slide-page" data-title="Delay Analysis — The Four-Question Protocol" data-lo="LO13-4 LO13-5" data-notes="The 4-question protocol structures delay analysis. This slide introduces the framework before the two specific scenarios. Question 1 (is the activity critical?) is the first filter. Question 2 (does the delay exceed slack?) applies only for non-critical activities. Questions 3-4 cover downstream propagation and new critical paths.">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">M13</span>
+      <span class="le-course">SCM 352 · Module 13</span>
+    </div>
+    <span class="le-pagenum">23 / 28</span>
+  </div>
+
+  <div class="le-titleblock">
+    <div class="le-title">Delay Analysis — <span>The Four-Question Protocol</span></div>
+    <div class="le-sub">When any activity reports a delay — ask these questions in order</div>
+  </div>
+
+  <div class="le-body">
+    <div class="card-grid" style="gap:6px;margin-bottom:6px;">
+      <div class="mini-card">
+        <h4>Q1 — Is the delayed activity critical?</h4>
+        <p>Check ST. If ST = 0, any delay propagates immediately to the project completion date — go to Q3. If ST &gt; 0, go to Q2.</p>
+      </div>
+      <div class="mini-card">
+        <h4>Q2 — Does the delay exceed ST?</h4>
+        <p>If the delay is ≤ ST: the activity absorbs the delay, project finish is unchanged. The remaining slack is reduced. If the delay &gt; ST: the excess over ST extends the project — go to Q3.</p>
+      </div>
+      <div class="mini-card">
+        <h4>Q3 — Does the delay propagate to successors?</h4>
+        <p>Recompute ECT for the delayed activity and trace forward to every successor. Identify which successor ECTs change. Recompute the project completion date.</p>
+      </div>
+      <div class="mini-card">
+        <h4>Q4 — Does this create a new critical path?</h4>
+        <p>After incorporating the delay, recheck ST for all activities. A formerly non-critical activity may now have ST = 0. A new critical path may emerge that requires different management attention.</p>
+      </div>
+    </div>
+    <div class="two-col" style="gap:6px;">
+      <div class="callout teal">
+        <div class="callout-label">Non-Critical Delay (E delayed 3 weeks)</div>
+        <p>E has ST=3. Delay ≤ ST → no project extension. ECT(E) shifts from 9 to 12. EST(F)=max(12,12)=12 — unchanged. ECT(G)=16. E becomes critical (uses all slack). Answer Q4: yes, E is now critical.</p>
+      </div>
+      <div class="callout amber">
+        <div class="callout-label">Critical Delay (D delayed 2 weeks)</div>
+        <p>D has ST=0. Any delay extends project. ECT(D) shifts from 12 to 14. EST(F)=max(14,9)=14. ECT(F)=17. ECT(G)=18. Project extends 2 weeks. Answer Q4: E is still non-critical (LCT(E) shifts too).</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="le-footer">
+    <div class="le-lo-pills">
+      <span class="le-lo-pill">LO13-4</span><span class="le-lo-pill">LO13-5</span>
+    </div>
+    <div><span class="le-ch-note">Ch. 19.4–19.5</span></div>
+  </div>
+</section>

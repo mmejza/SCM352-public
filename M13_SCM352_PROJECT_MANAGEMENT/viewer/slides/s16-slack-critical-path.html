@@ -1,0 +1,60 @@
+<section class="slide-page" data-title="Slack Time and Critical Path" data-lo="LO13-4" data-notes="ST = LCT - ECT. ST=0 means no flexibility. All ST=0 activities form the critical path. The critical path is the longest path through the network — equal to ECT of the last activity. Activities with positive ST can be delayed without extending the project (up to their ST value).">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">M13</span>
+      <span class="le-course">SCM 352 · Module 13</span>
+    </div>
+    <span class="le-pagenum">16 / 28</span>
+  </div>
+
+  <div class="le-titleblock">
+    <div class="le-title">Slack Time + <span>Critical Path</span></div>
+    <div class="le-sub">ST = LCT − ECT · Critical activities: ST = 0 · Non-critical activities: ST &gt; 0</div>
+  </div>
+
+  <div class="le-body">
+    <div class="two-col" style="gap:8px;">
+      <div>
+        <div class="callout teal" style="margin-bottom:6px;">
+          <div class="callout-label">Slack Time — Definition</div>
+          <div class="formula-box" style="margin:6px 0;">ST = LCT − ECT</div>
+          <p><strong>ST = 0:</strong> Activity is critical. Any delay extends the project deadline by the same amount.</p>
+          <p style="margin-top:4px;"><strong>ST &gt; 0:</strong> Activity can be delayed up to ST periods without affecting the project completion date. The delay "uses up" slack — if the delay equals ST, the activity becomes critical.</p>
+          <p style="margin-top:4px;"><em>Equivalently: ST = LST − EST. Both formulas give the same result.</em></p>
+        </div>
+        <div class="callout amber">
+          <div class="callout-label">Identifying the Critical Path</div>
+          <p>The critical path is the chain of ST=0 activities that runs from START to END. It is also the longest path through the network (confirmed by the forward pass path durations).</p>
+          <p style="margin-top:6px;"><strong>To find it:</strong> List all activities with ST=0. Trace the sequence from START to END — activities connect if one is a predecessor of the next.</p>
+        </div>
+      </div>
+      <div>
+        <div class="callout navy">
+          <div class="callout-label" style="color:var(--teal);">Restaurant Expansion — Slack and Critical Path</div>
+          <table class="clean-table" style="margin-top:6px;">
+            <thead><tr><th>Act.</th><th>ECT</th><th>LCT</th><th>ST</th><th>Critical?</th></tr></thead>
+            <tbody>
+              <tr><td>A</td><td>3</td><td>3</td><td class="pos">0</td><td>Yes</td></tr>
+              <tr><td>B</td><td>9</td><td>9</td><td class="pos">0</td><td>Yes</td></tr>
+              <tr><td>C</td><td>7</td><td>11</td><td class="neg">4</td><td>No</td></tr>
+              <tr><td>D</td><td>11</td><td>11</td><td class="pos">0</td><td>Yes</td></tr>
+              <tr><td>E</td><td>12</td><td>12</td><td class="pos">0</td><td>Yes</td></tr>
+            </tbody>
+          </table>
+          <p style="margin-top:8px;color:rgba(255,255,255,.75);"><strong style="color:#fff;">Critical path: A → B → D → E = 12 weeks</strong></p>
+          <p style="margin-top:6px;color:rgba(255,255,255,.75);"><strong style="color:#fff;">C has 4 weeks of slack.</strong> Staff training can start up to 4 weeks later than the lease signing and the grand opening still happens on time. This is the window visible on the Gantt chart as a dashed slack bar.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="le-footer">
+    <div class="le-lo-pills">
+      <span class="le-lo-pill">LO13-4</span>
+    </div>
+    <div><span class="le-ch-note">Ch. 19.4</span></div>
+  </div>
+</section>

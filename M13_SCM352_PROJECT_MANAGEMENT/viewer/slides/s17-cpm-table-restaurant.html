@@ -1,0 +1,58 @@
+<section class="slide-page" data-title="Restaurant Expansion — Complete CPM Table" data-lo="LO13-3 LO13-4" data-notes="Consolidates the full CPM output for all 5 activities. Reading the complete table: EST/ECT are from the forward pass; LCT/LST from the backward pass; ST and Critical? are derived. The table is the deliverable that answers all three project management questions.">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">M13</span>
+      <span class="le-course">SCM 352 · Module 13</span>
+    </div>
+    <span class="le-pagenum">17 / 28</span>
+  </div>
+
+  <div class="le-titleblock">
+    <div class="le-title">Restaurant Expansion — <span>Complete CPM Table</span></div>
+    <div class="le-sub">All 7 columns · Critical path confirmed · Ready for Gantt chart conversion</div>
+  </div>
+
+  <div class="le-body">
+    <div class="callout teal" style="margin-bottom:8px;">
+      <div class="callout-label">Complete CPM Results — Restaurant Expansion</div>
+      <table class="clean-table" style="margin-top:6px;">
+        <thead>
+          <tr>
+            <th>Act.</th><th>Description</th><th>Dur.</th>
+            <th>EST</th><th>ECT</th><th>LCT</th><th>LST</th><th>ST</th><th>Critical?</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>A</strong></td><td>Secure lease</td><td>3</td><td>0</td><td>3</td><td>3</td><td>0</td><td class="pos"><strong>0</strong></td><td>Yes ★</td></tr>
+          <tr><td><strong>B</strong></td><td>Kitchen buildout</td><td>6</td><td>3</td><td>9</td><td>9</td><td>3</td><td class="pos"><strong>0</strong></td><td>Yes ★</td></tr>
+          <tr><td><strong>C</strong></td><td>Hire and train staff</td><td>4</td><td>3</td><td>7</td><td>11</td><td>7</td><td class="neg"><strong>4</strong></td><td>No</td></tr>
+          <tr><td><strong>D</strong></td><td>Install POS systems</td><td>2</td><td>9</td><td>11</td><td>11</td><td>9</td><td class="pos"><strong>0</strong></td><td>Yes ★</td></tr>
+          <tr><td><strong>E</strong></td><td>Grand opening</td><td>1</td><td>11</td><td>12</td><td>12</td><td>11</td><td class="pos"><strong>0</strong></td><td>Yes ★</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="two-col" style="gap:8px;">
+      <div class="callout amber">
+        <div class="callout-label">Reading the Table — Three Answers</div>
+        <p><strong>Q: What is the minimum project duration?</strong><br>ECT of last activity: <strong>12 weeks.</strong></p>
+        <p style="margin-top:5px;"><strong>Q: Which activities have no flexibility?</strong><br>ST=0: <strong>A, B, D, E.</strong> Any delay to these activities delays the grand opening.</p>
+        <p style="margin-top:5px;"><strong>Q: What is the critical path?</strong><br><strong>A → B → D → E.</strong> Path duration = 3+6+2+1 = 12 weeks = minimum project duration.</p>
+      </div>
+      <div class="callout navy">
+        <div class="callout-label" style="color:var(--teal);">What ST = 4 Means for Activity C</div>
+        <p style="color:rgba(255,255,255,.75);">Staff training (C) can start as late as week 7 (LST=7) instead of week 3, and the grand opening still happens on week 12. The 4 weeks of slack is visible on the Gantt chart as a dashed bar extending from ECT(C)=7 to LCT(C)=11.</p>
+        <p style="margin-top:8px;color:rgba(255,255,255,.5);">Note: if staff training is delayed by exactly 4 weeks, it becomes critical. If delayed by more than 4 weeks, the project extends beyond week 12.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="le-footer">
+    <div class="le-lo-pills">
+      <span class="le-lo-pill">LO13-3</span><span class="le-lo-pill">LO13-4</span>
+    </div>
+    <div><span class="le-ch-note">Ch. 19.3–19.4</span></div>
+  </div>
+</section>

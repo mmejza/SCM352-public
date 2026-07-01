@@ -1,0 +1,62 @@
+<section class="slide-page" data-title="Delay Analysis — Non-Critical Activity (E)" data-lo="LO13-4" data-notes="E (Frontend development) is delayed 3 weeks. E has ST=3, so the delay exactly uses all slack. ECT(E) shifts from 9 to 12. EST(F)=max(12,12)=12 — unchanged, because D is still the binding constraint at F. Project completion unchanged at 16 weeks. E is now critical (ST=0).">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">M13</span>
+      <span class="le-course">SCM 352 · Module 13</span>
+    </div>
+    <span class="le-pagenum">24 / 28</span>
+  </div>
+
+  <div class="le-titleblock">
+    <div class="le-title">Delay Analysis — <span>Non-Critical Activity</span></div>
+    <div class="le-sub">E (Frontend development) finishes 3 weeks late — delay equals available slack</div>
+  </div>
+
+  <div class="le-body">
+    <div class="two-col" style="gap:8px;">
+      <div>
+        <div class="callout amber" style="margin-bottom:6px;">
+          <div class="callout-label">Scenario</div>
+          <p>The frontend development team encounters integration issues. Activity E now finishes at week 12 instead of week 9 — a 3-week delay.</p>
+          <p style="margin-top:6px;"><strong>E's original values:</strong> EST=5, ECT=9, LCT=12, ST=3.</p>
+          <p style="margin-top:4px;"><strong>New ECT(E):</strong> 9 + 3 = <strong>12</strong> (delay = 3 weeks).</p>
+        </div>
+        <div class="callout teal">
+          <div class="callout-label">Tracing the Impact Forward</div>
+          <table class="clean-table" style="margin-top:4px;">
+            <thead><tr><th>Activity</th><th>Original EST</th><th>New EST</th><th>ECT change?</th></tr></thead>
+            <tbody>
+              <tr><td>E</td><td>5</td><td>5</td><td>ECT shifts: 9 → <strong>12</strong></td></tr>
+              <tr><td>F</td><td colspan="2">EST(F) = max(ECT(D), ECT(E)) = max(<strong>12</strong>, <strong>12</strong>) = <strong>12</strong></td><td>No change</td></tr>
+              <tr><td>G</td><td colspan="2">EST(G) = ECT(F) = 15</td><td>No change</td></tr>
+            </tbody>
+          </table>
+          <p style="margin-top:6px;"><strong>Project completion:</strong> Still week 16. No change.</p>
+        </div>
+      </div>
+      <div>
+        <div class="callout navy">
+          <div class="callout-label" style="color:var(--teal);">Why There Is No Project Impact</div>
+          <p style="color:rgba(255,255,255,.75);">The merge at F is still controlled by D, not E. D finishes at week 12. Even after E's delay, E also finishes at week 12. The max calculation at F gives the same result: max(12, 12) = 12.</p>
+          <p style="margin-top:8px;color:rgba(255,255,255,.75);">E used exactly 3 weeks of its 3-week slack buffer. The delay exactly consumed the buffer without exceeding it.</p>
+          <p style="margin-top:8px;color:#fff;font-weight:600;">New consequence: E is now critical (ST = 0).</p>
+          <p style="margin-top:4px;color:rgba(255,255,255,.75);">Any further slip to E — even 1 day — will now extend the project. The project manager should flag this: E has no remaining buffer.</p>
+        </div>
+        <div class="callout red" style="margin-top:6px;">
+          <div class="callout-label">What Q4 Tells You</div>
+          <p>After the delay, a new critical path appears: <strong>A → C → E → F → G = 16 weeks</strong> (tied with the original A-B-D-F-G path). The frontend workstream is no longer a safe place to slip.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="le-footer">
+    <div class="le-lo-pills">
+      <span class="le-lo-pill">LO13-4</span>
+    </div>
+    <div><span class="le-ch-note">Ch. 19.4</span></div>
+  </div>
+</section>

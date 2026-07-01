@@ -1,0 +1,58 @@
+<section class="slide-page" data-title="Forward Pass — The Merge Calculation" data-lo="LO13-3" data-notes="The merge rule is where students most often make errors. Show the MAX calculation step by step. The key intuition: the binding constraint at a merge point is the LAST predecessor to finish. The successor must wait for all of them.">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">M13</span>
+      <span class="le-course">SCM 352 · Module 13</span>
+    </div>
+    <span class="le-pagenum">11 / 28</span>
+  </div>
+
+  <div class="le-titleblock">
+    <div class="le-title">Forward Pass — <span>The Merge Calculation</span></div>
+    <div class="le-sub">At every merge point, EST = max of all predecessor ECTs</div>
+  </div>
+
+  <div class="le-body">
+    <div class="two-col" style="gap:8px;">
+      <div>
+        <div class="callout teal" style="margin-bottom:6px;">
+          <div class="callout-label">Why MAX — The Intuition</div>
+          <p>An activity with two predecessors is like a meeting that requires two people to arrive. The meeting cannot start until <em>both</em> have arrived. If one arrives at minute 9 and the other at minute 14, the meeting starts at minute 14 — not the average, not the minimum.</p>
+          <p style="margin-top:6px;">The successor activity is waiting in the lobby. The last predecessor to finish is the one that lets it in.</p>
+        </div>
+        <div class="callout amber">
+          <div class="callout-label">The Most Common Error</div>
+          <p>Using the AVERAGE or MINIMUM instead of MAX. Students see ECT(C)=7 and ECT(D)=11 and compute EST(E)=9 (average) or EST(E)=7 (minimum). Both are wrong.</p>
+          <p style="margin-top:6px;"><strong>Correct:</strong> EST(E) = max(7, 11) = <strong>11</strong></p>
+          <p>E cannot start until both C and D are done. D is the binding constraint.</p>
+        </div>
+      </div>
+      <div>
+        <div class="callout navy">
+          <div class="callout-label" style="color:var(--teal);">Restaurant Expansion — Activity E</div>
+          <p style="color:rgba(255,255,255,.75);">E (Grand opening) requires both C and D to be complete.</p>
+          <table class="clean-table" style="margin-top:8px;">
+            <thead><tr><th>Activity</th><th>ECT</th><th>Feeds E?</th></tr></thead>
+            <tbody>
+              <tr><td>C — Train staff</td><td>7</td><td>Yes</td></tr>
+              <tr><td>D — Install POS</td><td>11</td><td>Yes</td></tr>
+            </tbody>
+          </table>
+          <p style="margin-top:8px;color:rgba(255,255,255,.75);">EST(E) = max(ECT(C), ECT(D)) = max(7, 11) = <strong style="color:#fff;">11</strong></p>
+          <p style="margin-top:4px;color:rgba(255,255,255,.75);">ECT(E) = EST(E) + Duration(E) = 11 + 1 = <strong style="color:#fff;">12</strong></p>
+          <p style="margin-top:8px;color:rgba(255,255,255,.5);font-style:italic;">Even though staff training (C) finishes at week 7, the grand opening cannot happen until the POS system is installed at week 11. C's completion alone is not enough.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="le-footer">
+    <div class="le-lo-pills">
+      <span class="le-lo-pill">LO13-3</span>
+    </div>
+    <div><span class="le-ch-note">Ch. 19.3</span></div>
+  </div>
+</section>

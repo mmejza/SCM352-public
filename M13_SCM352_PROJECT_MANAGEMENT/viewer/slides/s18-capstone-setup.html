@@ -1,0 +1,63 @@
+<section class="slide-page" data-title="Software Development Project — Setup" data-lo="LO13-1 LO13-2" data-notes="Capstone example: 7-activity software development project. Topology: A splits to B and C. B→D; C→E. D and E merge at F. F→G. Two merge points (D,E at F), two parallel paths (B-D and C-E). Students build the full CPM from scratch on slides 18-25.">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">M13</span>
+      <span class="le-course">SCM 352 · Module 13</span>
+    </div>
+    <span class="le-pagenum">18 / 28</span>
+  </div>
+
+  <div class="le-titleblock">
+    <div class="le-title">Software Development — <span>Project Setup</span></div>
+    <div class="le-sub">7 activities · 1 split point · 1 merge point · Dependency matrix and network built from project description</div>
+  </div>
+
+  <div class="le-body">
+    <div class="two-col" style="gap:8px;">
+      <div>
+        <div class="callout amber" style="margin-bottom:6px;">
+          <div class="callout-label">Project Description</div>
+          <p>A software team is building a new patient scheduling system. The project starts with requirements analysis. Once requirements are done, two parallel workstreams begin: database design leads to backend development, while UI/UX design leads to frontend development. Integration testing cannot start until both the backend and frontend are complete. System deployment follows integration testing.</p>
+        </div>
+        <div class="callout blue">
+          <div class="callout-label">Building the Dependency Matrix</div>
+          <p><strong>A (Requirements):</strong> No predecessor — starts immediately.</p>
+          <p style="margin-top:3px;"><strong>B (Database design):</strong> Requires A. Cannot start until requirements are defined.</p>
+          <p style="margin-top:3px;"><strong>C (UI/UX design):</strong> Requires A. Parallel to B — independent of database design.</p>
+          <p style="margin-top:3px;"><strong>D (Backend development):</strong> Requires B (database design). True dependency.</p>
+          <p style="margin-top:3px;"><strong>E (Frontend development):</strong> Requires C (UI/UX). True dependency.</p>
+          <p style="margin-top:3px;"><strong>F (Integration testing):</strong> Requires both D and E — merge point.</p>
+          <p style="margin-top:3px;"><strong>G (System deployment):</strong> Requires F.</p>
+        </div>
+      </div>
+      <div>
+        <div class="callout teal">
+          <div class="callout-label">Dependency Matrix</div>
+          <table class="clean-table" style="margin-top:4px;">
+            <thead><tr><th>Act.</th><th>Description</th><th>Dur. (wks)</th><th>Pred.</th></tr></thead>
+            <tbody>
+              <tr><td><strong>A</strong></td><td>Requirements analysis</td><td>2</td><td>—</td></tr>
+              <tr><td><strong>B</strong></td><td>Database design</td><td>4</td><td>A</td></tr>
+              <tr><td><strong>C</strong></td><td>UI/UX design</td><td>3</td><td>A</td></tr>
+              <tr><td><strong>D</strong></td><td>Backend development</td><td>6</td><td>B</td></tr>
+              <tr><td><strong>E</strong></td><td>Frontend development</td><td>4</td><td>C</td></tr>
+              <tr><td><strong>F</strong></td><td>Integration testing</td><td>3</td><td>D, E</td></tr>
+              <tr><td><strong>G</strong></td><td>System deployment</td><td>1</td><td>F</td></tr>
+            </tbody>
+          </table>
+          <p style="margin-top:6px;padding-left:5px;">F has two predecessors (D and E) — the merge point. Both must be complete before integration testing can begin.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="le-footer">
+    <div class="le-lo-pills">
+      <span class="le-lo-pill">LO13-1</span><span class="le-lo-pill">LO13-2</span>
+    </div>
+    <div><span class="le-ch-note">Ch. 19.2–19.3</span></div>
+  </div>
+</section>

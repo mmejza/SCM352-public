@@ -1,0 +1,62 @@
+<section class="slide-page" data-title="Delay Analysis — Critical Activity (D)" data-lo="LO13-4" data-notes="D (Backend development) is delayed 2 weeks. D has ST=0 — any delay propagates immediately. ECT(D) shifts from 12 to 14. EST(F)=max(14,9)=14; ECT(F)=17; ECT(G)=18. Project extends 2 weeks to week 18. E is still non-critical after the shift (LCT(E) shifts to 14, keeping ST=3 for E).">
+  <div class="le-accent"></div>
+  <div class="le-bg-circle"></div>
+
+  <div class="le-topbar">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span class="le-tag">M13</span>
+      <span class="le-course">SCM 352 · Module 13</span>
+    </div>
+    <span class="le-pagenum">25 / 28</span>
+  </div>
+
+  <div class="le-titleblock">
+    <div class="le-title">Delay Analysis — <span>Critical Activity</span></div>
+    <div class="le-sub">D (Backend development) finishes 2 weeks late — project extends by the full 2 weeks</div>
+  </div>
+
+  <div class="le-body">
+    <div class="two-col" style="gap:8px;">
+      <div>
+        <div class="callout red" style="margin-bottom:6px;">
+          <div class="callout-label">Scenario</div>
+          <p>A key backend developer leaves the team. Activity D now finishes at week 14 instead of week 12 — a 2-week delay.</p>
+          <p style="margin-top:6px;"><strong>D's original values:</strong> EST=6, ECT=12, LCT=12, ST=0.</p>
+          <p style="margin-top:4px;"><strong>New ECT(D):</strong> 12 + 2 = <strong>14</strong>.</p>
+          <p style="margin-top:4px;"><em>ST=0 → no buffer → entire 2-week delay propagates forward.</em></p>
+        </div>
+        <div class="callout teal">
+          <div class="callout-label">Tracing the Impact Forward</div>
+          <table class="clean-table" style="margin-top:4px;">
+            <thead><tr><th>Activity</th><th>Updated Calculation</th><th>New ECT</th></tr></thead>
+            <tbody>
+              <tr><td>D</td><td>ECT shifted: +2 weeks</td><td><strong>14</strong></td></tr>
+              <tr><td>F</td><td>EST = max(14, 9) = 14; ECT = 14+3</td><td><strong>17</strong></td></tr>
+              <tr><td>G</td><td>EST = 17; ECT = 17+1</td><td><strong>18</strong></td></tr>
+            </tbody>
+          </table>
+          <p style="margin-top:6px;"><strong>New project completion: Week 18 (extended 2 weeks).</strong></p>
+        </div>
+      </div>
+      <div>
+        <div class="callout navy">
+          <div class="callout-label" style="color:var(--teal);">Why the Full Delay Propagates</div>
+          <p style="color:rgba(255,255,255,.75);">D has no slack. When D's ECT rises from 12 to 14, the merge at F shifts with it. ECT(D)=14 is now the binding constraint at F (since ECT(E)=9 &lt; 14). The max calculation moves from max(12,9) to max(14,9) = 14.</p>
+          <p style="margin-top:8px;color:rgba(255,255,255,.75);">F starts later → G starts later → project finishes at week 18.</p>
+          <p style="margin-top:8px;color:#fff;font-weight:600;">Impact: Project now finishes in 18 weeks, not 16.</p>
+        </div>
+        <div class="callout amber" style="margin-top:6px;">
+          <div class="callout-label">What Happens to E After the Delay?</div>
+          <p>E still finishes at week 9. New LCT(E) = new LST(F) = 14. E's slack is now 14 − 9 = <strong>5 weeks</strong> — more slack than before. When a critical activity delays the project, non-critical activities often gain slack as the deadline shifts out.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="le-footer">
+    <div class="le-lo-pills">
+      <span class="le-lo-pill">LO13-4</span>
+    </div>
+    <div><span class="le-ch-note">Ch. 19.4</span></div>
+  </div>
+</section>

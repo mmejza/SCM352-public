@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SCM 352 · M13 — Critical Path Calculator</title>
+<style>
+:root {
+  --navy:       #0F2027;
+  --teal:       #0D9B87;
+  --teal-lt:    #E5F5F3;
+  --amber:      #E6A800;
+  --amber-lt:   #FFF8E6;
+  --red:        #C0392B;
+  --red-lt:     #FEF5F5;
+  --green:      #27AE60;
+  --green-lt:   #EAFAF1;
+  --gray-50:    #F8F9FA;
+  --gray-100:   #F1F3F5;
+  --gray-200:   #E5E7EB;
+  --gray-400:   #9CA3AF;
+  --gray-600:   #6B7280;
+  --gray-800:   #1F2937;
+  --font:       -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+  --radius:     6px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font); font-size: 14px; color: var(--gray-800); background: var(--gray-50); line-height: 1.5; }
+
+/* ── HEADER ─────────────────────────────── */
+.app-header {
+  background: var(--navy); color: #fff; padding: 14px 24px;
+  display: flex; justify-content: space-between; align-items: center;
+  border-bottom: 3px solid var(--teal);
+}
+.header-brand { display: flex; align-items: center; gap: 12px; }
+.badge {
+  background: var(--teal); color: #fff; font-size: 11px; font-weight: 700;
+  padding: 3px 8px; border-radius: 4px; letter-spacing: .04em;
+}
+.app-title { font-size: 17px; font-weight: 700; letter-spacing: -.01em; }
+.app-subtitle { font-size: 12px; color: rgba(255,255,255,.55); }
+
+/* ── SCENARIO SELECTOR ──────────────────── */
+.scenario-selector {
+  background: #fff; border-bottom: 1px solid var(--gray-200);
+  padding: 16px 24px;
+}
+.selector-label { font-size: 12px; font-weight: 600; color: var(--gray-600); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 10px; }
+.scenario-buttons { display: flex; gap: 10px; flex-wrap: wrap; }
+.scen-btn {
+  background: #fff; border: 2px solid var(--gray-200); border-radius: var(--radius);
+  padding: 10px 14px; cursor: pointer; text-align: left; transition: border-color .15s, background .15s;
+  min-width: 175px;
+}
+.scen-btn:hover { border-color: var(--teal); background: var(--teal-lt); }
+.scen-btn.active { border-color: var(--teal); background: var(--teal-lt); }
+.scen-num { display: block; font-size: 11px; font-weight: 700; color: var(--teal); text-transform: uppercase; letter-spacing: .05em; }
+.scen-name { display: block; font-size: 13px; font-weight: 600; color: var(--gray-800); margin: 2px 0; }
+.scen-detail { display: block; font-size: 11px; color: var(--gray-600); }
+
+/* ── MAIN CONTENT ───────────────────────── */
+.main-content { max-width: 960px; margin: 0 auto; padding: 20px 24px 40px; }
+.hidden { display: none !important; }
+
+/* ── SCENARIO HEADER ────────────────────── */
+.scenario-header { margin-bottom: 16px; }
+.scenario-title { font-size: 19px; font-weight: 700; color: var(--navy); }
+.scenario-meta { font-size: 12px; color: var(--gray-600); margin-top: 2px; }
+
+/* ── PROJECT NARRATIVE ──────────────────── */
+.narrative {
+  background: #fff; border: 1px solid var(--gray-200); border-left: 4px solid var(--teal);
+  border-radius: var(--radius); padding: 14px 16px; margin-bottom: 16px;
+  font-size: 13.5px; line-height: 1.6; color: var(--gray-800);
+}
+.narrative-label { font-size: 11px; font-weight: 700; color: var(--teal); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 6px; }
+
+/* ── PHASE NAVIGATION ───────────────────── */
+.phase-nav {
+  display: flex; align-items: center; gap: 0;
+  background: #fff; border: 1px solid var(--gray-200); border-radius: var(--radius);
+  padding: 6px 10px; margin-bottom: 20px; flex-wrap: wrap; gap: 4px;
+}
+.phase-tab {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 14px; border-radius: 5px; cursor: pointer;
+  transition: background .15s; font-size: 13px; color: var(--gray-600);
+}
+.phase-tab:hover:not(.locked):not(.active) { background: var(--gray-100); }
+.phase-tab.active { background: var(--navy); color: #fff; }
+.phase-tab.locked { opacity: .4; cursor: not-allowed; }
+.phase-tab.done { color: var(--teal); font-weight: 600; }
+.phase-tab.done .phase-num { background: var(--teal); color: #fff; }
+.phase-num {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 22px; height: 22px; border-radius: 50%;
+  background: var(--gray-200); color: var(--gray-600); font-size: 11px; font-weight: 700;
+}
+.phase-tab.active .phase-num { background: var(--teal); color: #fff; }
+.phase-arrow { color: var(--gray-400); font-size: 18px; padding: 0 2px; line-height: 1; }
+
+/* ── PHASE INSTRUCTIONS ─────────────────── */
+.phase-instructions {
+  background: var(--teal-lt); border: 1px solid var(--teal); border-radius: var(--radius);
+  padding: 12px 16px; margin-bottom: 16px; font-size: 13px; line-height: 1.6;
+}
+.phase-instructions p + p { margin-top: 6px; }
+.hint { color: var(--gray-600); font-size: 12px; }
+.hint strong { color: var(--gray-800); }
+
+/* ── TABLES ─────────────────────────────── */
+.table-wrap { overflow-x: auto; margin-bottom: 16px; }
+.data-table {
+  width: 100%; border-collapse: collapse; font-size: 13px;
+  background: #fff; border: 1px solid var(--gray-200); border-radius: var(--radius); overflow: hidden;
+}
+.data-table th {
+  background: var(--navy); color: #fff; font-size: 11.5px; font-weight: 600;
+  padding: 9px 10px; text-align: center; letter-spacing: .03em; white-space: nowrap;
+}
+.data-table th.desc-th { text-align: left; }
+.data-table td { padding: 8px 10px; border-bottom: 1px solid var(--gray-100); vertical-align: middle; }
+.data-table tr:last-child td { border-bottom: none; }
+.data-table tr:nth-child(even):not(.calc-row) td { background: var(--gray-50); }
+.act-col { font-weight: 700; color: var(--navy); text-align: center; font-size: 15px; width: 36px; }
+.desc-col { text-align: left; }
+.num-col { text-align: center; color: var(--gray-600); width: 60px; }
+.num-col.filled { color: var(--gray-800); font-weight: 500; }
+.pred-col { text-align: center; color: var(--gray-600); width: 90px; font-size: 12px; }
+.input-col { text-align: center; width: 68px; }
+.check-col { text-align: center; width: 68px; }
+
+/* ── INPUT CELLS ────────────────────────── */
+.cell-input, .calc-input {
+  width: 50px; padding: 4px 6px; text-align: center; font-family: var(--font);
+  font-size: 13px; border: 1.5px solid var(--gray-200); border-radius: 4px;
+  background: #fff; outline: none; transition: border-color .15s, background .15s;
+}
+.cell-input:focus, .calc-input:focus { border-color: var(--teal); box-shadow: 0 0 0 2px rgba(13,155,135,.15); }
+.cell-input.error { border-color: var(--red); background: var(--red-lt); }
+.cell-input.correct { border-color: var(--green); background: var(--green-lt); }
+.calc-input { width: 42px; font-size: 12px; }
+.calc-input.error { border-color: var(--red); background: var(--red-lt); }
+.calc-input.correct { border-color: var(--green); background: var(--green-lt); }
+.calc-result { font-weight: 700; }
+.pred-input { width: 80px; }
+
+/* ── MERGE / SPLIT ROWS ─────────────────── */
+.calc-row td {
+  background: var(--amber-lt) !important; border-bottom: 1px solid rgba(230,168,0,.25);
+  font-size: 12px;
+}
+.split-row td { background: rgba(230,168,0,.08) !important; }
+.calc-label {
+  color: var(--gray-600); font-style: italic; padding-left: 16px !important;
+  font-size: 11.5px; font-weight: 600; text-transform: uppercase; letter-spacing: .04em;
+}
+.calc-icon { color: var(--amber); margin-right: 4px; font-style: normal; }
+.calc-content { font-size: 12.5px; }
+.calc-content label { color: var(--gray-800); }
+
+/* ── PREDECESSOR INPUT ──────────────────── */
+.pred-entry { display: flex; align-items: center; gap: 6px; justify-content: center; }
+.pred-entry input { width: 80px; text-align: center; }
+
+/* ── ACTION ROW ─────────────────────────── */
+.action-row {
+  display: flex; align-items: center; justify-content: space-between;
+  margin: 4px 0 16px; gap: 12px; flex-wrap: wrap;
+}
+.btn-check {
+  background: var(--navy); color: #fff; border: none; border-radius: var(--radius);
+  padding: 10px 22px; font-size: 14px; font-weight: 600; cursor: pointer;
+  font-family: var(--font); transition: background .15s;
+}
+.btn-check:hover { background: #1a3a50; }
+.btn-continue {
+  background: var(--teal); color: #fff; border: none; border-radius: var(--radius);
+  padding: 10px 22px; font-size: 14px; font-weight: 600; cursor: pointer;
+  font-family: var(--font); transition: background .15s; display: none;
+}
+.btn-continue:hover { background: #0a8470; }
+.phase-counter { font-size: 12px; color: var(--gray-600); }
+
+/* ── FEEDBACK PANEL ─────────────────────── */
+.feedback-panel {
+  border-radius: var(--radius); padding: 14px 16px; margin-bottom: 20px;
+  font-size: 13px; line-height: 1.6;
+}
+.feedback-panel.errors {
+  background: var(--red-lt); border: 1px solid var(--red);
+}
+.feedback-panel.success {
+  background: var(--green-lt); border: 1px solid var(--green);
+}
+.feedback-title { font-weight: 700; margin-bottom: 8px; }
+.feedback-panel.errors .feedback-title { color: var(--red); }
+.feedback-panel.success .feedback-title { color: var(--green); }
+.feedback-list { list-style: none; padding: 0; }
+.feedback-list li { padding: 3px 0 3px 16px; position: relative; color: var(--red); }
+.feedback-list li::before { content: '✕'; position: absolute; left: 0; color: var(--red); font-size: 11px; top: 4px; }
+
+/* ── CRITICAL PATH ENTRY ────────────────── */
+.path-entry {
+  background: #fff; border: 1px solid var(--gray-200); border-radius: var(--radius);
+  padding: 14px 16px; margin-bottom: 16px;
+}
+.path-entry label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 8px; color: var(--gray-800); }
+.path-entry input[type=text] {
+  width: 100%; max-width: 380px; padding: 8px 12px; font-size: 14px;
+  border: 1.5px solid var(--gray-200); border-radius: 4px; font-family: var(--font); outline: none;
+}
+.path-entry input[type=text]:focus { border-color: var(--teal); }
+.path-entry input[type=text].error { border-color: var(--red); background: var(--red-lt); }
+.path-entry input[type=text].correct { border-color: var(--green); background: var(--green-lt); }
+.path-note { font-size: 12px; color: var(--gray-600); margin-top: 6px; }
+
+/* Critical checkboxes */
+.crit-check { width: 16px; height: 16px; cursor: pointer; accent-color: var(--teal); }
+
+/* ── RESULTS TABLE ──────────────────────── */
+.results-panel {
+  background: #fff; border: 1px solid var(--gray-200); border-radius: var(--radius);
+  padding: 20px; margin-top: 8px;
+}
+.results-title { font-size: 17px; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+.results-sub { font-size: 13px; color: var(--gray-600); margin-bottom: 16px; }
+.data-table tr.result-critical td { background: var(--teal-lt) !important; font-weight: 600; color: var(--navy); }
+.critical-path-display {
+  margin-top: 14px; background: var(--navy); color: #fff;
+  border-radius: var(--radius); padding: 12px 16px; font-size: 14px;
+}
+.critical-path-display .cp-label { font-size: 11px; color: rgba(255,255,255,.6); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 4px; }
+.critical-path-display .cp-path { font-weight: 700; font-size: 16px; color: var(--teal); letter-spacing: .05em; }
+.critical-path-display .cp-duration { font-size: 13px; color: rgba(255,255,255,.75); margin-top: 4px; }
+
+/* ── COMPLETED REF TABLE ────────────────── */
+.ref-panel {
+  background: var(--gray-100); border: 1px solid var(--gray-200); border-radius: var(--radius);
+  padding: 10px 14px; margin-bottom: 12px;
+}
+.ref-panel summary { font-size: 12px; font-weight: 600; color: var(--gray-600); cursor: pointer; user-select: none; }
+.ref-panel summary:hover { color: var(--gray-800); }
+.ref-table { margin-top: 10px; width: 100%; border-collapse: collapse; font-size: 12px; }
+.ref-table th { background: var(--gray-200); padding: 5px 8px; font-weight: 600; text-align: center; color: var(--gray-700); }
+.ref-table td { padding: 4px 8px; border-bottom: 1px solid var(--gray-200); text-align: center; color: var(--gray-700); }
+.ref-table td.desc-ref { text-align: left; }
+
+@media (max-width: 640px) {
+  .app-header { flex-direction: column; align-items: flex-start; gap: 4px; }
+  .main-content { padding: 14px 12px 32px; }
+  .phase-nav { gap: 2px; }
+  .phase-tab { padding: 7px 10px; font-size: 12px; }
+}
+</style>
+</head>
+<body>
+
+<header class="app-header">
+  <div class="header-brand">
+    <span class="badge">SCM 352 · M13</span>
+    <span class="app-title">Critical Path Calculator</span>
+  </div>
+  <span class="app-subtitle">Dependency Matrix · Forward Pass · Backward Pass · Slack · Critical Path</span>
+</header>
+
+<div class="scenario-selector">
+  <div class="selector-label">Choose a practice scenario:</div>
+  <div class="scenario-buttons" id="scen-buttons"></div>
+</div>
+
+<div class="main-content hidden" id="main-content">
+
+  <div class="scenario-header">
+    <div class="scenario-title" id="scen-title"></div>
+    <div class="scenario-meta" id="scen-meta"></div>
+  </div>
+
+  <div class="narrative hidden" id="narrative-box">
+    <div class="narrative-label">Project Description</div>
+    <div id="narrative-text"></div>
+  </div>
+
+  <nav class="phase-nav" id="phase-nav"></nav>
+
+  <div id="phase-panel"></div>
+
+  <div class="action-row">
+    <button class="btn-check" id="btn-check" onclick="checkCurrentPhase()">Check My Work</button>
+    <button class="btn-continue" id="btn-continue" onclick="advancePhase()">Continue to Phase <span id="next-phase-num">2</span> →</button>
+    <span class="phase-counter" id="phase-counter"></span>
+  </div>
+
+  <div id="feedback-panel" class="hidden"></div>
+  <div id="results-panel" class="hidden"></div>
+
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════
+   SCENARIO DATA
+═══════════════════════════════════════════════════════ */
+const SCENARIOS = [
+  {
+    id: 1,
+    title: "Restaurant Kitchen Renovation",
+    meta: "6 activities · 1 merge point · single critical path",
+    narrative: "A restaurateur is renovating a commercial kitchen to meet updated health code requirements. The city requires a building permit before any construction can begin. Once permits are issued, the existing kitchen is demolished and cleared. After demolition, two independent trades work simultaneously: electricians run new wiring while plumbers install updated plumbing lines. New commercial kitchen equipment cannot be delivered or installed until both the electrical and plumbing work are complete. A final health department inspection closes the project.",
+    acts: [
+      {l:"A", desc:"Obtain building permits",        dur:2, preds:[],        est:0, ect:2,  lct:2,  lst:0, st:0, crit:true },
+      {l:"B", desc:"Demolition and site clearing",   dur:1, preds:["A"],     est:2, ect:3,  lct:3,  lst:2, st:0, crit:true },
+      {l:"C", desc:"Electrical rough-in",            dur:3, preds:["B"],     est:3, ect:6,  lct:6,  lst:3, st:0, crit:true },
+      {l:"D", desc:"Plumbing rough-in",              dur:1, preds:["B"],     est:3, ect:4,  lct:6,  lst:5, st:2, crit:false},
+      {l:"E", desc:"Install new kitchen equipment",  dur:3, preds:["C","D"], est:6, ect:9,  lct:9,  lst:6, st:0, crit:true },
+      {l:"F", desc:"Final inspection and opening",   dur:1, preds:["E"],     est:9, ect:10, lct:10, lst:9, st:0, crit:true },
+    ],
+    criticalPaths: [["A","B","C","E","F"]]
+  },
+  {
+    id: 2,
+    title: "Regional Charity Gala",
+    meta: "7 activities · 2 merge points · two non-critical paths",
+    narrative: "A regional nonprofit is organizing an annual fundraising gala. The venue must be booked before any other planning can proceed. Once the venue is confirmed, three independent workstreams begin simultaneously: negotiating catering contracts, booking entertainment acts, and launching ticket sales and promotion. The setup and logistics team can only begin once both catering and entertainment are confirmed. The volunteer coordination briefing requires only the promotional campaign to be complete — it does not depend on setup or entertainment. The event itself cannot proceed until both setup/logistics and volunteer coordination are done.",
+    acts: [
+      {l:"A", desc:"Venue booking and contract",      dur:1, preds:[],        est:0, ect:1,  lct:1,  lst:0, st:0, crit:true },
+      {l:"B", desc:"Catering contract negotiation",   dur:2, preds:["A"],     est:1, ect:3,  lct:5,  lst:3, st:2, crit:false},
+      {l:"C", desc:"Entertainment booking",           dur:2, preds:["A"],     est:1, ect:3,  lct:5,  lst:3, st:2, crit:false},
+      {l:"D", desc:"Ticket sales and promotion",      dur:4, preds:["A"],     est:1, ect:5,  lct:5,  lst:1, st:0, crit:true },
+      {l:"E", desc:"Setup and logistics planning",    dur:2, preds:["B","C"], est:3, ect:5,  lct:7,  lst:5, st:2, crit:false},
+      {l:"F", desc:"Volunteer coordination briefing", dur:2, preds:["D"],     est:5, ect:7,  lct:7,  lst:5, st:0, crit:true },
+      {l:"G", desc:"Event execution",                 dur:1, preds:["E","F"], est:7, ect:8,  lct:8,  lst:7, st:0, crit:true },
+    ],
+    criticalPaths: [["A","D","F","G"]]
+  },
+  {
+    id: 3,
+    title: "Pharmaceutical Clinical Trial",
+    meta: "8 activities · 2 merge points · near-critical paths",
+    narrative: "A pharmaceutical company is initiating an early-stage clinical trial. The trial protocol must be fully designed and approved before any other activity can begin. Once the protocol is complete, three parallel workstreams start: selecting and preparing clinical sites, submitting the protocol to the regulatory authority for approval, and manufacturing the investigational drug supply. Patient screening cannot begin until both site preparation and regulatory approval are complete. Pharmacokinetic preparation can begin as soon as drug manufacturing is done — it does not require site or regulatory approval. The trial initiation meeting requires both patient screening and pharmacokinetic preparation to be complete. The formal trial launch follows the initiation meeting.",
+    acts: [
+      {l:"A", desc:"Protocol design and approval",      dur:3, preds:[],        est:0,  ect:3,  lct:3,  lst:0,  st:0, crit:true },
+      {l:"B", desc:"Clinical site preparation",         dur:4, preds:["A"],     est:3,  ect:7,  lct:8,  lst:4,  st:1, crit:false},
+      {l:"C", desc:"Regulatory filing and approval",    dur:5, preds:["A"],     est:3,  ect:8,  lct:8,  lst:3,  st:0, crit:true },
+      {l:"D", desc:"Investigational drug manufacturing",dur:2, preds:["A"],     est:3,  ect:5,  lct:7,  lst:5,  st:2, crit:false},
+      {l:"E", desc:"Patient screening",                 dur:3, preds:["B","C"], est:8,  ect:11, lct:11, lst:8,  st:0, crit:true },
+      {l:"F", desc:"Pharmacokinetic preparation",       dur:4, preds:["D"],     est:5,  ect:9,  lct:11, lst:7,  st:2, crit:false},
+      {l:"G", desc:"Trial initiation meeting",          dur:1, preds:["E","F"], est:11, ect:12, lct:12, lst:11, st:0, crit:true },
+      {l:"H", desc:"Trial launch",                      dur:1, preds:["G"],     est:12, ect:13, lct:13, lst:12, st:0, crit:true },
+    ],
+    criticalPaths: [["A","C","E","G","H"]]
+  },
+  {
+    id: 4,
+    title: "Municipal Cycling Corridor",
+    meta: "9 activities · 3 merge points · two critical paths · two activities with identical slack",
+    narrative: "A city is constructing a new 3-mile pedestrian and cycling corridor. An environmental impact assessment must be completed before any other work begins. Once the assessment is done, engineering design and community consultation can run in parallel. Permit acquisition requires both engineering design and community consultation to be complete. Contractor bidding can begin as soon as engineering design is complete — it does not depend on the community consultation. Site preparation requires both the permits and a selected contractor to be in place. Utility relocation can begin once permits are acquired, independently of contractor bidding and site preparation. Primary construction cannot begin until both site preparation and utility relocation are complete. Final inspection and project handover follow primary construction.",
+    acts: [
+      {l:"A", desc:"Environmental impact assessment", dur:2, preds:[],        est:0,  ect:2,  lct:2,  lst:0,  st:0, crit:true },
+      {l:"B", desc:"Engineering design",             dur:5, preds:["A"],     est:2,  ect:7,  lct:7,  lst:2,  st:0, crit:true },
+      {l:"C", desc:"Community consultation",         dur:3, preds:["A"],     est:2,  ect:5,  lct:7,  lst:4,  st:2, crit:false},
+      {l:"D", desc:"Permit acquisition",             dur:4, preds:["B","C"], est:7,  ect:11, lct:11, lst:7,  st:0, crit:true },
+      {l:"E", desc:"Contractor bidding",             dur:2, preds:["B"],     est:7,  ect:9,  lct:11, lst:9,  st:2, crit:false},
+      {l:"F", desc:"Site preparation",               dur:4, preds:["D","E"], est:11, ect:15, lct:15, lst:11, st:0, crit:true },
+      {l:"G", desc:"Utility relocation",             dur:4, preds:["D"],     est:11, ect:15, lct:15, lst:11, st:0, crit:true },
+      {l:"H", desc:"Primary construction",           dur:6, preds:["F","G"], est:15, ect:21, lct:21, lst:15, st:0, crit:true },
+      {l:"I", desc:"Final inspection and handover",  dur:2, preds:["H"],     est:21, ect:23, lct:23, lst:21, st:0, crit:true },
+    ],
+    criticalPaths: [["A","B","D","F","H","I"], ["A","B","D","G","H","I"]]
+  }
+];
+
+/* ═══════════════════════════════════════════════════════
+   STATE
+═══════════════════════════════════════════════════════ */
+let scenario = null;
+let phase = 0;
+let phasesDone = [false, false, false, false];
+let succs = {};
+
+/* ═══════════════════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════════════════ */
+(function init() {
+  const btns = document.getElementById('scen-buttons');
+  SCENARIOS.forEach((s, i) => {
+    btns.innerHTML += `<button class="scen-btn" id="sbtn-${i}" onclick="loadScenario(${i})">
+      <span class="scen-num">Scenario ${s.id}</span>
+      <span class="scen-name">${s.title}</span>
+      <span class="scen-detail">${s.meta.split(' · ')[0]} · ${s.meta.split(' · ')[1]}</span>
+    </button>`;
+  });
+})();
+
+/* ═══════════════════════════════════════════════════════
+   UTILITIES
+═══════════════════════════════════════════════════════ */
+function computeSuccessors(acts) {
+  const s = {};
+  acts.forEach(a => s[a.l] = []);
+  acts.forEach(a => a.preds.forEach(p => s[p].push(a.l)));
+  return s;
+}
+
+function normalizePreds(str) {
+  const c = str.trim().toUpperCase();
+  if (!c || c === '—' || c === '-' || c === 'NONE' || c === 'N/A' || c === 'NA') return '—';
+  const letters = (c.match(/[A-Z]/g) || []).sort();
+  return letters.length ? letters.join(',') : '—';
+}
+
+function normalizePath(str) {
+  return (str.match(/[A-Za-z]/g) || []).map(c => c.toUpperCase());
+}
+
+function getInt(id) {
+  const el = document.getElementById(id);
+  if (!el) return NaN;
+  return parseInt(el.value.trim());
+}
+
+function markCell(id, ok) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.classList.toggle('error', !ok);
+  el.classList.toggle('correct', ok);
+}
+
+/* ═══════════════════════════════════════════════════════
+   LOAD SCENARIO
+═══════════════════════════════════════════════════════ */
+function loadScenario(idx) {
+  scenario = SCENARIOS[idx];
+  succs = computeSuccessors(scenario.acts);
+  phase = 0;
+  phasesDone = [false, false, false, false];
+
+  document.querySelectorAll('.scen-btn').forEach((b, i) => b.classList.toggle('active', i === idx));
+
+  document.getElementById('scen-title').textContent = scenario.title;
+  document.getElementById('scen-meta').textContent = scenario.meta;
+  document.getElementById('narrative-text').textContent = scenario.narrative;
+  document.getElementById('narrative-box').classList.remove('hidden');
+  document.getElementById('main-content').classList.remove('hidden');
+  document.getElementById('results-panel').classList.add('hidden');
+
+  renderPhaseTabs();
+  renderPhase();
+  hideFeedback();
+}
+
+/* ═══════════════════════════════════════════════════════
+   PHASE TABS
+═══════════════════════════════════════════════════════ */
+const PHASE_LABELS = ["Dependency Matrix", "Forward Pass", "Backward Pass", "Slack + Critical Path"];
+
+function renderPhaseTabs() {
+  const nav = document.getElementById('phase-nav');
+  nav.innerHTML = '';
+  PHASE_LABELS.forEach((label, i) => {
+    if (i > 0) nav.innerHTML += `<span class="phase-arrow">›</span>`;
+    const done = phasesDone[i];
+    const active = i === phase;
+    const locked = !active && !done && i > phase;
+    const cls = [
+      'phase-tab',
+      active ? 'active' : '',
+      done && !active ? 'done' : '',
+      locked ? 'locked' : ''
+    ].filter(Boolean).join(' ');
+    nav.innerHTML += `<div class="${cls}" onclick="goToPhase(${i})">
+      <span class="phase-num">${done && !active ? '✓' : i + 1}</span>
+      <span class="phase-label">${label}</span>
+    </div>`;
+  });
+  document.getElementById('phase-counter').textContent = `Phase ${phase + 1} of 4`;
+}
+
+function goToPhase(n) {
+  if (n > phase && !phasesDone[phase]) return; // locked
+  if (n === phase) return;
+  phase = n;
+  renderPhaseTabs();
+  renderPhase();
+  hideFeedback();
+  document.getElementById('btn-continue').style.display = 'none';
+}
+
+/* ═══════════════════════════════════════════════════════
+   PHASE RENDERING
+═══════════════════════════════════════════════════════ */
+function renderPhase() {
+  const panel = document.getElementById('phase-panel');
+  panel.innerHTML = [renderP0, renderP1, renderP2, renderP3][phase]();
+  document.getElementById('btn-check').textContent = `Check Phase ${phase + 1}`;
+  const nextBtn = document.getElementById('btn-continue');
+  nextBtn.style.display = 'none';
+  document.getElementById('next-phase-num').textContent = phase + 2;
+  document.getElementById('results-panel').classList.add('hidden');
+}
+
+/* ── Phase 1: Dependency Matrix ─────────── */
+function renderP0() {
+  let rows = '';
+  scenario.acts.forEach(a => {
+    rows += `<tr>
+      <td class="act-col">${a.l}</td>
+      <td class="desc-col">${a.desc}</td>
+      <td class="num-col">${a.dur}</td>
+      <td class="input-col">
+        <div class="pred-entry">
+          <input class="cell-input pred-input" id="p0-pred-${a.l}" type="text"
+            placeholder="${a.preds.length === 0 ? '—' : a.preds.join(', ')}" autocomplete="off">
+        </div>
+      </td>
+    </tr>`;
+  });
+  return `
+    <div class="phase-instructions">
+      <p>Read the project description above. For each activity, enter its <strong>predecessor letter(s)</strong>,
+      separated by commas. Enter <strong>—</strong> for activities with no predecessors.</p>
+      <p class="hint">Example: If Activity C must wait for both A and B, enter <strong>A, B</strong> in C's row.</p>
+    </div>
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead><tr>
+          <th>Act.</th>
+          <th class="desc-th">Description</th>
+          <th>Duration (wks)</th>
+          <th>Predecessor(s)</th>
+        </tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>`;
+}
+
+/* ── Phase 2: Forward Pass ──────────────── */
+function renderP1() {
+  let rows = '';
+  scenario.acts.forEach(a => {
+    const predStr = a.preds.length ? a.preds.join(', ') : '—';
+    rows += `<tr>
+      <td class="act-col">${a.l}</td>
+      <td class="desc-col">${a.desc}</td>
+      <td class="num-col">${a.dur}</td>
+      <td class="pred-col">${predStr}</td>
+      <td class="input-col"><input class="cell-input" id="p1-est-${a.l}" type="text" inputmode="numeric" placeholder="?" autocomplete="off"></td>
+      <td class="input-col"><input class="cell-input" id="p1-ect-${a.l}" type="text" inputmode="numeric" placeholder="?" autocomplete="off"></td>
+    </tr>`;
+    if (a.preds.length > 1) {
+      const blanks = a.preds.map(p =>
+        `ECT(<strong>${p}</strong>) = <input class="calc-input" id="p1-mx-${a.l}-${p}" type="text" inputmode="numeric" placeholder="?" autocomplete="off">`
+      ).join('&ensp;,&ensp;');
+      rows += `<tr class="calc-row">
+        <td colspan="4" class="calc-label"><span class="calc-icon">↗</span>Merge — max calculation:</td>
+        <td colspan="2" class="calc-content">
+          EST(<strong>${a.l}</strong>) = max(&thinsp;${blanks}&thinsp;) =&ensp;
+          <input class="calc-input calc-result" id="p1-mx-${a.l}-result" type="text" inputmode="numeric" placeholder="?" autocomplete="off">
+        </td>
+      </tr>`;
+    }
+  });
+  return `
+    <div class="phase-instructions">
+      <p>Enter the <strong>EST</strong> (Earliest Start Time) and <strong>ECT</strong> (Earliest Completion Time)
+      for each activity. Work top-to-bottom. ECT = EST + Duration.</p>
+      <p class="hint">At <strong>merge points</strong> (activities with multiple predecessors), complete the max calculation
+      in the highlighted row: EST = max of all predecessor ECTs.</p>
+    </div>
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead><tr>
+          <th>Act.</th><th class="desc-th">Description</th>
+          <th>Dur.</th><th>Predecessors</th><th>EST</th><th>ECT</th>
+        </tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>`;
+}
+
+/* ── Phase 3: Backward Pass ─────────────── */
+function renderP2() {
+  const lastAct = scenario.acts[scenario.acts.length - 1];
+  let rows = '';
+  scenario.acts.forEach(a => {
+    rows += `<tr>
+      <td class="act-col">${a.l}</td>
+      <td class="desc-col">${a.desc}</td>
+      <td class="num-col filled">${a.ect}</td>
+      <td class="input-col"><input class="cell-input" id="p2-lct-${a.l}" type="text" inputmode="numeric" placeholder="?" autocomplete="off"></td>
+      <td class="input-col"><input class="cell-input" id="p2-lst-${a.l}" type="text" inputmode="numeric" placeholder="?" autocomplete="off"></td>
+    </tr>`;
+    if (succs[a.l].length > 1) {
+      const blanks = succs[a.l].map(s2 =>
+        `LST(<strong>${s2}</strong>) = <input class="calc-input" id="p2-mn-${a.l}-${s2}" type="text" inputmode="numeric" placeholder="?" autocomplete="off">`
+      ).join('&ensp;,&ensp;');
+      rows += `<tr class="calc-row split-row">
+        <td colspan="2" class="calc-label"><span class="calc-icon">↘</span>Split — min calculation:</td>
+        <td colspan="3" class="calc-content">
+          LCT(<strong>${a.l}</strong>) = min(&thinsp;${blanks}&thinsp;) =&ensp;
+          <input class="calc-input calc-result" id="p2-mn-${a.l}-result" type="text" inputmode="numeric" placeholder="?" autocomplete="off">
+        </td>
+      </tr>`;
+    }
+  });
+  return `
+    <div class="phase-instructions">
+      <p>Enter the <strong>LCT</strong> (Latest Completion Time) and <strong>LST</strong> (Latest Start Time)
+      for each activity. Work <strong>bottom-to-top</strong> (last activity first). LST = LCT − Duration.</p>
+      <p class="hint">LCT of the <strong>last activity</strong> = its ECT (${lastAct.ect}). At <strong>split points</strong>
+      (activities with multiple successors), complete the min calculation: LCT = min of successor LSTs.</p>
+    </div>
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead><tr>
+          <th>Act.</th><th class="desc-th">Description</th>
+          <th>ECT (given)</th><th>LCT</th><th>LST</th>
+        </tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>`;
+}
+
+/* ── Phase 4: Slack + Critical Path ─────── */
+function renderP3() {
+  let rows = '';
+  scenario.acts.forEach(a => {
+    rows += `<tr>
+      <td class="act-col">${a.l}</td>
+      <td class="desc-col">${a.desc}</td>
+      <td class="num-col filled">${a.est}</td>
+      <td class="num-col filled">${a.ect}</td>
+      <td class="num-col filled">${a.lct}</td>
+      <td class="num-col filled">${a.lst}</td>
+      <td class="input-col"><input class="cell-input" id="p3-st-${a.l}" type="text" inputmode="numeric" placeholder="?" autocomplete="off"></td>
+      <td class="check-col"><input type="checkbox" class="crit-check" id="p3-crit-${a.l}"></td>
+    </tr>`;
+  });
+  const multi = scenario.criticalPaths.length > 1;
+  return `
+    <div class="phase-instructions">
+      <p>Compute <strong>ST</strong> (Slack Time) for each activity: ST = LCT − ECT.
+      Check <strong>Critical?</strong> for every activity with ST = 0.
+      Then enter the complete critical path sequence below.</p>
+      <p class="hint">An activity is critical if ST = 0. The critical path is the sequence of all critical activities from start to finish.</p>
+    </div>
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead><tr>
+          <th>Act.</th><th class="desc-th">Description</th>
+          <th>EST</th><th>ECT</th><th>LCT</th><th>LST</th><th>ST</th><th>Critical?</th>
+        </tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>
+    <div class="path-entry">
+      <label for="p3-path">Critical path sequence:</label>
+      <input type="text" id="p3-path" placeholder="e.g., A → B → C → E → F  or  A-B-C-E-F" autocomplete="off">
+      ${multi ? `<p class="path-note">This scenario has two valid critical paths — enter either one.</p>` : ''}
+    </div>`;
+}
+
+/* ═══════════════════════════════════════════════════════
+   VALIDATION
+═══════════════════════════════════════════════════════ */
+function checkCurrentPhase() {
+  const validators = [validateP0, validateP1, validateP2, validateP3];
+  const { ok, errors } = validators[phase]();
+  if (ok) {
+    phasesDone[phase] = true;
+    renderPhaseTabs();
+    showFeedback(true, []);
+    if (phase < 3) {
+      const nb = document.getElementById('btn-continue');
+      nb.style.display = 'inline-block';
+    } else {
+      showResults();
+      document.getElementById('btn-continue').style.display = 'none';
+      document.getElementById('btn-check').style.display = 'none';
+    }
+  } else {
+    showFeedback(false, errors);
+    document.getElementById('btn-continue').style.display = 'none';
+  }
+}
+
+function advancePhase() {
+  if (phase < 3) {
+    phase++;
+    renderPhaseTabs();
+    renderPhase();
+    hideFeedback();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+}
+
+/* ── Phase 1 validate ───────────────────── */
+function validateP0() {
+  const errors = [];
+  let ok = true;
+  scenario.acts.forEach(a => {
+    const inp = document.getElementById(`p0-pred-${a.l}`);
+    const val = normalizePreds(inp.value);
+    const correct = normalizePreds(a.preds.length ? a.preds.join(',') : '—');
+    const match = val === correct;
+    if (!match) {
+      ok = false;
+      markCell(`p0-pred-${a.l}`, false);
+      const exp = a.preds.length ? a.preds.join(', ') : '—';
+      errors.push(`Activity ${a.l}: check the project description — what must be complete before ${a.l} can begin?`);
+    } else {
+      markCell(`p0-pred-${a.l}`, true);
+    }
+  });
+  return { ok, errors };
+}
+
+/* ── Phase 2 validate ───────────────────── */
+function validateP1() {
+  const errors = [];
+  let ok = true;
+  scenario.acts.forEach(a => {
+    const estVal = getInt(`p1-est-${a.l}`);
+    const ectVal = getInt(`p1-ect-${a.l}`);
+
+    const estOk = estVal === a.est;
+    markCell(`p1-est-${a.l}`, estOk);
+    if (!estOk) {
+      ok = false;
+      if (!isNaN(estVal)) {
+        errors.push(`Activity ${a.l} EST: got ${estVal}, expected ${a.est}.${a.preds.length > 1 ? ' (Use the max of predecessor ECTs.)' : a.preds.length === 1 ? ` (EST = ECT of ${a.preds[0]}.)` : ' (First activity starts at 0.)'}`);
+      } else {
+        errors.push(`Activity ${a.l} EST: enter a value.`);
+      }
+    }
+
+    const ectOk = ectVal === a.ect;
+    markCell(`p1-ect-${a.l}`, ectOk);
+    if (!ectOk) {
+      ok = false;
+      if (!isNaN(ectVal)) {
+        errors.push(`Activity ${a.l} ECT: got ${ectVal}, expected ${a.ect}. ECT = EST + Duration = ${a.est} + ${a.dur} = ${a.ect}.`);
+      } else {
+        errors.push(`Activity ${a.l} ECT: enter a value.`);
+      }
+    }
+
+    if (a.preds.length > 1) {
+      a.preds.forEach(p => {
+        const pa = scenario.acts.find(x => x.l === p);
+        const v = getInt(`p1-mx-${a.l}-${p}`);
+        const mOk = v === pa.ect;
+        markCell(`p1-mx-${a.l}-${p}`, mOk);
+        if (!mOk) {
+          ok = false;
+          if (!isNaN(v)) errors.push(`Merge calculation for ${a.l}: ECT(${p}) should be ${pa.ect}, not ${v}.`);
+          else errors.push(`Merge calculation for ${a.l}: enter ECT(${p}).`);
+        }
+      });
+      const rv = getInt(`p1-mx-${a.l}-result`);
+      const rOk = rv === a.est;
+      markCell(`p1-mx-${a.l}-result`, rOk);
+      if (!rOk) {
+        ok = false;
+        const maxVals = a.preds.map(p => scenario.acts.find(x => x.l === p).ect).join(', ');
+        if (!isNaN(rv)) errors.push(`Merge calculation result for ${a.l}: max(${maxVals}) = ${a.est}, not ${rv}.`);
+        else errors.push(`Merge calculation for ${a.l}: enter the max result.`);
+      }
+    }
+  });
+  return { ok, errors };
+}
+
+/* ── Phase 3 validate ───────────────────── */
+function validateP2() {
+  const errors = [];
+  let ok = true;
+  scenario.acts.forEach(a => {
+    const lctVal = getInt(`p2-lct-${a.l}`);
+    const lstVal = getInt(`p2-lst-${a.l}`);
+
+    const lctOk = lctVal === a.lct;
+    markCell(`p2-lct-${a.l}`, lctOk);
+    if (!lctOk) {
+      ok = false;
+      if (!isNaN(lctVal)) {
+        if (succs[a.l].length > 1) {
+          const succLSTs = succs[a.l].map(s2 => {
+            const sa = scenario.acts.find(x => x.l === s2);
+            return `LST(${s2})=${sa.lst}`;
+          }).join(', ');
+          errors.push(`Activity ${a.l} LCT: got ${lctVal}, expected ${a.lct}. LCT = min of successor LSTs — min(${succLSTs}) = ${a.lct}.`);
+        } else if (succs[a.l].length === 1) {
+          const succ = scenario.acts.find(x => x.l === succs[a.l][0]);
+          errors.push(`Activity ${a.l} LCT: got ${lctVal}, expected ${a.lct}. LCT = LST of successor ${succs[a.l][0]} = ${succ.lst}.`);
+        } else {
+          errors.push(`Activity ${a.l} LCT: got ${lctVal}, expected ${a.lct}. Last activity: LCT = ECT = ${a.ect}.`);
+        }
+      } else {
+        errors.push(`Activity ${a.l} LCT: enter a value.`);
+      }
+    }
+
+    const lstOk = lstVal === a.lst;
+    markCell(`p2-lst-${a.l}`, lstOk);
+    if (!lstOk) {
+      ok = false;
+      if (!isNaN(lstVal)) {
+        errors.push(`Activity ${a.l} LST: got ${lstVal}, expected ${a.lst}. LST = LCT − Duration = ${a.lct} − ${a.dur} = ${a.lst}.`);
+      } else {
+        errors.push(`Activity ${a.l} LST: enter a value.`);
+      }
+    }
+
+    if (succs[a.l].length > 1) {
+      succs[a.l].forEach(s2 => {
+        const sa = scenario.acts.find(x => x.l === s2);
+        const v = getInt(`p2-mn-${a.l}-${s2}`);
+        const mOk = v === sa.lst;
+        markCell(`p2-mn-${a.l}-${s2}`, mOk);
+        if (!mOk) {
+          ok = false;
+          if (!isNaN(v)) errors.push(`Split calculation for ${a.l}: LST(${s2}) should be ${sa.lst}, not ${v}.`);
+          else errors.push(`Split calculation for ${a.l}: enter LST(${s2}).`);
+        }
+      });
+      const rv = getInt(`p2-mn-${a.l}-result`);
+      const rOk = rv === a.lct;
+      markCell(`p2-mn-${a.l}-result`, rOk);
+      if (!rOk) {
+        ok = false;
+        const minVals = succs[a.l].map(s2 => scenario.acts.find(x => x.l === s2).lst).join(', ');
+        if (!isNaN(rv)) errors.push(`Split calculation result for ${a.l}: min(${minVals}) = ${a.lct}, not ${rv}.`);
+        else errors.push(`Split calculation for ${a.l}: enter the min result.`);
+      }
+    }
+  });
+  return { ok, errors };
+}
+
+/* ── Phase 4 validate ───────────────────── */
+function validateP3() {
+  const errors = [];
+  let ok = true;
+
+  scenario.acts.forEach(a => {
+    const stVal = getInt(`p3-st-${a.l}`);
+    const stOk = stVal === a.st;
+    markCell(`p3-st-${a.l}`, stOk);
+    if (!stOk) {
+      ok = false;
+      if (!isNaN(stVal)) errors.push(`Activity ${a.l} ST: got ${stVal}, expected ${a.st}. ST = LCT − ECT = ${a.lct} − ${a.ect} = ${a.st}.`);
+      else errors.push(`Activity ${a.l} ST: enter a value.`);
+    }
+
+    const chk = document.getElementById(`p3-crit-${a.l}`);
+    const critOk = chk.checked === a.crit;
+    if (!critOk) {
+      ok = false;
+      if (a.crit) errors.push(`Activity ${a.l} should be marked Critical (ST = 0).`);
+      else errors.push(`Activity ${a.l} should NOT be marked Critical (ST = ${a.st}).`);
+    }
+  });
+
+  const pathInput = document.getElementById('p3-path');
+  const typed = normalizePath(pathInput.value);
+  const pathOk = scenario.criticalPaths.some(cp =>
+    typed.length === cp.length && typed.every((l, i) => l === cp[i])
+  );
+  if (!pathOk) {
+    ok = false;
+    pathInput.classList.add('error');
+    pathInput.classList.remove('correct');
+    const validStr = scenario.criticalPaths.map(cp => cp.join('→')).join('  or  ');
+    errors.push(`Critical path: expected ${validStr}. List only the critical activities (ST = 0) in order.`);
+  } else {
+    pathInput.classList.remove('error');
+    pathInput.classList.add('correct');
+  }
+
+  return { ok, errors };
+}
+
+/* ═══════════════════════════════════════════════════════
+   FEEDBACK
+═══════════════════════════════════════════════════════ */
+function showFeedback(success, errors) {
+  const panel = document.getElementById('feedback-panel');
+  panel.classList.remove('hidden');
+  if (success) {
+    panel.className = 'feedback-panel success';
+    const msgs = [
+      "Phase complete — all values are correct.",
+      "All values correct — continue to the next phase.",
+      "Backward pass complete — now compute slack and the critical path.",
+      "Excellent — the complete CPM table is shown below."
+    ];
+    panel.innerHTML = `<div class="feedback-title">✓ ${msgs[phase]}</div>`;
+  } else {
+    panel.className = 'feedback-panel errors';
+    const items = errors.map(e => `<li>${e}</li>`).join('');
+    panel.innerHTML = `
+      <div class="feedback-title">Fix the following before continuing:</div>
+      <ul class="feedback-list">${items}</ul>`;
+  }
+  panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function hideFeedback() {
+  const p = document.getElementById('feedback-panel');
+  p.classList.add('hidden');
+  p.innerHTML = '';
+}
+
+/* ═══════════════════════════════════════════════════════
+   RESULTS TABLE
+═══════════════════════════════════════════════════════ */
+function showResults() {
+  const panel = document.getElementById('results-panel');
+  panel.classList.remove('hidden');
+
+  let rows = '';
+  scenario.acts.forEach(a => {
+    const cls = a.crit ? 'result-critical' : '';
+    rows += `<tr class="${cls}">
+      <td class="act-col">${a.l}</td>
+      <td class="desc-col">${a.desc}</td>
+      <td class="num-col">${a.dur}</td>
+      <td class="num-col">${a.est}</td>
+      <td class="num-col">${a.ect}</td>
+      <td class="num-col">${a.lct}</td>
+      <td class="num-col">${a.lst}</td>
+      <td class="num-col">${a.st}</td>
+      <td class="num-col">${a.crit ? '★' : ''}</td>
+    </tr>`;
+  });
+
+  const lastECT = scenario.acts[scenario.acts.length - 1].ect;
+  const pathStrings = scenario.criticalPaths.map(cp => cp.join(' → ')).join('<br>or&ensp;');
+
+  panel.innerHTML = `
+    <div class="results-panel">
+      <div class="results-title">Complete CPM Solution</div>
+      <div class="results-sub">Critical activities (ST = 0) are highlighted. ★ = on the critical path.</div>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead><tr>
+            <th>Act.</th><th class="desc-th">Description</th>
+            <th>Dur.</th><th>EST</th><th>ECT</th><th>LCT</th><th>LST</th><th>ST</th><th>Critical?</th>
+          </tr></thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>
+      <div class="critical-path-display">
+        <div class="cp-label">Critical Path</div>
+        <div class="cp-path">${pathStrings}</div>
+        <div class="cp-duration">Project duration: ${lastECT} weeks</div>
+      </div>
+    </div>`;
+
+  panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+</script>
+</body>
+</html>
